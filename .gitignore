@@ -1,0 +1,20 @@
+./gitignore
+.idea/**
+/out/**
+/user/**
+/bin/**
+bin
+annotation.txt
+tasks.txt
+scenicView.properties
+dashboard.properties
+DashboardFx.iml
+app.log
+app.log.lck
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+/build/**
+/gradle/
+/.gradle/**
