@@ -1,5 +1,6 @@
 package io.OurBatima.core;
 
+
 import io.OurBatima.core.impl.Layout;
 import io.OurBatima.core.interfaces.Loader;
 import io.OurBatima.core.services.LoadViews;
@@ -9,11 +10,8 @@ import javafx.concurrent.Task;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 
-/**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- * Create on  22/04/2023
- */
 public class Main extends Launcher {
+
 
     @Override
     public void build(Context context) {
