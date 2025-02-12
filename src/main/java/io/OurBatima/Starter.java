@@ -19,7 +19,16 @@
 
 package io.OurBatima;
 
+import io.OurBatima.core.Dao.DatabaseConnection;
+import io.OurBatima.core.Dao.Projet.ProjetDAO;
 import io.OurBatima.core.Main;
+import io.OurBatima.core.model.Projet;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.Date;
+
+import static io.OurBatima.core.Dao.DatabaseConnection.getConnection;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -27,8 +36,8 @@ import io.OurBatima.core.Main;
  */
 public class Starter extends Main {
 
-
     public static void main(String[] args) {
+
         launch(args);
     }
 
