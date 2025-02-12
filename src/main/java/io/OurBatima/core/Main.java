@@ -1,5 +1,6 @@
 package io.OurBatima.core;
 
+
 import io.OurBatima.core.impl.Layout;
 import io.OurBatima.core.interfaces.Loader;
 import io.OurBatima.core.services.LoadViews;
@@ -14,10 +15,6 @@ import java.sql.Connection;
 
 import static io.OurBatima.core.Dao.DatabaseConnection.getConnection;
 
-/**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- * Create on  22/04/2023
- */
 public class Main extends Launcher {
 
 
