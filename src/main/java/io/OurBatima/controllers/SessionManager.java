@@ -1,6 +1,6 @@
 package io.OurBatima.controllers;
 
-import io.OurBatima.core.model.Utilisateur;
+import io.OurBatima.core.model.Utilisateur.Utilisateur;
 
 public class SessionManager {
     private static Utilisateur currentUser;

@@ -4,7 +4,7 @@ import io.OurBatima.core.Context;
 import io.OurBatima.core.impl.layout.Flow;
 import io.OurBatima.core.interfaces.ActionView;
 import io.OurBatima.core.interfaces.Routes;
-import io.OurBatima.core.model.Utilisateur;
+import io.OurBatima.core.model.Utilisateur.Utilisateur;
 import io.OurBatima.core.view.layout.SnackBar;
 import io.OurBatima.core.view.layout.Wrapper;
 import io.OurBatima.core.model.SearchItem;

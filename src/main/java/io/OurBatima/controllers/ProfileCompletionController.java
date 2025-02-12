@@ -3,7 +3,7 @@ package io.OurBatima.controllers;
 import io.OurBatima.core.Context;
 import io.OurBatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.model.Utilisateur;
+import io.OurBatima.core.model.Utilisateur.Utilisateur;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
