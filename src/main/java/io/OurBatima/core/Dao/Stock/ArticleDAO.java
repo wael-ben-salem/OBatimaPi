@@ -17,7 +17,7 @@ public class ArticleDAO {
 
     // Méthode pour enregistrer un article dans la base de données
     public boolean saveArticle(Article article) {
-        String sql = "INSERT INTO Article (nom, description, prix_unitaire, photo, stock_id, fournisseur_id, etapeprojet_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Article (nom, description, prix_unitaire, photo, stock_id, fournisseur_id, Id_etapeProjet) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -66,7 +66,7 @@ public class ArticleDAO {
 
     // Méthode pour mettre à jour un article
     public boolean updateArticle(Article article) {
-        String sql = "UPDATE Article SET nom = ?, description = ?, prix_unitaire = ?, photo = ?, stock_id = ?, fournisseur_id = ?, etapeprojet_id = ? WHERE id = ?";
+        String sql = "UPDATE Article SET nom = ?, description = ?, prix_unitaire = ?, photo = ?, stock_id = ?, fournisseur_id = ?, Id_etapeProjet = ? WHERE id = ?";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

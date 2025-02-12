@@ -38,7 +38,7 @@ public class FournisseurDAO {
 
     // Méthode pour récupérer un fournisseur par son ID
     public Fournisseur getFournisseurById(int id) {
-        String sql = "SELECT * FROM Fournisseur WHERE id = ?";
+        String sql = "SELECT * FROM Fournisseur WHERE fournisseur_id = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -46,7 +46,7 @@ public class FournisseurDAO {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return new Fournisseur(
-                        rs.getInt("id"),
+                        rs.getInt("fournisseur_id"),
                         rs.getString("nom"),
                         rs.getString("prenom"),
                         rs.getString("email"),
@@ -98,7 +98,7 @@ public class FournisseurDAO {
 
     // Méthode pour supprimer un fournisseur par ID
     public boolean deleteFournisseur(int id) {
-        String sql = "DELETE FROM Fournisseur WHERE id = ?";
+        String sql = "DELETE FROM Fournisseur WHERE fournisseur_id = ?";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

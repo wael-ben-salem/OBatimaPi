@@ -35,7 +35,7 @@ public class ContratServise {
 
         try (Connection conn = getConnection()) {
 
-            String sql = "INSERT INTO contrat (type_contrat, date_signature, date_debut, signature_electronique, date_fin, montant_total, id_client, id_projet) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO contrat (type_contrat, date_signature, date_debut, signature_electronique, date_fin, montant_total, client_id, Id_projet) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, contrat.getTypeContrat());
@@ -64,7 +64,7 @@ public class ContratServise {
 
         try (Connection conn = getConnection()) {
 
-            String sql = "INSERT INTO contrat (type_contrat, date_signature, date_debut, signature_electronique, date_fin, montant_total,id_constructeur, id_projet) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO contrat (type_contrat, date_signature, date_debut, signature_electronique, date_fin, montant_total,constructeur_id, Id_projet) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, contrat.getTypeContrat());
@@ -96,7 +96,7 @@ public class ContratServise {
 
         try (Connection conn = getConnection()) {
 
-            String sql = "UPDATE contrat SET type_contrat = ?, date_signature = ?, date_debut = ?, signature_electronique = ?, date_fin = ?, montant_total = ?, id_client = ?, id_projet = ? WHERE id_contrat = ?";
+            String sql = "UPDATE contrat SET type_contrat = ?, date_signature = ?, date_debut = ?, signature_electronique = ?, date_fin = ?, montant_total = ?, client_id = ?, Id_projet = ? WHERE id_contrat = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
 
@@ -126,7 +126,7 @@ public class ContratServise {
 
         try (Connection conn = getConnection()) {
 
-            String sql = "UPDATE contrat SET type_contrat = ?, date_signature = ?, date_debut = ?, signature_electronique = ?, date_fin = ?, montant_total = ?, id_constructeur = ?, id_projet = ? WHERE id_contrat = ?";
+            String sql = "UPDATE contrat SET type_contrat = ?, date_signature = ?, date_debut = ?, signature_electronique = ?, date_fin = ?, montant_total = ?, constructeur_id = ?, Id_projet = ? WHERE id_contrat = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
 
