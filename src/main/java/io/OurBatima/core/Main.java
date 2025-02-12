@@ -8,12 +8,18 @@ import io.OurBatima.core.view.layout.LoadCircle;
 import javafx.concurrent.Task;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import net.minidev.json.JSONUtil;
+
+import java.sql.Connection;
+
+import static io.OurBatima.core.Dao.DatabaseConnection.getConnection;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  22/04/2023
  */
 public class Main extends Launcher {
+
 
     @Override
     public void build(Context context) {
