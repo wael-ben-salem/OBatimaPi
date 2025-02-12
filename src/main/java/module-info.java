@@ -38,6 +38,7 @@ module io.OurBatima {
     requires com.google.api.client.extensions.jetty.auth;
     requires org.eclipse.jetty.server;
     requires java.mail;
+    requires mysql.connector.java;
 
     opens io.OurBatima to javafx.fxml;
 
