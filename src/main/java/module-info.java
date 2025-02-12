@@ -52,5 +52,7 @@ module io.OurBatima {
     opens io.OurBatima.core.model to javafx.fxml;
     opens io.OurBatima.core.controls.skin to javafx.fxml;
     opens io.OurBatima.core.picture_selector to javafx.fxml;
+    exports io.OurBatima.core.model.Utilisateur;
+    opens io.OurBatima.core.model.Utilisateur to javafx.fxml;
 
 }

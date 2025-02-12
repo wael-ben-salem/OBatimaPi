@@ -5,7 +5,7 @@ import io.OurBatima.core.controls.icon.IconContainer;
 import io.OurBatima.core.controls.icon.Icons;
 import io.OurBatima.core.exceptions.NavigationException;
 import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.model.Utilisateur;
+import io.OurBatima.core.model.Utilisateur.Utilisateur;
 import io.OurBatima.core.services.DrawerBehavior;
 import io.OurBatima.core.view.SimpleView;
 import io.OurBatima.core.view.layout.DialogContainer;

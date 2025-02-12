@@ -17,7 +17,7 @@ import io.OurBatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.OurBatima.core.impl.Layout;
 import io.OurBatima.core.interfaces.ActionView;
 import io.OurBatima.core.interfaces.Loader;
-import io.OurBatima.core.model.Utilisateur;
+import io.OurBatima.core.model.Utilisateur.Utilisateur;
 import io.OurBatima.core.services.LoadViews;
 import io.OurBatima.core.view.View;
 import io.OurBatima.core.view.layout.LoadCircle;
@@ -112,7 +112,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         String prenom = info.getGivenName() != null
                 ? info.getGivenName()
                 : (info.getFullName() != null ? info.getFullName() : "Prénom");
-        return new Utilisateur(0, nom, prenom, info.getEmail(), "", "", "", "activé", true, "USER");
+        return new Utilisateur(0, nom, prenom, info.getEmail(), "", "", "", Utilisateur.Statut.en_attente, true, Utilisateur.Role.Client);
 
     }
 
@@ -275,7 +275,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
                 // Création utilisateur sans mot de passe
                 utilisateur = createUserFromGoogleInfo(userInfo);
                 utilisateur.setMotDePasse(""); // Marqueur spécial
-                utilisateurDAO.saveUser(utilisateur);
+                utilisateurDAO.updateUser(utilisateur);
 
                 // Redirection vers complétion profil
                 redirectToProfileCompletion(utilisateur);
@@ -361,7 +361,6 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
 
     // Nouveaux éléments pour la connexion sociale et fonctionnalités additionnelles
     @FXML private Button btn_google;
-    @FXML private Button btn_microsoft;
     @FXML private Button btn_createAccount;  // Déjà présent dans le pied de page
     @FXML private CheckBox rememberMe;
     @FXML private Label forgotPassword;
@@ -624,30 +623,9 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
                 handleGoogleLogin();
             });
         }
-        if(btn_microsoft != null) {
-            btn_microsoft.setOnAction(e -> {
-                analyticsTrack("connexion_microsoft");
-                handleMicrosoftLogin();
-            });
-        }
+
     }
 
-    /**
-     * Traitement de la connexion via Google.
-     */
-
-
-    /**
-     * Traitement de la connexion via Microsoft.
-     */
-    private void handleMicrosoftLogin() {
-        System.out.println("Connexion via Microsoft initiée.");
-        simulateServiceCall(() -> {
-            System.out.println("Connexion via Microsoft réussie.");
-            errorLabel.setText("");
-            context.routes().reset();
-        });
-    }
     // Nouvelle méthode dans le main controller
     private void refreshMainNavigation() {
         // Recréer le layout principal si nécessaire

@@ -9,12 +9,14 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -22,12 +24,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.web.WebView?>
-<StackPane xmlns="http://javafx.com/javafx/23.0.1"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="io.OurBatima.controllers.LoginController"
-           styleClass="responsive">
+<StackPane styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.LoginController">
    <stylesheets>
       <URL value="@../../style/css/colors.css" />
       <URL value="@../../style/css/skeleton.css" />
@@ -56,42 +53,45 @@
             </children>
          </StackPane>
 
-         <!-- Section droite avec formulaire -->
+         <!-- Section droite avec fond blanc et formulaire -->
          <StackPane fx:id="mainPane" style="-fx-background-color: #f8f9fa;" HBox.hgrow="ALWAYS">
-            <ScrollPane id="bodyLogin" fitToWidth="true" hbarPolicy="NEVER" prefHeight="610.0" prefWidth="776.0" vbarPolicy="AS_NEEDED">
+            <ScrollPane id="bodyLogin" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent;" vbarPolicy="AS_NEEDED">
                <content>
-                  <!-- Contenu avec animation d'entrée (id="loginContent") -->
-                  <VBox fx:id="loginContent" alignment="CENTER" prefHeight="585.0" prefWidth="761.0" spacing="40" style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 20;">
+                  <VBox fx:id="loginContent" alignment="CENTER" spacing="40" style="-fx-padding: 40 0;">
                      <!-- En-tête -->
-                     <VBox alignment="CENTER" prefHeight="0.0" prefWidth="774.0" spacing="10">
-                        <Label styleClass="h1" text="Connexion" />
+                     <VBox alignment="CENTER" spacing="10">
+                        <Label style="-fx-text-fill: #372a28;" styleClass="h1" text="Connexion" />
                         <Label styleClass="h4 text-muted" text="Accédez à votre espace personnel" />
                      </VBox>
 
-                     <!-- Formulaire -->
-                     <GridPane alignment="CENTER" hgap="15" maxWidth="400" vgap="20">
+                     <!-- Formulaire avec fond gris -->
+                     <GridPane alignment="CENTER" hgap="15" maxWidth="400" style="-fx-background-color: rgba(245,245,245,0.9); -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 3);" vgap="20">
+
                         <columnConstraints>
+                           <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
                         </columnConstraints>
 
                         <rowConstraints>
-                           <RowConstraints prefHeight="60" />   <!-- Row 0 : Nom d'utilisateur -->
-                           <RowConstraints prefHeight="60" />   <!-- Row 1 : Mot de passe -->
-                           <RowConstraints prefHeight="40" />   <!-- Row 2 : Rappel & oubli -->
-                           <RowConstraints prefHeight="60" />   <!-- Row 3 : Bouton connexion -->
+                           <RowConstraints prefHeight="60.0" />
+                           <RowConstraints prefHeight="60.0" />
+                           <RowConstraints prefHeight="40.0" />
+                           <RowConstraints prefHeight="60.0" />
+                           <RowConstraints prefHeight="60.0" />
                         </rowConstraints>
 
                         <children>
                            <!-- Nom d'utilisateur -->
-                           <TextField fx:id="emailField" promptText="Nom d'utilisateur" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+                           <TextField fx:id="emailField" promptText="Nom d'utilisateur" styleClass="input-modern" GridPane.columnSpan="2" />
+                           <Label fx:id="emailError" styleClass="error-message" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
                            <!-- Mot de passe -->
                            <PasswordField fx:id="passwordField" promptText="Mot de passe" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                           <Label fx:id="passwordError" styleClass="error-message" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                           <Label fx:id="capsLockWarning" styleClass="warning-message" GridPane.columnSpan="2" GridPane.rowIndex="1" />
 
-                           <!-- Toggle pour afficher/masquer le mot de passe -->
                            <HBox alignment="CENTER_RIGHT" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="1">
-                              <!-- On conserve ici le ToggleButton pour afficher/masquer -->
                               <ToggleButton fx:id="togglePassword" styleClass="icon-btn">
                                  <graphic>
                                     <SVGPath content="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
@@ -99,35 +99,49 @@
                               </ToggleButton>
                            </HBox>
 
-                           <!-- Ligne 2 : Se souvenir de moi et Mot de passe oublié -->
-                           <HBox spacing="10" alignment="CENTER_LEFT" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                              <CheckBox fx:id="rememberMe" text="Se souvenir de moi" />
-                              <Region HBox.hgrow="ALWAYS"/>
-                              <Label fx:id="forgotPassword" text="Mot de passe oublié ?" styleClass="link" onMouseClicked="#handleForgotPassword" />
-
+                           <!-- Options -->
+                           <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                              <CheckBox fx:id="rememberMe" style="-fx-text-fill: #6c757d;" text="Se souvenir de moi" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label fx:id="forgotPassword" onMouseClicked="#handleForgotPassword" style="-fx-text-fill: #c5a814;" styleClass="link" text="Mot de passe oublié ?" />
                            </HBox>
 
                            <!-- Bouton de connexion -->
-                           <Button fx:id="btn_enter" styleClass="btn-primary" text="Se connecter" GridPane.columnSpan="2" GridPane.rowIndex="3" onAction="#handleLogin" />
+                           <Button fx:id="btn_enter" onAction="#handleLogin" styleClass="btn-gradient" text="Se connecter" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+
                         </children>
                      </GridPane>
+                     <VBox alignment="CENTER" spacing="15">
+                        <HBox alignment="CENTER" spacing="10">
+                              <Label text="Continuer avec Google" style="-fx-text-fill: #6c757d; -fx-font-weight: bold;"/>
+                           <Button fx:id="btn_google" onAction="#handleGoogleLogin" styleClass="btn-social">
+                              <graphic>
+                                 <ImageView fitHeight="24" fitWidth="24">
+                                    <image>
+                                       <Image url="@../../../images/google.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
 
-                     <!-- Connexion Sociale -->
-                     <HBox alignment="CENTER" spacing="20">
-                        <Button fx:id="btn_google" styleClass="btn-social btn-google" text="Connexion avec Google" onAction="#handleGoogleLogin" />
-
-                        <Button fx:id="btn_microsoft" styleClass="btn-social btn-microsoft" text="Connexion avec Microsoft" />
-                     </HBox>
-
-                     <!-- Pied de page -->
-                     <VBox alignment="CENTER" prefHeight="0.0" prefWidth="774.0" spacing="15">
-                        <Separator prefWidth="300" />
-                        <HBox alignment="CENTER" spacing="5">
-                           <Label styleClass="h5" text="Nouveau utilisateur ?" />
-                           <Button fx:id="btn_createAccount" onAction="#goToRegister" styleClass="btn-link" text="Créer un compte" />
+                           </Button>
                         </HBox>
+
+                        <!-- Séparateur stylisé -->
+                        <HBox alignment="CENTER" spacing="10">
+                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);"/>
+                           <Label text="ou" style="-fx-text-fill: #6c757d;"/>
+                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);"/>
+                        </HBox>
+
+                        <!-- Création de compte -->
+                        <Button fx:id="btn_createAccount" onAction="#goToRegister" styleClass="btn-gradient" text="Créer un compte" />
                      </VBox>
 
+
+                     <!-- Footer -->
+                     <HBox alignment="CENTER" style="-fx-padding: 30 0 0 0;">
+                        <Label style="-fx-text-fill: #6c757d; -fx-font-size: 12px; -fx-font-style: italic;" text="Created by OurBatima" />
+                     </HBox>
                   </VBox>
                </content>
             </ScrollPane>

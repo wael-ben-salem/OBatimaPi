@@ -7,7 +7,7 @@ import io.OurBatima.core.controls.icon.Icons;
 import io.OurBatima.core.interfaces.ActionView;
 import io.OurBatima.core.model.NotificationCell;
 import io.OurBatima.core.model.SearchViewBox;
-import io.OurBatima.core.model.Utilisateur;
+import io.OurBatima.core.model.Utilisateur.Utilisateur;
 import io.OurBatima.core.view.layout.Bar;
 import io.OurBatima.core.view.layout.BoxUser;
 import io.OurBatima.core.view.layout.DialogContainer;
