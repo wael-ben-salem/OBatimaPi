@@ -21,7 +21,8 @@
 package io.OurBatima;
 
 
-import io.OurBatima.core.Main;
+
+  
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -34,3 +35,5 @@ public class Starter extends Main {
         launch(args);
     }
 }
+
+

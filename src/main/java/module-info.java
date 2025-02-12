@@ -39,6 +39,7 @@ module io.OurBatima {
     requires org.eclipse.jetty.server;
     requires java.mail;
 
+
     opens io.OurBatima to javafx.fxml;
 
     opens io.OurBatima.controllers to javafx.fxml;
