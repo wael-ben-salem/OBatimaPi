@@ -10,24 +10,25 @@ import java.util.List;
 
 public class ProjetDAO {
 
-    // Method to establish a database connection
     private Connection connect() throws SQLException {
         return DatabaseConnection.getConnection();
     }
 
     // Add a new project
     public void addProjet(Projet projet) {
-        String sql = "INSERT INTO Projet (Id_equipe, type, styleArch, budget, etat, dateCreation) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Projet (nomProjet, Id_equipe, id_client, type, styleArch, budget, etat, dateCreation) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            pstmt.setInt(1, projet.getId_equipe());
-            pstmt.setString(2, projet.getType());
-            pstmt.setString(3, projet.getStyleArch());
-            pstmt.setBigDecimal(4, projet.getBudget()); // Corrected for BigDecimal
-            pstmt.setString(5, projet.getEtat());
-            pstmt.setDate(6, projet.getDateCreation());
+            pstmt.setString(1, projet.getNomProjet());
+            pstmt.setInt(2, projet.getId_equipe());
+            pstmt.setInt(3, projet.getId_client());
+            pstmt.setString(4, projet.getType());
+            pstmt.setString(5, projet.getStyleArch());
+            pstmt.setBigDecimal(6, projet.getBudget());
+            pstmt.setString(7, projet.getEtat());
+            pstmt.setTimestamp(8, projet.getDateCreation());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -51,12 +52,14 @@ public class ProjetDAO {
             while (rs.next()) {
                 Projet projet = new Projet(
                         rs.getInt("Id_projet"),
+                        rs.getString("nomProjet"),
                         rs.getInt("Id_equipe"),
-                        rs.getBigDecimal("budget"), // Corrected to BigDecimal
+                        rs.getInt("id_client"),  // Retrieve id_client
+                        rs.getBigDecimal("budget"),
                         rs.getString("type"),
                         rs.getString("styleArch"),
                         rs.getString("etat"),
-                        rs.getDate("dateCreation")
+                        rs.getTimestamp("dateCreation")
                 );
                 projets.add(projet);
             }
@@ -80,12 +83,14 @@ public class ProjetDAO {
             if (rs.next()) {
                 projet = new Projet(
                         rs.getInt("Id_projet"),
+                        rs.getString("nomProjet"),
                         rs.getInt("Id_equipe"),
-                        rs.getBigDecimal("budget"), // Corrected to BigDecimal
+                        rs.getInt("id_client"),
+                        rs.getBigDecimal("budget"),
                         rs.getString("type"),
                         rs.getString("styleArch"),
                         rs.getString("etat"),
-                        rs.getDate("dateCreation")
+                        rs.getTimestamp("dateCreation")
                 );
             }
         } catch (SQLException e) {
@@ -96,30 +101,30 @@ public class ProjetDAO {
 
     // Update a project
     public void updateProjet(Projet projet) {
-        String sql = "UPDATE Projet SET Id_equipe = ?, type = ?, styleArch = ?, budget = ?, etat = ?, dateCreation = ? WHERE Id_projet = ?";
+        String sql = "UPDATE Projet SET Id_equipe = ?, id_client = ?, nomProjet = ?, type = ?, styleArch = ?, budget = ?, etat = ? WHERE Id_projet = ?";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, projet.getId_equipe());
-            pstmt.setString(2, projet.getType());
-            pstmt.setString(3, projet.getStyleArch());
-            pstmt.setBigDecimal(4, projet.getBudget()); // Corrected for BigDecimal
-            pstmt.setString(5, projet.getEtat());
-            pstmt.setDate(6, projet.getDateCreation());
-            pstmt.setInt(7, projet.getId_projet());
+            pstmt.setInt(2, projet.getId_client());
+            pstmt.setString(3, projet.getNomProjet());
+            pstmt.setString(4, projet.getType());
+            pstmt.setString(5, projet.getStyleArch());
+            pstmt.setBigDecimal(6, projet.getBudget());
+            pstmt.setString(7, projet.getEtat());
+            pstmt.setInt(8, projet.getId_projet());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
                 System.out.println("Projet mis à jour avec succès !");
             }
-
         } catch (SQLException e) {
             System.out.println("Erreur lors de la mise à jour du projet : " + e.getMessage());
         }
     }
 
-    // Delete a project
+    // Delete project
     public void deleteProjet(int idProjet) {
         String sql = "DELETE FROM Projet WHERE Id_projet = ?";
 
@@ -131,13 +136,12 @@ public class ProjetDAO {
             if (affectedRows > 0) {
                 System.out.println("Projet supprimé avec succès !");
             }
-
         } catch (SQLException e) {
             System.out.println("Erreur lors de la suppression du projet : " + e.getMessage());
         }
     }
 
-    // Assign an équipe to a project
+    // Assign équipe to project
     public void assignEquipeToProjet(int projetId, int equipeId) {
         String sql = "UPDATE Projet SET Id_equipe = ? WHERE Id_projet = ?";
 
@@ -153,7 +157,6 @@ public class ProjetDAO {
             } else {
                 System.out.println("Projet avec l'ID " + projetId + " non trouvé.");
             }
-
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'assignation de l'équipe au projet : " + e.getMessage());
         }
