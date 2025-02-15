@@ -201,17 +201,8 @@ GridPane {
 }
 
 /* Messages d'erreur */
-.error-message {
-    -fx-text-fill: #e74c3c;
-    -fx-font-size: 12px;
-    -fx-padding: 5px 0 0 5px;
-}
 
-.warning-message {
-    -fx-text-fill: #f39c12;
-    -fx-font-size: 12px;
-    -fx-padding: 5px 0 0 5px;
-}
+
 
 .content-box {
     -fx-background-color: -color-background;
@@ -295,5 +286,16 @@ GridPane {
 .error-message {
     -fx-text-fill: #dc3545;
     -fx-font-size: 12px;
-    -fx-padding: 5 0;
+    -fx-padding: 5px 0 0 5px;
+}
+
+.warning-message {
+    -fx-text-fill: #ffc107;
+    -fx-font-size: 12px;
+}
+
+
+
+.btn-gradient:disabled {
+    -fx-opacity: 0.7;
 }

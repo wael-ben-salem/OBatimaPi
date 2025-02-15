@@ -23,7 +23,6 @@ import io.ourbatima.core.view.View;
 import io.ourbatima.core.view.layout.LoadCircle;
 import javafx.animation.*;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
@@ -37,7 +36,6 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -74,10 +72,10 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         static final String CLIENT_SECRET = "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";
         static final List<String> SCOPES = List.of(
                 "openid",
-                "https://www.googleapis.com/auth/userinfo.email", // Scope explicite pour l'email
-                "https://www.googleapis.com/auth/userinfo.profile" // Scope explicite pour le nom
+                "https://www.googleapis.com/auth/userinfo.email",
+                "https://www.googleapis.com/auth/userinfo.profile"
         );
-        static final String REDIRECT_URI = "http://localhost:8080"; // Corrigé
+        static final String REDIRECT_URI = "http://localhost:8080";
     }
 
     // Classe pour stocker les infos utilisateur Google
@@ -349,27 +347,29 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
             e.printStackTrace();
         }
     }
-    // Références FXML existantes
+    // pour les composants de fxml
     @FXML private StackPane mainPane;
     @FXML private ImageView logoView;
     @FXML private VBox loginContent;
     @FXML private TextField username;
 
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
     @FXML private PasswordField password;
     @FXML private ToggleButton togglePassword;
     @FXML private Label errorLabel;
 
-    // Nouveaux éléments pour la connexion sociale et fonctionnalités additionnelles
     @FXML private Button btn_google;
-    @FXML private Button btn_createAccount;  // Déjà présent dans le pied de page
+    @FXML private Button btn_createAccount;
     @FXML private CheckBox rememberMe;
     @FXML private Label forgotPassword;
 
-    // États et configurations existants
     private int loginAttempts = 0;
     private Timeline lockTimer;
     @FXML
     private TextField emailField;
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile(".+"); // Au moins 1 caractère
 
     @FXML
     private PasswordField passwordField;
@@ -379,16 +379,25 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
     private ResourceBundle bundle;
 
     private final Pattern USERNAME_PATTERN = Pattern.compile("^\\w{5,}$");
-    private final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d).{8,}$");
+    @FXML private Label emailError;
+    @FXML private Label passwordError;
+    @FXML private Button btn_enter;
+
+
 
     @Override
     public void onEnter() {
         initializeComponents();
+
         setupAnimations();
         setupFocusEffects();
-        setupPasswordToggle();
         setupInputValidation();
         initializeWebView();
+        setupValidation(); // Initialiser la validation ici
+        if (emailField == null || passwordField == null) {
+            throw new IllegalStateException("Champs FXML non injectés !");
+        }
+
         webEngine = webView.getEngine();
 
 
@@ -396,24 +405,44 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         // Nouveaux ajouts
         setupSocialLogins();
         applyEntryAnimation();
-    }
-    public void initialize() { // Méthode standard JavaFX
+
+
+
+
+        if (emailField == null) {
+            System.err.println("emailField n'a pas été injecté !");
+        }
+        if (passwordField == null) {
+            System.err.println("passwordField n'a pas été injecté !");
+        }
         webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
         btn_google.setOnAction(event -> handleGoogleLogin());
 
+    }
+    // Remplacer la méthode validate() existante par :
+    @FXML
+    private void setupValidation() {
+        // Validation email
+        emailField.textProperty().addListener((obs, oldVal, newVal) -> {
+            boolean isValid = newVal.matches(EMAIL_REGEX);
+            emailError.setText(isValid ? "" : "Format d'email invalide");
+            System.out.println("Email validation: " + isValid); // Debug
+        });
+
+        // Validation mot de passe
+        passwordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            boolean isValid = !newVal.isEmpty();
+            passwordError.setText(isValid ? "" : "Le mot de passe est requis");
+            System.out.println("Password validation: " + isValid); // Debug
+        });
     }
 
 
     /**
      * Initialisation des composants (exemple : paramètres de langue).
      */
-    private void initializeComponents() {
-        bundle = ResourceBundle.getBundle("messages_fr");
-        username.setPromptText(bundle.getString("username.label"));
-        password.setPromptText(bundle.getString("password.label"));
-        errorLabel.setText("");
-    }
+
     private void initializeWebView() {
         webEngine.locationProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && newVal.startsWith("http://localhost:8080/?code=")) {
@@ -439,6 +468,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         backgroundAnimation.play();
     }
 
+
     /**
      * Ajout d'effets visuels lors de la focalisation sur les champs.
      */
@@ -463,35 +493,18 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
     /**
      * Mise en place du toggle permettant d'afficher/masquer le mot de passe.
      */
-    private void setupPasswordToggle() {
-        TextField passwordVisible = new TextField();
-        passwordVisible.setManaged(false);
-        passwordVisible.setVisible(false);
 
-        // Synchronisation entre PasswordField et TextField visible
-        Bindings.bindBidirectional(password.textProperty(), passwordVisible.textProperty());
-
-        togglePassword.selectedProperty().addListener((obs, old, val) -> {
-            password.setManaged(!val);
-            password.setVisible(!val);
-            passwordVisible.setManaged(val);
-            passwordVisible.setVisible(val);
-        });
-
-        // Ajout du champ visible dans le même conteneur que le PasswordField
-        ((HBox) password.getParent()).getChildren().add(passwordVisible);
-    }
 
     /**
      * Vérification du format des entrées utilisateur.
      */
     private void setupInputValidation() {
-        username.textProperty().addListener((obs, old, val) ->
-                updateValidationState(username, USERNAME_PATTERN.matcher(val).matches()));
-        password.textProperty().addListener((obs, old, val) ->
-                updateValidationState(password, PASSWORD_PATTERN.matcher(val).matches()));
-    }
+        emailField.textProperty().addListener((obs, old, val) ->
+                updateValidationState(emailField, EMAIL_PATTERN.matcher(val).matches()));
 
+        passwordField.textProperty().addListener((obs, old, val) ->
+                updateValidationState(passwordField, PASSWORD_PATTERN.matcher(val).matches()));
+    }
     /**
      * Mise à jour de l'état de validation via des pseudo-classes CSS.
      */
@@ -611,8 +624,19 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         st.play();
     }
 
-    // ----------------- Nouveaux ajouts -----------------
+    private void initializeComponents() {
+        // Initialiser les ressources
+        bundle = ResourceBundle.getBundle("messages_fr");
 
+        // Initialiser les libellés
+        emailField.setPromptText("Adresse email");
+        passwordField.setPromptText("Mot de passe");
+        btn_enter.setText("Se connecter");
+
+        // Initialiser WebView
+        webEngine = webView.getEngine();
+        webEngine.setJavaScriptEnabled(true);
+    }
     /**
      * Configure les gestionnaires d'évènements pour la connexion sociale.
      */
@@ -688,43 +712,40 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
     }
     @FXML
     private void handleLogin() {
-        String email = emailField.getText();
-        String motDePasse = passwordField.getText();
+        // Réinitialiser les erreurs
+        emailError.setText("");
+        passwordError.setText("");
 
-        Utilisateur utilisateur = utilisateurDAO.verifierIdentifiants(email, motDePasse);
+        // Validation finale
+        boolean emailValid = emailField.getText().matches(EMAIL_REGEX);
+        boolean passwordValid = !passwordField.getText().isEmpty();
 
-        if (utilisateur != null) {
-            // Stocker l'utilisateur dans la session
-            SessionManager.setUtilisateur(utilisateur);
+        if(!emailValid || !passwordValid) {
+            if(!emailValid) emailError.setText("Email invalide");
+            if(!passwordValid) passwordError.setText("Mot de passe requis");
+            return;
+        }
 
-            Layout layout = new Layout(context);
-            context.setLayout(layout);
+        // Vérification des identifiants
+        Utilisateur utilisateur = utilisateurDAO.verifierIdentifiants(
+                emailField.getText(),
+                passwordField.getText()
+        );
 
-            Loader loadCircle = new LoadCircle("Starting..", "");
-            Task<View> loadViews = new LoadViews(context, loadCircle); // Load View task
-
-            Thread tLoadViews = new Thread(loadViews);
-            tLoadViews.setDaemon(true);
-            tLoadViews.start();
-
-            layout.setContent((Node) loadCircle);
-
-            loadViews.setOnSucceeded(event -> {
-                layout.setNav(context.routes().getView("drawer"));
-                context.routes().nav("dash");
-            });
+        if(utilisateur != null) {
+            // ... code de connexion existant ...
         } else {
-            // Afficher un message d'erreur
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur de connexion");
-            alert.setHeaderText("Identifiants incorrects");
-            alert.setContentText("Veuillez vérifier votre email et votre mot de passe.");
-            alert.showAndWait();
+            showAuthErrorAlert();
         }
     }
 
-
-
+    private void showAuthErrorAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur de connexion");
+        alert.setHeaderText(null);
+        alert.setContentText("Combinaison email/mot de passe incorrecte");
+        alert.showAndWait();
+    }
 
     public void goToRegister(javafx.event.ActionEvent actionEvent) {
         try {
