@@ -1,0 +1,104 @@
+
+!!io.ourbatima.core.view.ViewMap
+  views:
+  - {
+    name: data_table,
+    title: Data Table,
+    fxml: dataTable.fxml
+  }
+  - {
+      name: drawer,
+      title: Drawer,
+      fxml: drawer.fxml
+  }
+  - {
+      name: login,
+      title: Login,
+      folder: pages,
+      fxml: login.fxml
+  }
+  - {
+    name: profile_completion,  # ← lowercase pour rester cohérent
+    title: "Complete Profile",
+    folder: pages,
+    fxml: ProfileCompletion.fxml
+  }
+  - {
+      name: register,
+      title: Register,
+      folder: pages,
+      fxml: register.fxml
+  }
+  - {
+    name: about,
+    title: About,
+    folder: pages,
+    fxml: about.fxml
+  }
+  - {
+    name: blog,
+    title: Blog,
+    folder: pages,
+    fxml: blog.fxml
+  }
+  - {
+    name: about_dash,
+    title: About,
+    folder: app,
+    fxml: about.fxml
+  }
+  - {
+    name: profile,
+    title: Profile,
+    folder: app,
+    fxml: profile.fxml
+  }
+  - {
+    name: settings,
+    title: Settings,
+    folder: app,
+    fxml: settings.fxml
+  }
+  - {
+    name: dash,
+    title: Dashboard,
+    fxml: dash.fxml
+  }
+  - {
+      name: hero,
+      title: Hero,
+      folder: pages,
+      fxml: hero.fxml
+  }
+  - {
+      name: pricing,
+      title: Pricing,
+      folder: pages,
+      fxml: pricing.fxml
+  }
+  - {
+      name: frequently,
+      title: Frequently,
+      folder: pages,
+      fxml: frequently.fxml
+  }
+  - {
+      name: footer,
+      title: Footer,
+      folder: pages,
+      fxml: footer.fxml
+  }
+  - {
+      name: testimonials,
+      title: Testimonials,
+      folder: pages,
+      fxml: testimonial.fxml
+  }
+
+#  - {
+#    name: sales_left,
+#    title: Sales Column,
+#    fxml: sales_left.fxml
+#  }
+
+
