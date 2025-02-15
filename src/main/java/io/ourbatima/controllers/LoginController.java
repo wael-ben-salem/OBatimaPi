@@ -374,6 +374,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
     @FXML
     private PasswordField passwordField;
 
+
     private final UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
 
     private ResourceBundle bundle;
