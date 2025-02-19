@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.ourbatima.controllers.AddTask">
+    <children>
+        <!-- Button for Artisans -->
+        <Button layoutX="30.0" layoutY="30.0" text="Show Artisans"
+                onAction="#showArtisans"/>
+
+        <!-- ComboBox for Artisans -->
+        <ComboBox layoutX="30.0" layoutY="70.0" prefWidth="200.0"
+                  fx:id="utilisateursArtisans" promptText="Sélectionnez un Artisan" visible="false"/>
+
+        <!-- Button for Constructeurs -->
+        <Button layoutX="250.0" layoutY="30.0" text="Show Constructeurs"
+                onAction="#showConstructeurs"/>
+
+        <!-- ComboBox for Constructeurs -->
+        <ComboBox layoutX="250.0" layoutY="70.0" prefWidth="200.0"
+                  fx:id="utilisateursConstructeurs" promptText="Sélectionnez un Constructeur" visible="false"/>
+
+        <!-- TextField for Description -->
+        <TextField layoutX="30.0" layoutY="130.0" prefWidth="420.0"
+                   fx:id="descriptionField" promptText="Description de la tâche"/>
+
+        <!-- DatePicker for Date Debut -->
+        <DatePicker layoutX="30.0" layoutY="180.0" fx:id="dateDebutPicker"
+                    promptText="Date de début"/>
+
+        <!-- DatePicker for Date Fin -->
+        <DatePicker layoutX="250.0" layoutY="180.0" fx:id="dateFinPicker"
+                    promptText="Date de fin"/>
+
+        <!-- Button to Save Task -->
+        <Button layoutX="30.0" layoutY="280.0" text="Save Task"
+                onAction="#saveTask"/>
+
+        <!-- Button to SEE ALL TASKS -->
+        <Button layoutX="30.0" layoutY="330.0" text="See All Tasks"
+                onAction="#seeAllTasks"/>
+    </children>
+</AnchorPane>

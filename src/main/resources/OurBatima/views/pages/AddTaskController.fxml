@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.ourbatima.controllers.AddTaskController">
+
+    <children>
+        <!-- ComboBox for displaying users with "Constructeur" role -->
+        <ComboBox layoutX="225.0" layoutY="90.0" prefWidth="150.0"
+                  fx:id="userComboBox"
+                  promptText="Sélectionnez"/>
+    </children>
+</AnchorPane>

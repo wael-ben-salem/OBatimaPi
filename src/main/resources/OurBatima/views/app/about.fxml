@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<StackPane prefHeight="762.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.AboutController">
+    <children>
+        <VBox prefHeight="200.0" prefWidth="100.0">
+            <padding>
+                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+            </padding>
+            <children>
+                <VBox alignment="TOP_CENTER" prefHeight="742.0" prefWidth="238.0">
+                    <children>
+                        <VBox>
+                            <children>
+                                <HBox prefWidth="200.0" spacing="40.0">
+                                    <children>
+                                        <VBox>
+                                            <Label fx:id="fullName" text="DashboardFx V2" />
+                                            <Label text="UI Designer" />
+                                        </VBox>
+                                        <VBox spacing="10.0">
+                                            <children>
+                                                <Label style="-fx-text-fill: -text-color;" text="Bookmark">
+                                                    <graphic>
+                                                        <SVGPath content="M19 3H5v18l7-3 7 3V3z" style="-fx-fill: -icon-color;" />
+                                                    </graphic>
+                                                </Label>
+                                                <Label style="-fx-text-fill: -text-color;" text="Mato Grosso, MT">
+                                                    <graphic>
+                                                        <SVGPath content="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" style="-fx-fill: -icon-color;" />
+                                                    </graphic>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="BOTTOM_LEFT">
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" />
+                                    </VBox.margin>
+                                </HBox>
+                                <VBox prefWidth="100.0">
+                                    <children>
+                                        <GridPane>
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                            <children>
+                                                <Label style="-fx-font-weight: bold;" styleClass="h5" text="Intention" />
+                                            </children>
+                                        </GridPane>
+                                        <TextFlow prefWidth="216.0">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -text-color;" text="DashboardFx is a project for multiples porpuses and helps others, developers, to initiate with this skeleton and theme&#10;Contains a material design based on bootstrap, google guidelines and all most samples on the web.&#10;" />
+                                            </children>
+                                        </TextFlow>
+                                        <VBox>
+                                            <children>
+                                                <HBox alignment="BOTTOM_LEFT">
+                                                    <children>
+                                                        <Label style="-fx-font-size: 8pt;" styleClass="min" text="Images" />
+                                                        <Separator prefWidth="215.0" HBox.hgrow="ALWAYS" />
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="58.0">
+                                                    <children>
+                                                        <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="Avatar : " />
+                                                        <Hyperlink onAction="#goAvatarOnPinterest" text="Jessy Hartel on Pinterest" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                                <HBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0">
+                                    <children>
+                                        <Separator prefHeight="0.0" prefWidth="197.0" HBox.hgrow="ALWAYS" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+            </children></VBox>
+    </children>
+    <stylesheets>
+
+        <URL value="@../../style/css/colors.css" />
+        <URL value="@../../style/css/skeleton.css" />
+        <URL value="@../../style/css/bootstrap.css" />
+        <URL value="@../../style/css/shapes.css" />
+        <URL value="@../../style/css/typographic.css" />
+        <URL value="@../../style/css/helpers.css" />
+<!--        <URL value="@../../style/css/master.css" />-->
+    </stylesheets>
+</StackPane>
