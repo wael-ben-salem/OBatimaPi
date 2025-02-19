@@ -7,6 +7,7 @@ public class Visite {
     private int Id_projet;
     private Date dateVisite;
     private String observations;
+    private int Id_terrain;
 
     public Visite(){}
 

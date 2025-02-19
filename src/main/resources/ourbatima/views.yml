@@ -95,6 +95,38 @@
       fxml: testimonial.fxml
   }
 
+  - {
+    name: ajoutProjet,
+    title: ajoutProjet,
+    folder: Projet,
+    fxml: ajoutProjet.fxml
+  }
+  - {
+    name: afficherEtapeProjet,
+    title: afficherEtapeProjet,
+    folder: EtapeProjet,
+    fxml: afficherEtapeProjet.fxml
+  }
+  - {
+    name: ajoutEtapeProjet,
+    title: ajoutEtapeProjet,
+    folder: EtapeProjet,
+    fxml: ajoutEtapeProjet.fxml
+  }
+  - {
+    name: afficherProjet,
+    title: afficherProjet,
+    folder: Projet,
+    fxml: afficherProjet.fxml
+  }
+  - {
+    name: ajoutTerrain,
+    title: ajoutTerrain,
+    folder: Terrain,
+    fxml: ajoutTerrain.fxml
+  }
+
+  -
 #  - {
 #    name: sales_left,
 #    title: Sales Column,

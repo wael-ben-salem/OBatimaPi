@@ -63,6 +63,29 @@ dependencies {
     implementation 'com.zaxxer:HikariCP:5.0.1'
     implementation 'com.google.code.gson:gson:2.10.1'
 
+    // JUnit 5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:4.0.0'
+
+    // TestFX for JavaFX UI Testing
+    testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
+
+    implementation 'org.openjfx:javafx-base:17.0.2'
+    implementation 'org.openjfx:javafx-controls:17.0.2'
+    implementation 'org.openjfx:javafx-fxml:17.0.2'
+    implementation 'org.openjfx:javafx-graphics:17.0.2'
+
+
+    implementation 'org.yaml:snakeyaml:1.33'
+    implementation 'org.jetbrains:annotations:24.0.1'
+    implementation files('vendor/animatefx-1.2.0.jar')
+    implementation 'org.mindrot:jbcrypt:0.4'
+    implementation 'mysql:mysql-connector-java:8.0.26'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation('com.google.apis:google-api-services-oauth2:v2-rev20200213-1.32.1') {
         exclude group: 'com.google.guava', module: 'guava-jdk5'

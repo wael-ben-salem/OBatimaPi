@@ -25,13 +25,17 @@ public class EtapeProjetDAO {
             pstmt.setInt(1, etapeProjet.getId_projet());
             pstmt.setString(2, etapeProjet.getNomEtape());
             pstmt.setString(3, etapeProjet.getDescription());
-            pstmt.setDate(4, etapeProjet.getDteDebut());
-            pstmt.setDate(5, etapeProjet.getDatefin());
+            pstmt.setDate(4, etapeProjet.getDateDebut());
+            pstmt.setDate(5, etapeProjet.getDateFin());
             pstmt.setString(6, etapeProjet.getStatut());
             pstmt.setBigDecimal(7, etapeProjet.getMontant());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    etapeProjet.setId_etapeProjet(rs.getInt(1));
+                }
                 System.out.println("Etape du projet inséré avec succès !");
             }
 
@@ -58,7 +62,8 @@ public class EtapeProjetDAO {
                         rs.getDate("dateDebut"),
                         rs.getDate("dateFin"),
                         rs.getString("statut"),
-                        rs.getBigDecimal("montant")
+                        rs.getBigDecimal("montant"),
+                        rs.getObject("Id_rapport") != null ? rs.getInt("Id_rapport") : null // Handle nullable Id_rapport
                 );
                 etapeProjets.add(etapeProjet);
             }
@@ -88,8 +93,8 @@ public class EtapeProjetDAO {
                         rs.getDate("dateDebut"),
                         rs.getDate("dateFin"),
                         rs.getString("statut"),
-                        rs.getBigDecimal("montant")
-                );
+                        rs.getBigDecimal("montant"),
+                        rs.getObject("Id_rapport") != null ? rs.getInt("Id_rapport") : null                 );
             }
         } catch (SQLException e) {
             System.out.println("Erreur lors de la récupération de l'étape du projet par ID: " + e.getMessage());
@@ -107,8 +112,8 @@ public class EtapeProjetDAO {
             pstmt.setInt(1, etapeProjet.getId_projet());
             pstmt.setString(2, etapeProjet.getNomEtape());
             pstmt.setString(3, etapeProjet.getDescription());
-            pstmt.setDate(4, etapeProjet.getDteDebut());
-            pstmt.setDate(5, etapeProjet.getDatefin());
+            pstmt.setDate(4, etapeProjet.getDateDebut());
+            pstmt.setDate(5, etapeProjet.getDateFin());
             pstmt.setString(6, etapeProjet.getStatut());
             pstmt.setBigDecimal(7, etapeProjet.getMontant());
             pstmt.setInt(8, etapeProjet.getId_etapeProjet());
@@ -140,4 +145,38 @@ public class EtapeProjetDAO {
             System.out.println("Erreur lors de la suppression de l'étape du projet : " + e.getMessage());
         }
     }
+
+    public EtapeProjet getEtapeProjetByNom(String nomEtape) {
+        String sql = "SELECT * FROM EtapeProjet WHERE nomEtape = ?";
+        EtapeProjet etapeProjet = null;
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, nomEtape);
+            System.out.println("🔍 Querying for: " + nomEtape);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("✅ EtapeProjet found in database.");
+                etapeProjet = new EtapeProjet(
+                        rs.getInt("Id_etapeProjet"),
+                        rs.getInt("Id_projet"),
+                        rs.getString("nomEtape"),
+                        rs.getString("description"),
+                        rs.getDate("dateDebut"),
+                        rs.getDate("dateFin"),
+                        rs.getString("statut"),
+                        rs.getBigDecimal("montant"),
+                        rs.getObject("Id_rapport") != null ? rs.getInt("Id_rapport") : null
+                );
+            } else {
+                System.out.println("❌ No EtapeProjet found with name: " + nomEtape);
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error fetching EtapeProjet: " + e.getMessage());
+        }
+        return etapeProjet;
+    }
+
 }

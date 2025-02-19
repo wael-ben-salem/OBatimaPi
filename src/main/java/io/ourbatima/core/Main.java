@@ -36,7 +36,7 @@ public class Main extends Launcher {
         loadViews.setOnSucceeded(event -> {
             layout.setContent(null);
 
-            View loginView = context.routes().getView("login");
+            View loginView = context.routes().getView("ajoutTerrain");
             layout.setContent(loginView.getRoot());
 
 

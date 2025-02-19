@@ -713,30 +713,38 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
     }
     @FXML
     private void handleLogin() {
-        // Réinitialiser les erreurs
-        emailError.setText("");
-        passwordError.setText("");
+        String email = emailField.getText();
+        String motDePasse = passwordField.getText();
 
-        // Validation finale
-        boolean emailValid = emailField.getText().matches(EMAIL_REGEX);
-        boolean passwordValid = !passwordField.getText().isEmpty();
+        Utilisateur utilisateur = utilisateurDAO.verifierIdentifiants(email, motDePasse);
 
-        if(!emailValid || !passwordValid) {
-            if(!emailValid) emailError.setText("Email invalide");
-            if(!passwordValid) passwordError.setText("Mot de passe requis");
-            return;
-        }
+        if (utilisateur != null) {
+            // Stocker l'utilisateur dans la session
+            SessionManager.setUtilisateur(utilisateur);
 
-        // Vérification des identifiants
-        Utilisateur utilisateur = utilisateurDAO.verifierIdentifiants(
-                emailField.getText(),
-                passwordField.getText()
-        );
+            Layout layout = new Layout(context);
+            context.setLayout(layout);
 
-        if(utilisateur != null) {
-            // ... code de connexion existant ...
+            Loader loadCircle = new LoadCircle("Starting..", "");
+            Task<View> loadViews = new LoadViews(context, loadCircle); // Load View task
+
+            Thread tLoadViews = new Thread(loadViews);
+            tLoadViews.setDaemon(true);
+            tLoadViews.start();
+
+            layout.setContent((Node) loadCircle);
+
+            loadViews.setOnSucceeded(event -> {
+                layout.setNav(context.routes().getView("drawer"));
+                context.routes().nav("dash");
+            });
         } else {
-            showAuthErrorAlert();
+            // Afficher un message d'erreur
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur de connexion");
+            alert.setHeaderText("Identifiants incorrects");
+            alert.setContentText("Veuillez vérifier votre email et votre mot de passe.");
+            alert.showAndWait();
         }
     }
 
