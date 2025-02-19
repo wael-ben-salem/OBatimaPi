@@ -17,9 +17,9 @@
  *
  */
 
-package io.OurBatima.core.controls.skin;
+package io.ourbatima.core.controls.skin;
 
-import io.OurBatima.core.controls.GNAvatar;
+import io.ourbatima.core.controls.GNAvatar;
 import javafx.scene.control.SkinBase;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;

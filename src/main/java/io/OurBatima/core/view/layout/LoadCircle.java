@@ -1,6 +1,6 @@
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
-import io.OurBatima.core.interfaces.Loader;
+import io.ourbatima.core.interfaces.Loader;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.RotateTransition;

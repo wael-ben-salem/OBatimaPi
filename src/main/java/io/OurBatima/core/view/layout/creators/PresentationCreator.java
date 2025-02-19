@@ -17,16 +17,16 @@
  *
  */
 
-package io.OurBatima.core.view.layout.creators;
+package io.ourbatima.core.view.layout.creators;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNButton;
-import io.OurBatima.core.controls.icon.IconContainer;
-import io.OurBatima.core.controls.icon.Icons;
-import io.OurBatima.core.exceptions.NavigationException;
-import io.OurBatima.core.view.layout.BlockCode;
-import io.OurBatima.core.view.layout.DialogContainer;
-import io.OurBatima.core.view.layout.options.Option;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNButton;
+import io.ourbatima.core.controls.icon.IconContainer;
+import io.ourbatima.core.controls.icon.Icons;
+import io.ourbatima.core.exceptions.NavigationException;
+import io.ourbatima.core.view.layout.BlockCode;
+import io.ourbatima.core.view.layout.DialogContainer;
+import io.ourbatima.core.view.layout.options.Option;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

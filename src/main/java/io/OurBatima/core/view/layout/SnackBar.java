@@ -15,13 +15,13 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
 import animatefx.animation.RollIn;
 import animatefx.animation.RollOut;
-import io.OurBatima.core.impl.IRoot;
-import io.OurBatima.core.interfaces.WrapperContainer;
-import io.OurBatima.core.view.layout.options.SnackColors;
+import io.ourbatima.core.impl.IRoot;
+import io.ourbatima.core.interfaces.WrapperContainer;
+import io.ourbatima.core.view.layout.options.SnackColors;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;

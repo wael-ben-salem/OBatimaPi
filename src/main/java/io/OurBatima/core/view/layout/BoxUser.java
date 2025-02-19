@@ -17,11 +17,11 @@
  *
  */
 
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
-import io.OurBatima.core.controls.GNAvatarStatus;
-import io.OurBatima.core.controls.GNIconButton;
-import io.OurBatima.core.controls.icon.Icons;
+import io.ourbatima.core.controls.GNAvatarStatus;
+import io.ourbatima.core.controls.GNIconButton;
+import io.ourbatima.core.controls.icon.Icons;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;

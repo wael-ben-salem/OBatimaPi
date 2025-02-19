@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.views;
+package io.ourbatima.core.views;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Hyperlink;

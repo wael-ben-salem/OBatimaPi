@@ -15,7 +15,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls.enums;
+package io.ourbatima.core.controls.enums;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com

@@ -1,4 +1,4 @@
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -8,7 +8,7 @@ import java.util.Properties;
 public class EmailService {
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final int SMTP_PORT = 587;
-    private static final String SMTP_USER = "OurBatima@gmail.com";
+    private static final String SMTP_USER = "ourbatima@gmail.com";
     private static final String SMTP_PASSWORD = "cmqb oxzn xyca dxcs";
 
     public static void sendEmail(String to, String subject, String body) {
@@ -29,7 +29,7 @@ public class EmailService {
                 });
 
                 MimeMessage message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(SMTP_USER, "OurBatima"));
+                message.setFrom(new InternetAddress(SMTP_USER, "ourbatima"));
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
                 message.setSubject(subject);
                 message.setText(body);

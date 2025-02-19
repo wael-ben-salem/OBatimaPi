@@ -15,7 +15,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.BooleanProperty;

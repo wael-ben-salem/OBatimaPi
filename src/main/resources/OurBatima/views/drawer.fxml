@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.OurBatima.core.controls.GNAvatarStatus?>
+<?import io.ourbatima.core.controls.GNAvatarStatus?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
@@ -22,7 +22,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-<StackPane id="drawer-root" fx:id="root" maxWidth="250" minWidth="-Infinity" prefHeight="600.0" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: -light-gray-2; -fx-border-width: 0 1 0 0;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.SideNavController">
+<StackPane id="drawer-root" fx:id="root" maxWidth="250" minWidth="-Infinity" prefHeight="600.0" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: -light-gray-2; -fx-border-width: 0 1 0 0;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.SideNavController">
    <VBox id="drawer-content" fx:id="drawerContent" prefHeight="200.0" prefWidth="100.0">
       <HBox alignment="CENTER_LEFT" prefWidth="229.0" spacing="10.0" style="-fx-border-color: -light-gray-2; -fx-border-width: 0 0 1 0;">
          <padding>
@@ -186,6 +186,9 @@
                               <ToggleGroup fx:id="group32" />
                            </toggleGroup>
                         </ToggleButton>
+                        <Button fx:id="gototache" onAction="#gototache" styleClass="btn-gradient" text="gototache" />
+                        <Button fx:id="gotoplan" onAction="#gotoplan" styleClass="btn-gradient" text="gotoplan" />
+                        <Button fx:id="gotoplanf" onAction="#gotoplanf" styleClass="btn-gradient" text="gotoplanf" />
                         <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="300.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goBlog" styleClass="drawer-item" text="Blog">
                            <toggleGroup>
                               <ToggleGroup fx:id="group321" />

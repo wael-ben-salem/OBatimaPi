@@ -17,10 +17,10 @@
  *
  */
 
-package io.OurBatima.views.layout;
+package io.ourbatima.views.layout;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;

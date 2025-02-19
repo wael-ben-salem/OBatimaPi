@@ -15,12 +15,12 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
 
 import animatefx.animation.AnimationFX;
 import animatefx.animation.Pulse;
-import io.OurBatima.core.interfaces.AbsoluteWrapperContainer;
+import io.ourbatima.core.interfaces.AbsoluteWrapperContainer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

@@ -15,9 +15,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls.skin;
+package io.ourbatima.core.controls.skin;
 
-import io.OurBatima.core.controls.GNButton;
+import io.ourbatima.core.controls.GNButton;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

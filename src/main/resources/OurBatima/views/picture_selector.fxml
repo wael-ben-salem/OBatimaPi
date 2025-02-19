@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<?import io.OurBatima.core.controls.GNButton?>
+<?import io.ourbatima.core.controls.GNButton?>
 <!--
   ~
   ~    Copyright (C) Gleidson Neves da Silveira
@@ -30,16 +30,16 @@
   ~
   -->
 
-<StackPane fx:id="root" alignment="TOP_LEFT" style="-fx-background-color: white; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.core.picture_selector.PictureSelectorController">
+<StackPane fx:id="root" alignment="TOP_LEFT" style="-fx-background-color: white; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.core.picture_selector.PictureSelectorController">
     <stylesheets>
-<!--        <URL value="@../../io.OurBatima.speedcut.core.app/theme/css/material-color.css" />-->
-<!--        <URL value="@../../io.OurBatima.speedcut.core.app/theme/css/light.css" />-->
-<!--        <URL value="@../../io.OurBatima.speedcut.core.app/theme/css/skeleton.css" />-->
-<!--        <URL value="@../../io.OurBatima.speedcut.core.app/theme/css/bootstrap.css" />-->
-<!--        <URL value="@../../io.OurBatima.speedcut.core.app/theme/css/shape.css" />-->
-<!--        <URL value="@../../io.OurBatima.speedcut.core.app/theme/css/typographic.css" />-->
-<!--        <URL value="@../../io.OurBatima.speedcut.core.app/theme/css/helpers.css" />-->
-<!--        <URL value="@../../io.OurBatima.speedcut.core.app/theme/css/master.css" />-->
+<!--        <URL value="@../../io.ourbatima.speedcut.core.app/theme/css/material-color.css" />-->
+<!--        <URL value="@../../io.ourbatima.speedcut.core.app/theme/css/light.css" />-->
+<!--        <URL value="@../../io.ourbatima.speedcut.core.app/theme/css/skeleton.css" />-->
+<!--        <URL value="@../../io.ourbatima.speedcut.core.app/theme/css/bootstrap.css" />-->
+<!--        <URL value="@../../io.ourbatima.speedcut.core.app/theme/css/shape.css" />-->
+<!--        <URL value="@../../io.ourbatima.speedcut.core.app/theme/css/typographic.css" />-->
+<!--        <URL value="@../../io.ourbatima.speedcut.core.app/theme/css/helpers.css" />-->
+<!--        <URL value="@../../io.ourbatima.speedcut.core.app/theme/css/master.css" />-->
     </stylesheets>
     <children>
         <GridPane fx:id="body" alignment="TOP_CENTER" vgap="10.0">
@@ -83,7 +83,7 @@
                                                         <Rectangle2D height="400.0" minX="200.0" minY="150.0" width="600.0" />
                                                     </viewport>
 <!--                                                    <image>-->
-<!--                                                        <Image url="@../../io.OurBatima.speedcut.core.app/theme/img/sample_smile.jpg" />-->
+<!--                                                        <Image url="@../../io.ourbatima.speedcut.core.app/theme/img/sample_smile.jpg" />-->
 <!--                                                    </image>-->
                                                 </ImageView>
                                             </children>

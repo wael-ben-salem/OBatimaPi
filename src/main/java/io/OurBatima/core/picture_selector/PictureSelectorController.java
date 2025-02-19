@@ -17,11 +17,11 @@
  *
  */
 
-package io.OurBatima.core.picture_selector;
+package io.ourbatima.core.picture_selector;
 
-import io.OurBatima.core.controls.GNButton;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.picture_selector.PlusSlider;
+import io.ourbatima.core.controls.GNButton;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.picture_selector.PlusSlider;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.embed.swing.SwingFXUtils;

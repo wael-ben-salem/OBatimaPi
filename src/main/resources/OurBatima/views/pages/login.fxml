@@ -24,7 +24,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.LoginController">
+<StackPane styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.LoginController">
    <stylesheets>
       <URL value="@../../style/css/colors.css" />
       <URL value="@../../style/css/skeleton.css" />
@@ -140,7 +140,7 @@
 
                      <!-- Footer -->
                      <HBox alignment="CENTER" style="-fx-padding: 30 0 0 0;">
-                        <Label style="-fx-text-fill: #6c757d; -fx-font-size: 12px; -fx-font-style: italic;" text="Created by OurBatima" />
+                        <Label style="-fx-text-fill: #6c757d; -fx-font-size: 12px; -fx-font-style: italic;" text="Created by ourbatima" />
                      </HBox>
                   </VBox>
                </content>

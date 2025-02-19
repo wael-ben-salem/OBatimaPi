@@ -15,9 +15,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls.text_box;
+package io.ourbatima.core.controls.text_box;
 
-import io.OurBatima.core.controls.skin.EditorSkin;
+import io.ourbatima.core.controls.skin.EditorSkin;
 import javafx.beans.DefaultProperty;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -87,7 +87,7 @@ public class Editor extends TextField {
 
 //    @Override
 //    public String getUserAgentStylesheet() {
-//        return Objects.requireNonNull(FloatEditor.class.getResource("/io.OurBatima.gncontrols/agents/editor.css")).toExternalForm();
+//        return Objects.requireNonNull(FloatEditor.class.getResource("/io.ourbatima.gncontrols/agents/editor.css")).toExternalForm();
 //    }
 
     public boolean isMaskText() {

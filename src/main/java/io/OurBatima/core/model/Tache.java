@@ -1,4 +1,4 @@
-package io.OurBatima.core.model;
+package io.ourbatima.core.model;
 
 import java.sql.Date;
 
@@ -33,6 +33,11 @@ public class Tache {
         this.etat = etat;
     }
 
+    public Tache(int idTache, String description) {
+        this.idTache = idTache;
+        this.description = description;
+    }
+
     // Getters and Setters
     public int getIdTache() { return idTache; }
     public void setIdTache(int idTache) { this.idTache = idTache; }
@@ -60,15 +65,6 @@ public class Tache {
 
     @Override
     public String toString() {
-        return "Tache{" +
-                "idTache=" + idTache +
-                ", idProjet=" + idProjet +
-                ", constructeurId=" + constructeurId +
-                ", artisanId=" + artisanId +
-                ", description='" + description + '\'' +
-                ", dateDebut=" + dateDebut +
-                ", dateFin=" + dateFin +
-                ", etat='" + etat + '\'' +
-                '}';
+        return description;  // Ensure ComboBox displays only the task description
     }
 }

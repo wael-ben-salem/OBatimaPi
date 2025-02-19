@@ -17,12 +17,12 @@
  *
  */
 
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNIconButton;
-import io.OurBatima.core.controls.icon.Icons;
-import io.OurBatima.core.interfaces.ActionView;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNIconButton;
+import io.ourbatima.core.controls.icon.Icons;
+import io.ourbatima.core.interfaces.ActionView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;

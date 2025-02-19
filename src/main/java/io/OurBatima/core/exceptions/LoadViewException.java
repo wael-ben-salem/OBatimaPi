@@ -14,7 +14,7 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.OurBatima.core.exceptions;
+package io.ourbatima.core.exceptions;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com

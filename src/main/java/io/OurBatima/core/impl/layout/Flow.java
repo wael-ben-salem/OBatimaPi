@@ -17,10 +17,10 @@
  *
  */
 
-package io.OurBatima.core.impl.layout;
+package io.ourbatima.core.impl.layout;
 
-import io.OurBatima.core.impl.IRoot;
-import io.OurBatima.core.interfaces.WrapperContainer;
+import io.ourbatima.core.impl.IRoot;
+import io.ourbatima.core.interfaces.WrapperContainer;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

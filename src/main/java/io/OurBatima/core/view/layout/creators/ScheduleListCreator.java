@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.view.layout.creators;
+package io.ourbatima.core.view.layout.creators;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

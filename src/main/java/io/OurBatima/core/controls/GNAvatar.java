@@ -17,9 +17,9 @@
  *
  */
 
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
-import io.OurBatima.core.controls.skin.GNAvatarSkin;
+import io.ourbatima.core.controls.skin.GNAvatarSkin;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;

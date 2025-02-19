@@ -22,7 +22,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-<StackPane id="drawer-IRoot" fx:id="root" maxWidth="549.0" prefHeight="657.0" prefWidth="549.0" style="-fx-background-color: whtie;" stylesheets="@../style/css/dash.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.SideNavController">
+<StackPane id="drawer-IRoot" fx:id="root" maxWidth="549.0" prefHeight="657.0" prefWidth="549.0" style="-fx-background-color: whtie;" stylesheets="@../style/css/dash.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.SideNavController">
     <stylesheets>
         <URL value="@../style/css/colors.css" />
         <URL value="@../style/css/skeleton.css" />

@@ -17,10 +17,10 @@
  *
  */
 
-package io.OurBatima.core.view.layout.creators;
+package io.ourbatima.core.view.layout.creators;
 
-import io.OurBatima.core.controls.GNIconButton;
-import io.OurBatima.core.controls.icon.Icons;
+import io.ourbatima.core.controls.GNIconButton;
+import io.ourbatima.core.controls.icon.Icons;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;

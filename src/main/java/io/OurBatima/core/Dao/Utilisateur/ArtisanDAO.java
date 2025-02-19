@@ -1,4 +1,4 @@
-package io.OurBatima.core.Dao.Utilisateur;
+package io.ourbatima.core.Dao.Utilisateur;
 
 public class ArtisanDAO{
 }

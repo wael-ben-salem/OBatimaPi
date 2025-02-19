@@ -17,12 +17,12 @@
  *
  */
 
-package io.OurBatima.core.view.layout.creators;
+package io.ourbatima.core.view.layout.creators;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNButton;
-import io.OurBatima.core.view.layout.DrawerContainer;
-import io.OurBatima.core.view.util.Scroll;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNButton;
+import io.ourbatima.core.view.layout.DrawerContainer;
+import io.ourbatima.core.view.util.Scroll;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;

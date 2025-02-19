@@ -1,10 +1,10 @@
-package io.OurBatima.core.Dao.Utilisateur;
+package io.ourbatima.core.Dao.Utilisateur;
 
-import io.OurBatima.core.Dao.DatabaseConnection;
-import io.OurBatima.core.model.Utilisateur.Artisan;
-import io.OurBatima.core.model.Utilisateur.Constructeur;
-import io.OurBatima.core.model.Utilisateur.Equipe;
-import io.OurBatima.core.model.Utilisateur.GestionnaireDeStock;
+import io.ourbatima.core.Dao.DatabaseConnection;
+import io.ourbatima.core.model.Utilisateur.Artisan;
+import io.ourbatima.core.model.Utilisateur.Constructeur;
+import io.ourbatima.core.model.Utilisateur.Equipe;
+import io.ourbatima.core.model.Utilisateur.GestionnaireDeStock;
 
 import java.sql.*;
 import java.util.ArrayList;

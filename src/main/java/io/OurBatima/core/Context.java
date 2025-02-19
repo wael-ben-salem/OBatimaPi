@@ -1,12 +1,12 @@
-package io.OurBatima.core;
+package io.ourbatima.core;
 
-import io.OurBatima.core.impl.Layout;
-import io.OurBatima.core.impl.layout.Flow;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.interfaces.Routes;
-import io.OurBatima.core.model.SearchItem;
-import io.OurBatima.core.view.layout.SnackBar;
-import io.OurBatima.core.view.layout.Wrapper;
+import io.ourbatima.core.impl.Layout;
+import io.ourbatima.core.impl.layout.Flow;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.interfaces.Routes;
+import io.ourbatima.core.model.SearchItem;
+import io.ourbatima.core.view.layout.SnackBar;
+import io.ourbatima.core.view.layout.Wrapper;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.ApiStatus;

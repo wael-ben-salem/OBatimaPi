@@ -17,11 +17,11 @@
  *
  */
 
-package io.OurBatima.core.services;
+package io.ourbatima.core.services;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.model.SearchItem;
-import io.OurBatima.core.model.SearchItemAdapter;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.model.SearchItem;
+import io.ourbatima.core.model.SearchItemAdapter;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;

@@ -17,9 +17,9 @@
  *
  */
 
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
-import io.OurBatima.core.controls.icon.Icons;
+import io.ourbatima.core.controls.icon.Icons;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;

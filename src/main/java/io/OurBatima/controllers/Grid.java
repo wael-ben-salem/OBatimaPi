@@ -1,4 +1,4 @@
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;

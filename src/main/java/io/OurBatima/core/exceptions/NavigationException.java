@@ -14,11 +14,11 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.OurBatima.core.exceptions;
+package io.ourbatima.core.exceptions;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.view.SimpleView;
-import io.OurBatima.core.view.View;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.view.SimpleView;
+import io.ourbatima.core.view.View;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;

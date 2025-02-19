@@ -1,6 +1,6 @@
-package io.OurBatima.core.controls.skin;
+package io.ourbatima.core.controls.skin;
 
-import io.OurBatima.core.controls.GNCarousel;
+import io.ourbatima.core.controls.GNCarousel;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

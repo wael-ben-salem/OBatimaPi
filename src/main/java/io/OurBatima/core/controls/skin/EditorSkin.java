@@ -15,9 +15,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls.skin;
+package io.ourbatima.core.controls.skin;
 
-import io.OurBatima.core.controls.text_box.Editor;
+import io.ourbatima.core.controls.text_box.Editor;
 import javafx.scene.Parent;
 import javafx.scene.control.skin.TextFieldSkin;
 

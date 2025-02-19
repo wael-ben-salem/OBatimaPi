@@ -1,4 +1,4 @@
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;

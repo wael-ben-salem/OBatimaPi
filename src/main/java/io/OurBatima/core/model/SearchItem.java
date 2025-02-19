@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.model;
+package io.ourbatima.core.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;

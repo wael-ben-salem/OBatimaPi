@@ -1,7 +1,7 @@
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
-import io.OurBatima.core.Dao.Stock.ArticleDAO;
-import io.OurBatima.core.model.Article;
+import io.ourbatima.core.Dao.Stock.ArticleDAO;
+import io.ourbatima.core.model.Article;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;

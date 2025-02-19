@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.ArticleRegisterController">
+<StackPane styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.ArticleRegisterController">
     <children>
         <HBox prefHeight="600" prefWidth="1200" spacing="0">
             <!-- Section gauche -->

@@ -1,5 +1,5 @@
 
-!!io.OurBatima.core.view.ViewMap
+!!io.ourbatima.core.view.ViewMap
   views:
   - {
     name: data_table,
@@ -94,6 +94,43 @@
       folder: pages,
       fxml: testimonial.fxml
   }
+  - {
+    name: AddPlan,
+    title: AddPlan,
+    folder: pages,
+    fxml: AddPlan.fxml
+  }
+  - {
+    name: AddTask,
+    title: AddTask,
+    folder: pages,
+    fxml: AddTask.fxml
+  }
+  - {
+    name: ListTaches,
+    title: ListTaches,
+    folder: pages,
+    fxml: ListTaches.fxml
+  }
+  - {
+    name: UpdateTask,
+    title: UpdateTask,
+    folder: pages,
+    fxml: update_task.fxml
+  }
+  - {
+    name: ListPlan,
+    title: ListPlan,
+    folder: pages,
+    fxml: ListPlan.fxml
+  }
+  - {
+    name: UpdatePlan,
+    title: UpdatePlan,
+    folder: pages,
+    fxml: update_plan.fxml
+  }
+
 
 #  - {
 #    name: sales_left,

@@ -15,10 +15,10 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls.text_box;
+package io.ourbatima.core.controls.text_box;
 
-import io.OurBatima.core.controls.enums.FloatAlignment;
-import io.OurBatima.core.controls.skin.FloatEditorSkin;
+import io.ourbatima.core.controls.enums.FloatAlignment;
+import io.ourbatima.core.controls.skin.FloatEditorSkin;
 import javafx.beans.DefaultProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -59,7 +59,7 @@ public class FloatEditor extends Editor {
 
 //    @Override
 //    public String getUserAgentStylesheet() {
-//        return Objects.requireNonNull(FloatEditor.class.getResource("/io.OurBatima.gncontrols/agents/float_editor.css")).toExternalForm();
+//        return Objects.requireNonNull(FloatEditor.class.getResource("/io.ourbatima.gncontrols/agents/float_editor.css")).toExternalForm();
 //    }
 
     public FloatAlignment getFloatAlignment() {

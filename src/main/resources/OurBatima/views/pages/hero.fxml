@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.OurBatima.core.controls.GNAvatar?>
+<?import io.ourbatima.core.controls.GNAvatar?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -39,7 +39,7 @@
   ~
   -->
 
-<StackPane fx:id="root" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.HeroCodeController">
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.HeroCodeController">
     <stylesheets>
         <URL value="@../../style/css/colors.css" />
         <URL value="@../../style/css/skeleton.css" />

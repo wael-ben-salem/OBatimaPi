@@ -17,10 +17,10 @@
  *
  */
 
-package io.OurBatima.core.interfaces;
+package io.ourbatima.core.interfaces;
 
-import io.OurBatima.core.view.layout.options.AlertType;
-import io.OurBatima.core.view.layout.options.DialogAction;
+import io.ourbatima.core.view.layout.options.AlertType;
+import io.ourbatima.core.view.layout.options.DialogAction;
 
 public interface IAlert {
 

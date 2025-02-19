@@ -1,10 +1,10 @@
-package io.OurBatima.core;
+package io.ourbatima.core;
 
 //import fr.brouillard.oss.cssfx.CSSFX;
 
 import fr.brouillard.oss.cssfx.CSSFX;
-import io.OurBatima.core.impl.IContext;
-import io.OurBatima.core.impl.IRoot;
+import io.ourbatima.core.impl.IContext;
+import io.ourbatima.core.impl.IRoot;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.collections.FXCollections;

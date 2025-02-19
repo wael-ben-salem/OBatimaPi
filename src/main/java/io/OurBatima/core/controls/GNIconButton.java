@@ -15,10 +15,10 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
-import io.OurBatima.core.controls.icon.Icons;
-import io.OurBatima.core.controls.skin.GNIconButtonSkin;
+import io.ourbatima.core.controls.icon.Icons;
+import io.ourbatima.core.controls.skin.GNIconButtonSkin;
 import javafx.beans.DefaultProperty;
 import javafx.css.*;
 import javafx.scene.control.Control;
@@ -61,7 +61,7 @@ public class GNIconButton extends Control {
 
 //    @Override
 //    public String getUserAgentStylesheet() {
-//        return Objects.requireNonNull(GNIconButton.class.getResource("/io.OurBatima.gncontrols/agents/button.css")).toExternalForm();
+//        return Objects.requireNonNull(GNIconButton.class.getResource("/io.ourbatima.gncontrols/agents/button.css")).toExternalForm();
 //    }
 
     public Icons getIcon() {

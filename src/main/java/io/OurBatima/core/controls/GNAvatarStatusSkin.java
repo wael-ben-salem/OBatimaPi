@@ -15,7 +15,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;

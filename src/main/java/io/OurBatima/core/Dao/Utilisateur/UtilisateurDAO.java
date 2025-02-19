@@ -1,22 +1,26 @@
-package io.OurBatima.core.Dao.Utilisateur;
+package io.ourbatima.core.Dao.Utilisateur;
 
-import io.OurBatima.core.Dao.DatabaseConnection;
-import io.OurBatima.core.model.Utilisateur.*;
+import io.ourbatima.core.Dao.DatabaseConnection;
+import io.ourbatima.core.model.Utilisateur.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UtilisateurDAO {
 
     public enum Role {
-        ARTISAN, CONSTRUCTEUR, GESTIONNAIRESTOCK, ADMIN, CLIENT
+        Artisan, Constructeur, GestionnaireStock, Admin, Client
+
     }
 
     public enum Statut {
-        ACTIF, INACTIF, EN_ATTENTE
+        actif, inactif, en_attente
+
     }
 
     private Connection connect() throws SQLException {
@@ -44,20 +48,20 @@ public class UtilisateurDAO {
         return null;
     }
 
-        private Utilisateur mapUtilisateur(ResultSet rs) throws SQLException {
-            return new Utilisateur(
-                    rs.getInt("id"),
-                    rs.getString("nom"),
-                    rs.getString("prenom"),
-                    rs.getString("email"),
-                    rs.getString("mot_de_passe"),
-                    rs.getString("telephone"),
-                    rs.getString("adresse"),
-                    Statut.valueOf(rs.getString("statut")),
-                    rs.getBoolean("isConfirmed"),
-                    Role.valueOf(rs.getString("role"))
-            );
-        }
+    private Utilisateur mapUtilisateur(ResultSet rs) throws SQLException {
+        return new Utilisateur(
+                rs.getInt("id"),
+                rs.getString("nom"),
+                rs.getString("prenom"),
+                rs.getString("email"),
+                rs.getString("mot_de_passe"),
+                rs.getString("telephone"),
+                rs.getString("adresse"),
+                Statut.valueOf(rs.getString("statut")),
+                rs.getBoolean("isConfirmed"),
+                Role.valueOf(rs.getString("role"))
+        );
+    }
 
     public boolean isEmailExist(String email) {
         String sql = "SELECT 1 FROM Utilisateur WHERE email = ?";
@@ -323,7 +327,7 @@ public class UtilisateurDAO {
             pstmt.setInt(1, id);
             int rowsDeleted = pstmt.executeUpdate(); // Récupère le nombre de lignes supprimées
 
-            return rowsDeleted > 0; // Retourne `true` si au moins une ligne a été supprimée
+            return rowsDeleted > 0; // Retourne true si au moins une ligne a été supprimée
         }
     }
 
@@ -381,4 +385,44 @@ public class UtilisateurDAO {
         System.err.println(message + " : " + e.getMessage());
         e.printStackTrace();
     }
+    private List<Utilisateur> getUsersByRole(Role role) {
+        List<Utilisateur> users = new ArrayList<>();
+        String sql = "SELECT * FROM Utilisateur WHERE role = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, role.name());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                users.add(mapUtilisateur(rs));
+            }
+        } catch (SQLException e) {
+            handleException("Error fetching users by role: " + role, e);
+        }
+        return users;
+    }
+    public List<Utilisateur> getAllConstructeurs() {
+        return getUsersByRole(Role.Constructeur);
+    }
+
+
+    public List<Utilisateur> getAllGestionnairesStock() {
+        return getUsersByRole(Role.GestionnaireStock);
+    }
+
+    public List<Utilisateur> getAllAdmins() {
+        return getUsersByRole(Role.Admin);
+    }
+
+    public List<Utilisateur> getAllClients() {
+        return getUsersByRole(Role.Client);
+    }
+
+    public List<Utilisateur> getAllArtisant() {
+        return getUsersByRole(Role.Artisan);
+    }
+
 }
+

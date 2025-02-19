@@ -1,6 +1,6 @@
-package io.OurBatima.core.impl;
+package io.ourbatima.core.impl;
 
-import io.OurBatima.core.view.View;
+import io.ourbatima.core.view.View;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;

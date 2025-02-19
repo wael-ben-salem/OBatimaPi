@@ -1,8 +1,8 @@
-package io.OurBatima.core.services;
+package io.ourbatima.core.services;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.interfaces.Loader;
-import io.OurBatima.core.view.*;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.interfaces.Loader;
+import io.ourbatima.core.view.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +30,7 @@ public class LoadViews extends Task<View> {
         this.context = context;
         this.loader = loader;
 
-        InputStream inputStream = getClass().getResourceAsStream("/OurBatima/views.yml");
+        InputStream inputStream = getClass().getResourceAsStream("/ourbatima/views.yml");
         Yaml yaml = new Yaml(new Constructor(ViewMap.class));
         data = yaml.load(inputStream);
     }
@@ -57,7 +57,7 @@ public class LoadViews extends Task<View> {
         FXMLLoader loader = new FXMLLoader();
         URL location = null;
 
-        String path = "/OurBatima/views";
+        String path = "/ourbatima/views";
 
         if (view.getFolder() != null) {
             builder.append("/").append(view.getFolder());

@@ -1,7 +1,7 @@
-package io.OurBatima.core.Dao.Rapport;
+package io.ourbatima.core.Dao.Rapport;
 
-import io.OurBatima.core.Dao.DatabaseConnection;
-import io.OurBatima.core.model.Rapport;
+import io.ourbatima.core.Dao.DatabaseConnection;
+import io.ourbatima.core.model.Rapport;
 
 import java.sql.*;
 import java.util.ArrayList;

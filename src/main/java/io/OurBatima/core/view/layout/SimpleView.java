@@ -1,8 +1,8 @@
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.view.IView;
-import io.OurBatima.core.view.ViewComposer;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.view.IView;
+import io.ourbatima.core.view.ViewComposer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;

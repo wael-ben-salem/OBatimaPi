@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.impl.layout;
+package io.ourbatima.core.impl.layout;
 
 import org.jetbrains.annotations.ApiStatus;
 

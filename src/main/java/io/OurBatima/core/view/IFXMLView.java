@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.view;
+package io.ourbatima.core.view;
 
 import javafx.scene.Parent;
 

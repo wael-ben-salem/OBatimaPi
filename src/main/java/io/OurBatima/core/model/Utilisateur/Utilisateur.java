@@ -1,10 +1,15 @@
-package io.OurBatima.core.model.Utilisateur;
+package io.ourbatima.core.model.Utilisateur;
 
-import io.OurBatima.core.Dao.Utilisateur.UtilisateurDAO;
+import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 
 public class Utilisateur {
     private int id;
     private String nom;
+
+    public Utilisateur(int id, String nom) {
+        this.id = id;
+        this.nom = nom;
+    }
 
     public GestionnaireDeStock getGestionnaireDeStock() {
         return gestionnaireDeStock;
@@ -110,19 +115,10 @@ public class Utilisateur {
 
 
     // Méthode toString pour le débogage
+
     @Override
     public String toString() {
-        return "Utilisateur{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", email='" + email + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", adresse='" + adresse + '\'' +
-                ", statut=" + statut +
-                ", isConfirmed=" + isConfirmed +
-                ", role=" + role +
-                '}';
+        return nom;  // Pour affichage dans ComboBox
     }
 
     public Artisan getArtisan() {

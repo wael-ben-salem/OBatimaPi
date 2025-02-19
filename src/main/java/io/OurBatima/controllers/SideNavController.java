@@ -1,21 +1,21 @@
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.icon.IconContainer;
-import io.OurBatima.core.controls.icon.Icons;
-import io.OurBatima.core.exceptions.NavigationException;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.model.Utilisateur.Utilisateur;
-import io.OurBatima.core.services.DrawerBehavior;
-import io.OurBatima.core.view.SimpleView;
-import io.OurBatima.core.view.layout.DialogContainer;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
-import io.OurBatima.views.TutorialUnderstanding;
-import io.OurBatima.views.controls.*;
-import io.OurBatima.views.layout.AccordionViewPresCreator;
-import io.OurBatima.views.layout.TabPanePresCreator;
-import io.OurBatima.views.layout.TitledPanePresCreator;
-import io.OurBatima.views.tutorial.NewsLetter;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.icon.IconContainer;
+import io.ourbatima.core.controls.icon.Icons;
+import io.ourbatima.core.exceptions.NavigationException;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
+import io.ourbatima.core.services.DrawerBehavior;
+import io.ourbatima.core.view.SimpleView;
+import io.ourbatima.core.view.layout.DialogContainer;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.views.TutorialUnderstanding;
+import io.ourbatima.views.controls.*;
+import io.ourbatima.views.layout.AccordionViewPresCreator;
+import io.ourbatima.views.layout.TabPanePresCreator;
+import io.ourbatima.views.layout.TitledPanePresCreator;
+import io.ourbatima.views.tutorial.NewsLetter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -358,4 +358,17 @@ public class SideNavController extends ActionView {
 
     public void setUser(Utilisateur utilisateur) {
     }
+    public void gotoplan(ActionEvent actionEvent) {
+        context.routes().setView("AddPlan");
+    }
+    public void gotoplanf(ActionEvent actionEvent) {
+        context.routes().setView("AddTask");
+    }
+
+    public void gototache(ActionEvent actionEvent) {
+        context.routes().setView("AddTaskController");
+    }
+
+
+
 }

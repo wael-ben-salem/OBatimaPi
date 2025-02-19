@@ -1,4 +1,4 @@
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
 import javafx.css.PseudoClass;
 import javafx.scene.layout.Pane;
@@ -18,6 +18,6 @@ public class Star extends Pane {
 
 //    @Override
 //    public String getUserAgentStylesheet() {
-//        return Objects.requireNonNull(Star.class.getResource("/io.OurBatima/controls/star.css")).toExternalForm();
+//        return Objects.requireNonNull(Star.class.getResource("/io.ourbatima/controls/star.css")).toExternalForm();
 //    }
 }

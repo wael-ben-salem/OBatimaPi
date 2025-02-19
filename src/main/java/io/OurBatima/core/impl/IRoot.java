@@ -1,7 +1,7 @@
-package io.OurBatima.core.impl;
+package io.ourbatima.core.impl;
 
-import io.OurBatima.core.interfaces.Root;
-import io.OurBatima.core.view.layout.Wrapper;
+import io.ourbatima.core.interfaces.Root;
+import io.ourbatima.core.view.layout.Wrapper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;

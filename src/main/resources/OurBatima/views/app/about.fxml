@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane prefHeight="762.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.AboutController">
+<StackPane prefHeight="762.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.AboutController">
     <children>
         <VBox prefHeight="200.0" prefWidth="100.0">
             <padding>

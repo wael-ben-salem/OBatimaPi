@@ -1,8 +1,8 @@
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
-import io.OurBatima.core.Dao.Utilisateur.UtilisateurDAO;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.model.Utilisateur.Utilisateur;
+import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
@@ -53,7 +53,7 @@ public class RegisterController extends ActionView {
         Utilisateur utilisateur = new Utilisateur(0, nom, prenom, email, motDePasseHache, telephone, adresse, Utilisateur.Statut.en_attente, false, Utilisateur.Role.Client);
 
         // Appeler la méthode du DAO pour enregistrer l'utilisateur dans la base de données
-        boolean isSaved = utilisateurDAO.updateUser(utilisateur);
+        boolean isSaved = utilisateurDAO.saveUser(utilisateur);
 
         if (isSaved) {
             showAlert("Succès", "Votre compte a été créé avec succès.");

@@ -17,10 +17,10 @@
  *
  */
 
-package io.OurBatima.views.tutorial;
+package io.ourbatima.views.tutorial;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;

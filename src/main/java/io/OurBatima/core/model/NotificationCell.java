@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.model;
+package io.ourbatima.core.model;
 
 import javafx.scene.Node;
 

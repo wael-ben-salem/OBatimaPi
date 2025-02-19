@@ -1,4 +1,4 @@
-package io.OurBatima.core.impl;
+package io.ourbatima.core.impl;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;

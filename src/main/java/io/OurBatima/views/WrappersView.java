@@ -17,15 +17,15 @@
  *
  */
 
-package io.OurBatima.views;
+package io.ourbatima.views;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.view.layout.*;
-import io.OurBatima.core.view.layout.creators.Author;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
-import io.OurBatima.core.view.layout.options.Option;
-import io.OurBatima.core.view.layout.options.AlertType;
-import io.OurBatima.core.view.layout.options.DialogAction;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.view.layout.*;
+import io.ourbatima.core.view.layout.creators.Author;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.view.layout.options.Option;
+import io.ourbatima.core.view.layout.options.AlertType;
+import io.ourbatima.core.view.layout.options.DialogAction;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonType;

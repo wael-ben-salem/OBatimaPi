@@ -1,4 +1,4 @@
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
 import com.google.api.client.auth.oauth2.BearerToken;
 import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
@@ -13,14 +13,14 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
-import io.OurBatima.core.Dao.Utilisateur.UtilisateurDAO;
-import io.OurBatima.core.impl.Layout;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.interfaces.Loader;
-import io.OurBatima.core.model.Utilisateur.Utilisateur;
-import io.OurBatima.core.services.LoadViews;
-import io.OurBatima.core.view.View;
-import io.OurBatima.core.view.layout.LoadCircle;
+import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
+import io.ourbatima.core.impl.Layout;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.interfaces.Loader;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
+import io.ourbatima.core.services.LoadViews;
+import io.ourbatima.core.view.View;
+import io.ourbatima.core.view.layout.LoadCircle;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -275,7 +275,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
                 // Création utilisateur sans mot de passe
                 utilisateur = createUserFromGoogleInfo(userInfo);
                 utilisateur.setMotDePasse(""); // Marqueur spécial
-                utilisateurDAO.updateUser(utilisateur);
+                utilisateurDAO.saveUser(utilisateur);
 
                 // Redirection vers complétion profil
                 redirectToProfileCompletion(utilisateur);
@@ -311,7 +311,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
 
     private void redirectToProfileCompletion(Utilisateur user) {
         try {
-            URL fxmlUrl = getClass().getResource("/OurBatima/views/pages/ProfileCompletion.fxml");
+            URL fxmlUrl = getClass().getResource("/ourbatima/views/pages/ProfileCompletion.fxml");
             if (fxmlUrl == null) {
                 throw new IllegalStateException("Fichier FXML introuvable !");
             }

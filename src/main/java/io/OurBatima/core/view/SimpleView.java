@@ -17,11 +17,11 @@
  *
  */
 
-package io.OurBatima.core.view;
+package io.ourbatima.core.view;
 
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.view.layout.Container;
-import io.OurBatima.core.view.layout.creators.BuildCreator;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.view.layout.Container;
+import io.ourbatima.core.view.layout.creators.BuildCreator;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import org.jetbrains.annotations.NotNull;

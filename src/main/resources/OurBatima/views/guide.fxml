@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.OurBatima.core.controls.Rating?>
-<?import io.OurBatima.core.model.Person?>
+<?import io.ourbatima.core.controls.Rating?>
+<?import io.ourbatima.core.model.Person?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.collections.FXCollections?>

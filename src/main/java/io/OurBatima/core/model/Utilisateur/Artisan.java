@@ -1,6 +1,6 @@
-package io.OurBatima.core.model.Utilisateur;
+package io.ourbatima.core.model.Utilisateur;
 
-import io.OurBatima.core.Dao.Utilisateur.UtilisateurDAO;
+import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 
 public class Artisan extends Utilisateur{
     int artisan_id ;

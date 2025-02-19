@@ -17,10 +17,10 @@
  *
  */
 
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.Context;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.Context;
 import javafx.fxml.FXML;
 
 public final class AboutController extends ActionView {

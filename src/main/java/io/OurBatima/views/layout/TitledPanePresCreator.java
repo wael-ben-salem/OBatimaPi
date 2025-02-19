@@ -17,13 +17,13 @@
  *
  */
 
-package io.OurBatima.views.layout;
+package io.ourbatima.views.layout;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNTitledPane;
-import io.OurBatima.core.controls.icon.IconContainer;
-import io.OurBatima.core.controls.icon.Icons;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNTitledPane;
+import io.ourbatima.core.controls.icon.IconContainer;
+import io.ourbatima.core.controls.icon.Icons;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;

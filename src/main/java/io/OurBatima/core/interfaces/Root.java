@@ -15,9 +15,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.interfaces;
+package io.ourbatima.core.interfaces;
 
-import io.OurBatima.core.view.layout.Wrapper;
+import io.ourbatima.core.view.layout.Wrapper;
 import org.jetbrains.annotations.ApiStatus;
 
 /**

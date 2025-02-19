@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.view.layout.options;
+package io.ourbatima.core.view.layout.options;
 
 import javafx.collections.ObservableList;
 

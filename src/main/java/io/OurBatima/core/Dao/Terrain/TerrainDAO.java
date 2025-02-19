@@ -1,7 +1,7 @@
-package io.OurBatima.core.Dao.Terrain;
+package io.ourbatima.core.Dao.Terrain;
 
-import io.OurBatima.core.Dao.DatabaseConnection;
-import io.OurBatima.core.model.Terrain;
+import io.ourbatima.core.Dao.DatabaseConnection;
+import io.ourbatima.core.model.Terrain;
 
 import java.sql.*;
 import java.util.ArrayList;

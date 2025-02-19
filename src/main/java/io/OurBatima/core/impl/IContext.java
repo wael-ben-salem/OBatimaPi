@@ -1,13 +1,13 @@
-package io.OurBatima.core.impl;
+package io.ourbatima.core.impl;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.impl.layout.Flow;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.interfaces.Routes;
-import io.OurBatima.core.model.Utilisateur.Utilisateur;
-import io.OurBatima.core.view.layout.SnackBar;
-import io.OurBatima.core.view.layout.Wrapper;
-import io.OurBatima.core.model.SearchItem;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.impl.layout.Flow;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.interfaces.Routes;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
+import io.ourbatima.core.view.layout.SnackBar;
+import io.ourbatima.core.view.layout.Wrapper;
+import io.ourbatima.core.model.SearchItem;
 import javafx.application.HostServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,7 +44,7 @@ public class IContext implements Context {
     public URL getResource(String loc) {
         return Objects.requireNonNull(
                 getClass().getResource(
-                        "/OurBatima/" + loc));
+                        "/ourbatima/" + loc));
     }
 
     @Override

@@ -17,9 +17,9 @@
  *
  */
 
-package io.OurBatima.core.view;
+package io.ourbatima.core.view;
 
-import io.OurBatima.core.interfaces.ActionView;
+import io.ourbatima.core.interfaces.ActionView;
 import javafx.scene.Parent;
 
 import java.net.URL;

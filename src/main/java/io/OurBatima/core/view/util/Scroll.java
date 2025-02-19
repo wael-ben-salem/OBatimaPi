@@ -15,7 +15,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.view.util;
+package io.ourbatima.core.view.util;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

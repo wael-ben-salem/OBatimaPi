@@ -1,4 +1,4 @@
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
 import javafx.css.PseudoClass;
 import javafx.geometry.HPos;

@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.view.layout.options;
+package io.ourbatima.core.view.layout.options;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com

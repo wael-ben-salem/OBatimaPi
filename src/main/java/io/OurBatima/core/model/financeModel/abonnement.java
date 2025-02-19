@@ -1,4 +1,4 @@
-package io.OurBatima.core.model.financeModel;
+package io.ourbatima.core.model.financeModel;
 
 
 public class abonnement {

@@ -17,9 +17,9 @@
  *
  */
 
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
-import io.OurBatima.core.controls.icon.Icons;
+import io.ourbatima.core.controls.icon.Icons;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

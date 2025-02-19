@@ -17,13 +17,13 @@
  *
  */
 
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNButton;
-import io.OurBatima.core.controls.icon.IconContainer;
-import io.OurBatima.core.controls.icon.Icons;
-import io.OurBatima.core.view.layout.options.SnackColors;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNButton;
+import io.ourbatima.core.controls.icon.IconContainer;
+import io.ourbatima.core.controls.icon.Icons;
+import io.ourbatima.core.view.layout.options.SnackColors;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

@@ -17,13 +17,13 @@
  *
  */
 
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.picture_selector.PictureSelectorController;
-import io.OurBatima.core.view.View;
-import io.OurBatima.core.view.layout.DialogContainer;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.picture_selector.PictureSelectorController;
+import io.ourbatima.core.view.View;
+import io.ourbatima.core.view.layout.DialogContainer;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;

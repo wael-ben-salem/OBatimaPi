@@ -1,12 +1,12 @@
-package io.OurBatima.core.impl;
+package io.ourbatima.core.impl;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNIconButton;
-import io.OurBatima.core.controls.icon.Icons;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.view.View;
-import io.OurBatima.core.view.layout.Bar;
-import io.OurBatima.core.view.layout.Drawer;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNIconButton;
+import io.ourbatima.core.controls.icon.Icons;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.view.View;
+import io.ourbatima.core.view.layout.Bar;
+import io.ourbatima.core.view.layout.Drawer;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Node;

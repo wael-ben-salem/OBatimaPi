@@ -17,13 +17,13 @@
  *
  */
 
-package io.OurBatima.views.controls;
+package io.ourbatima.views.controls;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNCarousel;
-import io.OurBatima.core.model.Data;
-import io.OurBatima.core.view.layout.creators.TableCreator;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNCarousel;
+import io.ourbatima.core.model.Data;
+import io.ourbatima.core.view.layout.creators.TableCreator;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;

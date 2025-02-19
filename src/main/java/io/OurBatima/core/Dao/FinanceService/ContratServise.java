@@ -1,12 +1,12 @@
-package io.OurBatima.core.Dao.FinanceService;
+package io.ourbatima.core.Dao.FinanceService;
 
-import io.OurBatima.core.model.financeModel.Contrat;
+import io.ourbatima.core.model.financeModel.Contrat;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.OurBatima.core.Dao.DatabaseConnection.getConnection;
+import static io.ourbatima.core.Dao.DatabaseConnection.getConnection;
 
 public class ContratServise {
 

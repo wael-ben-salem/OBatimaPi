@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;

@@ -17,14 +17,14 @@
  *
  */
 
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNButton;
-import io.OurBatima.core.interfaces.IAlert;
-import io.OurBatima.core.view.layout.creators.DeclarativeComponent;
-import io.OurBatima.core.view.layout.options.AlertType;
-import io.OurBatima.core.view.layout.options.DialogAction;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNButton;
+import io.ourbatima.core.interfaces.IAlert;
+import io.ourbatima.core.view.layout.creators.DeclarativeComponent;
+import io.ourbatima.core.view.layout.options.AlertType;
+import io.ourbatima.core.view.layout.options.DialogAction;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

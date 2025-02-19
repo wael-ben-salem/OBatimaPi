@@ -15,10 +15,10 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls.skin;
+package io.ourbatima.core.controls.skin;
 
-import io.OurBatima.core.controls.enums.FloatAlignment;
-import io.OurBatima.core.controls.text_box.FloatEditor;
+import io.ourbatima.core.controls.enums.FloatAlignment;
+import io.ourbatima.core.controls.text_box.FloatEditor;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

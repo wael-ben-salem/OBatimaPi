@@ -17,11 +17,11 @@
  *
  */
 
-package io.OurBatima.views.controls;
+package io.ourbatima.views.controls;
 
-import io.OurBatima.core.model.Person;
-import io.OurBatima.core.Context;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.model.Person;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;

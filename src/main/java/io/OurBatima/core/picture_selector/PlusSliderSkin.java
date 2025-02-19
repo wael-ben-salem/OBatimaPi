@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.picture_selector;
+package io.ourbatima.core.picture_selector;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Slider;

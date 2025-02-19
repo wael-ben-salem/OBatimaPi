@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

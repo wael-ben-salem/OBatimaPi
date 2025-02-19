@@ -1,7 +1,7 @@
-package io.OurBatima.core.Dao.Projet;
+package io.ourbatima.core.Dao.Projet;
 
-import io.OurBatima.core.Dao.DatabaseConnection;
-import io.OurBatima.core.model.Projet;
+import io.ourbatima.core.Dao.DatabaseConnection;
+import io.ourbatima.core.model.Projet;
 
 import java.sql.*;
 import java.math.BigDecimal;

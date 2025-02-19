@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.interfaces;
+package io.ourbatima.core.interfaces;
 
 import javafx.geometry.Pos;
 

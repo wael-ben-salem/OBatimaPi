@@ -17,10 +17,10 @@
  *
  */
 
-package io.OurBatima.views.controls;
+package io.ourbatima.views.controls;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;

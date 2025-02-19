@@ -15,11 +15,11 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls.skin;
+package io.ourbatima.core.controls.skin;
 
-import io.OurBatima.core.controls.FieldType;
-import io.OurBatima.core.controls.GNTextBox;
-import io.OurBatima.core.controls.text_box.Editor;
+import io.ourbatima.core.controls.FieldType;
+import io.ourbatima.core.controls.GNTextBox;
+import io.ourbatima.core.controls.text_box.Editor;
 import javafx.beans.DefaultProperty;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
@@ -135,7 +135,7 @@ public class GNTextBoxBase extends Control {
 
 //    @Override
 //    public String getUserAgentStylesheet() {
-//        return Objects.requireNonNull(GNTextBox.class.getResource("/io.OurBatima.gncontrols/agents/text_box_base.css")).toExternalForm();
+//        return Objects.requireNonNull(GNTextBox.class.getResource("/io.ourbatima.gncontrols/agents/text_box_base.css")).toExternalForm();
 //    }
 
     public ObservableValue<FieldType> fieldTypeProperty() {

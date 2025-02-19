@@ -1,4 +1,4 @@
-package io.OurBatima.core.view;
+package io.ourbatima.core.view;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com

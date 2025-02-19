@@ -17,12 +17,12 @@
  *
  */
 
-package io.OurBatima.views.controls;
+package io.ourbatima.views.controls;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.ToggleSwitch;
-import io.OurBatima.core.view.layout.creators.Author;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.ToggleSwitch;
+import io.ourbatima.core.view.layout.creators.Author;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;

@@ -17,15 +17,15 @@
  *
  */
 
-package io.OurBatima.views.controls;
+package io.ourbatima.views.controls;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNBadge;
-import io.OurBatima.core.controls.Rating;
-import io.OurBatima.core.controls.icon.Icons;
-import io.OurBatima.core.model.Data;
-import io.OurBatima.core.view.layout.creators.TableCreator;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNBadge;
+import io.ourbatima.core.controls.Rating;
+import io.ourbatima.core.controls.icon.Icons;
+import io.ourbatima.core.model.Data;
+import io.ourbatima.core.view.layout.creators.TableCreator;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
 import javafx.scene.control.Label;
 
 import java.util.List;

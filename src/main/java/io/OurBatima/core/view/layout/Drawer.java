@@ -1,8 +1,8 @@
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.interfaces.NestedWrapperContainer;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.interfaces.NestedWrapperContainer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;

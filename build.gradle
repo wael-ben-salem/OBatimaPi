@@ -5,7 +5,7 @@
     id 'org.beryx.jlink' version '2.25.0' // here // 2.24.1
 }
 
-group 'io.OurBatima'
+group 'io.ourbatima'
 version '1.0.4'
 
 repositories {
@@ -31,8 +31,8 @@ ext {
 }
 
 application {
-    mainModule = 'io.OurBatima'
-    mainClass = 'io.OurBatima.Starter'
+    mainModule = 'io.ourbatima'
+    mainClass = 'io.ourbatima.Starter'
 }
 
 javafx {
@@ -180,7 +180,7 @@ jlinkZip {
 //
 //    manifest {
 //        attributes(
-//                'Main-Class': 'io.OurBatima.Starter'
+//                'Main-Class': 'io.ourbatima.Starter'
 //        )
 //    }
 //    from {
@@ -190,7 +190,7 @@ jlinkZip {
 
 task runWithExecJarExecutable(type: Exec) {
     dependsOn jar
-    group = "io.OurBatima"
+    group = "io.ourbatima"
     description = "Run the output executable jar with ExecTask"
     commandLine "java", "-jar", jar.archiveFile.get()
 }

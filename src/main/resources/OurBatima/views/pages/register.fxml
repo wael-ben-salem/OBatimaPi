@@ -24,7 +24,7 @@
 
 <StackPane styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="io.OurBatima.controllers.RegisterController">
+           fx:controller="io.ourbatima.controllers.RegisterController">
 
     <stylesheets>
         <URL value="@../../style/css/colors.css" />

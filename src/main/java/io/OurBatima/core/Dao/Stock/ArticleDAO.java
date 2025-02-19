@@ -1,7 +1,7 @@
-package io.OurBatima.core.Dao.Stock;
+package io.ourbatima.core.Dao.Stock;
 
-import io.OurBatima.core.Dao.DatabaseConnection;
-import io.OurBatima.core.model.Article;
+import io.ourbatima.core.Dao.DatabaseConnection;
+import io.ourbatima.core.model.Article;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

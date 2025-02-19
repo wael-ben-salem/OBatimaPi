@@ -1,10 +1,10 @@
-package io.OurBatima.core.impl;
+package io.ourbatima.core.impl;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.exceptions.NavigationException;
-import io.OurBatima.core.interfaces.Routes;
-import io.OurBatima.core.view.View;
-import io.OurBatima.core.views.ErrorPage;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.exceptions.NavigationException;
+import io.ourbatima.core.interfaces.Routes;
+import io.ourbatima.core.view.View;
+import io.ourbatima.core.views.ErrorPage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

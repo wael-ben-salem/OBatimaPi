@@ -1,12 +1,12 @@
 
-module io.OurBatima {
+module io.ourbatima {
 
     requires transitive javafx.controls;
     requires transitive javafx.fxml;
     requires transitive javafx.graphics;
     requires transitive javafx.web;
     requires transitive javafx.media;
-    exports io.OurBatima.controllers;
+    exports io.ourbatima.controllers;
 
 
     requires java.logging;
@@ -16,7 +16,7 @@ module io.OurBatima {
     requires org.yaml.snakeyaml;
     requires org.jetbrains.annotations;
     requires animatefx;
-//    requires io.OurBatima.gncarousel;
+//    requires io.ourbatima.gncarousel;
 
     requires GNAvatarView;
 
@@ -28,7 +28,7 @@ module io.OurBatima {
     requires fr.brouillard.oss.cssfx;
 
 
-//    requires io.OurBatima.gncontrols;
+//    requires io.ourbatima.gncontrols;
     requires scenicView;
     requires java.sql;
     requires jbcrypt;
@@ -38,21 +38,22 @@ module io.OurBatima {
     requires com.google.api.client.extensions.jetty.auth;
     requires org.eclipse.jetty.server;
     requires java.mail;
+    requires json.smart;
 
 
-    opens io.OurBatima to javafx.fxml;
+    opens io.ourbatima to javafx.fxml;
 
-    opens io.OurBatima.controllers to javafx.fxml;
-    opens  io.OurBatima.core.controls.icon to javafx.fxml;
-    exports io.OurBatima;
-    opens io.OurBatima.views.controls to javafx.base;
-    exports io.OurBatima.core.view;
-    opens io.OurBatima.core.controls to javafx.fxml;
-    exports io.OurBatima.core.model;
-    opens io.OurBatima.core.model to javafx.fxml;
-    opens io.OurBatima.core.controls.skin to javafx.fxml;
-    opens io.OurBatima.core.picture_selector to javafx.fxml;
-    exports io.OurBatima.core.model.Utilisateur;
-    opens io.OurBatima.core.model.Utilisateur to javafx.fxml;
+    opens io.ourbatima.controllers to javafx.fxml;
+    opens  io.ourbatima.core.controls.icon to javafx.fxml;
+    exports io.ourbatima;
+    opens io.ourbatima.views.controls to javafx.base;
+    exports io.ourbatima.core.view;
+    opens io.ourbatima.core.controls to javafx.fxml;
+    exports io.ourbatima.core.model;
+    opens io.ourbatima.core.model to javafx.fxml;
+    opens io.ourbatima.core.controls.skin to javafx.fxml;
+    opens io.ourbatima.core.picture_selector to javafx.fxml;
+    exports io.ourbatima.core.model.Utilisateur;
+    opens io.ourbatima.core.model.Utilisateur to javafx.fxml;
 
 }

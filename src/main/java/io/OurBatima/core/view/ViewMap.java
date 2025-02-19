@@ -1,4 +1,4 @@
-package io.OurBatima.core.view;
+package io.ourbatima.core.view;
 
 import java.util.ArrayList;
 import java.util.List;

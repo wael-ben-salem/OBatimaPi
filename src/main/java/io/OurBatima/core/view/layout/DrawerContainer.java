@@ -17,9 +17,9 @@
  *
  */
 
-package io.OurBatima.core.view.layout;
+package io.ourbatima.core.view.layout;
 
-import io.OurBatima.core.view.layout.creators.DeclarativeComponent;
+import io.ourbatima.core.view.layout.creators.DeclarativeComponent;
 import javafx.scene.Node;
 
 /**

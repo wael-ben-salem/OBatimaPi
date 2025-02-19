@@ -1,6 +1,6 @@
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
-import io.OurBatima.core.controls.skin.GNCarouselSkin;
+import io.ourbatima.core.controls.skin.GNCarouselSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;

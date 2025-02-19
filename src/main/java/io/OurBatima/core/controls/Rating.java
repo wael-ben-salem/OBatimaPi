@@ -1,4 +1,4 @@
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
 import javafx.beans.DefaultProperty;
 import javafx.css.*;
@@ -71,7 +71,7 @@ public class Rating extends Control {
 
 //    @Override
 //    public String getUserAgentStylesheet() {
-//        return Objects.requireNonNull(Star.class.getResource("/io.OurBatima/controls/rating.css")).toExternalForm();
+//        return Objects.requireNonNull(Star.class.getResource("/io.ourbatima/controls/rating.css")).toExternalForm();
 //    }
 
     public int getRange() {

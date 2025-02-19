@@ -1,9 +1,9 @@
-package io.OurBatima.controllers;
+package io.ourbatima.controllers;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.Dao.Utilisateur.UtilisateurDAO;
-import io.OurBatima.core.interfaces.ActionView;
-import io.OurBatima.core.model.Utilisateur.Utilisateur;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
+import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -119,7 +119,7 @@ public class ProfileCompletionController extends ActionView {
     private void sendWelcomeEmail() {
         new Thread(() -> {
             try {
-                String message = "Bienvenue sur OurBatima!\n\nVos identifiants:\nEmail: "
+                String message = "Bienvenue sur ourbatima!\n\nVos identifiants:\nEmail: "
                         + utilisateur.getEmail();
 
                 System.out.println("Tentative d'envoi à " + utilisateur.getEmail()); // Debug

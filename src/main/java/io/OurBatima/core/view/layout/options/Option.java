@@ -17,9 +17,9 @@
  *
  */
 
-package io.OurBatima.core.view.layout.options;
+package io.ourbatima.core.view.layout.options;
 
-import io.OurBatima.core.view.layout.creators.DeclarativeComponent;
+import io.ourbatima.core.view.layout.creators.DeclarativeComponent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 

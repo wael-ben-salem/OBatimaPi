@@ -1,7 +1,7 @@
-package io.OurBatima.core.interfaces;
+package io.ourbatima.core.interfaces;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.impl.IContext;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.impl.IContext;
 import javafx.fxml.Initializable;
 
 import java.net.URL;

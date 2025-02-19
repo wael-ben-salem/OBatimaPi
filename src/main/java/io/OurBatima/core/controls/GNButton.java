@@ -15,9 +15,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls;
+package io.ourbatima.core.controls;
 
-import io.OurBatima.core.controls.skin.GNButtonSkin;
+import io.ourbatima.core.controls.skin.GNButtonSkin;
 import javafx.beans.DefaultProperty;
 import javafx.css.*;
 import javafx.geometry.Pos;

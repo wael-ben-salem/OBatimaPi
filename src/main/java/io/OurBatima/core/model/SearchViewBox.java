@@ -17,11 +17,11 @@
  *
  */
 
-package io.OurBatima.core.model;
+package io.ourbatima.core.model;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.icon.IconContainer;
-import io.OurBatima.core.controls.icon.Icons;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.icon.IconContainer;
+import io.ourbatima.core.controls.icon.Icons;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ListChangeListener;

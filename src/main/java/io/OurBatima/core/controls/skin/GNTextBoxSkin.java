@@ -15,12 +15,12 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.OurBatima.core.controls.skin;
+package io.ourbatima.core.controls.skin;
 
-import io.OurBatima.core.controls.GNIconButton;
-import io.OurBatima.core.controls.GNTextBox;
-import io.OurBatima.core.controls.icon.Icons;
-import io.OurBatima.core.controls.text_box.CounterLabel;
+import io.ourbatima.core.controls.GNIconButton;
+import io.ourbatima.core.controls.GNTextBox;
+import io.ourbatima.core.controls.icon.Icons;
+import io.ourbatima.core.controls.text_box.CounterLabel;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;

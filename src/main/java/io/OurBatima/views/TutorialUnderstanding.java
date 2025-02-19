@@ -17,20 +17,20 @@
  *
  */
 
-package io.OurBatima.views;
+package io.ourbatima.views;
 
-import io.OurBatima.core.Context;
-import io.OurBatima.core.controls.GNButton;
-import io.OurBatima.core.controls.enums.FloatAlignment;
-import io.OurBatima.core.impl.layout.Direction;
-import io.OurBatima.core.view.layout.AlertContainer;
-import io.OurBatima.core.view.layout.DialogContainer;
-import io.OurBatima.core.view.layout.DrawerContainer;
-import io.OurBatima.core.view.layout.creators.Author;
-import io.OurBatima.core.view.layout.creators.TutorialCreator;
-import io.OurBatima.core.view.layout.options.Option;
-import io.OurBatima.core.view.layout.options.AlertType;
-import io.OurBatima.core.view.layout.options.DialogAction;
+import io.ourbatima.core.Context;
+import io.ourbatima.core.controls.GNButton;
+import io.ourbatima.core.controls.enums.FloatAlignment;
+import io.ourbatima.core.impl.layout.Direction;
+import io.ourbatima.core.view.layout.AlertContainer;
+import io.ourbatima.core.view.layout.DialogContainer;
+import io.ourbatima.core.view.layout.DrawerContainer;
+import io.ourbatima.core.view.layout.creators.Author;
+import io.ourbatima.core.view.layout.creators.TutorialCreator;
+import io.ourbatima.core.view.layout.options.Option;
+import io.ourbatima.core.view.layout.options.AlertType;
+import io.ourbatima.core.view.layout.options.DialogAction;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -97,7 +97,7 @@ public class TutorialUnderstanding extends TutorialCreator {
                 .image(new Image(context.getResource("style/img/img_tree.png").toExternalForm()))
                 .text("In views.yml file add you will see.(If your controller class doesn't extend ActionView, so you can't access the context)", "text-12", "text-bold")
                 .code("""
-                        !!io.OurBatima.core.view.ViewMap
+                        !!io.ourbatima.core.view.ViewMap
                          views:
                          - {
                            name: myView,

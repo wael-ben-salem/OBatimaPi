@@ -1,7 +1,7 @@
-package io.OurBatima.core.Dao.Visite;
+package io.ourbatima.core.Dao.Visite;
 
-import io.OurBatima.core.Dao.DatabaseConnection;
-import io.OurBatima.core.model.Visite;
+import io.ourbatima.core.Dao.DatabaseConnection;
+import io.ourbatima.core.model.Visite;
 
 import java.sql.*;
 import java.util.ArrayList;

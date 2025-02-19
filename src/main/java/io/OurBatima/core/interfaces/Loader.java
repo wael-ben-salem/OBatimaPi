@@ -1,4 +1,4 @@
-package io.OurBatima.core.interfaces;
+package io.ourbatima.core.interfaces;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com

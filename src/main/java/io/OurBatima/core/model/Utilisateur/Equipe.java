@@ -1,4 +1,4 @@
-package io.OurBatima.core.model.Utilisateur;
+package io.ourbatima.core.model.Utilisateur;
 
 import java.time.LocalDate;
 import java.util.List;

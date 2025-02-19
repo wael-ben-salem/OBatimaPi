@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.gleidson28.GNAvatarView?>
-<?import io.OurBatima.core.controls.GNAvatar?>
+<?import io.ourbatima.core.controls.GNAvatar?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>

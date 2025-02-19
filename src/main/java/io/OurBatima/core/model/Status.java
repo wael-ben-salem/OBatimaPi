@@ -17,7 +17,7 @@
  *
  */
 
-package io.OurBatima.core.model;
+package io.ourbatima.core.model;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com

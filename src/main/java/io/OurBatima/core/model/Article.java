@@ -1,4 +1,4 @@
-package io.OurBatima.core.model;
+package io.ourbatima.core.model;
 
 public class Article {
     private int id;
