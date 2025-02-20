@@ -4,36 +4,48 @@ import java.math.BigDecimal;
 
 public class Terrain {
     private int Id_terrain;
-    private int Id_projet;
+    private Integer Id_projet;
     private String emplacement;
     private String caracteristiques;
     private BigDecimal superficie;
     private String detailsGeo;
+    private Integer Id_visite;
 
     public Terrain(){}
 
-    public Terrain(int Id_projet, String detailsGeo, BigDecimal superficie, String caracteristiques, String emplacement) {
+    public Terrain(Integer Id_projet, String detailsGeo, BigDecimal superficie, String caracteristiques, String emplacement, Integer Id_visite) {
         this.detailsGeo = detailsGeo;
         this.superficie = superficie;
         this.caracteristiques = caracteristiques;
         this.emplacement = emplacement;
         this.Id_projet = Id_projet;
+        this.Id_visite = Id_visite;
     }
 
-    public Terrain(int id_terrain, int Id_projet, String detailsGeo, BigDecimal superficie, String caracteristiques, String emplacement) {
+    public Terrain(int id_terrain, Integer Id_projet, String detailsGeo, BigDecimal superficie, String caracteristiques, String emplacement, Integer Id_visite) {
         Id_terrain = id_terrain;
         this.detailsGeo = detailsGeo;
         this.superficie = superficie;
         this.caracteristiques = caracteristiques;
         this.emplacement = emplacement;
         this.Id_projet = Id_projet;
+        this.Id_visite = Id_visite;
     }
 
-    public void setId_projet(int id_projet) {
+    public Terrain(String emplacement) {
+        this.emplacement = emplacement;
+    }
+
+
+    public Terrain(int Id_terrain) {
+        this.Id_terrain = Id_terrain;
+    }
+
+    public void setId_projet(Integer id_projet) {
         Id_projet = id_projet;
     }
 
-    public int getId_projet() {
+    public Integer getId_projet() {
         return Id_projet;
     }
 
@@ -66,6 +78,9 @@ public class Terrain {
     }
 
     public void setSuperficie(BigDecimal superficie) {
+        if (superficie != null && superficie.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Superficie cannot be negative");
+        }
         this.superficie = superficie;
     }
 
@@ -76,16 +91,22 @@ public class Terrain {
     public void setEmplacement(String emplacement) {
         this.emplacement = emplacement;
     }
+    public Integer getId_visite() { return Id_visite; }
+
+    public void setId_visite(Integer id_visite) { this.Id_visite = id_visite; }
 
     @Override
     public String toString() {
         return "Terrain{" +
                 "Id_terrain=" + Id_terrain +
-                ", Id_projet='" + Id_projet + '\'' +
+                ", Id_projet=" + Id_projet +
                 ", emplacement='" + emplacement + '\'' +
                 ", caracteristiques='" + caracteristiques + '\'' +
-                ", superficie='" + superficie + '\'' +
+                ", superficie=" + superficie +
                 ", detailsGeo='" + detailsGeo + '\'' +
+                ", Id_visite=" + Id_visite +
                 '}';
     }
+
+
 }

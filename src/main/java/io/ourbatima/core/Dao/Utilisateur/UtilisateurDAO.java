@@ -383,4 +383,24 @@ public class UtilisateurDAO {
         System.err.println(message + " : " + e.getMessage());
         e.printStackTrace();
     }
+
+    public int getClientByEmail(String email) {
+        // SQL query to fetch client by email (no role filtering)
+        String sql = "SELECT id FROM Utilisateur WHERE email = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id"); // Return the client id
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching client by email: " + e.getMessage());
+        }
+        return -1; // Return -1 if no client found with the provided email
+    }
+
 }

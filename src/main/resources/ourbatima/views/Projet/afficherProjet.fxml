@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="626.0" prefWidth="1054.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.projet.AfficherProjet">
+
+   <children>
+      <TableView fx:id="projetTable" prefHeight="558.0" prefWidth="1054.0" style="-fx-border-color: #4c3f0a;">
+         <columns>
+            <TableColumn fx:id="colProjet" prefWidth="103.20002460479736" text="Projets" />
+            <TableColumn fx:id="colClient" prefWidth="134.39999389648438" text="Client" />
+            <TableColumn fx:id="colEquipe" prefWidth="73.59999084472656" text="Équipe" />
+            <TableColumn fx:id="colBudget" prefWidth="62.4000244140625" text="Budget" />
+            <TableColumn fx:id="colType" prefWidth="95.20001220703125" text="Type" />
+            <TableColumn fx:id="colStyleArch" prefWidth="135.20001220703125" text="Style d'architecture" />
+            <TableColumn fx:id="colEmplacement" prefWidth="107.199951171875" text="Emplacement" />
+            <TableColumn fx:id="colEtapes" prefWidth="97.5999755859375" text="Étapes" />
+            <TableColumn fx:id="colEtat" prefWidth="59.199951171875" text="État" />
+            <TableColumn fx:id="colDateCreation" prefWidth="107.20001220703125" text="Date de création" />
+            <TableColumn fx:id="colActions" prefWidth="72.0" text="Actions" />
+         </columns>
+      </TableView>
+      <Button fx:id="Reload" layoutX="22.0" layoutY="580.0" mnemonicParsing="false" text="Reload" onAction="#loadProjets" />
+   </children>
+</AnchorPane>
