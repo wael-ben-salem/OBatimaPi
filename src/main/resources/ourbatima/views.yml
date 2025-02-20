@@ -149,7 +149,117 @@
       fxml: testimonial.fxml
   }
 
+  - {
+
+    name: addstock,
+    title: addstock,
+    folder: pages,
+    fxml: addstock.fxml
+  }
+
+
+
+  - {
+    name: stock_table,
+    title: stock_table,
+    folder: pages,
+    fxml: stock_table.fxml
+  }
+
+  - {
+    name: fournisseur_table,
+    title: fournisseur_table,
+    folder: pages,
+    fxml: fournisseur_table.fxml
+  }
+
+  - {
+    name: articlelist,
+    title: articlelist,
+    folder: pages,
+    fxml: articlelist.fxml
+  }
+  - {
+    name: Fournisseur,
+    title: Fournisseur,
+    folder: pages,
+    fxml: Fournisseur.fxml
+  }
+  - {
+    name: Article,
+    title: Article,
+    folder: pages,
+    fxml: Article.fxml
+  }
+  -
+  - {
+    name: ajoutProjet,
+    title: ajoutProjet,
+    folder: Projet,
+    fxml: ajoutProjet.fxml
+  }
+  - {
+    name: afficherEtapeProjet,
+    title: afficherEtapeProjet,
+    folder: EtapeProjet,
+    fxml: afficherEtapeProjet.fxml
+  }
+  - {
+    name: ajoutEtapeProjet,
+    title: ajoutEtapeProjet,
+    folder: EtapeProjet,
+    fxml: ajoutEtapeProjet.fxml
+  }
+  - {
+    name: afficherProjet,
+    title: afficherProjet,
+    folder: Projet,
+    fxml: afficherProjet.fxml
+  }
+  - {
+    name: ajoutTerrain,
+    title: ajoutTerrain,
+    folder: Terrain,
+    fxml: ajoutTerrain.fxml
+  }
+  - {
+    name: AddPlan,
+    title: AddPlan,
+    folder: pages,
+    fxml: AddPlan.fxml
+  }
+  - {
+    name: AddTask,
+    title: AddTask,
+    folder: pages,
+    fxml: AddTask.fxml
+  }
+  - {
+    name: ListTaches,
+    title: ListTaches,
+    folder: pages,
+    fxml: ListTaches.fxml
+  }
+  - {
+    name: UpdateTask,
+    title: UpdateTask,
+    folder: pages,
+    fxml: update_task.fxml
+  }
+  - {
+    name: ListPlan,
+    title: ListPlan,
+    folder: pages,
+    fxml: ListPlan.fxml
+  }
+  - {
+    name: UpdatePlan,
+    title: UpdatePlan,
+    folder: pages,
+    fxml: update_plan.fxml
+  }
 #  - {
+
 #    name: sales_left,
 #    title: Sales Column,
 #    fxml: sales_left.fxml

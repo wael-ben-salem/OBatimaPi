@@ -1,3 +1,4 @@
+
 package io.ourbatima.core.model.Utilisateur;
 
 import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
@@ -20,6 +21,11 @@ public class Utilisateur {
 
     }
 
+
+    public Utilisateur(int id, String name) {
+        this.id = id;
+        this.nom = name;//mahdiiiii
+    }
 
     public GestionnaireDeStock getGestionnaireDeStock() {
         return gestionnaireDeStock;
@@ -122,20 +128,10 @@ public class Utilisateur {
     public void setConfirmed(boolean isConfirmed) { this.isConfirmed = isConfirmed; }
 
 
-    // Méthode toString pour le débogage
+    //mahdiiiii
     @Override
     public String toString() {
-        return "Utilisateur{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", email='" + email + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", adresse='" + adresse + '\'' +
-                ", statut=" + statut +
-                ", isConfirmed=" + isConfirmed +
-                ", role=" + role +
-                '}';
+        return nom;  // Pour affichage dans ComboBox
     }
 
     public Artisan getArtisan() {

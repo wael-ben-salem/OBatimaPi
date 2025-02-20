@@ -206,3 +206,43 @@
             return equipe;
         }
     }
+
+
+    public int getEquipeByName(String nomEquipe) {
+        // Retrieve the equipe based on nom
+        String sql = "SELECT * FROM Equipe WHERE nom = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nomEquipe);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving equipe by name: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    public String getNomEquipeById(int id) {
+        String nomEquipe = null;
+        String query = "SELECT nom FROM Equipe WHERE id = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    nomEquipe = rs.getString("nom");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nomEquipe;
+    }
+
+
+
+}

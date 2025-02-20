@@ -1,4 +1,3 @@
-
 module io.ourbatima {
 
     requires transitive javafx.controls;
@@ -26,6 +25,7 @@ module io.ourbatima {
     requires org.kordamp.ikonli.javafx;
 
     requires fr.brouillard.oss.cssfx;
+    opens io.ourbatima.controllers.projet to javafx.fxml;
 
 
 //    requires io.ourbatima.gncontrols;
@@ -59,5 +59,11 @@ module io.ourbatima {
     opens io.ourbatima.core.picture_selector to javafx.fxml;
     exports io.ourbatima.core.model.Utilisateur;
     opens io.ourbatima.core.model.Utilisateur to javafx.fxml;
+    exports io.ourbatima.controllers.EtapeProjet;
+    exports io.ourbatima.controllers.projet; // Export your other packages
+    opens io.ourbatima.controllers.EtapeProjet to javafx.fxml;
+    exports io.ourbatima.controllers.terrain; // Add this line
+
+
 
 }

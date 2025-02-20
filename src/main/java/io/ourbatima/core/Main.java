@@ -23,6 +23,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.sql.Connection;
+
+import static io.ourbatima.core.Dao.DatabaseConnection.getConnection;
+
 public class Main extends Launcher {
     @Override
     public void build(Context context) {
@@ -56,12 +60,30 @@ public class Main extends Launcher {
 
         // Chargement des vues
         Task<View> loadViews = new LoadViews(context, customLoader);
+
+        Layout layout = new Layout(context); // Assurez-vous que Layout est bien initialisé selon votre architecture
+        context.setLayout(layout);
+
+        Loader loadCircle = new LoadCircle("Starting..", "");
+        Task<View> loadViews = new LoadViews(context, loadCircle); // Tâche de chargement de la vue
+
         Thread tLoadViews = new Thread(loadViews);
         tLoadViews.setDaemon(true);
         tLoadViews.start();
 
         loadViews.setOnSucceeded(event -> {
             Platform.runLater(() -> layout.setContent(context.routes().getView("login").getRoot()));
+
+            layout.setNav(context.routes().getView("drawer"));
+            context.routes().nav("addstock");
+
+            layout.setContent(null);
+
+            View loginView = context.routes().getView("login");
+            layout.setContent(loginView.getRoot());
+
+
+
         });
     }
 

@@ -82,11 +82,12 @@ public class Article {
         this.fournisseurId = fournisseurId;
     }
 
-    public int getEtapeProjetId() {
+    public Integer getEtapeProjetId() {
         return etapeProjetId;
     }
 
     public void setEtapeProjetId(int etapeProjetId) {
         this.etapeProjetId = etapeProjetId;
     }
+
 }

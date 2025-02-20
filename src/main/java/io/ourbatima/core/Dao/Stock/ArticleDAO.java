@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArticleDAO {
 
@@ -17,7 +19,15 @@ public class ArticleDAO {
 
     // Méthode pour enregistrer un article dans la base de données
     public boolean saveArticle(Article article) {
-        String sql = "INSERT INTO Article (nom, description, prix_unitaire, photo, stock_id, fournisseur_id, Id_etapeProjet) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // Base SQL query without Id_etapeProjet
+        String sql = "INSERT INTO Article (nom, description, prix_unitaire, photo, stock_id, fournisseur_id";
+
+        // Append Id_etapeProjet to the query if it is not null
+        if (article.getEtapeProjetId() != null) {
+            sql += ", Id_etapeProjet) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        } else {
+            sql += ") VALUES (?, ?, ?, ?, ?, ?)";
+        }
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -28,16 +38,19 @@ public class ArticleDAO {
             pstmt.setString(4, article.getPhoto());
             pstmt.setInt(5, article.getStockId());
             pstmt.setInt(6, article.getFournisseurId());
-            pstmt.setInt(7, article.getEtapeProjetId());
+
+            // Set Id_etapeProjet only if it is not null
+            if (article.getEtapeProjetId() != null) {
+                pstmt.setInt(7, article.getEtapeProjetId());
+            }
 
             int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;  // Si l'insertion est réussie, retourne true
+            return rowsAffected > 0;  // If insertion is successful, return true
         } catch (SQLException e) {
             System.err.println("Erreur lors de l'enregistrement de l'article : " + e.getMessage());
             return false;
         }
     }
-
     // Méthode pour récupérer un article par son ID
     public Article getArticleById(int id) {
         String sql = "SELECT * FROM Article WHERE id = ?";
@@ -103,4 +116,27 @@ public class ArticleDAO {
             return false;
         }
     }
+    public List<Article> getAllArticles() {
+        List<Article> articles = new ArrayList<>();
+        String sql = "SELECT * FROM Article";
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                articles.add(new Article(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("description"),
+                        rs.getString("prix_unitaire"),
+                        rs.getString("photo"),
+                        rs.getInt("stock_id"),
+                        rs.getInt("fournisseur_id"),
+                        rs.getInt("Id_etapeProjet")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération des articles : " + e.getMessage());
+        }
+        return articles;
+    }
+
 }
