@@ -9,7 +9,6 @@ import io.ourbatima.core.view.layout.LoadCircle;
 import javafx.concurrent.Task;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
-import net.minidev.json.JSONUtil;
 
 import java.sql.Connection;
 
@@ -21,11 +20,11 @@ public class Main extends Launcher {
     @Override
     public void build(Context context) {
 
-        Layout layout = new Layout(context);
+        Layout layout = new Layout(context); // Assurez-vous que Layout est bien initialisé selon votre architecture
         context.setLayout(layout);
 
         Loader loadCircle = new LoadCircle("Starting..", "");
-        Task<View> loadViews = new LoadViews(context, loadCircle); // Load View task
+        Task<View> loadViews = new LoadViews(context, loadCircle); // Tâche de chargement de la vue
 
         Thread tLoadViews = new Thread(loadViews);
         tLoadViews.setDaemon(true);
@@ -34,10 +33,15 @@ public class Main extends Launcher {
         layout.setContent((Node) loadCircle);
 
         loadViews.setOnSucceeded(event -> {
+
+            layout.setNav(context.routes().getView("drawer"));
+            context.routes().nav("addstock");
+
             layout.setContent(null);
 
-            View loginView = context.routes().getView("ajoutTerrain");
+            View loginView = context.routes().getView("login");
             layout.setContent(loginView.getRoot());
+
 
 
         });
