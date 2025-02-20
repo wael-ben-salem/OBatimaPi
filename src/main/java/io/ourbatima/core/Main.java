@@ -33,8 +33,17 @@ public class Main extends Launcher {
         layout.setContent((Node) loadCircle);
 
         loadViews.setOnSucceeded(event -> {
+
             layout.setNav(context.routes().getView("drawer"));
             context.routes().nav("addstock");
+
+            layout.setContent(null);
+
+            View loginView = context.routes().getView("login");
+            layout.setContent(loginView.getRoot());
+
+
+
         });
 
         icons.add(new Image(context.getResource("style/img/logo_64.png").toExternalForm(), 128, 128, true, true));

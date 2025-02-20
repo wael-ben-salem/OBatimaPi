@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<StackPane styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="io.ourbatima.controllers.RegisterController">
+
+    <stylesheets>
+        <URL value="@../../style/css/colors.css" />
+        <URL value="@../../style/css/skeleton.css" />
+        <URL value="@../../style/css/typographic.css" />
+        <URL value="@../../style/css/scroll.css" />
+    </stylesheets>
+
+    <children>
+        <HBox prefHeight="546" prefWidth="1134" spacing="0">
+            <!-- Section gauche avec effet de métal brossé -->
+            <StackPane prefWidth="358" style="-fx-background-color: linear-gradient(to bottom, #c5a814, #372a28);">
+                <children>
+                    <VBox alignment="CENTER" prefHeight="546.0" prefWidth="406.0" spacing="30">
+                        <ImageView fx:id="logoView" fitHeight="150" fitWidth="150">
+                            <image>
+                                <Image url="@../../../images/logo.png" />
+                            </image>
+                            <effect>
+                                <DropShadow color="rgba(0,0,0,0.2)" radius="15" />
+                            </effect>
+                        </ImageView>
+                        <Label style="-fx-text-fill: white; -fx-font-weight: 800;" styleClass="h1" text="Our Bâtima" />
+                        <TextFlow textAlignment="CENTER">
+                            <Text style="-fx-fill: white; -fx-font-size: 18;" text="Simplifiez vos projets, bâtissez l'avenir" />
+                        </TextFlow>
+                    </VBox>
+                </children>
+            </StackPane>
+
+            <!-- Section droite avec formulaire -->
+            <StackPane style="-fx-background-color: #f8f9fa;" HBox.hgrow="ALWAYS">
+                <ScrollPane id="bodyLogin" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background: transparent;">
+                    <content>
+                        <VBox fx:id="loginContent" alignment="CENTER" spacing="40" style="-fx-padding: 40 0;">
+                            <!-- En-tête -->
+                            <VBox alignment="CENTER" spacing="10">
+                                <Label styleClass="h1" text="Inscription" />
+                                <Label styleClass="h4 text-muted" text="Créez votre compte" />
+                            </VBox>
+
+                            <!-- Formulaire -->
+                            <GridPane alignment="CENTER" hgap="15" maxWidth="400" vgap="20">
+                                <columnConstraints>
+                                    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                                </columnConstraints>
+
+                                <rowConstraints>
+                                    <RowConstraints prefHeight="60" />
+                                    <RowConstraints prefHeight="60" />
+                                    <RowConstraints prefHeight="60" />
+                                    <RowConstraints prefHeight="60" />
+                                    <RowConstraints prefHeight="60" />
+                                    <RowConstraints prefHeight="60" />
+                                </rowConstraints>
+
+                                <children>
+                                    <!-- Nom et Prénom -->
+                                    <HBox alignment="CENTER_LEFT" spacing="15" GridPane.columnSpan="2">
+                                        <TextField fx:id="nomField" promptText="Nom" styleClass="input-modern" />
+                                        <TextField fx:id="prenomField" promptText="Prénom" styleClass="input-modern" />
+                                    </HBox>
+
+                                    <!-- Email et Téléphone -->
+                                    <HBox alignment="CENTER_LEFT" spacing="15" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                        <TextField fx:id="emailField" promptText="Email" styleClass="input-modern" />
+                                        <TextField fx:id="telephoneField" promptText="Téléphone" styleClass="input-modern" />
+                                    </HBox>
+
+                                    <!-- Adresse -->
+                                    <TextField fx:id="adresseField" promptText="Adresse" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+
+                                    <!-- Mot de passe -->
+                                    <PasswordField fx:id="motDePasseField" promptText="Mot de passe" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+
+                                    <!-- Bouton d'inscription -->
+                                    <Button fx:id="registerButton" text="S'inscrire" styleClass="btn-primary"
+                                            onAction="#handleRegister" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+
+                                    <!-- Lien de connexion -->
+                                    <HBox alignment="CENTER" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                                        <Label text="Déjà un compte ?" styleClass="text-muted" />
+                                        <Hyperlink fx:id="loginLink" text="Connectez-vous ici"
+                                                   onAction="#goToLogin" styleClass="link" />
+                                    </HBox>
+                                </children>
+                            </GridPane>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </StackPane>
+        </HBox>
+    </children>
+</StackPane>

@@ -8,35 +8,42 @@ public class EtapeProjet {
     private int Id_projet;
     private String nomEtape;
     private String description;
-    private Date dteDebut;
+    private Date dateDebut;
     private Date datefin;
     private String statut;
     private BigDecimal montant;
+    private Integer Id_rapport;
 
     public EtapeProjet(){}
 
-    public EtapeProjet(int Id_projet, String nomEtape, String description, Date dteDebut, Date datefin, String statut, BigDecimal montant) {
+    public EtapeProjet(int Id_projet, String nomEtape, String description, Date dateDebut, Date datefin, String statut, BigDecimal montant, Integer Id_rapport) {
         this.Id_projet = Id_projet;
         this.nomEtape = nomEtape;
         this.description = description;
-        this.dteDebut = dteDebut;
+        this.dateDebut = dateDebut;
         this.datefin = datefin;
         this.statut = statut;
         this.montant = montant;
+        this.Id_rapport = Id_rapport;
     }
 
-    public EtapeProjet(int Id_etapeProjet, int Id_projet, String nomEtape, String description, Date dteDebut, Date datefin, String statut, BigDecimal montant) {
+    public EtapeProjet(int Id_etapeProjet, int Id_projet, String nomEtape, String description, Date dateDebut, Date datefin, String statut, BigDecimal montant, Integer Id_rapport) {
         this.Id_etapeProjet = Id_etapeProjet;
         this.Id_projet = Id_projet;
         this.nomEtape = nomEtape;
         this.description = description;
-        this.dteDebut = dteDebut;
+        this.dateDebut = dateDebut;
         this.datefin = datefin;
         this.statut = statut;
         this.montant = montant;
+        this.Id_rapport = Id_rapport;
     }
 
-    // Getters and setters
+    public EtapeProjet(String nomEtape) {
+        this.nomEtape = nomEtape;
+    }
+
+
     public int getId_etapeProjet() {
         return Id_etapeProjet;
     }
@@ -69,15 +76,15 @@ public class EtapeProjet {
         this.description = description;
     }
 
-    public Date getDteDebut() {
-        return dteDebut;
+    public Date getDateDebut() {
+        return dateDebut;
     }
 
     public void setDteDebut(Date dteDebut) {
-        this.dteDebut = dteDebut;
+        this.dateDebut = dateDebut;
     }
 
-    public Date getDatefin() {
+    public Date getDateFin() {
         return datefin;
     }
 
@@ -101,17 +108,26 @@ public class EtapeProjet {
         this.montant = montant;
     }
 
+    public void setId_rapport(Integer id_rapport) {
+        Id_rapport = id_rapport;
+    }
+
+    public Integer getId_rapport() {
+        return Id_rapport;
+    }
+
     @Override
     public String toString() {
         return "EtapeProjet{" +
-                "Id_etapeProjet=" + Id_etapeProjet +
-                ", Id_projet=" + Id_projet +
-                ", nomEtape='" + nomEtape + '\'' +
-                ", description='" + description + '\'' +
-                ", dteDebut=" + dteDebut +
-                ", datefin=" + datefin +
-                ", statut='" + statut + '\'' +
-                ", montant=" + montant +
+                "Id_etapeProjet= " + Id_etapeProjet +
+                ", Id_projet= " + Id_projet +
+                ", nomEtape= " + nomEtape + '\'' +
+                ", description= " + description + '\'' +
+                ", dateDebut= " + dateDebut +
+                ", datefin= " + datefin +
+                ", statut=' " + statut + '\'' +
+                ", montant= " + montant +
+                ", Id_rapport= " + Id_rapport +
                 '}';
     }
 }

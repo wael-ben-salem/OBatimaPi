@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<AnchorPane prefHeight="350.0" prefWidth="400.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.ourbatima.controllers.UpdateTask">
+    <children>
+        <Label layoutX="20.0" layoutY="20.0" text="Update Task"/>
+
+        <TextField fx:id="descriptionField" layoutX="20.0" layoutY="50.0" prefWidth="360.0"
+                   promptText="Task Description"/>
+
+        <DatePicker fx:id="dateDebutPicker" layoutX="20.0" layoutY="90.0"
+                    promptText="Start Date"/>
+
+        <DatePicker fx:id="dateFinPicker" layoutX="200.0" layoutY="90.0"
+                    promptText="End Date"/>
+
+        <ComboBox fx:id="etatComboBox" layoutX="20.0" layoutY="130.0" prefWidth="360.0">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="En cours"/>
+                    <String fx:value="Terminée"/>
+                    <String fx:value="Annulée"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <!-- ADD MISSING COMBOBOXES -->
+        <ComboBox fx:id="utilisateursArtisans" layoutX="20.0" layoutY="160.0" prefWidth="360.0"/>
+        <ComboBox fx:id="utilisateursConstructeurs" layoutX="20.0" layoutY="200.0" prefWidth="360.0"/>
+
+        <!-- MOVE BUTTONS DOWN -->
+        <Button layoutX="20.0" layoutY="250.0" text="Update Task" onAction="#updateTask"/>
+        <Button layoutX="200.0" layoutY="250.0" text="Cancel" onAction="#closePopup"/>
+    </children>
+</AnchorPane>
