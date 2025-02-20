@@ -1,5 +1,6 @@
 package io.ourbatima.core.impl;
 
+import io.ourbatima.controllers.Utilisateur.UserListController;
 import io.ourbatima.core.Context;
 import io.ourbatima.core.exceptions.NavigationException;
 import io.ourbatima.core.interfaces.Routes;
@@ -7,6 +8,8 @@ import io.ourbatima.core.view.View;
 import io.ourbatima.core.views.ErrorPage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+
+import java.util.Map;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -16,6 +19,7 @@ import javafx.beans.property.StringProperty;
 public class IRoutes implements Routes {
 
     private final IViewManager manager = new IViewManager();
+    private String currentRouteName; // <-- Nouvelle propriété
 
     private final IRoot root;
     private final Context context;
@@ -32,6 +36,8 @@ public class IRoutes implements Routes {
     public void reset() {
         root.getBody().setContent(root.getBody().getLayout());
     }
+
+
 
     @Override
     public Routes setView(String _view) {
@@ -76,6 +82,8 @@ public class IRoutes implements Routes {
 
     @Override
     public Routes nav(String key) {
+        this.currentRouteName = key; // <-- Stocker le nom de la route
+
         View view = manager.get(key);
 
         if (view == null) {
@@ -88,8 +96,12 @@ public class IRoutes implements Routes {
             root.getBody().getLayout().setContent(view.getRoot());
 
             title.set(changeTitle(key));
-
+            // Injecter le contexte via le setter
+            if (view.getController() != null) {
+                view.getController().onInit(context); // <-- Appel direct
+            }
         }
+
 
         root.getBody().getLayout().setRight(null);
 
@@ -131,5 +143,9 @@ public class IRoutes implements Routes {
                 View.getController().onInit(context);
             }
         }
+    }
+    // Nouvelle méthode pour récupérer le nom de la route
+    public String getCurrentRouteName() {
+        return currentRouteName;
     }
 }

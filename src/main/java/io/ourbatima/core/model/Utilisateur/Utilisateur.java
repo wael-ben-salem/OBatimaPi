@@ -7,6 +7,21 @@ public class Utilisateur {
     private int id;
     private String nom;
 
+    public Utilisateur(String nom, String prenom, String email, String telephone, String adresse, String motDePasse ,Role role) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.telephone = telephone;
+        this.adresse = adresse;
+        this.motDePasse = motDePasse;
+        this.role = role;
+    }
+
+    public Utilisateur(int id, String nom, String prenom, String email, String telephone, String adresse, Statut actif, boolean b, Role role) {
+
+    }
+
+
     public Utilisateur(int id, String name) {
         this.id = id;
         this.nom = name;//mahdiiiii
@@ -44,9 +59,7 @@ public class Utilisateur {
     private boolean isConfirmed = false; // Valeur par défaut
     private Role role = Role.Client; // Valeur par défaut
 
-    public Utilisateur(int id, String nom, String prenom, String email, String motDePasse, String telephone, String adresse, UtilisateurDAO.Statut statut, boolean isConfirmed, UtilisateurDAO.Role role) {
 
-    }
 
     // Enumérations
     public enum Role {

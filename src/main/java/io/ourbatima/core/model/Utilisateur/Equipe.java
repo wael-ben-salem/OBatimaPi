@@ -54,6 +54,7 @@ public class Equipe {
         return constructeur;
     }
 
+
     public void setConstructeur(Constructeur constructeur) {
         this.constructeur = constructeur;
     }

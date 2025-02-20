@@ -20,7 +20,9 @@ import io.ourbatima.core.interfaces.Loader;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import io.ourbatima.core.services.LoadViews;
 import io.ourbatima.core.view.View;
+import io.ourbatima.core.view.layout.ConstructionLoader;
 import io.ourbatima.core.view.layout.LoadCircle;
+import io.ourbatima.core.view.layout.TruckHelmetLoader;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -34,16 +36,19 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -274,14 +279,19 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
                 utilisateur = createUserFromGoogleInfo(userInfo);
                 utilisateur.setMotDePasse(""); // Marqueur spécial
                 utilisateurDAO.saveUser(utilisateur);
+                SessionManager.getInstance().startSession(utilisateur);
 
                 // Redirection vers complétion profil
                 redirectToProfileCompletion(utilisateur);
             } else if (utilisateur.getMotDePasse().isEmpty()) {
                 // Cas où l'utilisateur existe mais n'a pas complété son profil
+                SessionManager.getInstance().startSession(utilisateur);
+
                 redirectToProfileCompletion(utilisateur);
             } else {
                 // Connexion directe
+                SessionManager.getInstance().startSession(utilisateur);
+
                 navigateToDashboard();
             }
         } catch (Exception e) {
@@ -289,17 +299,39 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         }
     }
     private void navigateToDashboard() {
-        Layout layout = new Layout(context); // Assurez-vous que Layout est bien initialisé selon votre architecture
+        Layout layout = new Layout(context);
         context.setLayout(layout);
 
-        Loader loadCircle = new LoadCircle("Starting..", "");
-        Task<View> loadViews = new LoadViews(context, loadCircle); // Tâche de chargement de la vue
+// Conteneur principal
+        StackPane mainPane = new StackPane();
+        mainPane.setStyle("-fx-background-color: transparent;");
 
+// Configuration du background avec opacité
+        ImageView backgroundImageView = new ImageView(
+                new Image(getClass().getResource("/images/back.png").toExternalForm())
+        );
+        backgroundImageView.setPreserveRatio(true);
+        backgroundImageView.setSmooth(true);
+        backgroundImageView.setOpacity(0.5);
+        backgroundImageView.setFitWidth(1500);
+
+// Création du Loader personnalisé : animation de grue
+        Loader customLoader = new ConstructionLoader("OurBatima..");
+
+// Conteneur de contenu
+        StackPane contentPane = new StackPane();
+        contentPane.getChildren().addAll(
+                backgroundImageView,
+                (Node) customLoader // Cast autorisé car Loader implémente Node
+        );
+
+        layout.setContent(contentPane);
+
+        // Chargement des vues
+        Task<View> loadViews = new LoadViews(context, customLoader);
         Thread tLoadViews = new Thread(loadViews);
         tLoadViews.setDaemon(true);
         tLoadViews.start();
-
-        layout.setContent((Node) loadCircle);
 
         loadViews.setOnSucceeded(event -> {
             layout.setNav(context.routes().getView("drawer"));
@@ -335,7 +367,8 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
             controller.setOnCompletionSuccess(() ->{
 
                 popupStage.close();
-                SessionManager.setUtilisateur(controller.getUpdatedUser()); // Si nécessaire
+                SessionManager.getInstance().startSession(controller.getUpdatedUser()); // Si nécessaire
+
                 refreshMainNavigation();
             });
 
@@ -373,9 +406,11 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
 
     @FXML
     private PasswordField passwordField;
-
+    @FXML private TextField passwordVisibleField;
+    @FXML private SVGPath eyeIcon;
 
     private final UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+    private final StringConverter<String> converter = new StringVisibilityConverter();
 
     private ResourceBundle bundle;
 
@@ -419,7 +454,45 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
         btn_google.setOnAction(event -> handleGoogleLogin());
+        passwordVisibleField.textProperty().bindBidirectional(passwordField.textProperty(), converter);
 
+    }
+    @FXML
+    private void togglePasswordVisibility() {
+        boolean showPassword = togglePassword.isSelected();
+
+        // Échange visuel contrôlé
+        if(showPassword) {
+            passwordVisibleField.setText(passwordField.getText());
+            passwordVisibleField.positionCaret(passwordField.getCaretPosition());
+        } else {
+            passwordField.setText(passwordVisibleField.getText());
+            passwordField.positionCaret(passwordVisibleField.getCaretPosition());
+        }
+
+        // Basculer la visibilité
+        passwordField.setVisible(!showPassword);
+        passwordField.setManaged(!showPassword);
+        passwordVisibleField.setVisible(showPassword);
+        passwordVisibleField.setManaged(showPassword);
+
+        // Transférer le focus
+        (showPassword ? passwordVisibleField : passwordField).requestFocus();
+
+            }
+
+
+    private static class StringVisibilityConverter extends StringConverter<String> {
+        @Override
+        public String toString(String object) {
+            return object; // Aucune modification à l'affichage
+        }
+
+        @Override
+        public String fromString(String string) {
+            // Nettoyage des entrées si nécessaire
+            return string != null ? string.trim() : "";
+        }
     }
     // Remplacer la méthode validate() existante par :
     @FXML
@@ -653,19 +726,39 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
 
     // Nouvelle méthode dans le main controller
     private void refreshMainNavigation() {
-        // Recréer le layout principal si nécessaire
         Layout layout = new Layout(context);
         context.setLayout(layout);
 
-        Loader loadCircle = new LoadCircle("Starting..", "");
-        Task<View> loadViews = new LoadViews(context, loadCircle); // Load View task
+// Conteneur principal
+        StackPane mainPane = new StackPane();
+        mainPane.setStyle("-fx-background-color: transparent;");
 
+// Configuration du background avec opacité
+        ImageView backgroundImageView = new ImageView(
+                new Image(getClass().getResource("/images/back.png").toExternalForm())
+        );
+        backgroundImageView.setPreserveRatio(true);
+        backgroundImageView.setSmooth(true);
+        backgroundImageView.setOpacity(0.5);
+        backgroundImageView.setFitWidth(1500);
 
+// Création du Loader personnalisé : animation de grue
+        Loader customLoader = new ConstructionLoader("OurBatima..");
+
+// Conteneur de contenu
+        StackPane contentPane = new StackPane();
+        contentPane.getChildren().addAll(
+                backgroundImageView,
+                (Node) customLoader // Cast autorisé car Loader implémente Node
+        );
+
+        layout.setContent(contentPane);
+
+        // Chargement des vues
+        Task<View> loadViews = new LoadViews(context, customLoader);
         Thread tLoadViews = new Thread(loadViews);
         tLoadViews.setDaemon(true);
         tLoadViews.start();
-
-        layout.setContent((Node) loadCircle);
 
         loadViews.setOnSucceeded(event -> {
             layout.setNav(context.routes().getView("drawer"));
@@ -732,12 +825,55 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
             tLoadViews.setDaemon(true);
             tLoadViews.start();
 
+
+        if (utilisateur != null) {
+            // Stocker l'utilisateur dans la session
+            if(isUserValid(utilisateur)) {
+                SessionManager.getInstance().startSession(utilisateur);
+                navigateToDashboard();
+            } else {
+                showError("Données utilisateur corrompues");
+            }
+            Layout layout = new Layout(context);
+            context.setLayout(layout);
+
+// Conteneur principal
+            StackPane mainPane = new StackPane();
+            mainPane.setStyle("-fx-background-color: transparent;");
+
+// Configuration du background avec opacité
+            ImageView backgroundImageView = new ImageView(
+                    new Image(getClass().getResource("/images/back.png").toExternalForm())
+            );
+            backgroundImageView.setPreserveRatio(true);
+            backgroundImageView.setSmooth(true);
+            backgroundImageView.setOpacity(0.5);
+            backgroundImageView.setFitWidth(1500);
+
+// Création du Loader personnalisé : animation de grue
+            Loader customLoader = new ConstructionLoader("OurBatima..");
+
+// Conteneur de contenu
+            StackPane contentPane = new StackPane();
+            contentPane.getChildren().addAll(
+                    backgroundImageView,
+                    (Node) customLoader // Cast autorisé car Loader implémente Node
+            );
+
+            layout.setContent(contentPane);
+
+        // Chargement des vues
+            Task<View> loadViews = new LoadViews(context, customLoader);
+            Thread tLoadViews = new Thread(loadViews);
+            tLoadViews.setDaemon(true);
+            tLoadViews.start();
             layout.setContent((Node) loadCircle);
 
             loadViews.setOnSucceeded(event -> {
                 layout.setNav(context.routes().getView("drawer"));
                 context.routes().nav("dash");
             });
+
         } else {
             // Afficher un message d'erreur
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -746,6 +882,12 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
             alert.setContentText("Veuillez vérifier votre email et votre mot de passe.");
             alert.showAndWait();
         }
+    }
+    private boolean isUserValid(Utilisateur user) {
+        return user.getEmail() != null && !user.getEmail().isEmpty()
+                && user.getNom() != null && !user.getNom().isEmpty()
+                && user.getPrenom() != null && !user.getPrenom().isEmpty()
+                && user.getRole() != null;
     }
 
     private void showAuthErrorAlert() {

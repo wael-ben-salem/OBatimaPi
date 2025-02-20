@@ -2,8 +2,8 @@
 
 package io.ourbatima;
 
-import io.ourbatima.core.Main;
 
+import io.ourbatima.core.Main;
 
 public class Starter extends Main {
 
