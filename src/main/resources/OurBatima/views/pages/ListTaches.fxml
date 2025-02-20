@@ -28,6 +28,7 @@
             <children>
                 <Button text="Refresh List" onAction="#refreshList"/>
                 <Button text="Add a task" onAction="#gototasks"/>
+                <Button text="Go back to drawer" onAction="#gotodrw"/>
             </children>
         </HBox>
     </children>

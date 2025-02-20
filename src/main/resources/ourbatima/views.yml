@@ -137,8 +137,8 @@
     folder: pages,
     fxml: Article.fxml
   }
-    #  - {
-
+  -
+  - {
     name: ajoutProjet,
     title: ajoutProjet,
     folder: Projet,
@@ -168,8 +168,42 @@
     folder: Terrain,
     fxml: ajoutTerrain.fxml
   }
-
-  -
+  - {
+    name: AddPlan,
+    title: AddPlan,
+    folder: pages,
+    fxml: AddPlan.fxml
+  }
+  - {
+    name: AddTask,
+    title: AddTask,
+    folder: pages,
+    fxml: AddTask.fxml
+  }
+  - {
+    name: ListTaches,
+    title: ListTaches,
+    folder: pages,
+    fxml: ListTaches.fxml
+  }
+  - {
+    name: UpdateTask,
+    title: UpdateTask,
+    folder: pages,
+    fxml: update_task.fxml
+  }
+  - {
+    name: ListPlan,
+    title: ListPlan,
+    folder: pages,
+    fxml: ListPlan.fxml
+  }
+  - {
+    name: UpdatePlan,
+    title: UpdatePlan,
+    folder: pages,
+    fxml: update_plan.fxml
+  }
 #  - {
 
 #    name: sales_left,
