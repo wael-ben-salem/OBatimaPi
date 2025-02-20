@@ -88,12 +88,19 @@
       folder: pages,
       fxml: footer.fxml
   }
+
   - {
-      name: testimonials,
-      title: Testimonials,
-      folder: pages,
-      fxml: testimonial.fxml
+    name: testimonials,
+    title: Testimonials,
+    folder: pages,
+    fxml: testimonial.fxml
   }
+  -  {
+         name: reponse,
+         title: reponse,
+         folder: pages,
+         fxml: reponse.fxml
+            }
 
 #  - {
 #    name: sales_left,

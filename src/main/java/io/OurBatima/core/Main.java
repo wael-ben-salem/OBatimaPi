@@ -1,19 +1,31 @@
 package io.OurBatima.core;
 
+import io.OurBatima.core.Dao.Reclamation.ReclamationDAO;
+import io.OurBatima.core.Dao.Reclamation.ReponseDAO;
 import io.OurBatima.core.impl.Layout;
 import io.OurBatima.core.interfaces.Loader;
+import io.OurBatima.core.model.Reclamation;
+import io.OurBatima.core.model.Reponse;
 import io.OurBatima.core.services.LoadViews;
 import io.OurBatima.core.view.View;
 import io.OurBatima.core.view.layout.LoadCircle;
 import javafx.concurrent.Task;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import io.OurBatima.core.Main;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  22/04/2023
  */
 public class Main extends Launcher {
+
+
+
+
+
 
     @Override
     public void build(Context context) {
@@ -33,7 +45,7 @@ public class Main extends Launcher {
         loadViews.setOnSucceeded(event -> {
             layout.setContent(null);
 
-            View loginView = context.routes().getView("login");
+            View loginView = context.routes().getView("reclamation");
             layout.setContent(loginView.getRoot());
 
 

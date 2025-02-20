@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:controller="io.OurBatima.controllers.ReclamationController" xmlns:fx="http://javafx.com/fxml" spacing="10">
+    <AnchorPane>
+        <VBox spacing="10">
+            <Label text="ID:" />
+            <TextField fx:id="idField"  />
+
+            <Label text="Description:" />
+            <TextArea fx:id="descriptionField" />
+
+            <Label text="Statut:" />
+            <TextField fx:id="statutField"  />
+
+            <Label text="Date:" />
+            <DatePicker fx:id="dateField" />
+        </VBox>
+    </AnchorPane>
+
+    <ListView fx:id="reclamationListView" />
+
+    <Button fx:id="ajouterButton" text="Ajouter" onAction="#handleAddReclamation" />
+    <Button fx:id="modifierButton" text="Modifier" onAction="#handleUpdateReclamation" />
+    <Button fx:id="supprimerButton" text="Supprimer" onAction="#handleDeleteReclamation" />
+</VBox>

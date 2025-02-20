@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox fx:controller="io.OurBatima.controllers.reponseController" xmlns:fx="http://javafx.com/fxml" spacing="10">
+<AnchorPane>
+<VBox spacing="10">
+    <Label text="ID:" />
+    <TextField fx:id="ID_feild"  />
+
+    <Label text="Description:" />
+    <TextArea fx:id="description_field"  />
+
+    <Label text="Statut:" />
+    <TextField fx:id="statut_field"  />
+
+    <Label text="Date:" />
+    <DatePicker fx:id="date_field" />
+</VBox>
+</AnchorPane>
+
+<ListView fx:id="reponseListView" />
+
+<Button fx:id="ajouter" text="Ajouter" onAction="#handleAddReponse" />
+<Button fx:id="modifier" text="Modifier" onAction="#handleUpdateReponse" />
+<Button fx:id="supprimer" text="Supprimer" onAction="#handleDeleteReponse" />
+        </VBox>

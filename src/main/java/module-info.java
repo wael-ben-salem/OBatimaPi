@@ -38,6 +38,7 @@ module io.OurBatima {
     requires com.google.api.client.extensions.jetty.auth;
     requires org.eclipse.jetty.server;
     requires java.mail;
+    requires com.fasterxml.jackson.core;
 
     opens io.OurBatima to javafx.fxml;
 
