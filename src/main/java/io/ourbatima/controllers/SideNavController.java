@@ -358,4 +358,31 @@ public class SideNavController extends ActionView {
 
     public void setUser(Utilisateur utilisateur) {
     }
+
+    public void goAddStock(ActionEvent actionEvent) {
+        context.routes().nav("addstock");
+    }
+
+    public void goviewstock(ActionEvent actionEvent) {
+        context.routes().nav("stock_table");
+    }
+
+    public void goAddfournisseur(ActionEvent actionEvent) {
+        context.routes().nav("Fournisseur");
+    }
+
+    public void goviewfournisseur(ActionEvent actionEvent) {
+        context.routes().nav("fournisseur_table");
+    }
+
+    public void goAddArticle(ActionEvent actionEvent) {
+        context.routes().nav("Article");
+    }
+
+    public void goviewArticle(ActionEvent actionEvent) {
+        context.routes().nav("articlelist");
+    }
+
+    public void launchbot(ActionEvent actionEvent) {
+    }
 }
