@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Rectangle?>
+<?import java.net.URL?>
+<HBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="cardRoot"
+      styleClass="user-card"
+      spacing="20"
+      alignment="CENTER"
+      prefWidth="410"
+      prefHeight="200"
+      fx:controller="io.ourbatima.controllers.Utilisateur.UserCardController">
+
+    <children>
+
+        <!-- Photo utilisateur réduite -->
+        <StackPane style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 4);">
+            <ImageView fx:id="userImage" fitWidth="80" fitHeight="80" />
+            <Rectangle width="80" height="80" arcWidth="80" arcHeight="80" fill="transparent"
+                       stroke="#DDDDDD" strokeType="INSIDE" />
+        </StackPane>
+
+        <!-- Détails utilisateur avec une plus grande largeur pour les champs -->
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Label fx:id="nameLabel" styleClass="card-title" text="adsofuaofjaofaozfaofafj"/>
+                <ImageView fx:id="statusIcon" fitWidth="20" fitHeight="20" />
+            </HBox>
+
+            <!-- Champ Email plus large -->
+            <Label fx:id="emailLabel" styleClass="card-subtitle" />
+
+            <!-- Informations de rôle et dernière connexion -->
+            <HBox spacing="14" alignment="CENTER_LEFT">
+                <Label fx:id="roleLabel" styleClass="role-pill" />
+                <Label fx:id="lastLoginLabel" styleClass="last-login" text="Dernière connexion: --/--/----" />
+            </HBox>
+        </VBox>
+
+        <!-- Actions utilisateur à droite -->
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button fx:id="detailsButton" styleClass="icon-button" onAction="#showDetails">
+                <graphic>
+                    <ImageView fitWidth="28" fitHeight="28">
+                        <image>
+                            <Image url="@../../../images/info.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="updateButton" styleClass="icon-button" onAction="#updateUser">
+                <graphic>
+                    <ImageView fitWidth="28" fitHeight="28">
+                        <image>
+                            <Image url="@../../../images/pencil.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="deleteButton" styleClass="icon-button" onAction="#deleteUser">
+                <graphic>
+                    <ImageView fitWidth="28" fitHeight="28">
+                        <image>
+                            <Image url="@../../../images/bin.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </children>
+
+    <padding>
+        <Insets top="18" right="20" bottom="18" left="20"/>
+    </padding>
+    <stylesheets>
+        <URL value="@../../style/css/usercard.css" />
+    </stylesheets>
+</HBox>

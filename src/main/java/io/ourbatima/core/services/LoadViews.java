@@ -6,6 +6,7 @@ import io.ourbatima.core.view.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -53,58 +54,41 @@ public class LoadViews extends Task<View> {
     }
 
     private void loadView(ViewComposer view) {
-
-        FXMLLoader loader = new FXMLLoader();
-        URL location = null;
-
-        String path = "/ourbatima/views";
-
+    FXMLLoader loader = new FXMLLoader();
+    StringBuilder pathBuilder = new StringBuilder("/ourbatima/views");
+    
+    try {
+        // Construction du chemin
         if (view.getFolder() != null) {
-            builder.append("/").append(view.getFolder());
+            pathBuilder.append("/").append(view.getFolder());
+        }
+        if (view.getFxml() != null) {
+            pathBuilder.append("/").append(view.getFxml());
         }
 
-//        if (view.getViews() != null) {
-//            for (ViewComposer v : view.getViews()) {
-//                if (v.getFxml() != null) {
-//
-//                    location = getClass().getResource(path + builder + "/"
-//                            + v.getFxml());
-//                }
-//                v.setRoot(view);
-//                loadView(v);
-//            }
-//        }
-
-        if (view.getFolder() == null) location = LoadViews.class.getResource(path + builder + "/"
-                + view.getFxml());
-        else if (view.getFxml() != null && view.getFolder() != null)
-            location = getClass().getResource(path + builder + "/"
-                    + view.getFxml());
-
-        if (view.getFolder() != null) {
-            String act = builder.substring(builder.lastIndexOf("/") + 1, builder.length());
-            if (act.equals(view.getFolder())) builder.delete(builder.lastIndexOf("/"), builder.length());
+        URL location = getClass().getResource(pathBuilder.toString());
+        
+        if (location == null) {
+            throw new IOException("FXML introuvable : " + pathBuilder);
         }
 
-        if (location != null && view.getFxml() != null) {
+        // Chargement sécurisé
+        loader.setLocation(location);
+        loader.setCharset(StandardCharsets.UTF_8);
+        Parent root = loader.load();
 
-            loader.setLocation(location);
-            loader.setCharset(StandardCharsets.UTF_8);
-//            loader.setResources(App2.INSTANCE.getResourceBundle());
-
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-//            context.getRoutes().addView(new View(view, loader));
-            context.routes().put(new FXMLView(view, loader));
-
-        } else if (view.getFxml() != null) {
-            IOException io = new IOException("The fxml with ["
-                    + view.getName() + "]" + " doesn't correspond.");
-            io.printStackTrace();
+        // Validation du contrôleur
+        if (loader.getController() == null) {
+            throw new IllegalStateException("Aucun contrôleur défini pour " + view.getName());
         }
+
+        context.routes().put(new FXMLView(view, loader));
+
+    } catch (IOException e) {
+        System.err.println("Erreur de chargement FXML [" + view.getName() + "]");
+        e.printStackTrace();
+    } catch (IllegalStateException e) {
+        System.err.println("Problème de contrôleur : " + e.getMessage());
     }
+}
 }

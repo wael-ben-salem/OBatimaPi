@@ -3,6 +3,8 @@ package io.ourbatima.core.interfaces;
 import io.ourbatima.core.view.View;
 import javafx.beans.property.StringProperty;
 
+import java.util.Map;
+
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Version 0.0.1

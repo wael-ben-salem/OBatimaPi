@@ -38,6 +38,8 @@ module io.ourbatima {
     requires com.google.api.client.extensions.jetty.auth;
     requires org.eclipse.jetty.server;
     requires java.mail;
+    requires jdk.jsobject;
+    requires json.smart;
 
 
     opens io.ourbatima to javafx.fxml;
@@ -48,6 +50,9 @@ module io.ourbatima {
     opens io.ourbatima.views.controls to javafx.base;
     exports io.ourbatima.core.view;
     opens io.ourbatima.core.controls to javafx.fxml;
+    opens io.ourbatima.controllers.Utilisateur to javafx.fxml;
+    opens io.ourbatima.controllers.Equipe to javafx.fxml;
+
     exports io.ourbatima.core.model;
     opens io.ourbatima.core.model to javafx.fxml;
     opens io.ourbatima.core.controls.skin to javafx.fxml;

@@ -73,14 +73,6 @@ GridPane {
     -fx-padding: 12;
 }
 
-/* Adaptation des couleurs */
-.h1 {
-    -fx-text-fill: #372a28 !important;
-}
-
-.h4.text-muted {
-    -fx-text-fill: #6c757d !important;
-}
 
 .btn-link {
     -fx-border-color: transparent;
@@ -287,7 +279,9 @@ GridPane {
     -fx-text-fill: #dc3545;
     -fx-font-size: 12px;
     -fx-padding: 5px 0 0 5px;
+    -fx-translate-y: -25px; /* Ajuste cette valeur pour monter le texte */
 }
+
 
 .warning-message {
     -fx-text-fill: #ffc107;

@@ -62,6 +62,8 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.26'
     implementation 'com.zaxxer:HikariCP:5.0.1'
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.maps:google-maps-services:0.18.0'
+
 
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation('com.google.apis:google-api-services-oauth2:v2-rev20200213-1.32.1') {

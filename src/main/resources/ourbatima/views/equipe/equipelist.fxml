@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.ourbatima.controllers.Equipe.EquipeListController">
+
+    <!-- Top Bar avec titre dynamique -->
+    <top>
+        <ToolBar>
+            <Label fx:id="titleLabel" text="Équipes" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Pane HBox.hgrow="ALWAYS"/>  <!-- Pousse le bouton à droite -->
+            <Button onAction="#openAddEquipeDialog">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image>
+                            <Image url="@../../../images/add.png"/> <!-- Icône d'ajout -->
+                        </image>
+                    </ImageView>
+                </graphic>
+                <text>Nouvelle Équipe</text>
+            </Button>
+        </ToolBar>
+    </top>
+
+    <!-- Centre avec la liste paginée des équipes -->
+    <center>
+        <ScrollPane fitToWidth="true">
+            <FlowPane fx:id="equipeFlowPane" hgap="20" vgap="20"/>
+        </ScrollPane>
+    </center>
+
+    <!-- Pagination en bas -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10px; -fx-alignment: center;">
+            <Button fx:id="previousPageButton" text="⬅ Précédent" onAction="#previousPage"/>
+            <Label fx:id="pageIndicator" text="Page 1"/>
+            <Button fx:id="nextPageButton" text="Suivant ➡" onAction="#nextPage"/>
+        </HBox>
+    </bottom>
+</BorderPane>
