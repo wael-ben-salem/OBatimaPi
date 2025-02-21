@@ -19,7 +19,9 @@ public class ContratServise {
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Contrat con = new Contrat(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getString(5), rs.getDate(6), rs.getDouble(7), rs.getInt(8), rs.getInt(9), rs.getInt(10));
+                Contrat con = new Contrat(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getString(5), rs.getDate(6), rs.getDouble(7),  rs.getInt(8));
+
+
                 contrat.add(con);
             }
 
@@ -35,17 +37,17 @@ public class ContratServise {
 
         try (Connection conn = getConnection()) {
 
-            String sql = "INSERT INTO contrat (type_contrat, date_signature, date_debut, signature_electronique, date_fin, montant_total, client_id, Id_projet) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO contrat (type_contrat, date_signature, date_debut, signature_electronique, date_fin, montant_total, Id_projet) VALUES (?, ?, ?, ?, ?, ?,  ?)";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, contrat.getTypeContrat());
-            stmt.setDate(2, new Date(contrat.getDateSignature().getTime()));
-            stmt.setDate(3, new Date(contrat.getDateDebut().getTime()));
+            stmt.setDate(2, contrat.getDateSignature());
+            stmt.setDate(3, contrat.getDateDebut());
             stmt.setString(4, contrat.isSignatureElectronique());
-            stmt.setDate(5, new Date(contrat.getDateFin().getTime()));
+            stmt.setDate(5,  contrat.getDateFin());
             stmt.setDouble(6, contrat.getMontantTotal());
-            stmt.setInt(7, contrat.getIdClient());
-            stmt.setInt(8, contrat.getIdProjet());
+
+            stmt.setInt(7, contrat.getIdProjet());
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
@@ -64,7 +66,7 @@ public class ContratServise {
 
         try (Connection conn = getConnection()) {
 
-            String sql = "INSERT INTO contrat (type_contrat, date_signature, date_debut, signature_electronique, date_fin, montant_total,constructeur_id, Id_projet) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO contrat (type_contrat, date_signature, date_debut, signature_electronique, date_fin, montant_total, Id_projet) VALUES (?, ?, ?, ?, ?, ?,  ?)";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, contrat.getTypeContrat());
@@ -73,8 +75,7 @@ public class ContratServise {
             stmt.setString(4, contrat.isSignatureElectronique());
             stmt.setDate(5, new Date(contrat.getDateFin().getTime()));
             stmt.setDouble(6, contrat.getMontantTotal());
-            stmt.setInt(7, contrat.getIdConstructeur());
-            stmt.setInt(8, contrat.getIdProjet());
+            stmt.setInt(7, contrat.getIdProjet());
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
@@ -96,7 +97,7 @@ public class ContratServise {
 
         try (Connection conn = getConnection()) {
 
-            String sql = "UPDATE contrat SET type_contrat = ?, date_signature = ?, date_debut = ?, signature_electronique = ?, date_fin = ?, montant_total = ?, client_id = ?, Id_projet = ? WHERE id_contrat = ?";
+            String sql = "UPDATE contrat SET type_contrat = ?, date_signature = ?, date_debut = ?, signature_electronique = ?, date_fin = ?, montant_total = ?,  Id_projet = ? WHERE id_contrat = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
 
@@ -104,10 +105,11 @@ public class ContratServise {
             stmt.setDate(2, new Date(contrat.getDateSignature().getTime()));
             stmt.setDate(3, new Date(contrat.getDateDebut().getTime()));
             stmt.setString(4, contrat.isSignatureElectronique());
-            stmt.setDate(5, new Date(contrat.getDateFin().getTime()));            stmt.setDouble(6, contrat.getMontantTotal());
-            stmt.setInt(7, contrat.getIdClient());
-            stmt.setInt(8, contrat.getIdProjet());
-            stmt.setInt(9, contrat.getIdContrat()); // WHERE id_contrat = ?
+            stmt.setDate(5, new Date(contrat.getDateFin().getTime()));
+            stmt.setDouble(6, contrat.getMontantTotal());
+
+            stmt.setInt(7, contrat.getIdProjet());
+            stmt.setInt(8, contrat.getIdContrat()); // WHERE id_contrat = ?
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
@@ -126,7 +128,7 @@ public class ContratServise {
 
         try (Connection conn = getConnection()) {
 
-            String sql = "UPDATE contrat SET type_contrat = ?, date_signature = ?, date_debut = ?, signature_electronique = ?, date_fin = ?, montant_total = ?, constructeur_id = ?, Id_projet = ? WHERE id_contrat = ?";
+            String sql = "UPDATE contrat SET type_contrat = ?, date_signature = ?, date_debut = ?, signature_electronique = ?, date_fin = ?, montant_total = ?,  Id_projet = ? WHERE id_contrat = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
 
@@ -134,10 +136,10 @@ public class ContratServise {
             stmt.setDate(2, new Date(contrat.getDateSignature().getTime()));
             stmt.setDate(3, new Date(contrat.getDateDebut().getTime()));
             stmt.setString(4, contrat.isSignatureElectronique());
-            stmt.setDate(5, new Date(contrat.getDateFin().getTime()));            stmt.setDouble(6, contrat.getMontantTotal());
-            stmt.setInt(7, contrat.getIdConstructeur());
-            stmt.setInt(8, contrat.getIdProjet());
-            stmt.setInt(9, contrat.getIdContrat()); // WHERE id_contrat = ?
+            stmt.setDate(5, new Date(contrat.getDateFin().getTime()));
+            stmt.setDouble(6, contrat.getMontantTotal());
+            stmt.setInt(7, contrat.getIdProjet());
+            stmt.setInt(8, contrat.getIdContrat()); // WHERE id_contrat = ?
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
@@ -154,13 +156,13 @@ public class ContratServise {
 
 
 
-    public void delitecontrat(Contrat contrat) {
+    public void delitecontrat(int id) {
 
         try (Connection conn = getConnection()) {
 
             String sql = "DELETE FROM contrat WHERE id_contrat = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, contrat.getIdContrat());
+            stmt.setInt(1,id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
                 System.out.println("Contrat supprimé avec succès !");
@@ -173,6 +175,49 @@ public class ContratServise {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+
+    }
+
+    public String getClientNOMEtidbyidcontrat(int idprojet) throws SQLException {
+        System.out.println("idprojet: " + idprojet);
+String aloalo;
+        String nom="";
+        int clientId=0;
+        try (Connection conn = getConnection()){
+
+
+            String query = "SELECT cl.nom, cl.id " +
+                    "FROM utilisateur cl " +
+                    "WHERE cl.role = 'Client' " +
+                    "AND cl.id = ( " +
+                    "    SELECT p.id_client  " +
+                    "    FROM projet p " +
+                    "    WHERE p.Id_projet  = ? " +
+                    ");";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, idprojet);
+            ResultSet rs = stmt.executeQuery() ;
+
+                while (rs.next()) {
+                     nom = rs.getString("nom");
+                     clientId = rs.getInt("id");
+                    System.out.println(" ID: " + clientId+"Client: " + nom  );
+                }
+
+
+
+
+
+
+
+
+
+
+        }
+
+return aloalo=clientId+"-"+nom;
 
 
     }
