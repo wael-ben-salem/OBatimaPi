@@ -1,6 +1,7 @@
 package io.ourbatima.controllers.Equipe;
 
 import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
+import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Utilisateur.Equipe;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +22,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class EquipeCardController implements Initializable {
+public class EquipeCardController extends ActionView implements Initializable {
 
     @FXML
     private HBox cardRoot;

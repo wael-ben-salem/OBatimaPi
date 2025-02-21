@@ -9,11 +9,7 @@
             fx:controller="io.ourbatima.controllers.Equipe.EquipeDetailController">
 
     <top>
-        <ToolBar>
-            <Button text="Retour" onAction="#handleBack" />
-            <Button text="Modifier" onAction="#handleEdit" />
-            <Button text="Supprimer" onAction="#handleDelete" />
-        </ToolBar>
+
     </top>
 
     <center>

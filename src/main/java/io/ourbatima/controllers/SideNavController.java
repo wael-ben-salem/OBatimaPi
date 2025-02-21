@@ -459,4 +459,22 @@ public class SideNavController extends ActionView {
     public void gotoplanf(ActionEvent actionEvent) {
         context.routes().setView("AddTask");
     }
+    public void gotoAjoutProjet(ActionEvent actionEvent) {
+        context.routes().nav("ajoutProjet");
+    }
+
+    public void gotoAfficherProjet(ActionEvent actionEvent) {
+        context.routes().nav("afficherProjet");
+
+    }
+
+    public void gotoAjouterEtapeProjet(ActionEvent actionEvent) {
+        context.routes().nav("ajoutEtapeProjet");
+
+    }
+
+    public void gotoAfficherEtapeProjet(ActionEvent actionEvent) {
+        context.routes().nav("afficherEtapeProjet");
+
+    }
 }

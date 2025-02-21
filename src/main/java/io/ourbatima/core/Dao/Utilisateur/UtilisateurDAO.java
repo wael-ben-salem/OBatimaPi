@@ -428,6 +428,10 @@ public class UtilisateurDAO {
         return getUserByField("id", String.valueOf(id));
     }
 
+    public Utilisateur getUserProjById(int id) {
+        return getUserByField("id", String.valueOf(id));
+    }
+
     public Utilisateur getUserByEmail(String email) {
         return getUserByField("email", email);
     }
@@ -638,7 +642,7 @@ public class UtilisateurDAO {
             handleException("Erreur de récupération Client", e);
         }
         return null;
-
+    }
     public int getClientByEmail(String email) {
         // SQL query to fetch client by email (no role filtering)
         String sql = "SELECT id FROM Utilisateur WHERE email = ?";

@@ -126,7 +126,7 @@ public class FournisseurDAO {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 fournisseurs.add(new Fournisseur(
-                        rs.getInt("fournisseur_id"),
+                        rs.getInt("id"),
                         rs.getString("nom"),
                         rs.getString("prenom"),
                         rs.getString("email"),

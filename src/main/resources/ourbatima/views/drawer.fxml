@@ -196,6 +196,10 @@
                         </ToggleButton>
                         <Button fx:id="gotoplan" onAction="#gotoplan" styleClass="btn-gradient" text="gotoplan" />
                         <Button fx:id="gotoplanf" onAction="#gotoplanf" styleClass="btn-gradient" text="gotoplanf" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjoutProjet" styleClass="drawer-item" text="Ajouter Projet" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Afficher Projet" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherEtapeProjet" styleClass="drawer-item" text="Afficher Étape projet" toggleGroup="$group3" />
                         <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="300.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goBlog" styleClass="drawer-item" text="Blog">
                            <toggleGroup>
                               <ToggleGroup fx:id="group321" />

@@ -479,7 +479,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         // Transférer le focus
         (showPassword ? passwordVisibleField : passwordField).requestFocus();
 
-            }
+    }
 
 
     private static class StringVisibilityConverter extends StringConverter<String> {
@@ -811,100 +811,86 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
 
         Utilisateur utilisateur = utilisateurDAO.verifierIdentifiants(email, motDePasse);
 
-        if (utilisateur != null) {
-            // Stocker l'utilisateur dans la session
-            SessionManager.setUtilisateur(utilisateur);
 
-            Layout layout = new Layout(context);
-            context.setLayout(layout);
+            if (utilisateur != null) {
 
-            Loader loadCircle = new LoadCircle("Starting..", "");
-            Task<View> loadViews = new LoadViews(context, loadCircle); // Load View task
-
-            Thread tLoadViews = new Thread(loadViews);
-            tLoadViews.setDaemon(true);
-            tLoadViews.start();
-
-
-        if (utilisateur != null) {
-            // Stocker l'utilisateur dans la session
-            if(isUserValid(utilisateur)) {
-                SessionManager.getInstance().startSession(utilisateur);
-                navigateToDashboard();
-            } else {
-                showError("Données utilisateur corrompues");
-            }
-            Layout layout = new Layout(context);
-            context.setLayout(layout);
+                if(isUserValid(utilisateur)) {
+                    SessionManager.getInstance().startSession(utilisateur);
+                    navigateToDashboard();
+                } else {
+                    showError("Données utilisateur corrompues");
+                }
+                Layout layout = new Layout(context);
+                context.setLayout(layout);
 
 // Conteneur principal
-            StackPane mainPane = new StackPane();
-            mainPane.setStyle("-fx-background-color: transparent;");
+                StackPane mainPane = new StackPane();
+                mainPane.setStyle("-fx-background-color: transparent;");
 
 // Configuration du background avec opacité
-            ImageView backgroundImageView = new ImageView(
-                    new Image(getClass().getResource("/images/back.png").toExternalForm())
-            );
-            backgroundImageView.setPreserveRatio(true);
-            backgroundImageView.setSmooth(true);
-            backgroundImageView.setOpacity(0.5);
-            backgroundImageView.setFitWidth(1500);
+                ImageView backgroundImageView = new ImageView(
+                        new Image(getClass().getResource("/images/back.png").toExternalForm())
+                );
+                backgroundImageView.setPreserveRatio(true);
+                backgroundImageView.setSmooth(true);
+                backgroundImageView.setOpacity(0.5);
+                backgroundImageView.setFitWidth(1500);
 
 // Création du Loader personnalisé : animation de grue
-            Loader customLoader = new ConstructionLoader("OurBatima..");
+                Loader customLoader = new ConstructionLoader("OurBatima..");
 
 // Conteneur de contenu
-            StackPane contentPane = new StackPane();
-            contentPane.getChildren().addAll(
-                    backgroundImageView,
-                    (Node) customLoader // Cast autorisé car Loader implémente Node
-            );
+                StackPane contentPane = new StackPane();
+                contentPane.getChildren().addAll(
+                        backgroundImageView,
+                        (Node) customLoader // Cast autorisé car Loader implémente Node
+                );
 
-            layout.setContent(contentPane);
+                layout.setContent(contentPane);
 
-        // Chargement des vues
-            Task<View> loadViews = new LoadViews(context, customLoader);
-            Thread tLoadViews = new Thread(loadViews);
-            tLoadViews.setDaemon(true);
-            tLoadViews.start();
-            layout.setContent((Node) loadCircle);
+                // Chargement des vues
+                Task<View> loadViews = new LoadViews(context, customLoader);
+                Thread tLoadViews = new Thread(loadViews);
+                tLoadViews.setDaemon(true);
+                tLoadViews.start();
+                layout.setContent((Node) customLoader);
 
-            loadViews.setOnSucceeded(event -> {
-                layout.setNav(context.routes().getView("drawer"));
-                context.routes().nav("dash");
-            });
+                loadViews.setOnSucceeded(event -> {
+                    layout.setNav(context.routes().getView("drawer"));
+                    context.routes().nav("dash");
+                });
 
-        } else {
-            // Afficher un message d'erreur
+            } else {
+                // Afficher un message d'erreur
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur de connexion");
+                alert.setHeaderText("Identifiants incorrects");
+                alert.setContentText("Veuillez vérifier votre email et votre mot de passe.");
+                alert.showAndWait();
+            }
+        }
+        private boolean isUserValid(Utilisateur user) {
+            return user.getEmail() != null && !user.getEmail().isEmpty()
+                    && user.getNom() != null && !user.getNom().isEmpty()
+                    && user.getPrenom() != null && !user.getPrenom().isEmpty()
+                    && user.getRole() != null;
+        }
+
+        private void showAuthErrorAlert() {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur de connexion");
-            alert.setHeaderText("Identifiants incorrects");
-            alert.setContentText("Veuillez vérifier votre email et votre mot de passe.");
+            alert.setHeaderText(null);
+            alert.setContentText("Combinaison email/mot de passe incorrecte");
             alert.showAndWait();
         }
-    }
-    private boolean isUserValid(Utilisateur user) {
-        return user.getEmail() != null && !user.getEmail().isEmpty()
-                && user.getNom() != null && !user.getNom().isEmpty()
-                && user.getPrenom() != null && !user.getPrenom().isEmpty()
-                && user.getRole() != null;
-    }
 
-    private void showAuthErrorAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur de connexion");
-        alert.setHeaderText(null);
-        alert.setContentText("Combinaison email/mot de passe incorrecte");
-        alert.showAndWait();
-    }
-
-    public void goToRegister(javafx.event.ActionEvent actionEvent) {
-        try {
-            context.routes().setView("register"); // Navigation vers la vue 'register' définie dans views.yml
-            System.out.println("Navigation vers la page d'inscription réussie !");
-        } catch (Exception e) {
-            System.err.println("Erreur lors de la navigation vers la page d'inscription : " + e.getMessage());
-            e.printStackTrace();
+        public void goToRegister(javafx.event.ActionEvent actionEvent) {
+            try {
+                context.routes().setView("register"); // Navigation vers la vue 'register' définie dans views.yml
+                System.out.println("Navigation vers la page d'inscription réussie !");
+            } catch (Exception e) {
+                System.err.println("Erreur lors de la navigation vers la page d'inscription : " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
-}

@@ -5,6 +5,7 @@ import io.ourbatima.core.interfaces.Loader;
 import io.ourbatima.core.services.LoadViews;
 import io.ourbatima.core.view.View;
 import io.ourbatima.core.view.layout.ConstructionLoader;
+import io.ourbatima.core.view.layout.LoadCircle;
 import io.ourbatima.core.view.layout.TruckHelmetLoader;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -61,11 +62,9 @@ public class Main extends Launcher {
         // Chargement des vues
         Task<View> loadViews = new LoadViews(context, customLoader);
 
-        Layout layout = new Layout(context); // Assurez-vous que Layout est bien initialisé selon votre architecture
         context.setLayout(layout);
 
         Loader loadCircle = new LoadCircle("Starting..", "");
-        Task<View> loadViews = new LoadViews(context, loadCircle); // Tâche de chargement de la vue
 
         Thread tLoadViews = new Thread(loadViews);
         tLoadViews.setDaemon(true);
@@ -74,10 +73,7 @@ public class Main extends Launcher {
         loadViews.setOnSucceeded(event -> {
             Platform.runLater(() -> layout.setContent(context.routes().getView("login").getRoot()));
 
-            layout.setNav(context.routes().getView("drawer"));
-            context.routes().nav("addstock");
 
-            layout.setContent(null);
 
             View loginView = context.routes().getView("login");
             layout.setContent(loginView.getRoot());

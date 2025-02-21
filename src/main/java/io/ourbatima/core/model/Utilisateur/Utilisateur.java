@@ -15,7 +15,9 @@ public class Utilisateur {
         this.adresse = adresse;
         this.motDePasse = motDePasse;
         this.role = role;
+
     }
+
 
     public Utilisateur(int id, String nom, String prenom, String email, String telephone, String adresse, Statut actif, boolean b, Role role) {
 

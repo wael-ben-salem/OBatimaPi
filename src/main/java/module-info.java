@@ -52,6 +52,8 @@ module io.ourbatima {
     opens io.ourbatima.core.controls to javafx.fxml;
     opens io.ourbatima.controllers.Utilisateur to javafx.fxml;
     opens io.ourbatima.controllers.Equipe to javafx.fxml;
+    opens io.ourbatima.controllers.terrain to javafx.fxml;
+
 
     exports io.ourbatima.core.model;
     opens io.ourbatima.core.model to javafx.fxml;

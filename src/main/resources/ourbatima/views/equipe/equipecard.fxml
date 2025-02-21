@@ -31,14 +31,16 @@
             <Button styleClass="icon-button" onAction="#showDetails">
                 <graphic>
                     <ImageView fitWidth="24" fitHeight="24">
-                        <Image url="/images/info.png"/>
+                        <Image url="@../../../images/logo.png" />
+
                     </ImageView>
                 </graphic>
             </Button>
             <Button styleClass="icon-button" onAction="#updateEquipe">
                 <graphic>
                     <ImageView fitWidth="24" fitHeight="24">
-                        <Image url="/images/pencil.png"/>
+                        <Image url="@../../../images/pencil.png" />
+
                     </ImageView>
                 </graphic>
             </Button>
@@ -57,6 +59,6 @@
     </padding>
 
     <stylesheets>
-        <Image url="/images/bin.png"/>
+
     </stylesheets>
 </HBox>

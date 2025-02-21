@@ -205,7 +205,8 @@
 
             return equipe;
         }
-    }
+
+
 
 
     public int getEquipeByName(String nomEquipe) {
