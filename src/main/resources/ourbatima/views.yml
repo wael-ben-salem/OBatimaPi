@@ -258,6 +258,14 @@
     folder: pages,
     fxml: update_plan.fxml
   }
+  - {
+    name: ListContrats,
+    title: ListContrats,
+    folder: pages/Finance_vews,
+    fxml: ListContrats.fxml
+
+
+  }
 #  - {
 
 #    name: sales_left,

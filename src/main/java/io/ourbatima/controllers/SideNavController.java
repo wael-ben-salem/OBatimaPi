@@ -477,4 +477,10 @@ public class SideNavController extends ActionView {
         context.routes().nav("afficherEtapeProjet");
 
     }
+
+    public void gotoAfficherContrats(ActionEvent event) {
+
+        context.routes().nav("ListContrats");
+
+    }
 }
