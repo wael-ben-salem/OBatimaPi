@@ -483,4 +483,8 @@ public class SideNavController extends ActionView {
         context.routes().nav("ListContrats");
 
     }
+
+    public void gotoAfficherAbonnemant(ActionEvent event) {
+        context.routes().nav("ListAbonnement");
+    }
 }

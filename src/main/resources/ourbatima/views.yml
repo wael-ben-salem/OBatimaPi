@@ -266,6 +266,14 @@
 
 
   }
+  - {
+    name: ListAbonnement,
+    title: ListAbonnement,
+    folder: pages/Finance_vews,
+    fxml: ListAbonnement.fxml
+
+
+  }
 #  - {
 
 #    name: sales_left,
