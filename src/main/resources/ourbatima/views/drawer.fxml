@@ -201,6 +201,7 @@
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" toggleGroup="$group3" />
 
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants" toggleGroup="$group3" />
 
                         <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="300.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goBlog" styleClass="drawer-item" text="Blog">
                            <toggleGroup>
