@@ -52,10 +52,11 @@
          <Font size="18.0" />
       </font></Label>
 
-    <Button fx:id="uploadButton" layoutX="430.0" layoutY="383.0" text="Upload Image" />
+    <Button fx:id="uploadButton" layoutX="387.0" layoutY="383.0" text="Upload Signature" />
     <ImageView fx:id="imageView" fitHeight="211.0" fitWidth="349.0" layoutX="33.0" layoutY="313.0" />
    <Button fx:id="Consulter" layoutX="415.0" layoutY="488.0" text="Consulter" />
    <Button fx:id="Ajouter" layoutX="511.0" layoutY="488.0" onAction="#ajouterContrat" prefHeight="35.0" prefWidth="70.0" text="Ajouter" />
+   <Button fx:id="Signie" layoutX="523.0" layoutY="383.0" prefHeight="35.0" prefWidth="98.0" text="Signié" onAction="#opensignature" />
 
 
 
