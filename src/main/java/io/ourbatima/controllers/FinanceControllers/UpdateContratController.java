@@ -7,6 +7,9 @@ import io.ourbatima.core.model.financeModel.ContratDTO;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -14,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -225,5 +229,48 @@ datedd=contratData.getDateSignature();
         Stage stage = (Stage) typeContratField.getScene().getWindow();
         stage.close();
     }
+
+    public void signié(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/pages/Finance_vews/updatesignature.fxml"));
+            Parent root = loader.load();
+            updatesignature updatesignatur = loader.getController();
+            updatesignatur.setAjouterContratsController(this);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            // Recharger la liste des utilisateurs après création
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
     }
+
+    public void setimagePath(String imagepath) {
+
+        this.imagePath = imagepath;
+        loadImage();    }
+
+
+
+    private void loadImage() {
+        if (imagePath != null && !imagePath.isEmpty()) {
+            File imageFile = new File(imagePath);
+            if (imageFile.exists()) {
+                Image image = new Image(imageFile.toURI().toString());
+                imageView.setImage(image);
+            } else {
+                System.err.println("Image file not found: " + imagePath);
+            }
+        } else {
+            System.err.println("Image path is not set.");
+        }
+    }
+    }
+
 

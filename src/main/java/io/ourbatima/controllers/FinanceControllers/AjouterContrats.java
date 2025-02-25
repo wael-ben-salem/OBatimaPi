@@ -3,9 +3,14 @@ package io.ourbatima.controllers.FinanceControllers;
 import io.ourbatima.core.Dao.FinanceService.ContratServise;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.financeModel.Contrat;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -13,10 +18,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
@@ -28,11 +35,12 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static io.ourbatima.core.Dao.DatabaseConnection.getConnection;
 
-public class AjouterContrats {
+public class AjouterContrats  {
 
     @FXML
     private DatePicker Datefin;
@@ -52,18 +60,50 @@ public class AjouterContrats {
 
     @FXML
     private ImageView imageView;
-    private String imagePath;
+    private String imagePath = "images/OIP (3).png"; ;
 
-   private ContratServise cs=new ContratServise();
+    private ContratServise cs = new ContratServise();
+
+
+
     public void handleClose(ActionEvent event) {
 
 
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.close(); // Close the popup
-        }
+        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage.close(); // Close the popup
+    }
 
-    @FXML
-    public void initialize() {
+    public  void setimagePath(String imagepath) throws IOException {
+        this.imagePath = imagepath;
+loadImage();    }
+
+
+
+    private void loadImage() {
+        if (imagePath != null && !imagePath.isEmpty()) {
+            File imageFile = new File(imagePath);
+            if (imageFile.exists()) {
+                Image image = new Image(imageFile.toURI().toString());
+                imageView.setImage(image);
+            } else {
+                System.err.println("Image file not found: " + imagePath);
+            }
+        } else {
+            System.err.println("Image path is not set.");
+        }
+    }
+public void onInit(){
+    File imageFile = new File(imagePath);
+
+    if (imageFile.exists()) {
+        Image image = new Image(imageFile.toURI().toString());
+        imageView.setImage(image);
+    } else {
+        System.err.println("Image file not found: " + imagePath);
+    }
+}
+@FXML
+    public void initialize () {
         contractType.setItems(FXCollections.observableArrayList("Contrat Client", "Contrat Constructeur"));
         montantTotaleField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*([.]\\d*)?")) { // Allow only numbers and decimal points
@@ -78,14 +118,27 @@ public class AjouterContrats {
                 throw new RuntimeException(e);
             }
         });
+       // Use a valid path
+        File imageFile = new File(imagePath);
 
-
+        if (imageFile.exists()) {
+            Image image = new Image(imageFile.toURI().toString());
+            imageView.setImage(image);
+        } else {
+            System.err.println("Image file not found: " + imagePath);
+        }
     }
+
+
+
+
+
+
+
 
     @FXML
     public void onContractTypeSelected() {
         String selectedType = contractType.getValue();
-
 
 
         if (selectedType != null) {
@@ -102,7 +155,6 @@ public class AjouterContrats {
 
         }
     }
-
 
 
     public List<Projet> getProjectsFromDatabase() {
@@ -136,11 +188,8 @@ public class AjouterContrats {
     public void projetselected(ActionEvent event) {
         String selectedValue = projectNames.getValue();
         String projectIdString = selectedValue.split(" - ")[0]; // Extracts "1"
-         projetid = Integer.parseInt(projectIdString); // Converts "1" to integer
+        projetid = Integer.parseInt(projectIdString); // Converts "1" to integer
         System.out.println(projetid);
-
-
-
 
 
     }
@@ -155,22 +204,21 @@ public class AjouterContrats {
 
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-                // Ensure the directory exists
-                File directory = new File("images");
-                if (!directory.exists()) {
-                    directory.mkdirs();
-                }
+            // Ensure the directory exists
+            File directory = new File("images");
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
 
-                // Save the image to the folder
-                File destinationFile = new File("images/" + selectedFile.getName());
-                Files.copy(selectedFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            // Save the image to the folder
+            File destinationFile = new File("images/" + selectedFile.getName());
+            Files.copy(selectedFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                // Display the image in ImageView
-                imageView.setImage(new Image(destinationFile.toURI().toString()));
+            // Display the image in ImageView
+            imageView.setImage(new Image(destinationFile.toURI().toString()));
 
-                // Store the path in the database
-                 imagePath = "images/" + selectedFile.getName();
-
+            // Store the path in the database
+            imagePath = "images/" + selectedFile.getName();
 
 
         }
@@ -180,19 +228,38 @@ public class AjouterContrats {
     public void ajouterContrat(ActionEvent event) {
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date localDate = Date.valueOf(Datefin.getValue()); // Get value from DatePicker
-        java.sql.Date dateeee= Date.valueOf(Datedebut.getValue());
+        java.sql.Date dateeee = Date.valueOf(Datedebut.getValue());
 
 
-        Contrat con=new Contrat(contractType.getValue().toString(),new java.sql.Date(utilDate.getTime()),dateeee,imagePath,localDate,Double.parseDouble(montantTotaleField.getText()),projetid);
+        Contrat con = new Contrat(contractType.getValue().toString(), new java.sql.Date(utilDate.getTime()), dateeee, imagePath, localDate, Double.parseDouble(montantTotaleField.getText()), projetid);
 
-cs.insertContrat(con);
+        cs.insertContrat(con);
         Stage stage = (Stage) contractType.getScene().getWindow();
         stage.close();
     }
 
 
+    public void opensignature(ActionEvent event) {
 
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/pages/Finance_vews/CreteSignature.fxml"));
+            Parent root = loader.load();
+            CreateSignature createSignatureController = loader.getController();
+            createSignatureController.setAjouterContratsController(this);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            // Recharger la liste des utilisateurs après création
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
     }
+}
 
 

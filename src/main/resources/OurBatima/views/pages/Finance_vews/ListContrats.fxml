@@ -56,12 +56,12 @@
                         <PropertyValueFactory property="dateFin" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn maxWidth="176.800048828125" prefWidth="176.800048828125" fx:id="actionsColumn" text="Actions">
+                <TableColumn fx:id="actionsColumn" maxWidth="176.800048828125" prefWidth="176.800048828125" text="Actions">
                 </TableColumn>
             </columns>
         </TableView>
 
-        <Button fx:id="dfg" layoutX="82.0" layoutY="72.0" mnemonicParsing="false" onAction="#alolao" text="Button" />
+        <Button fx:id="dfg" layoutX="56.0" layoutY="59.0" mnemonicParsing="false" onAction="#alolao" prefHeight="26.0" prefWidth="123.0" text="upload data " />
 
         <!-- Bouton Ajouter -->
         <Button layoutX="700.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleAjouter" styleClass="btn-add" text="Ajouter" />
