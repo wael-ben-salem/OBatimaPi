@@ -1,5 +1,6 @@
 package io.ourbatima.controllers.FinanceControllers;
 
+import io.ourbatima.controllers.EmailService;
 import io.ourbatima.core.Dao.FinanceService.ContratServise;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.financeModel.Contrat;
@@ -11,10 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -225,7 +223,7 @@ public void onInit(){
     }
 
 
-    public void ajouterContrat(ActionEvent event) {
+    public void ajouterContrat(ActionEvent event) throws SQLException {
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date localDate = Date.valueOf(Datefin.getValue()); // Get value from DatePicker
         java.sql.Date dateeee = Date.valueOf(Datedebut.getValue());
@@ -234,8 +232,37 @@ public void onInit(){
         Contrat con = new Contrat(contractType.getValue().toString(), new java.sql.Date(utilDate.getTime()), dateeee, imagePath, localDate, Double.parseDouble(montantTotaleField.getText()), projetid);
 
         cs.insertContrat(con);
+       String sss= cs.getClientNOMEtidbyidcontrat(projetid).split("-")[0];
+       String name= cs.getClientNOMEtidbyidcontrat(projetid).split("-")[1];
+
+// Convert to integer
+        int clientId = Integer.parseInt(sss);
+       String clientmail= cs.getmailClientbyid(clientId);
+
+        new Thread(() -> {
+            try {
+                String message = "Bonjour " + name + ",\n\n" +
+                        "Nous avons le plaisir de vous informer que votre contrat est désormais prêt à être signé.\n\n" +
+                        "Cordialement,\n" +
+                        " OBATIMA  \n" +
+                        "Email : " + clientmail;
+
+                EmailService.sendEmail(
+                       clientmail,
+                        "Votre contrat est prêt à être signé !",
+                        message
+                );
+
+            } catch (Exception e) {
+                e.getMessage();
+                };
+            }
+        ).start();
+
+
         Stage stage = (Stage) contractType.getScene().getWindow();
-        stage.close();
+    stage.close();
+
     }
 
 
