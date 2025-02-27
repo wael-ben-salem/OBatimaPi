@@ -29,6 +29,8 @@ public class UpdatePlan extends ActionView {
     @FXML
     private TextArea remarquesField;
     @FXML
+    private ComboBox<String> statusComboBox; // Added statut ComboBox
+    @FXML
     private Button updateButton;
     @FXML
     private Button cancelButton;
@@ -39,6 +41,7 @@ public class UpdatePlan extends ActionView {
     @FXML
     public void initialize() {
         loadTaches(); // Load tasks when the window opens
+        loadStatusOptions(); // Load statut options
     }
 
     private void loadTaches() {
@@ -46,9 +49,14 @@ public class UpdatePlan extends ActionView {
         tacheDescriptions.setItems(FXCollections.observableArrayList(taches));
     }
 
+    private void loadStatusOptions() {
+        statusComboBox.setItems(FXCollections.observableArrayList("Planifié", "En cours", "Terminé"));
+    }
+
     public void setPlanToUpdate(Plannification plan) {
         this.planToUpdate = plan;
         loadTaches();
+        loadStatusOptions();
 
         if (plan != null) {
             tacheDescriptions.getSelectionModel().select(findTacheById(plan.getIdTache()));
@@ -56,12 +64,13 @@ public class UpdatePlan extends ActionView {
             heureDebutField.setText(plan.getHeureDebut() != null ? plan.getHeureDebut().toString() : "");
             heureFinField.setText(plan.getHeureFin() != null ? plan.getHeureFin().toString() : "");
             remarquesField.setText(plan.getRemarques());
+            statusComboBox.getSelectionModel().select(plan.getStatut()); // Set statut field
         }
     }
 
     @FXML
     public void updatePlan() {
-        if (planToUpdate == null || tacheDescriptions.getValue() == null || datePlanifieePicker.getValue() == null) {
+        if (planToUpdate == null || tacheDescriptions.getValue() == null || datePlanifieePicker.getValue() == null || statusComboBox.getValue() == null) {
             System.out.println("❌ ERROR: Remplissez tous les champs !");
             return;
         }
@@ -76,7 +85,8 @@ public class UpdatePlan extends ActionView {
                     Date.valueOf(datePlanifieePicker.getValue()),
                     heureDebut,
                     heureFin,
-                    remarquesField.getText()
+                    remarquesField.getText(),
+                    statusComboBox.getValue() // Get statut value from ComboBox
             );
 
             plannificationDAO.updatePlannification(updatedPlan);

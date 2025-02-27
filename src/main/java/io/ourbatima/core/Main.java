@@ -3,6 +3,7 @@ package io.ourbatima.core;
 import io.ourbatima.core.impl.Layout;
 import io.ourbatima.core.interfaces.Loader;
 import io.ourbatima.core.services.LoadViews;
+import io.ourbatima.core.services.PlannificationStatusUpdater;
 import io.ourbatima.core.view.View;
 import io.ourbatima.core.view.layout.ConstructionLoader;
 import io.ourbatima.core.view.layout.LoadCircle;
@@ -23,10 +24,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
-import java.sql.Connection;
-
-import static io.ourbatima.core.Dao.DatabaseConnection.getConnection;
 
 public class Main extends Launcher {
     @Override
@@ -61,7 +58,6 @@ public class Main extends Launcher {
 
         // Chargement des vues
         Task<View> loadViews = new LoadViews(context, customLoader);
-
         context.setLayout(layout);
 
         Loader loadCircle = new LoadCircle("Starting..", "");
@@ -72,15 +68,12 @@ public class Main extends Launcher {
 
         loadViews.setOnSucceeded(event -> {
             Platform.runLater(() -> layout.setContent(context.routes().getView("login").getRoot()));
-
-
-
             View loginView = context.routes().getView("login");
             layout.setContent(loginView.getRoot());
-
-
-
         });
+
+        // Start the PlannificationStatusUpdater in the background
+        PlannificationStatusUpdater.startScheduler();
     }
 
     private Loader createCraneLoader(String text) {

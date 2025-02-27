@@ -7,8 +7,6 @@ module io.ourbatima {
     requires transitive javafx.media;
     exports io.ourbatima.controllers;
 
-
-    requires java.logging;
     requires javafx.swing;
     requires com.google.gson;
     requires google.api.client;
@@ -27,10 +25,8 @@ module io.ourbatima {
     requires fr.brouillard.oss.cssfx;
     opens io.ourbatima.controllers.projet to javafx.fxml;
 
-
 //    requires io.ourbatima.gncontrols;
     requires scenicView;
-    requires java.sql;
     requires jbcrypt;
     requires com.google.api.client.auth;
     requires com.google.api.client;
@@ -40,12 +36,12 @@ module io.ourbatima {
     requires java.mail;
     requires jdk.jsobject;
     requires json.smart;
-
+    requires com.fasterxml.jackson.databind;
+    requires java.sql;
 
     opens io.ourbatima to javafx.fxml;
-
     opens io.ourbatima.controllers to javafx.fxml;
-    opens  io.ourbatima.core.controls.icon to javafx.fxml;
+    opens io.ourbatima.core.controls.icon to javafx.fxml;
     exports io.ourbatima;
     opens io.ourbatima.views.controls to javafx.base;
     exports io.ourbatima.core.view;
@@ -53,7 +49,6 @@ module io.ourbatima {
     opens io.ourbatima.controllers.Utilisateur to javafx.fxml;
     opens io.ourbatima.controllers.Equipe to javafx.fxml;
     opens io.ourbatima.controllers.terrain to javafx.fxml;
-
 
     exports io.ourbatima.core.model;
     opens io.ourbatima.core.model to javafx.fxml;
@@ -65,7 +60,5 @@ module io.ourbatima {
     exports io.ourbatima.controllers.projet; // Export your other packages
     opens io.ourbatima.controllers.EtapeProjet to javafx.fxml;
     exports io.ourbatima.controllers.terrain; // Add this line
-
-
 
 }

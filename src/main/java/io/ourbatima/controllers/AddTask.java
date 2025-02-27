@@ -2,10 +2,12 @@ package io.ourbatima.controllers;
 
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
+import io.ourbatima.core.services.ProfanityFilterService;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import static io.ourbatima.core.Dao.DatabaseConnection.getConnection;
 
 public class AddTask extends ActionView {
@@ -71,6 +74,7 @@ public class AddTask extends ActionView {
         }
         return users;
     }
+
     private void showErrorPopup() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur de Saisie 🏗️");
@@ -88,7 +92,6 @@ public class AddTask extends ActionView {
         alert.showAndWait();
     }
 
-
     @FXML
     public void saveTask() {
         Utilisateur selectedArtisan = utilisateursArtisans.getValue();
@@ -104,6 +107,9 @@ public class AddTask extends ActionView {
             return;
         }
 
+        // **FILTER PROFANITY BEFORE SAVING**
+        String censoredDescription = ProfanityFilterService.filterProfanity(description);
+
         String query = "INSERT INTO tache (artisan_id, constructeur_id, description, date_debut, date_fin) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
@@ -112,7 +118,7 @@ public class AddTask extends ActionView {
 
             stmt.setObject(1, selectedArtisan != null ? selectedArtisan.getId() : null);
             stmt.setObject(2, selectedConstructeur != null ? selectedConstructeur.getId() : null);
-            stmt.setString(3, description);
+            stmt.setString(3, censoredDescription);  // SAVING CENSORED TEXT
             stmt.setDate(4, java.sql.Date.valueOf(dateDebut));
             stmt.setObject(5, dateFin != null ? java.sql.Date.valueOf(dateFin) : null);
 
@@ -123,10 +129,7 @@ public class AddTask extends ActionView {
         }
     }
 
-
     public void seeAllTasks(ActionEvent actionEvent) {
-        context.routes().setView("ListTaches");
-
+        context.routes().nav("ListTaches");
     }
 }
-

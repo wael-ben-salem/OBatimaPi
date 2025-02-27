@@ -24,6 +24,16 @@ public class Plannification {
         this.remarques = remarques;
         this.statut = statut;
     }
+    // Constructor with all fields including ID (for updates)
+    public Plannification(int idPlannification, int idTache, Date datePlanifiee, Time heureDebut, Time heureFin, String remarques, String statut) {
+        this.idPlannification = idPlannification;
+        this.idTache = idTache;
+        this.datePlanifiee = datePlanifiee;
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
+        this.remarques = remarques;
+        this.statut = statut;
+    }
 
     // Constructor without ID (for inserts)
     public Plannification(int idTache, Date datePlanifiee, Time heureDebut, Time heureFin, String priorite, String remarques, String statut) {
@@ -51,6 +61,15 @@ public class Plannification {
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
         this.remarques = remarques;
+    }
+
+    public Plannification(int idTache, Date date, Time heureDebut, Time heureFin, String remarques, String statut) {
+        this.idTache = idTache;
+        this.datePlanifiee = date;
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
+        this.remarques = remarques;
+        this.statut = statut;
     }
 
     public int getIdPlannification() { return idPlannification; }

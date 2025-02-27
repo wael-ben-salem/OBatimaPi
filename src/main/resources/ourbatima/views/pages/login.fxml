@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -51,6 +52,7 @@
                </VBox>
             </children>
          </StackPane>
+
          <!-- Section droite avec fond blanc et formulaire -->
          <StackPane fx:id="mainPane" style="-fx-background-color: #f8f9fa;" HBox.hgrow="ALWAYS">
             <ScrollPane id="bodyLogin" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent;" vbarPolicy="AS_NEEDED">
@@ -63,7 +65,7 @@
                      </VBox>
 
                      <!-- Formulaire avec fond gris -->
-                     <GridPane alignment="CENTER" hgap="15" maxWidth="400" style="-fx-background-color: rgba(245,245,245,0.9); -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 3);" vgap="10">
+                     <GridPane alignment="CENTER" hgap="15" maxWidth="400" style="-fx-background-color: rgba(245,245,245,0.9); -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 3);" vgap="20">
 
                         <columnConstraints>
                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
@@ -72,63 +74,46 @@
                         </columnConstraints>
 
                         <rowConstraints>
-                           <RowConstraints />
                            <RowConstraints prefHeight="60.0" />
-                           <RowConstraints prefHeight="30.0" />
                            <RowConstraints prefHeight="60.0" />
-                           <RowConstraints prefHeight="30.0" />
                            <RowConstraints prefHeight="40.0" />
+                           <RowConstraints prefHeight="60.0" />
                            <RowConstraints prefHeight="60.0" />
                         </rowConstraints>
 
                         <children>
-                           <!-- Email -->
-                           <TextField fx:id="emailField" prefWidth="233.0" promptText="Adresse email" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-                           <Label fx:id="emailError" styleClass="error-message" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+                           <!-- Nom d'utilisateur -->
+                           <TextField fx:id="emailField" promptText="Nom d'utilisateur" styleClass="input-modern" GridPane.columnSpan="2" />
+                           <Label fx:id="emailError" styleClass="error-message" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
                            <!-- Mot de passe -->
-                           <HBox alignment="CENTER" spacing="0" styleClass="password-container" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                              <StackPane maxWidth="400" style="-fx-pref-width: 400;" HBox.hgrow="ALWAYS">
-                                 <!-- Champ mot de passe -->
-                                 <PasswordField fx:id="passwordField" promptText="Mot de passe" style="-fx-padding: 12 35 12 12;" styleClass="input-modern" />
+                           <PasswordField fx:id="passwordField" promptText="Mot de passe" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                           <Label fx:id="passwordError" styleClass="error-message" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                           <Label fx:id="capsLockWarning" styleClass="warning-message" GridPane.columnSpan="2" GridPane.rowIndex="1" />
 
-                                 <!-- Champ texte visible -->
-                                 <TextField fx:id="passwordVisibleField" managed="false" promptText="Mot de passe" style="-fx-padding: 12 35 12 12;" styleClass="input-modern" visible="false" />
-      
-                                 <!-- Bouton toggle -->
-                                 <ToggleButton fx:id="togglePassword" onAction="#togglePasswordVisibility" styleClass="icon-btn" StackPane.alignment="CENTER_RIGHT">
-                                    <graphic>
-                                       <SVGPath fx:id="eyeIcon" content="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" styleClass="svg-path" />
-                                    </graphic>
-                                 </ToggleButton>
-                              </StackPane>
+                           <HBox alignment="CENTER_RIGHT" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                              <ToggleButton fx:id="togglePassword" styleClass="icon-btn">
+                                 <graphic>
+                                    <SVGPath content="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                                 </graphic>
+                              </ToggleButton>
                            </HBox>
 
-                           <Label fx:id="passwordError" styleClass="error-message" GridPane.columnSpan="3" GridPane.rowIndex="4" />
-
                            <!-- Options -->
-                           <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="3" GridPane.rowIndex="5">
+                           <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                              <CheckBox fx:id="rememberMe" style="-fx-text-fill: #6c757d;" text="Se souvenir de moi" />
                               <Region HBox.hgrow="ALWAYS" />
                               <Label fx:id="forgotPassword" onMouseClicked="#handleForgotPassword" style="-fx-text-fill: #c5a814;" styleClass="link" text="Mot de passe oublié ?" />
                            </HBox>
 
                            <!-- Bouton de connexion -->
-                           <Button fx:id="btn_enter" onAction="#handleLogin" styleClass="btn-gradient" text="Se connecter" GridPane.columnSpan="3" GridPane.rowIndex="6" />
-                           <Label text="Email :">
-                              <GridPane.margin>
-                                 <Insets />
-                              </GridPane.margin></Label>
-                           <Label text="Mot de passe :" GridPane.rowIndex="2">
-                              <GridPane.margin>
-                                 <Insets top="30.0" />
-                              </GridPane.margin></Label>
+                           <Button fx:id="btn_enter" onAction="#handleLogin" styleClass="btn-gradient" text="Se connecter" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+
                         </children>
                      </GridPane>
-
-                     <!-- Section "Continuer avec Google" -->
                      <VBox alignment="CENTER" spacing="15">
                         <HBox alignment="CENTER" spacing="10">
-                           <Label style="-fx-text-fill: #6c757d; -fx-font-weight: bold;" text="Continuer avec Google" />
+                              <Label text="Continuer avec Google" style="-fx-text-fill: #6c757d; -fx-font-weight: bold;"/>
                            <Button fx:id="btn_google" onAction="#handleGoogleLogin" styleClass="btn-social">
                               <graphic>
                                  <ImageView fitHeight="24" fitWidth="24">
@@ -137,19 +122,21 @@
                                     </image>
                                  </ImageView>
                               </graphic>
+
                            </Button>
                         </HBox>
 
                         <!-- Séparateur stylisé -->
                         <HBox alignment="CENTER" spacing="10">
-                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);" />
-                           <Label style="-fx-text-fill: #6c757d;" text="ou" />
-                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);" />
+                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);"/>
+                           <Label text="ou" style="-fx-text-fill: #6c757d;"/>
+                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);"/>
                         </HBox>
 
-                        <!-- Bouton de création de compte -->
+                        <!-- Création de compte -->
                         <Button fx:id="btn_createAccount" onAction="#goToRegister" styleClass="btn-gradient" text="Créer un compte" />
                      </VBox>
+
 
                      <!-- Footer -->
                      <HBox alignment="CENTER" style="-fx-padding: 30 0 0 0;">

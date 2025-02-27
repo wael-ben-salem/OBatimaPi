@@ -155,12 +155,9 @@ public class ListTaches extends ActionView {
     }
 
     public void gototasks(ActionEvent actionEvent) {
-        context.routes().setView("AddTask");
+        context.routes().nav("AddTask");
 
     }
 
-    public void gotodrw(ActionEvent actionEvent) {
-        context.routes().setView("drawer");
 
-    }
 }

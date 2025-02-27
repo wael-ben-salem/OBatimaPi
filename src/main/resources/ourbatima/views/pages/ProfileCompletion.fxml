@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -10,102 +9,59 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <VBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="io.ourbatima.controllers.ProfileCompletionController"
-      spacing="15"
-      style="-fx-padding: 30; -fx-background-color: #f8f9fa;"
-      prefWidth="500"
-      alignment="TOP_CENTER">
-
-    <stylesheets>
-        <URL value="@../../style/css/colors.css" />
-        <URL value="@../../style/css/skeleton.css" />
-        <URL value="@../../style/css/typographic.css" />
-        <URL value="@../../style/css/register.css" />
-
-    </stylesheets>
+      spacing="20"
+      style="-fx-padding: 30; -fx-background-color: #f4f4f4;"
+      prefWidth="400">
 
     <Label text="Compléter votre profil"
-           styleClass="auth-title"
-           style="-fx-font-size: 24px; -fx-padding: 0 0 15 0;"/>
+           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
 
-    <!-- Informations non modifiables -->
-    <VBox spacing="5">
-        <Label text="Nom" styleClass="input-label"/>
-        <TextField fx:id="txtNom" styleClass="input-modern" editable="false"/>
-    </VBox>
+    <!-- Champ Nom -->
+    <TextField fx:id="txtNom"
+               promptText="Nom"
+               editable="false"
+               style="-fx-background-color: #ffffff;"/>
 
-    <VBox spacing="5">
-        <Label text="Prénom" styleClass="input-label"/>
-        <TextField fx:id="txtPrenom" styleClass="input-modern" editable="false"/>
-    </VBox>
+    <!-- Champ Prénom -->
+    <TextField fx:id="txtPrenom"
+               promptText="Prénom"
+               editable="false"
+               style="-fx-background-color: #ffffff;"/>
 
-    <VBox spacing="5">
-        <Label text="Email" styleClass="input-label"/>
-        <TextField fx:id="txtEmail" styleClass="input-modern" editable="false"/>
-    </VBox>
+    <!-- Champ Email -->
+    <TextField fx:id="txtEmail"
+               promptText="Email"
+               editable="false"
+               style="-fx-background-color: #e8e8e8;"/>
 
-    <!-- Téléphone -->
-    <VBox spacing="5">
-        <Label text="Téléphone *" styleClass="input-label"/>
-        <HBox spacing="10">
-            <ComboBox fx:id="cbCountryCode" styleClass="country-combo" prefWidth="100">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="+216"/>
-                        <String fx:value="00216"/>
-                    </FXCollections>
-                </items>
-            </ComboBox>
-            <TextField fx:id="txtTelephone" promptText="XX XXX XXX" styleClass="input-modern" HBox.hgrow="ALWAYS"/>
-        </HBox>
-        <Label fx:id="telephoneError" styleClass="error-label"/>
-    </VBox>
+    <!-- Champ Téléphone -->
+    <TextField fx:id="txtTelephone"
+               promptText="Téléphone"
+               style="-fx-background-color: #ffffff;"/>
 
-    <!-- Adresse -->
-    <VBox spacing="5">
-        <Label text="Adresse *" styleClass="input-label"/>
-        <HBox spacing="10" alignment="CENTER_LEFT">
-            <Button styleClass="map-button" onAction="#handleMapClick">
-                <graphic>
-                    <ImageView fitHeight="20" fitWidth="20" preserveRatio="true">
-                        <image>
-                            <Image url="@../../../images/map.png"/>
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Button>
-        </HBox>
-        <TextField fx:id="txtAdresse" promptText="Adresse complète" styleClass="input-modern"/>
-        <Label fx:id="adresseError" styleClass="error-label"/>
-    </VBox>
+    <!-- Champ Adresse -->
+    <TextField fx:id="txtAdresse"
+               promptText="Adresse"
+               style="-fx-background-color: #ffffff;"/>
 
     <!-- Mot de passe -->
-    <VBox spacing="5">
-        <Label text="Nouveau mot de passe *" styleClass="input-label"/>
-        <PasswordField fx:id="txtPassword"
-                       promptText="8 caractères minimum, 1 majuscule, 1 chiffre"
-                       styleClass="input-modern"/>
-        <HBox spacing="5" alignment="CENTER_LEFT">
-            <Label styleClass="strength-weak" text="●"/>
-            <Label styleClass="strength-medium" text="●"/>
-            <Label styleClass="strength-strong" text="●"/>
-        </HBox>
-        <Label fx:id="passwordError" styleClass="error-label"/>
-    </VBox>
+    <PasswordField fx:id="txtPassword"
+                   promptText="Nouveau mot de passe (8 caractères minimum)"
+                   style="-fx-background-color: #ffffff;"/>
 
     <!-- Boutons -->
-    <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+    <HBox spacing="10"
+          alignment="CENTER_RIGHT"
+          style="-fx-padding: 20 0 0 0;">
+
+
+
         <Button text="Enregistrer"
                 onAction="#onSave"
-                styleClass="auth-button primary"
-                defaultButton="true"/>
+                style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
     </HBox>
 
 </VBox>
