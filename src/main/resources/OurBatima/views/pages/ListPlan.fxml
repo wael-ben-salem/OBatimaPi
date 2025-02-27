@@ -27,7 +27,6 @@
             <children>
                 <Button text="Refresh List" onAction="#refreshList"/>
                 <Button text="Add a Plannification" onAction="#gotoplanifs"/>
-                <Button text="Go back to drawer" onAction="#gotodrw"/>
             </children>
         </HBox>
     </children>

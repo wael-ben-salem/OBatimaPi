@@ -454,10 +454,10 @@ public class SideNavController extends ActionView {
     }
 
     public void gotoplan(ActionEvent actionEvent) {
-        context.routes().setView("AddPlan");
+        context.routes().nav("AddPlan");
     }
     public void gotoplanf(ActionEvent actionEvent) {
-        context.routes().setView("AddTask");
+        context.routes().nav("AddTask");
     }
     public void gotoAjoutProjet(ActionEvent actionEvent) {
         context.routes().nav("ajoutProjet");

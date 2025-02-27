@@ -71,8 +71,7 @@ public class PlannificationDAO {
     }
 
     public void updatePlannification(Plannification plannification) {
-        String sql = "UPDATE Plannification SET id_tache = ?, date_planifiee = ?, heure_debut = ?, heure_fin = ?, remarques = ? WHERE id_plannification = ?";
-
+        String sql = "UPDATE Plannification SET id_tache = ?, date_planifiee = ?, heure_debut = ?, heure_fin = ?, remarques = ?, statut = ? WHERE id_plannification = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -82,8 +81,8 @@ public class PlannificationDAO {
             stmt.setTime(3, plannification.getHeureDebut());
             stmt.setTime(4, plannification.getHeureFin());
             stmt.setString(5, plannification.getRemarques());
-            stmt.setInt(6, plannification.getIdPlannification());
-
+            stmt.setString(6, plannification.getStatut());
+            stmt.setInt(7, plannification.getIdPlannification());
 
             stmt.executeUpdate();
             System.out.println("Plannification mise à jour avec succès !");
@@ -91,6 +90,7 @@ public class PlannificationDAO {
             e.printStackTrace();
         }
     }
+
 
     public Plannification getPlannificationById(int idPlannification) {
         String sql = "SELECT * FROM Plannification WHERE id_plannification = ?";

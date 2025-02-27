@@ -43,10 +43,17 @@ public class AddPlan extends ActionView {
     private final PlannificationDAO plannificationDAO = new PlannificationDAO();
 
     @FXML
+    private ComboBox<String> statusComboBox;
+
+    @FXML
     public void initialize() {
         editTaskButton.setDisable(true);
         tacheDescriptions.setOnAction(event -> editTaskButton.setDisable(tacheDescriptions.getValue() == null));
+
+        // Populate the statusComboBox
+        statusComboBox.setItems(FXCollections.observableArrayList("Planifié", "En cours", "Terminé"));
     }
+
 
     @FXML
     public void onSeeTachesClicked() {
@@ -120,19 +127,22 @@ public class AddPlan extends ActionView {
             return;
         }
 
+        // Get selected status
+        String selectedStatus = statusComboBox.getValue();
+
         Plannification newPlan = new Plannification(
                 selectedTache.getIdTache(),
                 Date.valueOf(datePicker.getValue()),
                 heureDebut,
                 heureFin,
-                remarquesArea.getText()
+                remarquesArea.getText(),
+                selectedStatus
         );
 
         plannificationDAO.ajouterPlannification(newPlan);
         showSuccessPopup("Plannification ajoutée avec succès ! ✅🏗️🚀");
     }
 
-    // Display an error popup with civil engineering emojis
     private void showValidationError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur de Saisie 🚧");
@@ -141,7 +151,6 @@ public class AddPlan extends ActionView {
         alert.showAndWait();
     }
 
-    // Display a success popup
     private void showSuccessPopup(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Succès ✅");
@@ -150,8 +159,7 @@ public class AddPlan extends ActionView {
         alert.showAndWait();
     }
 
-
     public void onSeeAllPlansClicked(ActionEvent actionEvent) {
-        context.routes().setView("ListPlan");
+        context.routes().nav("ListPlan");
     }
 }

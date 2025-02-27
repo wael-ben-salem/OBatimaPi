@@ -73,6 +73,14 @@ GridPane {
     -fx-padding: 12;
 }
 
+/* Adaptation des couleurs */
+.h1 {
+    -fx-text-fill: #372a28 !important;
+}
+
+.h4.text-muted {
+    -fx-text-fill: #6c757d !important;
+}
 
 .btn-link {
     -fx-border-color: transparent;
@@ -193,8 +201,17 @@ GridPane {
 }
 
 /* Messages d'erreur */
+.error-message {
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 0 0 5px;
+}
 
-
+.warning-message {
+    -fx-text-fill: #f39c12;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 0 0 5px;
+}
 
 .content-box {
     -fx-background-color: -color-background;
@@ -278,41 +295,5 @@ GridPane {
 .error-message {
     -fx-text-fill: #dc3545;
     -fx-font-size: 12px;
-    -fx-padding: 5px 0 0 5px;
-    -fx-translate-y: -25px; /* Ajuste cette valeur pour monter le texte */
+    -fx-padding: 5 0;
 }
-
-
-.warning-message {
-    -fx-text-fill: #ffc107;
-    -fx-font-size: 12px;
-}
-
-
-
-.btn-gradient:disabled {
-    -fx-opacity: 0.7;
-}
-/* Style pour le bouton */
-.icon-button {
-    -fx-background-color: transparent;
-    -fx-border-width: 0;
-    -fx-padding: 0;
-}
-
-.icon-button:hover {
-    -fx-background-color: rgba(0, 0, 0, 0.1);
-}
-.input-modern {
-    -fx-padding: 5px;
-    -fx-border-radius: 5px;
-    -fx-border-color: #ccc;
-    -fx-border-width: 1px;
-}
-
-.icon-button:active {
-    -fx-background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Style pour le champ de texte visible */
-

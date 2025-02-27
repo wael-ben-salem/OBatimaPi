@@ -31,17 +31,28 @@ public class ListPlan extends ActionView {
 
     @FXML
     public void initialize() {
+        tilePanePlans.setStyle("-fx-padding: 30 0 0 0; -fx-hgap: 15; -fx-vgap: 20;"); // 30px top padding, 15px horizontal gap, 20px vertical gap
         refreshList();
     }
+
+
+
 
     @FXML
     public void refreshList() {
         tilePanePlans.getChildren().clear();
+
+        // Add a spacer at the top to push cards down
+        Label spacer = new Label();
+        spacer.setMinHeight(30);
+        tilePanePlans.getChildren().add(spacer);
+
         loadPlans();
     }
 
     private void loadPlans() {
-        String sql = "SELECT p.id_plannification, t.description AS tache_description, p.date_planifiee, p.heure_debut, p.remarques " +
+        String sql = "SELECT p.id_plannification, t.description AS tache_description, p.date_planifiee, " +
+                "p.heure_debut, p.remarques, p.statut " +
                 "FROM Plannification p " +
                 "JOIN Tache t ON p.id_tache = t.id_tache";
 
@@ -53,13 +64,21 @@ public class ListPlan extends ActionView {
             while (rs.next()) {
                 count++;
 
-                VBox card = createPlanCard(
-                        rs.getInt("id_plannification"),
-                        rs.getString("tache_description"),
-                        rs.getString("date_planifiee"),
-                        rs.getString("heure_debut"),
-                        rs.getString("remarques")
-                );
+                int id = rs.getInt("id_plannification");
+                String description = rs.getString("tache_description");
+                String date = rs.getString("date_planifiee");
+                String heure = rs.getString("heure_debut");
+                String remarques = rs.getString("remarques");
+                String statut = rs.getString("statut");
+
+                // Ensure values are not null
+                description = (description != null) ? description : "Aucune description";
+                date = (date != null) ? date : "Non défini";
+                heure = (heure != null) ? heure : "Non défini";
+                remarques = (remarques != null) ? remarques : "Aucune remarque";
+                statut = (statut != null) ? statut : "Planifié"; // Default statut
+
+                VBox card = createPlanCard(id, description, date, heure, remarques, statut);
                 tilePanePlans.getChildren().add(card);
             }
             System.out.println("Loaded " + count + " plans.");
@@ -68,11 +87,14 @@ public class ListPlan extends ActionView {
         }
     }
 
-    private VBox createPlanCard(int id, String description, String date, String heure, String remarques) {
+    private VBox createPlanCard(int id, String description, String date, String heure, String remarques, String statut) {
         VBox card = new VBox();
         card.setSpacing(5);
         card.setStyle("-fx-background-color: #f4f4f4; -fx-padding: 10; -fx-border-radius: 10; -fx-background-radius: 10;");
-        card.setPrefSize(230, 140);
+        card.setPrefSize(230, 160);
+
+        // Add top margin to space out each card
+        card.setTranslateY(20); // Push each card down
 
         Label lblTitle = new Label("Plan #" + id);
         lblTitle.setFont(Font.font("Arial", 16));
@@ -86,8 +108,12 @@ public class ListPlan extends ActionView {
         Label lblDate = new Label("📅 " + date + " - " + heure);
         lblDate.setFont(Font.font("Arial", 12));
 
-        Label lblRemarques = new Label("📌 " + (remarques != null ? remarques : "Aucune remarque"));
+        Label lblRemarques = new Label("📌 " + remarques);
         lblRemarques.setFont(Font.font("Arial", 12));
+
+        Label lblStatut = new Label("📊 Statut: " + statut);
+        lblStatut.setFont(Font.font("Arial", 12));
+        lblStatut.setStyle("-fx-font-weight: bold; -fx-text-fill: " + getStatutColor(statut) + ";");
 
         HBox buttonBox = new HBox(10);
         buttonBox.setStyle("-fx-alignment: center;");
@@ -101,9 +127,17 @@ public class ListPlan extends ActionView {
         deleteButton.setOnAction(e -> deletePlan(id));
 
         buttonBox.getChildren().addAll(updateButton, deleteButton);
-        card.getChildren().addAll(lblTitle, lblDescription, lblDate, lblRemarques, buttonBox);
+        card.getChildren().addAll(lblTitle, lblDescription, lblDate, lblRemarques, lblStatut, buttonBox);
 
         return card;
+    }
+    private String getStatutColor(String statut) {
+        switch (statut) {
+            case "Planifié": return "#FFA500"; // Orange
+            case "En cours": return "#008000"; // Green
+            case "Terminé": return "#0000FF"; // Blue
+            default: return "#000000"; // Black (default)
+        }
     }
 
     private void deletePlan(int idPlan) {
@@ -133,10 +167,6 @@ public class ListPlan extends ActionView {
     }
 
     public void gotoplanifs(ActionEvent actionEvent) {
-        context.routes().setView("AddPlan");
-    }
-
-    public void gotodrw(ActionEvent actionEvent) {
-            context.routes().setView("drawer");
+        context.routes().nav("AddPlan");
     }
 }

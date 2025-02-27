@@ -12,60 +12,6 @@
       fxml: drawer.fxml
   }
   - {
-    name: artisan_list,
-    title: "Liste des Artisans",
-    folder: utilisateur,
-    fxml: userlist.fxml
-  }
-  - {
-    name: constructeur_list,
-    title: "Liste des Constructeurs",
-    folder: utilisateur,
-    fxml: userlist.fxml
-  }
-  - {
-    name: client_list,
-    title: "Liste des Clients",
-    folder: utilisateur,
-    fxml: userlist.fxml
-  }
-  - {
-    name: gestionnaire_stock_list,
-    title: "Liste des Gestionnaires de Stock",
-    folder: utilisateur,
-    fxml: userlist.fxml
-  }
-  - {
-    name: equipelist,
-    title: "Liste des Equipes",
-    folder: equipe,
-    fxml: equipelist.fxml
-  }
-  - {
-    name: equipeudpate,
-    title: "Liste des Equipes",
-    folder: equipe,
-    fxml: equipeupdate.fxml
-  }
-  - {
-    name: equipedetail,
-    title: "Liste des Equipes",
-    folder: equipe,
-    fxml: equipedetail.fxml
-  }
-  - {
-    name: equipeadd,
-    title: "Liste des Equipes",
-    folder: equipe,
-    fxml: equipeadd.fxml
-  }
-  - {
-    name: equipecard,
-    title: "Liste des Equipes",
-    folder: equipe,
-    fxml: equipecard.fxml
-  }
-  - {
       name: login,
       title: Login,
       folder: pages,
@@ -148,80 +94,6 @@
       folder: pages,
       fxml: testimonial.fxml
   }
-
-  - {
-
-    name: addstock,
-    title: addstock,
-    folder: pages,
-    fxml: addstock.fxml
-  }
-
-
-
-  - {
-    name: stock_table,
-    title: stock_table,
-    folder: pages,
-    fxml: stock_table.fxml
-  }
-
-  - {
-    name: fournisseur_table,
-    title: fournisseur_table,
-    folder: pages,
-    fxml: fournisseur_table.fxml
-  }
-
-  - {
-    name: articlelist,
-    title: articlelist,
-    folder: pages,
-    fxml: articlelist.fxml
-  }
-  - {
-    name: Fournisseur,
-    title: Fournisseur,
-    folder: pages,
-    fxml: Fournisseur.fxml
-  }
-  - {
-    name: Article,
-    title: Article,
-    folder: pages,
-    fxml: Article.fxml
-  }
-  -
-  - {
-    name: ajoutProjet,
-    title: ajoutProjet,
-    folder: Projet,
-    fxml: ajoutProjet.fxml
-  }
-  - {
-    name: afficherEtapeProjet,
-    title: afficherEtapeProjet,
-    folder: EtapeProjet,
-    fxml: afficherEtapeProjet.fxml
-  }
-  - {
-    name: ajoutEtapeProjet,
-    title: ajoutEtapeProjet,
-    folder: EtapeProjet,
-    fxml: ajoutEtapeProjet.fxml
-  }
-  - {
-    name: afficherProjet,
-    title: afficherProjet,
-    folder: Projet,
-    fxml: afficherProjet.fxml
-  }
-  - {
-    name: ajoutTerrain,
-    title: ajoutTerrain,
-    folder: Terrain,
-    fxml: ajoutTerrain.fxml
-  }
   - {
     name: AddPlan,
     title: AddPlan,
@@ -258,6 +130,8 @@
     folder: pages,
     fxml: update_plan.fxml
   }
+
+
   - {
     name: ListContrats,
     title: ListContrats,
@@ -276,6 +150,9 @@
   }
 #  - {
 
+
+
+#  - {
 #    name: sales_left,
 #    title: Sales Column,
 #    fxml: sales_left.fxml
