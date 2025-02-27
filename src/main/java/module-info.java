@@ -61,4 +61,14 @@ module io.ourbatima {
     opens io.ourbatima.controllers.EtapeProjet to javafx.fxml;
     exports io.ourbatima.controllers.terrain; // Add this line
 
+
 }
+
+    exports io.ourbatima.controllers.FinanceControllers; // Export your controller package
+    opens io.ourbatima.controllers.FinanceControllers to javafx.fxml;
+    opens io.ourbatima.core.model.financeModel to javafx.base, javafx.fxml;
+
+
+
+}
+

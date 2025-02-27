@@ -101,6 +101,11 @@ public class Projet {
         this.etapes = (etapes != null) ? etapes : new ArrayList<>();
     }
 
+    public Projet(int id, String name) {
+        this.Id_projet=id;
+        this.nomProjet=name;
+    }
+
     public String getEmailClientById() {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
         Utilisateur utilisateur = utilisateurDAO.getUserProjById(id_client);

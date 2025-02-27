@@ -132,6 +132,26 @@
   }
 
 
+  - {
+    name: ListContrats,
+    title: ListContrats,
+    folder: pages/Finance_vews,
+    fxml: ListContrats.fxml
+
+
+  }
+  - {
+    name: ListAbonnement,
+    title: ListAbonnement,
+    folder: pages/Finance_vews,
+    fxml: ListAbonnement.fxml
+
+
+  }
+#  - {
+
+
+
 #  - {
 #    name: sales_left,
 #    title: Sales Column,

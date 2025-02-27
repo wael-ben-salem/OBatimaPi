@@ -34,12 +34,12 @@ public class abonnementService {
 
     public void insertAbonnemant(abonnement abb) {
         try (Connection conn = getConnection()) {
-            String sql = "INSERT INTO abonnement (id_abonnement, nom_abonnement, duree, prix) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO abonnement ( nom_abonnement, duree, prix) VALUES ( ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, abb.getIdAbonnement());
-            stmt.setString(2, abb.getNomAbonnement());
-            stmt.setString(3, abb.getDuree());
-            stmt.setDouble(4, abb.getPrix());
+
+            stmt.setString(1, abb.getNomAbonnement());
+            stmt.setString(2, abb.getDuree());
+            stmt.setDouble(3, abb.getPrix());
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Abonnement inséré avec succès !");
@@ -80,14 +80,14 @@ public class abonnementService {
         }
 
 
-public void DeliteAbonnement(abonnement abb) {
+public void DeliteAbonnement(int abb) {
 
     try (Connection conn = getConnection()) {
 
         String sql = "DELETE FROM abonnement WHERE id_abonnement = ?";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, abb.getIdAbonnement());
+        stmt.setInt(1, abb);
         int rowsDeleted = stmt.executeUpdate();
 
 
