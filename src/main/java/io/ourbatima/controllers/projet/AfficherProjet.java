@@ -117,7 +117,7 @@ public class AfficherProjet extends ActionView {
     }
 
     @FXML
-    private void loadProjets() {
+    void loadProjets() {
         try {
             List<Projet> projets = projetDAO.getAllProjets();
             System.out.println("Fetched Projects: " + projets);
