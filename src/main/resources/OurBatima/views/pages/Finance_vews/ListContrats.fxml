@@ -64,6 +64,6 @@
         <Button fx:id="dfg" layoutX="56.0" layoutY="59.0" mnemonicParsing="false" onAction="#alolao" prefHeight="26.0" prefWidth="123.0" text="upload data " />
 
         <!-- Bouton Ajouter -->
-        <Button layoutX="700.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleAjouter" styleClass="btn-add" text="Ajouter" />
+        <Button layoutX="700.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleAjouter"  text="Ajouter" />
     </children>
 </AnchorPane>

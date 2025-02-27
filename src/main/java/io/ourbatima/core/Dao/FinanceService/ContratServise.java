@@ -19,7 +19,7 @@ public class ContratServise {
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Contrat con = new Contrat(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getString(5), rs.getDate(6), rs.getDouble(7),  rs.getInt(8));
+                Contrat con = new Contrat(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getString(5), rs.getDate(6), rs.getDouble(7), rs.getInt(8));
 
 
                 contrat.add(con);
@@ -44,7 +44,7 @@ public class ContratServise {
             stmt.setDate(2, contrat.getDateSignature());
             stmt.setDate(3, contrat.getDateDebut());
             stmt.setString(4, contrat.isSignatureElectronique());
-            stmt.setDate(5,  contrat.getDateFin());
+            stmt.setDate(5, contrat.getDateFin());
             stmt.setDouble(6, contrat.getMontantTotal());
 
             stmt.setInt(7, contrat.getIdProjet());
@@ -89,8 +89,6 @@ public class ContratServise {
 
 
     }
-
-
 
 
     public void update(Contrat contrat) {
@@ -155,21 +153,19 @@ public class ContratServise {
     }
 
 
-
     public void delitecontrat(int id) {
 
         try (Connection conn = getConnection()) {
 
             String sql = "DELETE FROM contrat WHERE id_contrat = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,id);
+            stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
                 System.out.println("Contrat supprimé avec succès !");
             } else {
                 System.out.println("Aucun contrat trouvé avec cet ID !");
             }
-
 
 
         } catch (SQLException e) {
@@ -181,10 +177,10 @@ public class ContratServise {
 
     public String getClientNOMEtidbyidcontrat(int idprojet) throws SQLException {
         System.out.println("idprojet: " + idprojet);
-String aloalo;
-        String nom="";
-        int clientId=0;
-        try (Connection conn = getConnection()){
+        String aloalo;
+        String nom = "";
+        int clientId = 0;
+        try (Connection conn = getConnection()) {
 
 
             String query = "SELECT cl.nom, cl.id " +
@@ -198,32 +194,47 @@ String aloalo;
 
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, idprojet);
-            ResultSet rs = stmt.executeQuery() ;
+            ResultSet rs = stmt.executeQuery();
 
-                while (rs.next()) {
-                     nom = rs.getString("nom");
-                     clientId = rs.getInt("id");
-                    System.out.println(" ID: " + clientId+"Client: " + nom  );
-                }
-
-
-
-
-
-
-
-
+            while (rs.next()) {
+                nom = rs.getString("nom");
+                clientId = rs.getInt("id");
+                System.out.println(" ID: " + clientId + "Client: " + nom);
+            }
 
 
         }
 
-return aloalo=clientId+"-"+nom;
+        return aloalo = clientId + "-" + nom;
 
 
     }
 
+    public String getmailClientbyid(int id) {
+        String mail = "";
+        try (Connection conn = getConnection()) {
 
 
+            String query = "SELECT email " +
+                    "FROM utilisateur " +
+                    "WHERE id = ? ";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                mail = rs.getString("email");
+
+                System.out.println("Client: " + mail);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+return  mail;
+
+    }
 
 
 }
