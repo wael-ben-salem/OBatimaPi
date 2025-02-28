@@ -2,7 +2,9 @@ package io.ourbatima.core;
 
 
 import io.ourbatima.core.impl.Layout;
+import io.ourbatima.core.interfaces.Initializable;
 import io.ourbatima.core.interfaces.Loader;
+import io.ourbatima.core.model.ViewUtils;
 import io.ourbatima.core.services.LoadViews;
 import io.ourbatima.core.view.View;
 import io.ourbatima.core.view.layout.LoadCircle;
@@ -39,6 +41,15 @@ public class Main extends Launcher {
             View loginView = context.routes().getView("login");
             layout.setContent(loginView.getRoot());
 
+//            View loginView = ViewUtils.loadView(context, "login"); //hehdi sirine testi
+//            layout.setContent(loginView.getRoot());
+
+
+            //makes the initialize get called at the beggining but this only work ki n7ot view li fehe initialize
+//            if (loginView.getController() instanceof Initializable) {
+//                Initializable controller = (Initializable) loginView.getController();
+//                controller.initialize();
+//            }
 
         });
 

@@ -3,6 +3,7 @@ package io.ourbatima.controllers.projet;
 import io.ourbatima.core.Dao.Projet.ProjetDAO;
 import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.interfaces.Initializable;
 import io.ourbatima.core.model.EtapeProjet;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Terrain;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 
 
 
-public class AfficherProjet extends ActionView {
+public class AfficherProjet extends ActionView implements Initializable {
 
     private final ProjetDAO projetDAO = new ProjetDAO();
     @FXML private TableView<Projet> projetTable;
@@ -54,7 +55,7 @@ public class AfficherProjet extends ActionView {
 
     private ObservableList<Projet> projetData = FXCollections.observableArrayList();
 
-    @FXML
+    @Override
     public void initialize() {
         System.out.println("AfficherProjet Controller Initialized");
         setupTable();

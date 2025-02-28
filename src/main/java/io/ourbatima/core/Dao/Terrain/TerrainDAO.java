@@ -110,7 +110,7 @@ public class TerrainDAO {
 
     public List<String> getObservationsForTerrain(int idTerrain) {
         List<String> observations = new ArrayList<>();
-        String sql = "SELECT observations FROM Visite WHERE Id_terrain = ?";
+        String sql = "SELECT observations FROM Visite WHERE IdTerrain = ?";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -225,7 +225,7 @@ public class TerrainDAO {
                             rs.getString("emplacement")
                     );
                 } else {
-                    System.out.println("❌ No Terrain found with emplacement: " + emplacement);
+                    System.out.println("No Terrain found with emplacement: " + emplacement);
                 }
             }
         } catch (SQLException e) {
@@ -254,7 +254,7 @@ public class TerrainDAO {
 
 
     public static String getTerrainEmplacementById(int id) {
-        String sql = "SELECT emplacement FROM Terrain WHERE id_terrain = ?";
+        String sql = "SELECT emplacement FROM Terrain WHERE Id_terrain = ?";
         String emplacement = null;
 
         try (Connection conn = DatabaseConnection.getConnection();

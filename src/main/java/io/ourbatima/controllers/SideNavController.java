@@ -6,8 +6,10 @@ import io.ourbatima.core.controls.icon.Icons;
 import io.ourbatima.core.exceptions.NavigationException;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
+import io.ourbatima.core.model.ViewUtils;
 import io.ourbatima.core.services.DrawerBehavior;
 import io.ourbatima.core.view.SimpleView;
+import io.ourbatima.core.view.View;
 import io.ourbatima.core.view.layout.DialogContainer;
 import io.ourbatima.core.view.layout.creators.TutorialCreator;
 import io.ourbatima.views.TutorialUnderstanding;
@@ -373,8 +375,8 @@ public class SideNavController extends ActionView {
     }
 
     public void gotoAfficherProjet(ActionEvent actionEvent) {
-        context.routes().nav("afficherProjet");
-
+        View afficherProjetView = ViewUtils.loadView(context, "afficherProjet");
+        context.routes().putAndGo(afficherProjetView);
     }
 
     public void gotoAjouterEtapeProjet(ActionEvent actionEvent) {
@@ -383,14 +385,19 @@ public class SideNavController extends ActionView {
     }
 
     public void gotoAfficherEtapeProjet(ActionEvent actionEvent) {
-        context.routes().nav("afficherEtapeProjet");
-
+        View afficherEtapeProjetView = ViewUtils.loadView(context, "afficherEtapeProjet");
+        context.routes().putAndGo(afficherEtapeProjetView);
     }
 
 
-    public void gotoAfficherTerrain(ActionEvent actionEvent) {
-        context.routes().nav("afficherTerrain");
+//    public void gotoAfficherTerrain(ActionEvent actionEvent) {
+//        context.routes().nav("afficherTerrain");
+//
+//    }
 
+    public void gotoAfficherTerrain(ActionEvent actionEvent) {
+        View afficherTerrainView = ViewUtils.loadView(context, "afficherTerrain");
+        context.routes().putAndGo(afficherTerrainView);
     }
 
 

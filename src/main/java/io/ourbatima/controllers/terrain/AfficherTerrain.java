@@ -4,6 +4,7 @@ import io.ourbatima.core.Dao.Projet.ProjetDAO;
 import io.ourbatima.core.Dao.Terrain.TerrainDAO;
 import io.ourbatima.core.Dao.Visite.VisiteDAO;
 import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.interfaces.Initializable;
 import io.ourbatima.core.interfaces.Refreshable;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Terrain;
@@ -23,11 +24,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AfficherTerrain extends ActionView implements Refreshable {
+public class AfficherTerrain extends ActionView implements Refreshable, Initializable {
 
     private final TerrainDAO terrainDAO = new TerrainDAO();
     private final VisiteDAO visiteDAO = new VisiteDAO();
-     // Instance of the MapHandler
+
 
     @FXML
     private Button updateButton;
@@ -43,13 +44,25 @@ public class AfficherTerrain extends ActionView implements Refreshable {
     @FXML
     private TextArea terrainDetails;
 
-    @FXML
+    public AfficherTerrain() {
+    }
+
+    @Override
     public void initialize() {
         System.out.println("✅ AfficherTerrain Controller Initialized");
         System.out.println("🔍 listNomEtapes: " + listViewEmplacement);
         System.out.println("📝 etapeProjetDetails: " + terrainDetails);
-        loadEmplacementList();
         setupClickListener();
+        Platform.runLater(() -> {
+           listViewEmplacement.getItems().clear();
+           loadEmplacementList();
+        });
+    }
+
+    @FXML
+    private void handleReload() {
+        System.out.println("🔄 Reload button clicked!");
+        initialize();
     }
 
     @FXML
@@ -59,6 +72,7 @@ public class AfficherTerrain extends ActionView implements Refreshable {
         if (terrains.isEmpty()) {
             showAlert("Aucun emplacement", "Aucun terrain n'a été trouvé dans la base de données.");
         } else {
+            System.out.println("✅ Found " + terrains.size() + " terrains.");
             List<String> emplacementNames = terrains.stream()
                     .map(Terrain::getEmplacement)
                     .collect(Collectors.toList());
@@ -97,7 +111,10 @@ public class AfficherTerrain extends ActionView implements Refreshable {
     }
 
     private void showTerrainDetails(Terrain terrain) {
+        System.out.println("🔍 showTerrainDetails called for terrain: " + terrain);
+
         if (terrain == null) {
+            System.out.println("⚠️ Terrain is null!");
             terrainDetails.setText("Aucun détail trouvé pour cet emplacement.");
             return;
         }
@@ -118,6 +135,7 @@ public class AfficherTerrain extends ActionView implements Refreshable {
                 "🌍    Détails Géographiques: " + (terrain.getDetailsGeo() != null ? terrain.getDetailsGeo() : "N/A") + "\n" + "\n" +
                 "📅    " + visitsDetails.toString();
 
+        System.out.println("🔍 Terrain details: " + details);
         terrainDetails.setText(details);
     }
 
@@ -132,15 +150,7 @@ public class AfficherTerrain extends ActionView implements Refreshable {
     }
 
 
-    @FXML
-    private void handleReload() {
-        System.out.println("🔄 Reload button clicked!");
-        Platform.runLater(() -> {
-            listViewEmplacement.getItems().clear();
-            loadEmplacementList();
-            initialize();
-        });
-    }
+
 
     @FXML
     private void handleUpdate() {
@@ -230,8 +240,8 @@ public class AfficherTerrain extends ActionView implements Refreshable {
         if (selectedEmplacement != null) {
             Terrain terrain = terrainDAO.getTerrainByEmplacement(selectedEmplacement);
             if (terrain != null) {
-                terrainDAO.deleteTerrain(terrain.getId_terrain()); // Call the delete method with the ID
-                loadEmplacementList(); // Refresh the list after deletion
+                terrainDAO.deleteTerrain(terrain.getId_terrain());
+                loadEmplacementList(); //
                 showAlert("Success", "Terrain deleted successfully.");
             } else {
                 showAlert("Deletion Error", "Terrain not found for deletion.");
