@@ -55,6 +55,20 @@ public class AfficherEtapeProjet extends ActionView implements Initializable {
                 etapeProjetDetails.clear();
             });
         });
+
+        listNomEtapes.setCellFactory(lv -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setStyle("-fx-font-family: 'Arial Rounded MT Bold'; -fx-font-size: 12px; -fx-font-weight: bold;");
+                }
+            }
+        });
     }
 
     @FXML
