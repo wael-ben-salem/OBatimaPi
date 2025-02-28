@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import io.ourbatima.core.Dao.Terrain.TerrainDAO;
 import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
@@ -98,18 +99,6 @@ public class Projet {
         this.Id_equipe = Id_equipe;
         this.id_client = id_client;
         this.etapes = (etapes != null) ? etapes : new ArrayList<>();
-    }
-
-    public String getEmailClientById() {
-        UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
-        Utilisateur utilisateur = utilisateurDAO.getUserById(id_client);
-        Client client = null;
-
-        if (utilisateur instanceof Client) {
-            client = (Client) utilisateur;
-        }
-
-        return (client != null) ? client.getEmail() : null;
     }
 
 

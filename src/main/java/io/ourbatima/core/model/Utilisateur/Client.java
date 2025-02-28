@@ -14,6 +14,10 @@ public class Client extends Utilisateur{
         super(id, nom, prenom, email, motDePasse, telephone, adresse, statut, isConfirmed, role);
         this.client_id = client_id;
     }
+    public Client(int id, String nom, String prenom, String email, String telephone, String adresse) {
+        super(id, nom, prenom, email, null, telephone, adresse, Statut.en_attente, false, Role.Client);
+    }
+
 
     public Client(int client_id) {
         this.client_id = client_id;

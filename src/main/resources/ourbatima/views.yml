@@ -130,6 +130,13 @@
     folder: pages,
     fxml: update_plan.fxml
   }
+  - {
+    name: afficherTerrain,
+    title: afficherTerrain,
+    folder: Terrain,
+    fxml: afficherTerrain.fxml
+  }
+
 
 
 #  - {

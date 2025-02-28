@@ -25,7 +25,7 @@ public class Main extends Launcher {
         context.setLayout(layout);
 
         Loader loadCircle = new LoadCircle("Starting..", "");
-        Task<View> loadViews = new LoadViews(context, loadCircle); // Load View task
+        Task<View> loadViews = new LoadViews(context, loadCircle);
 
         Thread tLoadViews = new Thread(loadViews);
         tLoadViews.setDaemon(true);
@@ -36,7 +36,7 @@ public class Main extends Launcher {
         loadViews.setOnSucceeded(event -> {
             layout.setContent(null);
 
-            View loginView = context.routes().getView("ajoutTerrain");
+            View loginView = context.routes().getView("login");
             layout.setContent(loginView.getRoot());
 
 
