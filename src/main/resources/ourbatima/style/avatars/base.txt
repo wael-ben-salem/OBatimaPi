@@ -1,0 +1,331 @@
+
+-- Table user 
+-- Table Utilisateur
+CREATE TABLE Utilisateur (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telephone VARCHAR(20),
+    role ENUM('Artisan', 'Constructeur', 'GestionnaireStock', 'Admin', 'Client') DEFAULT 'Client',
+    adresse TEXT,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    statut ENUM('actif', 'inactif', 'en_attente') DEFAULT 'en_attente',
+    isConfirmed BOOLEAN DEFAULT FALSE,
+    INDEX idx_role (role)
+) ENGINE=InnoDB;
+
+
+
+
+
+
+-- Table client 
+CREATE TABLE Client (
+    client_id INT PRIMARY KEY,
+    FOREIGN KEY (client_id) REFERENCES Utilisateur(id) ON DELETE CASCADE
+) ENGINE=InnoDB
+
+
+DELIMITER //
+
+CREATE TRIGGER before_insert_client
+BEFORE INSERT ON Client
+FOR EACH ROW
+BEGIN
+    DECLARE role_utilisateur VARCHAR(50);
+    
+    -- Récupérer le rôle de l'utilisateur
+    SELECT role INTO role_utilisateur FROM Utilisateur WHERE id = NEW.client_id LIMIT 1;
+
+    -- Vérifier si l'utilisateur a bien le rôle "Client"
+    IF role_utilisateur IS NULL OR role_utilisateur <> 'Client' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'L’utilisateur doit avoir le rôle Client pour être ajouté à la table Client.';
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+
+
+
+
+
+-- Table GestionnaireStock
+CREATE TABLE GestionnaireStock (
+    gestionnairestock_id INT PRIMARY KEY,
+    FOREIGN KEY (gestionnairestock_id) REFERENCES Utilisateur(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+DELIMITER //
+
+CREATE TRIGGER before_insert_gestionnairestock
+BEFORE INSERT ON GestionnaireStock
+FOR EACH ROW
+BEGIN
+    DECLARE role_utilisateur VARCHAR(50);
+    
+    -- Récupérer le rôle de l'utilisateur
+    SELECT role INTO role_utilisateur FROM Utilisateur WHERE id = NEW.gestionnairestock_id LIMIT 1;
+
+    -- Vérifier si l'utilisateur a bien le rôle "GestionnaireStock"
+    IF role_utilisateur IS NULL OR role_utilisateur <> 'GestionnaireStock' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'L’utilisateur doit avoir le rôle GestionnaireStock pour être ajouté à la table GestionnaireStock.';
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
+-- Table constructeur
+CREATE TABLE Constructeur (
+    constructeur_id INT PRIMARY KEY,
+    specialite VARCHAR(100) NOT NULL,
+    salaire_heure DECIMAL(10,2) NOT NULL CHECK (salaire_heure >= 20.0),
+    FOREIGN KEY (constructeur_id) REFERENCES Utilisateur(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+DELIMITER //
+
+CREATE TRIGGER before_insert_constructeur
+BEFORE INSERT ON Constructeur
+FOR EACH ROW
+BEGIN
+    DECLARE role_utilisateur VARCHAR(50);
+    
+    -- Récupérer le rôle de l'utilisateur
+    SELECT role INTO role_utilisateur FROM Utilisateur WHERE id = NEW.constructeur_id LIMIT 1;
+
+    -- Vérifier si l'utilisateur a bien le rôle "Constructeur"
+    IF role_utilisateur IS NULL OR role_utilisateur <> 'Constructeur' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'L’utilisateur doit avoir le rôle Constructeur pour être ajouté à la table Constructeur.';
+    END IF;
+END;
+//
+
+DELIMITER ;
+ 
+
+
+
+
+
+-- Table artisan 
+
+CREATE TABLE Artisan (
+    artisan_id INT PRIMARY KEY,
+    specialite ENUM('Menuiserie', 'Maçonnerie', 'Électricité', 'Plomberie', 'Autre') NOT NULL,
+    salaire_heure DECIMAL(10,2) NOT NULL CHECK (salaire_heure >= 15.0),
+    FOREIGN KEY (artisan_id) REFERENCES Utilisateur(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+DELIMITER //
+
+CREATE TRIGGER before_insert_artisan
+BEFORE INSERT ON Artisan 
+FOR EACH ROW
+BEGIN
+    DECLARE role_utilisateur VARCHAR(50);
+    
+    -- Récupérer le rôle de l'utilisateur
+    SELECT role INTO role_utilisateur FROM Utilisateur WHERE id = NEW.artisan_id LIMIT 1;
+
+    -- Vérifier si l'utilisateur a bien le rôle "Artisan"
+    IF role_utilisateur IS NULL OR role_utilisateur <> 'Artisan' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'L’utilisateur doit avoir le rôle Artisan pour être ajouté à la table Artisan.';
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+
+-- Table Equipe
+CREATE TABLE Equipe (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100) NOT NULL UNIQUE,
+    constructeur_id INT NOT NULL,
+    gestionnaire_stock_id INT NOT NULL,
+    date_creation DATE NOT NULL DEFAULT (CURRENT_DATE),
+    INDEX idx_constructeur (constructeur_id),
+    INDEX idx_gestionnaire (gestionnairestock_id),
+    FOREIGN KEY (constructeur_id) REFERENCES Constructeur(constructeur_id) ON UPDATE CASCADE,
+    FOREIGN KEY (gestionnairestock_id) REFERENCES GestionnaireStock(gestionnairestock_id),
+    CONSTRAINT uc_team_members UNIQUE (constructeur_id, gestionnairestock_id)
+) ENGINE=InnoD
+
+-- Table Equipe_Artisan
+CREATE TABLE Equipe_Artisan (
+    equipe_id INT NOT NULL,
+    artisan_id INT NOT NULL,
+    date_integration DATE NOT NULL DEFAULT (CURRENT_DATE),
+    PRIMARY KEY (equipe_id, artisan_id),
+    FOREIGN KEY (equipe_id) REFERENCES Equipe(id) ON DELETE CASCADE,
+    FOREIGN KEY (artisan_id) REFERENCES Artisan(artisan_id) ON DELETE CASCADE,
+    INDEX idx_artisan (artisan_id)
+) ENGINE=InnoDB;
+
+
+
+
+
+
+
+CREATE TABLE Projet (
+    Id_projet INT PRIMARY KEY AUTO_INCREMENT,
+    Id_equipe INT,
+    type VARCHAR(20) NOT NULL,
+    styleArch VARCHAR(20),
+    budget DECIMAL(15,3),
+    etat VARCHAR(20),
+    dateCreation DATE NOT NULL,
+    FOREIGN KEY (Id_equipe) REFERENCES Equipe(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE EtapeProjet (
+    Id_etapeProjet INT PRIMARY KEY AUTO_INCREMENT,
+    Id_projet INT,
+    nomEtape VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    dateDebut DATE,
+    dateFin DATE,
+    statut ENUM('En attente', 'En cours', 'Finie') DEFAULT 'En attente',
+    montant DECIMAL(15,3),
+    FOREIGN KEY (Id_projet) REFERENCES Projet(Id_projet) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE Terrain (
+    Id_terrain INT PRIMARY KEY AUTO_INCREMENT,
+    Id_projet INT,
+    emplacement VARCHAR(100) NOT NULL,
+    caracteristiques TEXT NOT NULL,
+    superficie DECIMAL(10,2),
+    detailsGeo VARCHAR(100),
+    FOREIGN KEY (Id_projet) REFERENCES Projet(Id_projet) ON DELETE CASCADE
+) ENGINE=InnoDB;
+CREATE TABLE Visite (
+    Id_visite INT PRIMARY KEY AUTO_INCREMENT,
+    Id_projet INT,
+    dateVisite DATE NOT NULL,
+    observations VARCHAR(200),
+    FOREIGN KEY (Id_projet) REFERENCES Projet(Id_projet) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE Rapport (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    Id_etapeProjet INT,
+    titre VARCHAR(100) NOT NULL,
+    contenu TEXT NOT NULL,
+    dateCreation DATE NOT NULL,
+    FOREIGN KEY (Id_etapeProjet) REFERENCES EtapeProjet(Id_etapeProjet) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+
+
+
+CREATE TABLE contrat (
+    id_contrat INT PRIMARY KEY AUTO_INCREMENT,
+    type_contrat VARCHAR(255) NOT NULL,
+    date_signature DATE ,
+    date_debut DATE ,
+signature_electronique VARCHAR(500),
+
+    date_fin DATE ,
+    montant_total INT ,
+    client_id INT ,
+    Id_projett INT ,
+    constructeur_id INT ,
+    FOREIGN KEY (client_id) REFERENCES client(client_id),
+    FOREIGN KEY (Id_projet) REFERENCES projet(Id_projet),
+    FOREIGN KEY (constructeur_id) REFERENCES constructeur(constructeur_id)
+);
+
+CREATE TABLE abonnement (
+    id_abonnement INT PRIMARY KEY AUTO_INCREMENT,
+    nom_abonnement VARCHAR(255) ,
+    duree VARCHAR(100) ,
+    prix DECIMAL(10,2) 
+);
+
+
+
+
+
+
+CREATE TABLE Stock (
+    id INT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    emplacement VARCHAR(255),
+    dateCreation VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Fournisseur (
+    fournisseur_id INT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    prenom VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
+    numero_de_telephone VARCHAR(50),
+    adresse VARCHAR(255)
+);
+
+CREATE TABLE Article (
+    id INT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    description VARCHAR(500),
+    prix_unitaire VARCHAR(50),
+    photo VARCHAR(255),
+    stock_id INT,
+    fournisseur_id INT,
+    Id_etapeProjet INT,
+    FOREIGN KEY (stock_id) REFERENCES Stock(id),
+    FOREIGN KEY (fournisseur_id) REFERENCES Fournisseur(fournisseur_id),
+    FOREIGN KEY (Id_etapeProjet) REFERENCES EtapeProjet(Id_etapeProjet)
+);
+
+
+
+
+CREATE TABLE tache (
+    id_tache INT(11) AUTO_INCREMENT PRIMARY KEY,
+    Id_projet INT(11) NOT NULL,
+    constructeur_id INT(11) NULL,
+    artisan_id INT(11) NULL,
+    description VARCHAR(255) NOT NULL,
+    date_debut DATE NOT NULL,
+    date_fin DATE NULL,
+    etat ENUM('En attente', 'En cours', 'Terminée') DEFAULT 'En attente',
+    FOREIGN KEY (Id_projet) REFERENCES projet(Id_projet) ON DELETE CASCADE,
+    FOREIGN KEY (constructeur_id) REFERENCES constructeur(constructeur_id) ON DELETE SET NULL,
+    FOREIGN KEY (artisan_id) REFERENCES artisan(artisan_id) ON DELETE SET NULL
+);
+
+
+CREATE TABLE Plannification (
+    id_plannification INT PRIMARY KEY AUTO_INCREMENT,
+    id_tache INT,
+    priorite ENUM('Haute', 'Moyenne', 'Basse') DEFAULT 'Moyenne',
+    date_planifiee DATE NOT NULL,
+    heure_debut TIME,
+    heure_fin TIME,
+    remarques TEXT,
+    statut ENUM('Planifié', 'En cours', 'Terminé') DEFAULT 'Planifié',
+    FOREIGN KEY (id_tache) REFERENCES Tache(id_tache) ON DELETE CASCADE
+);

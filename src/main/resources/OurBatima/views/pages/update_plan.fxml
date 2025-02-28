@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0"
+<?import java.lang.String?>
+<AnchorPane prefHeight="350.0" prefWidth="400.0"
             xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="io.ourbatima.controllers.UpdatePlan">
@@ -25,9 +27,20 @@
         <TextArea fx:id="remarquesField" layoutX="20.0" layoutY="160.0" prefWidth="360.0" prefHeight="60.0"
                   promptText="Remarques"/>
 
-        <Button fx:id="updateButton" layoutX="20.0" layoutY="240.0" text="✅ Mettre à Jour" onAction="#updatePlan"
+        <!-- ComboBox for statut -->
+        <ComboBox fx:id="statusComboBox" layoutX="20.0" layoutY="230.0" prefWidth="360.0" promptText="Sélectionnez un statut">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Planifié"/>
+                    <String fx:value="En cours"/>
+                    <String fx:value="Terminé"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <Button fx:id="updateButton" layoutX="20.0" layoutY="280.0" text="✅ Mettre à Jour" onAction="#updatePlan"
                 style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
-        <Button fx:id="cancelButton" layoutX="220.0" layoutY="240.0" text="❌ Annuler" onAction="#closePopup"
+        <Button fx:id="cancelButton" layoutX="220.0" layoutY="280.0" text="❌ Annuler" onAction="#closePopup"
                 style="-fx-background-color: #FF0000; -fx-text-fill: white;"/>
     </children>
 </AnchorPane>

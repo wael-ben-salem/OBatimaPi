@@ -23,9 +23,12 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -57,14 +60,17 @@ public final class DashController extends ActionView {
     @FXML
     private StackedAreaChart<Number, Number> graphic;
 
+    private Utilisateur currentUser;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //Creating the Area chart
         graphic.setTitle("Sales by Region");
         Utilisateur currentUser = SessionManager.getUtilisateur();
-
-        //Prepare XYChart.Series objects by setting data
+        if(currentUser == null) {
+            System.err.println("Aucun utilisateur connecté !");
+            return;
+        }
         XYChart.Series<Number, Number> series1 = new XYChart.Series<>();
         series1.setName(currentUser.getNom() + " " + currentUser.getPrenom());
 
@@ -208,17 +214,42 @@ public final class DashController extends ActionView {
 
 
         super.onInit(context);
-        Utilisateur currentUser = SessionManager.getUtilisateur();
-
-
-
         Bar bar = new Bar();
         context.layout().setBar(bar);
         bar.getStyleClass().addAll("border-light-gray-2", "border-b-1");
+        if (SessionManager.getUtilisateur() == null) {
+            System.err.println("Aucun utilisateur connecté !");
+            return;
+        }
+        Utilisateur currentUser = SessionManager.getUtilisateur();
+        String userRole = String.valueOf(currentUser.getRole());
+        System.out.println("je suis dans dash "+currentUser.getRole());
+// Ajouter après l'initialisation de currentUser dans onInit()
+        if(currentUser != null) {
 
-        Label title = new Label("Dashboard");
-        title.textProperty().bindBidirectional(context.routes().title());
+            setBackgroundColorBasedOnRole(userRole, bar);
+        } else {
+            root.setStyle("-fx-background-color: white;");
+        }
+
+        HBox rightBar = new HBox();
+        rightBar.setAlignment(Pos.CENTER_RIGHT);
+        rightBar.setSpacing(10);
+        rightBar.setPadding(new Insets(0, 10, 0, 10));
+
+        Label title = new Label("OUR BATIMA");
+        title.setFont(Font.font("Roboto", 36));
+        DropShadow shadow = new DropShadow();
+        shadow.setRadius(10);
+        shadow.setOffsetX(3);
+        shadow.setOffsetY(3);
+        shadow.setColor(Color.GRAY);
+        title.setEffect(shadow);
         title.setPadding(new Insets(0,0,0,5));
+        title.setTextFill(Color.web("#FFD700")); // Doré
+        StackPane root = new StackPane(title);
+        root.setStyle("-fx-background-color: linear-gradient(to bottom, #2c3e50, #34495e);"); // Fond dégradé bleu foncé
+
         title.getStyleClass().addAll("title-text", "title", "text-14");
         title.setWrapText(true);
 
@@ -248,6 +279,8 @@ public final class DashController extends ActionView {
                     .show();
         });
 
+
+
 //        textSearch.setIcon(Icons.SEARCH);
 //        HBox.setMargin(textSearch, new Insets(2,10, 2, 10));
 //        new SearchViewBox(context, textSearch, context.searchItems());
@@ -273,10 +306,10 @@ public final class DashController extends ActionView {
         Separator separator =  new Separator(Orientation.VERTICAL);
         HBox.setMargin(boxUser, new Insets(0,0,0,10));
 
-//        context.layout().bar().addInRight(btnSearch, sms, notification,
-//               separator, boxUser);
+         context.layout().bar().addInRight(rightBar);
 
-        context.layout().bar().addInRight(btnSearch, sms, notification);
+
+         rightBar.getChildren().addAll(btnSearch, sms, notification);
 
         HBox.setMargin(notification, new Insets(0, 15, 0,5));
 
@@ -314,8 +347,31 @@ public final class DashController extends ActionView {
                     }
                 });
     }
+    private void setBackgroundColorBasedOnRole(String role, Region region) {
+        if (region == null || role == null) return;
 
-    private VBox createDialogNotification() {
+        switch (role) {
+            case "Artisan":
+                region.setStyle("-fx-background-color: #FFD700;"); // Jaune
+                break;
+            case "Constructeur":
+                region.setStyle("-fx-background-color: #808080;"); // Gris
+                break;
+            case "GestionnaireStock":
+                region.setStyle("-fx-background-color: #ADD8E6;"); // Bleu clair
+                break;
+            case "Client":
+                region.setStyle("-fx-background-color: #90EE90;"); // Vert clair
+                break;
+            case "Admin":
+                region.setStyle("-fx-background-color: #000000;"); // Noir
+                break;
+            default:
+                region.setStyle("-fx-background-color: white;"); // Par défaut
+                break;
+        }
+    }
+        private VBox createDialogNotification() {
         VBox root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
 

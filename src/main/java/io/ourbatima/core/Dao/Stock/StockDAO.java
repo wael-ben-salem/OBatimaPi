@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StockDAO {
 
@@ -105,5 +107,28 @@ public class StockDAO {
             System.err.println("Erreur lors de la suppression du stock : " + e.getMessage());
             return false;
         }
+    }
+
+
+    public List<Stock> getAllStocks() {
+        List<Stock> stocks = new ArrayList<>();
+        String sql = "SELECT * FROM stock";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                stocks.add(new Stock(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("emplacement"),
+                        rs.getString("dateCreation")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching stocks: " + e.getMessage());
+        }
+        return stocks;
     }
 }

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FournisseurDAO {
 
@@ -62,7 +64,7 @@ public class FournisseurDAO {
 
     // Méthode pour mettre à jour un fournisseur
     public boolean updateFournisseur(Fournisseur fournisseur) {
-        String sql = "UPDATE Fournisseur SET nom = ?, prenom = ?, email = ?, numero_de_telephone = ?, adresse = ? WHERE id = ?";
+        String sql = "UPDATE Fournisseur SET nom = ?, prenom = ?, email = ?, numero_de_telephone = ?, adresse = ? WHERE fournisseur_id = ?";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -111,4 +113,31 @@ public class FournisseurDAO {
             return false;
         }
     }
+
+
+
+    public List<Fournisseur> getAllFournisseurs() {
+        List<Fournisseur> fournisseurs = new ArrayList<>();
+        String sql = "SELECT * FROM Fournisseur";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                fournisseurs.add(new Fournisseur(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("prenom"),
+                        rs.getString("email"),
+                        rs.getString("numero_de_telephone"),
+                        rs.getString("adresse")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération des fournisseurs : " + e.getMessage());
+        }
+        return fournisseurs;
+    }
+
 }

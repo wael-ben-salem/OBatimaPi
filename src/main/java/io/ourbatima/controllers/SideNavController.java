@@ -31,6 +31,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+
+import java.util.Map;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -42,10 +45,35 @@ public class SideNavController extends ActionView {
     @FXML private ToggleGroup group;
     @FXML private Button arrowButton;
 
+    @FXML
+    private Text userNameText;
+    @FXML
+    private Text userEmailText;
+    private Utilisateur currentUser;
 
 
-
-
+    public void setBackgroundColorBasedOnRole(String role) {
+        switch (role) {
+            case "Artisan":
+                root.setStyle("-fx-background-color: #FFD700;"); // Jaune
+                break;
+            case "Constructeur":
+                root.setStyle("-fx-background-color: #808080;"); // Gris
+                break;
+            case "GestionnaireStock":
+                root.setStyle("-fx-background-color: #ADD8E6;"); // Bleu clair
+                break;
+            case "Client":
+                root.setStyle("-fx-background-color: #90EE90;"); // Vert clair
+                break;
+            case "Admin":
+                root.setStyle("-fx-background-color: #000000;"); // Noir
+                break;
+            default:
+                root.setStyle("-fx-background-color: white;"); // Par défaut, blanc
+                break;
+        }
+    }
 
     @FXML
     private void goDash() throws NavigationException {
@@ -311,6 +339,29 @@ public class SideNavController extends ActionView {
     }
 
     @FXML
+    private void goArtisan() {
+        context.routes().nav("artisan_list");
+    }
+    @FXML
+    private void goEquipe() {
+        context.routes().nav("equipelist");
+    }
+
+    @FXML
+    private void goConstructeur() {
+        context.routes().nav("constructeur_list");
+    }
+
+    @FXML
+    private void goClient() {
+        context.routes().nav("client_list");
+    }
+
+    @FXML
+    private void goGestionnaireStock() {
+        context.routes().nav("gestionnaire_stock_list");
+    }
+    @FXML
     private void openUserPreferences() {
         context.flow()
 //                    .getPopup()
@@ -346,6 +397,22 @@ public class SideNavController extends ActionView {
 
     @Override
     public void onInit(Context context) {
+        Utilisateur currentUser = SessionManager.getUtilisateur();
+        String userRole = String.valueOf(currentUser.getRole());
+        System.out.println(userRole);
+        setBackgroundColorBasedOnRole(userRole);
+
+        if(currentUser == null) {
+            System.err.println("Aucun utilisateur connecté !");
+            return;
+        }
+        if(userEmailText != null&& userNameText!= null && currentUser != null) {
+            userNameText.setText(currentUser.getNom() + " " + currentUser.getPrenom());
+            userEmailText.setText(currentUser.getEmail());
+
+        }else {
+            System.err.println("Erreur: userNameText non initialisé ou utilisateur non connecté");
+        }
 //        this.context = context;
         super.onInit(context);
 
@@ -359,6 +426,7 @@ public class SideNavController extends ActionView {
     public void setUser(Utilisateur utilisateur) {
     }
 
+
     public void gototache(ActionEvent actionEvent) {
     }
 
@@ -366,6 +434,41 @@ public class SideNavController extends ActionView {
     }
 
     public void gotoplanf(ActionEvent actionEvent) {
+    }
+
+
+    public void goAddStock(ActionEvent actionEvent) {
+        context.routes().nav("addstock");
+    }
+
+    public void goviewstock(ActionEvent actionEvent) {
+        context.routes().nav("stock_table");
+    }
+
+    public void goAddfournisseur(ActionEvent actionEvent) {
+        context.routes().nav("Fournisseur");
+    }
+
+    public void goviewfournisseur(ActionEvent actionEvent) {
+        context.routes().nav("fournisseur_table");
+    }
+
+    public void goAddArticle(ActionEvent actionEvent) {
+        context.routes().nav("Article");
+    }
+
+    public void goviewArticle(ActionEvent actionEvent) {
+        context.routes().nav("articlelist");
+    }
+
+    public void launchbot(ActionEvent actionEvent) {
+    }
+
+    public void gotoplan(ActionEvent actionEvent) {
+        context.routes().nav("AddPlan");
+    }
+    public void gotoplanf(ActionEvent actionEvent) {
+        context.routes().nav("AddTask");
     }
 
     public void gotoAjoutProjet(ActionEvent actionEvent) {
@@ -388,13 +491,21 @@ public class SideNavController extends ActionView {
     }
 
 
+
     public void gotoAfficherTerrain(ActionEvent actionEvent) {
         context.routes().nav("afficherTerrain");
 
     }
 
 
+    public void gotoAfficherContrats(ActionEvent event) {
 
+        context.routes().nav("ListContrats");
 
+    }
+
+    public void gotoAfficherAbonnemant(ActionEvent event) {
+        context.routes().nav("ListAbonnement");
+    }
 
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.ourbatima.controllers.Equipe.EquipeDetailController">
+
+    <top>
+
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <!-- Informations de base -->
+            <Label fx:id="nomLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <Label fx:id="dateCreationLabel" />
+
+            <!-- Constructeur et Gestionnaire -->
+            <HBox spacing="10">
+                <VBox fx:id="constructeurBox" spacing="5" />
+                <VBox fx:id="gestionnaireBox" spacing="5" />
+            </HBox>
+
+            <!-- Liste des artisans -->
+            <Label text="Artisans" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <FlowPane fx:id="artisansFlowPane" hgap="10" vgap="10" />
+        </VBox>
+    </center>
+</BorderPane>

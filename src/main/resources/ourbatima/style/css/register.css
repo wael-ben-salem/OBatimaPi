@@ -1,0 +1,214 @@
+/* ========== ROOT VARIABLES ========== */
+.root {
+    -primary-color: #2c3e50;
+    -secondary-color: #3498db;
+    -accent-color: #e67e22;
+    -text-color: #2c3e50;
+    -light-gray: #ecf0f1;
+    -success-color: #27ae60;
+    -error-color: #e74c3c;
+}
+
+/* ========== MAIN CONTAINER ========== */
+.auth-container {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 20, 0, 0, 5);
+}
+
+.left-auth-pane {
+    -fx-background-color: linear-gradient(to bottom right, #2c3e50, #34495e);
+    -fx-min-width: 400px;
+    -fx-padding: 50px;
+}
+
+.right-auth-pane {
+    -fx-background-color: #ffffff;
+    -fx-padding: 40px;
+
+}
+.form-container {
+    -fx-pref-width: 500px;
+    -fx-max-width: 500px;
+    -fx-spacing: 25px;
+}
+.input-label {
+    -fx-text-fill: #2d3436;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+}
+
+/* ========== BRANDING SECTION ========== */
+.auth-branding {
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+}
+
+.brand-title {
+    -fx-text-fill: white;
+    -fx-font-size: 2.5em;
+    -fx-font-weight: 900;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+.brand-subtitle {
+    -fx-text-alignment: center;
+    -fx-line-spacing: 5px;
+}
+
+.brand-subtitle .text {
+    -fx-fill: rgba(255,255,255,0.9);
+    -fx-font-size: 1.2em;
+    -fx-font-style: italic;
+}
+
+.auth-logo {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 5);
+    -fx-transition: all 0.3s;
+}
+
+.auth-logo:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* ========== FORM SECTION ========== */
+.auth-content {
+    -fx-padding: 60px 100px;
+    -fx-spacing: 40px;
+}
+
+.auth-header {
+    -fx-spacing: 10px;
+    -fx-alignment: center-left;
+}
+
+.auth-title {
+    -fx-text-fill: -primary-color;
+    -fx-font-size: 2.2em;
+    -fx-font-weight: 800;
+}
+
+.auth-subtitle {
+    -fx-text-fill: #95a5a6;
+    -fx-font-size: 1.1em;
+}
+
+.auth-form {
+    -fx-vgap: 25px;
+    -fx-hgap: 20px;
+        -fx-padding: 0 20px;
+
+}
+
+/* ========== INPUT STYLES ========== */
+.input-modern {
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-font-size: 14px;
+    -fx-transition: all 0.3s;
+
+}
+.country-combo .list-cell {
+    -fx-padding: 5px 10px;
+}
+
+.input-modern:focused {
+    -fx-border-color: #c5a814;
+    -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.2), 10, 0, 0, 3);
+
+}
+.hint-text {
+    -fx-text-fill: #6c757d;
+    -fx-font-size: 12px;
+    -fx-padding: 0 0 0 10px;
+}
+/* ========== BUTTON STYLES ========== */
+.auth-button {
+    -fx-font-weight: bold;
+    -fx-padding: 12px 30px;
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s;
+}
+
+.auth-button.primary {
+    -fx-background-color: #c5a814;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 30px;
+    -fx-background-radius: 8px;
+    -fx-font-size: 15px;
+}
+
+.auth-button.primary:hover {
+    -fx-background-color: #2980b9;
+    -fx-effect: dropshadow(gaussian, rgba(41,128,185,0.3), 10, 0, 0, 5);
+}
+
+/* ========== LINK STYLES ========== */
+.auth-link-container {
+    -fx-alignment: center;
+}
+
+.auth-link {
+    -fx-text-fill: -secondary-color;
+    -fx-font-weight: 600;
+    -fx-border-color: transparent;
+    -fx-padding: 2px 5px;
+}
+
+.auth-link:hover {
+    -fx-text-fill: #21618c;
+    -fx-underline: true;
+}
+
+/* ========== SCROLL PANE ========== */
+.auth-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.auth-scroll {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.error-label {
+    -fx-text-fill: #dc3545;
+    -fx-font-size: 12px;
+    -fx-padding: 3px 0 0 5px;
+}
+
+.input-error {
+    -fx-border-color: #dc3545 !important;
+    -fx-border-width: 2px !important;
+}
+
+.country-combo {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 4px;
+}
+
+.map-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 4px;
+    -fx-padding: 5px;
+}
+
+.password-strength Label {
+    -fx-opacity: 0.3;
+    -fx-font-size: 16px;
+}
+
+.strength-weak { -fx-text-fill: #dc3545; }
+.strength-medium { -fx-text-fill: #ffc107; }
+.strength-strong { -fx-text-fill: #28a745; }
+
+.active-strength {
+    -fx-opacity: 1 !important;
+}

@@ -1,0 +1,62 @@
+.user-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #D1D1D1;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.10), 10, 0, 0, 4);
+    -fx-padding: 10px;
+    -fx-transition: all 0.2s;
+}
+
+.user-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.20), 14, 0, 0, 6);
+    -fx-cursor: hand;
+}
+
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D3436;
+    -fx-max-width: 300px;  /* Limite la largeur du texte */
+    -fx-wrap-text: true;  /* Autorise le retour à la ligne */
+}
+.card-title {
+    -fx-text-overflow: clip; /* Assure que le texte n'est pas tronqué */
+}
+
+.card-subtitle, .role-pill {
+    -fx-font-size: 14px;
+    -fx-text-fill: #636E72;
+}
+
+
+.card-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #636E72;
+}
+
+.role-pill {
+    -fx-background-color: #DFE6E9;
+    -fx-background-radius: 15;
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D3436;
+    -fx-font-weight: bold;
+}
+
+.last-login {
+    -fx-font-size: 12px;
+    -fx-text-fill: #B2BEC3;
+}
+
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20;
+    -fx-padding: 8;
+}
+
+.icon-button:hover {
+    -fx-background-color: #F0F0F0;
+    -fx-border-radius: 50%;
+}

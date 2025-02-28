@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.ourbatima.controllers.Equipe.EquipeCreateController"
+            style="-fx-background-color: #F4F4F4;">
+
+    <top>
+        <Label text="Créer une nouvelle équipe"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-padding: 15px;"/>
+    </top>
+
+    <center>
+        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25px;">
+            <TextField fx:id="nomField" promptText="Nom de l'équipe"/>
+
+            <Label text="Sélectionner des membres"/>
+            <ListView fx:id="membersListView" prefHeight="200">
+                <!-- Les éléments seront chargés dynamiquement -->
+            </ListView>
+
+            <HBox spacing="15" alignment="CENTER_RIGHT">
+                <Button text="Annuler" styleClass="secondary-button" onAction="#close"/>
+                <Button text="Créer" styleClass="primary-button" onAction="#createEquipe"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

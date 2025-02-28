@@ -34,6 +34,7 @@ public class Projet {
         this.client = null;
     }
 
+
     public Projet(String nomProjet, int Id_equipe, int id_client, int id_terrain, BigDecimal budget, String type, String styleArch, Timestamp dateCreation) {
         this.nomProjet = nomProjet;
         this.Id_equipe = Id_equipe;
@@ -100,6 +101,26 @@ public class Projet {
         this.id_client = id_client;
         this.etapes = (etapes != null) ? etapes : new ArrayList<>();
     }
+
+
+
+    public Projet(int id, String name) {
+        this.Id_projet=id;
+        this.nomProjet=name;
+    }
+
+    public String getEmailClientById() {
+        UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+        Utilisateur utilisateur = utilisateurDAO.getUserProjById(id_client);
+        Client client = null;
+
+        if (utilisateur instanceof Client) {
+            client = (Client) utilisateur;
+        }
+
+        return (client != null) ? client.getEmail() : null;
+    }
+
 
 
         public int getId_projet() {

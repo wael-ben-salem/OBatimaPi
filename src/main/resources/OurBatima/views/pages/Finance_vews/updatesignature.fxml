@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<?import javafx.scene.canvas.Canvas?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="io.ourbatima.controllers.FinanceControllers.updatesignature"
+            prefHeight="400.0" prefWidth="600.0">
+    <stylesheets>
+        <URL value="@../../../style/css/colors.css" />
+        <URL value="@../../../style/css/skeleton.css" />
+        <URL value="@../../../style/css/typographic.css" />
+        <URL value="@../../../style/css/scroll.css" />
+    </stylesheets>
+    <children>
+        <Canvas fx:id="canvas" height="300" layoutX="50.0" layoutY="14.0" width="500" />
+        <Button layoutX="419.0" layoutY="335.0" mnemonicParsing="false" onAction="#onSaveButtonClicked" prefHeight="26.0" prefWidth="53.0" text="Save" />
+        <Button layoutX="333.0" layoutY="335.0" mnemonicParsing="false" onAction="#cancel" prefHeight="35.0" prefWidth="67.0" text="cancel " />
+        <Button layoutX="491.0" layoutY="335.0" mnemonicParsing="false" onAction="#inisialser" prefHeight="26.0" prefWidth="77.0" text="inisialiser " />
+    </children>
+</AnchorPane>
