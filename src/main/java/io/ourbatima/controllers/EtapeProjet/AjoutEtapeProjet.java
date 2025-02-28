@@ -6,14 +6,13 @@ import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.EtapeProjet;
 import io.ourbatima.core.model.Projet;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 public class AjoutEtapeProjet extends ActionView {
 
@@ -24,10 +23,10 @@ public class AjoutEtapeProjet extends ActionView {
     private TextField descripTextField;
 
     @FXML
-    private TextField dateDebutTextField;
+    private DatePicker dateDebutTextField;
 
     @FXML
-    private TextField DateFinTextField;
+    private DatePicker DateFinTextField;
 
     @FXML
     private TextField montantTextField;
@@ -44,6 +43,7 @@ public class AjoutEtapeProjet extends ActionView {
     @FXML
     public void initialize() {
         ajouterButton.setOnAction(event -> ajouterEtapeProjet());
+
     }
 
     @FXML
@@ -52,6 +52,11 @@ public class AjoutEtapeProjet extends ActionView {
             String nomEtape = nomEtapeTextField.getText().trim();
             String description = descripTextField.getText().trim();
             String nomProjet = nomProjetTextField.getText().trim();
+
+            if (nomProjet == null || nomProjet.trim().isEmpty()) {
+                showAlert("Projet requis", "Veuillez sélectionner un projet.");
+                return;
+            }
 
             if (nomEtape.isEmpty() || description.isEmpty() || nomProjet.isEmpty()) {
                 showAlert("Champs obligatoires", "Veuillez remplir tous les champs requis.");
@@ -82,23 +87,27 @@ public class AjoutEtapeProjet extends ActionView {
                 return;
             }
 
-            Date dateDebut = parseDate(dateDebutTextField.getText());
-            Date dateFin = parseDate(DateFinTextField.getText());
+            LocalDate dateDebutLocal = dateDebutTextField.getValue();
+            LocalDate dateFinLocal = DateFinTextField.getValue();
 
-            if (dateDebut == null) {
+            if (dateDebutLocal == null) {
                 showAlert("Format de date incorrect", "Veuillez entrer une date de début au format YYYY-MM-DD.");
                 return;
             }
 
-            if (dateFin == null) {
+            if (dateFinLocal == null) {
                 showAlert("Format de date incorrect", "Veuillez entrer une date de fin au format YYYY-MM-DD.");
                 return;
             }
 
-            if (dateDebut.after(dateFin)) {
+            if (dateDebutLocal.isAfter(dateFinLocal)) {
                 showAlert("Erreur de date", "La date de début doit être avant la date de fin.");
                 return;
             }
+
+            Date dateDebut = Date.valueOf(dateDebutLocal);
+            Date dateFin = Date.valueOf(dateFinLocal);
+
 
             EtapeProjet etapeProjet = new EtapeProjet(0, idProjet, nomEtape, description, dateDebut, dateFin, "En Attente", montant, null);
             etapeProjetDAO.addEtapeProjet(etapeProjet);
@@ -137,8 +146,8 @@ public class AjoutEtapeProjet extends ActionView {
     private void clearFields() {
         nomEtapeTextField.clear();
         descripTextField.clear();
-        dateDebutTextField.clear();
-        DateFinTextField.clear();
+        dateDebutTextField.setValue(null);
+        DateFinTextField.setValue(null);
         montantTextField.clear();
         nomProjetTextField.clear();
     }

@@ -1,22 +1,34 @@
 package io.ourbatima.controllers.projet;
 
 import io.ourbatima.core.Dao.Projet.ProjetDAO;
+import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.EtapeProjet;
 import io.ourbatima.core.model.Projet;
+import io.ourbatima.core.model.Terrain;
+import io.ourbatima.core.model.Utilisateur.Client;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -36,6 +48,8 @@ public class AfficherProjet extends ActionView {
     @FXML private TableColumn<Projet, String> colEtat;
     @FXML private TableColumn<Projet, Timestamp> colDateCreation;
     @FXML private TableColumn<Projet, String> colActions;
+    @FXML private TextField searchField;
+    @FXML private ListView<String> suggestionsList;
 
 
     private ObservableList<Projet> projetData = FXCollections.observableArrayList();
@@ -45,6 +59,63 @@ public class AfficherProjet extends ActionView {
         System.out.println("AfficherProjet Controller Initialized");
         setupTable();
         loadProjets();
+
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            handleSearchInput();
+            if (newValue.isEmpty()) {
+                suggestionsList.setVisible(false);
+            }
+        });
+
+        suggestionsList.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                String selectedSuggestion = suggestionsList.getSelectionModel().getSelectedItem();
+                searchField.setText(selectedSuggestion);
+                suggestionsList.setVisible(false);
+                handleSearch();
+            }
+        });
+
+    }
+
+    @FXML
+    private void handleSearch() {
+        String searchText = searchField.getText().toLowerCase();
+        List<Projet> filteredList = projetData.stream()
+                .filter(projet -> projet.getNomProjet().toLowerCase().contains(searchText))
+                .collect(Collectors.toList());
+
+        projetTable.setItems(FXCollections.observableArrayList(filteredList));
+    }
+
+    @FXML
+    private void handleSearchInput() {
+        String searchText = searchField.getText().toLowerCase();
+        List<String> suggestions = projetData.stream()
+                .map(Projet::getNomProjet)
+                .filter(nom -> nom.toLowerCase().startsWith(searchText))
+                .collect(Collectors.toList());
+
+        if (!suggestions.isEmpty()) {
+            suggestionsList.getItems().setAll(suggestions);
+            suggestionsList.setVisible(true);
+        } else {
+            suggestionsList.setVisible(false);
+        }
+    }
+
+    private Optional<String> getEmailClientById(int id_client) {
+        UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+        Utilisateur utilisateur = utilisateurDAO.getUserById(id_client);
+        if (utilisateur == null) {
+            return Optional.empty();
+        }
+
+        if (utilisateur instanceof Client) {
+            return Optional.ofNullable(utilisateur.getEmail());
+        } else {
+            return Optional.empty();
+        }
     }
 
     private void setupTable() {
@@ -52,8 +123,18 @@ public class AfficherProjet extends ActionView {
 
         colClient.setCellValueFactory(cellData -> {
             Projet projet = cellData.getValue();
-            return new SimpleStringProperty(projet.getEmailClient());
+            int idClient = projet.getId_client();
+            System.out.println("Fetching email for client ID: " + idClient);
+            Optional<String> email = getEmailClientById(idClient);
+            if (email.isPresent()) {
+                System.out.println("Client email found: " + email.get());
+                return new SimpleStringProperty(email.get());
+            } else {
+                System.out.println("No client found for ID: " + idClient);
+                return new SimpleStringProperty("Aucun client attribué.");
+            }
         });
+
 
         colEquipe.setCellValueFactory(cellData -> {
             Projet projet = cellData.getValue();
@@ -86,17 +167,21 @@ public class AfficherProjet extends ActionView {
                 return new TableCell<Projet, String>() {
                     private final Button updateButton = new Button("Modifier");
                     private final Button deleteButton = new Button("Supprimer");
-
+                    {
+                        updateButton.setStyle("-fx-background-color: #b39427; -fx-text-fill: white;");
+                        deleteButton.setStyle("-fx-background-color: #4c3f0a; -fx-text-fill: white;");
+                    }
                     @Override
                     protected void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (empty || item == null) {
+                        if (empty) {
                             setGraphic(null);
+                            setText(null);
                         } else {
 
                             updateButton.setOnAction(event -> {
                                 Projet projet = getTableView().getItems().get(getIndex());
-                                updateProjet(projet);
+                                openUpdateProjetWindow(projet);
                             });
 
                             deleteButton.setOnAction(event -> {
@@ -104,7 +189,7 @@ public class AfficherProjet extends ActionView {
                                 deleteProjet(projet.getId_projet());
                             });
 
-                            HBox hBox = new HBox(updateButton, deleteButton);
+                            HBox hBox = new HBox(10, updateButton, deleteButton);
                             setGraphic(hBox);
                             setText(null);
                         }
@@ -116,14 +201,35 @@ public class AfficherProjet extends ActionView {
 
     }
 
+    private void openUpdateProjetWindow(Projet projet) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/Projet/UpdateProjet.fxml"));
+            Parent root = loader.load();
+            UpdateProjet controller = loader.getController();
+            controller.initData(projet, this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Update Project");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Impossible d'ouvrir la fenêtre de modification.");
+            alert.showAndWait();
+        }
+    }
+
     @FXML
-    private void loadProjets() {
+    public void loadProjets() {
         try {
             List<Projet> projets = projetDAO.getAllProjets();
             System.out.println("Fetched Projects: " + projets);
+            for (Projet projet : projets) {
+                System.out.println("Project ID: " + projet.getId_projet() + ", Client ID: " + projet.getId_client());
+            }
             projetData.setAll(projets);
             projetTable.setItems(null);
-            projetTable.layout();  // Force JavaFX to refresh
+            projetTable.layout();
             projetTable.setItems(projetData);
             projetTable.refresh();
         } catch (Exception e) {
@@ -131,61 +237,6 @@ public class AfficherProjet extends ActionView {
             alert.setTitle("Error");
             alert.showAndWait();
         }
-    }
-
-    private void updateProjet(Projet projet) {
-
-        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
-        dialog.setTitle("Mettre à jour le projet");
-        dialog.setHeaderText("Modifier les détails du projet");
-
-        GridPane grid = new GridPane();
-        dialog.getDialogPane().setContent(grid);
-
-        TextField nomProjetField = new TextField(projet.getNomProjet());
-        TextField budgetField = new TextField(projet.getBudget().toString());
-        ComboBox<String> typeComboBox = new ComboBox<>(FXCollections.observableArrayList("Type1", "Type2", "Type3"));
-        typeComboBox.setValue(projet.getType());
-
-        TextField styleArchField = new TextField(projet.getStyleArch());
-        TextField etatField = new TextField(projet.getEtat());
-
-        grid.add(new Label("Nom Project :"), 0, 0);
-        grid.add(nomProjetField, 1, 0);
-        grid.add(new Label("Budget:"), 0, 1);
-        grid.add(budgetField, 1, 1);
-        grid.add(new Label("Type:"), 0, 2);
-        grid.add(typeComboBox, 1, 2);
-        grid.add(new Label("Style d'architecture:"), 0, 3);
-        grid.add(styleArchField, 1, 3);
-        grid.add(new Label("État :"), 0, 4);
-        grid.add(etatField, 1, 4);
-
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        dialog.setOnHidden(event -> {
-            if (dialog.getResult() == ButtonType.OK) {
-                Projet updatedProjet = new Projet(
-                        projet.getId_projet(),
-                        nomProjetField.getText(),
-                        projet.getId_equipe(),
-                        projet.getId_client(),
-                        projet.getEtapes(),
-                        new BigDecimal(budgetField.getText()),
-                        projet.getTerrain(),
-                        typeComboBox.getValue(),
-                        styleArchField.getText(),
-                        etatField.getText(),
-                        projet.getDateCreation()
-                );
-
-                projetDAO.updateProjet(updatedProjet);
-                loadProjets();
-                projetTable.refresh();
-            }
-        });
-
-        dialog.showAndWait();
     }
 
 
@@ -199,7 +250,11 @@ public class AfficherProjet extends ActionView {
     private void handleReload() {
         System.out.println("🔄 Reload button clicked!");
         loadProjets();
+        initialize();
     }
+
+
+
 
 
 }

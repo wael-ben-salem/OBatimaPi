@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="566.0" prefWidth="634.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.projet.UpdateProjet">
+   <children>
+      <Text fill="#4c3f0a" layoutX="148.0" layoutY="237.0" nodeOrientation="LEFT_TO_RIGHT" strokeMiterLimit="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Budget :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <Text fill="#4c3f0a" layoutX="148.0" layoutY="294.0" nodeOrientation="LEFT_TO_RIGHT" strokeMiterLimit="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <Text fill="#4c3f0a" layoutX="148.0" layoutY="356.0" nodeOrientation="LEFT_TO_RIGHT" strokeMiterLimit="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Style d'architecture :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <TextField fx:id="styleArchField" layoutX="296.0" layoutY="339.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="198.0" promptText="Modifiez le style...">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="budgetField" alignment="TOP_LEFT" layoutX="296.0" layoutY="220.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="198.0" promptText="Modifiez votre budget...">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </TextField>
+      <Text fill="#4c3f0a" layoutX="146.0" layoutY="177.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom du projet :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <TextField fx:id="nomProjetField" layoutX="296.0" layoutY="160.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="198.0" promptText="Modifiez le nom du projet...">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </TextField>
+      <Label alignment="CENTER" layoutX="140.0" layoutY="92.0" text="Modifier les détails du projet" textAlignment="CENTER" textFill="#4c3f0a">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="ajouterButton" alignment="CENTER" contentDisplay="CENTER" layoutX="242.0" layoutY="451.0" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="23.0" prefWidth="122.0" style="-fx-background-color: #4c3f0a;" text="Sauvegarder" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Button>
+      <Text fill="#4c3f0a" layoutX="152.0" layoutY="412.0" nodeOrientation="LEFT_TO_RIGHT" strokeMiterLimit="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statut :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="typeComboBox" layoutX="296.0" layoutY="278.0" prefHeight="26.0" prefWidth="198.0" promptText="Selectionnez un type" />
+      <ComboBox fx:id="etatComboBox" layoutX="296.0" layoutY="395.0" prefHeight="26.0" prefWidth="198.0" promptText="Met à jours le statut" />
+   </children>
+</AnchorPane>

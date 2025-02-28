@@ -80,7 +80,7 @@ public class EtapeProjet {
         return dateDebut;
     }
 
-    public void setDteDebut(Date dteDebut) {
+    public void setDateDebut(Date dteDebut) {
         this.dateDebut = dateDebut;
     }
 
@@ -88,7 +88,7 @@ public class EtapeProjet {
         return datefin;
     }
 
-    public void setDatefin(Date datefin) {
+    public void setDateFin(Date datefin) {
         this.datefin = datefin;
     }
 

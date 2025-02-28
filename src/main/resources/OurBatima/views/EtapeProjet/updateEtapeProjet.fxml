@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="617.0" prefWidth="634.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.EtapeProjet.UpdateEtapeProjet">
+   <children>
+      <Text fill="#4c3f0a" layoutX="156.0" layoutY="240.0" nodeOrientation="LEFT_TO_RIGHT" strokeMiterLimit="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <Text fill="#4c3f0a" layoutX="158.0" layoutY="394.0" nodeOrientation="LEFT_TO_RIGHT" strokeMiterLimit="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date début :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <Text fill="#4c3f0a" layoutX="158.0" layoutY="295.0" nodeOrientation="LEFT_TO_RIGHT" strokeMiterLimit="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Montant :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <TextField fx:id="montantField" layoutX="279.0" layoutY="277.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="198.0" promptText="Modifiez le montant...">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="descriptionField" alignment="TOP_LEFT" layoutX="279.0" layoutY="222.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="198.0" promptText="Modifiez votre description...">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </TextField>
+      <Text fill="#4c3f0a" layoutX="158.0" layoutY="181.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom étape :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <TextField fx:id="nomEtapeField" layoutX="279.0" layoutY="163.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="198.0" promptText="Modifiez le nom de l'étape...">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </TextField>
+      <Label alignment="CENTER" layoutX="160.0" layoutY="83.0" text="Modifier les détails de l'étape" textAlignment="CENTER" textFill="#4c3f0a">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="ajouterButton" alignment="CENTER" contentDisplay="CENTER" layoutX="241.0" layoutY="513.0" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="23.0" prefWidth="122.0" style="-fx-background-color: #4c3f0a;" text="Sauvegarder" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Button>
+      <Text fill="#4c3f0a" layoutX="158.0" layoutY="343.0" nodeOrientation="LEFT_TO_RIGHT" strokeMiterLimit="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statut :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="statutComboBox" layoutX="279.0" layoutY="325.0" prefHeight="26.0" prefWidth="198.0" promptText="Met à jours le statut" />
+      <DatePicker fx:id="dateDebutPicker" layoutX="279.0" layoutY="376.0" prefHeight="26.0" prefWidth="198.0" />
+      <DatePicker fx:id="dateFinPicker" layoutX="279.0" layoutY="434.0" prefHeight="26.0" prefWidth="198.0" />
+      <Text fill="#4c3f0a" layoutX="158.0" layoutY="452.0" nodeOrientation="LEFT_TO_RIGHT" strokeMiterLimit="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date fin :">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

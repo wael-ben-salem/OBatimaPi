@@ -8,8 +8,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.util.Optional;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class UtilisateurDAO {
 
@@ -659,7 +663,57 @@ public class UtilisateurDAO {
         } catch (SQLException e) {
             System.out.println("Error fetching client by email: " + e.getMessage());
         }
-        return -1; // Return -1 if no client found with the provided email
+        return -1;
     }
+
+    public Optional<Utilisateur> getClientById(int id) {
+        String sql = "SELECT * FROM Utilisateur WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String roleStr = rs.getString("role");
+                    Role role = Role.valueOf(roleStr);
+                    Statut statut = Statut.valueOf(rs.getString("statut"));
+
+                    if (role == Role.Client) {
+                        return Optional.of(new Client(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getString("email"),
+                                rs.getString("telephone"),
+                                rs.getString("adresse")
+                        ));
+                    } else {
+                        return Optional.of(new Utilisateur(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getString("email"),
+                                rs.getString("mot_de_passe"),
+                                rs.getString("telephone"),
+                                rs.getString("adresse"),
+                                statut,
+                                rs.getBoolean("isConfirmed"),
+                                role
+                        ));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+
+
+
+
+
+
 
 }

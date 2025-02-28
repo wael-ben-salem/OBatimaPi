@@ -152,7 +152,6 @@ public class EtapeProjetDAO {
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             pstmt.setString(1, nomEtape);
             System.out.println("🔍 Querying for: " + nomEtape);
             ResultSet rs = pstmt.executeQuery();

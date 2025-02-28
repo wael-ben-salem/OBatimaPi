@@ -1,56 +1,73 @@
 package io.ourbatima.core.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Terrain {
     private int Id_terrain;
-    private Integer Id_projet;
     private String emplacement;
     private String caracteristiques;
     private BigDecimal superficie;
     private String detailsGeo;
-    private Integer Id_visite;
+    private List<Visite> visites;
+    private List<String> observations;
 
     public Terrain(){}
 
-    public Terrain(Integer Id_projet, String detailsGeo, BigDecimal superficie, String caracteristiques, String emplacement, Integer Id_visite) {
+
+    public Terrain(String detailsGeo, BigDecimal superficie, String caracteristiques, String emplacement) {
         this.detailsGeo = detailsGeo;
         this.superficie = superficie;
         this.caracteristiques = caracteristiques;
         this.emplacement = emplacement;
-        this.Id_projet = Id_projet;
-        this.Id_visite = Id_visite;
     }
 
-    public Terrain(int id_terrain, Integer Id_projet, String detailsGeo, BigDecimal superficie, String caracteristiques, String emplacement, Integer Id_visite) {
+    public Terrain(int id_terrain, String detailsGeo, String caracteristiques, BigDecimal superficie, String emplacement) {
         Id_terrain = id_terrain;
         this.detailsGeo = detailsGeo;
         this.superficie = superficie;
         this.caracteristiques = caracteristiques;
         this.emplacement = emplacement;
-        this.Id_projet = Id_projet;
-        this.Id_visite = Id_visite;
+    }
+
+    public Terrain(int Id_terrain, String emplacement){
+        this.Id_terrain=Id_terrain;
+        this.emplacement=emplacement;
+    }
+
+    public Terrain(int Id_terrain, String detailsGeo, BigDecimal superficie, String caracteristiques, String emplacement) {
+        this.Id_terrain = Id_terrain;
+        this.detailsGeo = detailsGeo;
+        this.superficie = superficie;
+        this.caracteristiques = caracteristiques;
+        this.emplacement = emplacement;
+        this.observations = (observations != null) ? observations : new ArrayList<>();
+    }
+
+    public List<String> getObservations() {
+        return observations;
+    }
+    public void setObservations(List<String> observations) {
+        this.observations = observations;
     }
 
     public Terrain(String emplacement) {
         this.emplacement = emplacement;
     }
 
+    public void setVisites(List<Visite> visites) { this.visites = visites; }
 
     public Terrain(int Id_terrain) {
         this.Id_terrain = Id_terrain;
     }
 
-    public void setId_projet(Integer id_projet) {
-        Id_projet = id_projet;
-    }
-
-    public Integer getId_projet() {
-        return Id_projet;
-    }
-
     public int getId_terrain() {
         return Id_terrain;
+    }
+
+    public List<Visite> getVisites() {
+        return visites;
     }
 
     public String getEmplacement() {
@@ -91,20 +108,17 @@ public class Terrain {
     public void setEmplacement(String emplacement) {
         this.emplacement = emplacement;
     }
-    public Integer getId_visite() { return Id_visite; }
 
-    public void setId_visite(Integer id_visite) { this.Id_visite = id_visite; }
 
     @Override
     public String toString() {
         return "Terrain{" +
                 "Id_terrain=" + Id_terrain +
-                ", Id_projet=" + Id_projet +
                 ", emplacement='" + emplacement + '\'' +
                 ", caracteristiques='" + caracteristiques + '\'' +
                 ", superficie=" + superficie +
                 ", detailsGeo='" + detailsGeo + '\'' +
-                ", Id_visite=" + Id_visite +
+                ", observations=" + observations + '\''+
                 '}';
     }
 

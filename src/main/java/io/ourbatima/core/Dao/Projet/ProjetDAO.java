@@ -16,6 +16,8 @@ import java.sql.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 public class ProjetDAO {
     private Connection connect() throws SQLException {
         return DatabaseConnection.getConnection();
@@ -101,7 +103,7 @@ public class ProjetDAO {
                 int Id_projet = rs.getInt("Id_projet");
                 String nomProjet = rs.getString("nomProjet");
                 Integer Id_equipe = rs.getObject("Id_equipe", Integer.class);
-                int idclient = rs.getInt("id_client");
+                int id_client = rs.getInt("id_client");
                 int id_terrain = rs.getInt("Id_terrain");
                 String type = rs.getString("type");
                 String styleArch = rs.getString("styleArch");
@@ -109,11 +111,19 @@ public class ProjetDAO {
                 String etat = rs.getString("etat");
                 Timestamp dateCreation = rs.getTimestamp("dateCreation");
 
-                int id_client = idclient;
+                UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+                Optional<Utilisateur> optionalUtilisateur = utilisateurDAO.getClientById(id_client);
 
+                // Retrieve the email directly if the Optional is present
+                String emailClient = optionalUtilisateur
+                        .filter(u -> u instanceof Client) // Check if it's an instance of Client
+                        .map(u -> ((Client) u).getEmail()) // Get the email if it is a Client
+                        .orElse("Aucun client attribué."); // Default message if no client found
+
+                // Retrieve the list of EtapeProjet for this project
                 List<EtapeProjet> etapes = getEtapesForProjet(Id_projet);
-
                 Projet projet = new Projet(Id_projet, nomProjet, type, styleArch, budget, etat, dateCreation, id_terrain, Id_equipe, id_client, etapes);
+                projet.setEmailClient(emailClient);
                 projets.add(projet);
             }
         } catch (SQLException e) {
@@ -121,6 +131,8 @@ public class ProjetDAO {
         }
         return projets;
     }
+
+
 
 
     public Projet getProjetById(int Id_projet) {
@@ -253,6 +265,45 @@ public class ProjetDAO {
         }
         return -1;
     }
+
+    public List<String> getAllProjetNames() {
+        List<String> projectNames = new ArrayList<>();
+        String query = "SELECT nomProjet FROM Projet";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                projectNames.add(rs.getString("nomProjet"));
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Projects retrieved: " + projectNames); // Debugging line
+        return projectNames;
+    }
+
+    public List<String> getProjectTypes() {
+        List<String> types = new ArrayList<>();
+        String query = "SELECT DISTINCT type FROM Projet";
+
+        try (Connection connection = connect();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                types.add(resultSet.getString("type"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return types;
+    }
+
 
 
 

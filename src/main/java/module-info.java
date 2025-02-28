@@ -60,7 +60,10 @@ module io.ourbatima {
     exports io.ourbatima.controllers.projet; // Export your other packages
     opens io.ourbatima.controllers.EtapeProjet to javafx.fxml;
     exports io.ourbatima.controllers.terrain; // Add this line
-
+    opens io.ourbatima.controllers.terrain to javafx.fxml;
+    exports io.ourbatima.controllers.Visite;
+    opens io.ourbatima.controllers.Visite to javafx.fxml;
+    requires jdk.jsobject;
 
 }
 
