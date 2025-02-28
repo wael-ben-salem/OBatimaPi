@@ -73,43 +73,47 @@
                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
                         </columnConstraints>
 
-                        <!-- Réorganisation des rowConstraints pour inclure les messages d'erreur -->
                         <rowConstraints>
-                           <RowConstraints prefHeight="60.0" />  <!-- Email -->
-                           <RowConstraints prefHeight="30.0" />  <!-- Erreur email -->
-                           <RowConstraints prefHeight="60.0" />  <!-- Mot de passe -->
-                           <RowConstraints prefHeight="30.0" />  <!-- Erreur mot de passe -->
-                           <RowConstraints prefHeight="40.0" />  <!-- Options -->
-                           <RowConstraints prefHeight="60.0" />  <!-- Bouton de connexion -->
+                           <RowConstraints prefHeight="60.0" />
+                           <RowConstraints prefHeight="60.0" />
+                           <RowConstraints prefHeight="40.0" />
+                           <RowConstraints prefHeight="60.0" />
+                           <RowConstraints prefHeight="60.0" />
                         </rowConstraints>
 
                         <children>
-                           <!-- Email -->
-                           <TextField fx:id="emailField" promptText="Adresse email" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-                           <Label fx:id="emailError" styleClass="error-message" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                           <!-- Nom d'utilisateur -->
+                           <TextField fx:id="emailField" promptText="Nom d'utilisateur" styleClass="input-modern" GridPane.columnSpan="2" />
+                           <Label fx:id="emailError" styleClass="error-message" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
                            <!-- Mot de passe -->
-                           <PasswordField fx:id="passwordField" promptText="Mot de passe" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                           <Label fx:id="passwordError" styleClass="error-message" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                           <Label fx:id="capsLockWarning" styleClass="warning-message" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                           <PasswordField fx:id="passwordField" promptText="Mot de passe" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                           <Label fx:id="passwordError" styleClass="error-message" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                           <Label fx:id="capsLockWarning" styleClass="warning-message" GridPane.columnSpan="2" GridPane.rowIndex="1" />
 
+                           <HBox alignment="CENTER_RIGHT" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                              <ToggleButton fx:id="togglePassword" styleClass="icon-btn">
+                                 <graphic>
+                                    <SVGPath content="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                                 </graphic>
+                              </ToggleButton>
+                           </HBox>
 
                            <!-- Options -->
-                           <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                           <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="2" GridPane.rowIndex="2">
                               <CheckBox fx:id="rememberMe" style="-fx-text-fill: #6c757d;" text="Se souvenir de moi" />
                               <Region HBox.hgrow="ALWAYS" />
                               <Label fx:id="forgotPassword" onMouseClicked="#handleForgotPassword" style="-fx-text-fill: #c5a814;" styleClass="link" text="Mot de passe oublié ?" />
                            </HBox>
 
                            <!-- Bouton de connexion -->
-                           <Button fx:id="btn_enter" onAction="#handleLogin" styleClass="btn-gradient" text="Se connecter" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+                           <Button fx:id="btn_enter" onAction="#handleLogin" styleClass="btn-gradient" text="Se connecter" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+
                         </children>
                      </GridPane>
-
-                     <!-- Section "Continuer avec Google" -->
                      <VBox alignment="CENTER" spacing="15">
                         <HBox alignment="CENTER" spacing="10">
-                           <Label text="Continuer avec Google" style="-fx-text-fill: #6c757d; -fx-font-weight: bold;" />
+                              <Label text="Continuer avec Google" style="-fx-text-fill: #6c757d; -fx-font-weight: bold;"/>
                            <Button fx:id="btn_google" onAction="#handleGoogleLogin" styleClass="btn-social">
                               <graphic>
                                  <ImageView fitHeight="24" fitWidth="24">
@@ -118,19 +122,21 @@
                                     </image>
                                  </ImageView>
                               </graphic>
+
                            </Button>
                         </HBox>
 
                         <!-- Séparateur stylisé -->
                         <HBox alignment="CENTER" spacing="10">
-                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);" />
-                           <Label text="ou" style="-fx-text-fill: #6c757d;" />
-                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);" />
+                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);"/>
+                           <Label text="ou" style="-fx-text-fill: #6c757d;"/>
+                           <Separator prefWidth="100" style="-fx-background-color: linear-gradient(to right, transparent, #c5a814, transparent);"/>
                         </HBox>
 
-                        <!-- Bouton de création de compte -->
+                        <!-- Création de compte -->
                         <Button fx:id="btn_createAccount" onAction="#goToRegister" styleClass="btn-gradient" text="Créer un compte" />
                      </VBox>
+
 
                      <!-- Footer -->
                      <HBox alignment="CENTER" style="-fx-padding: 30 0 0 0;">
