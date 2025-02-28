@@ -102,7 +102,27 @@ public class Projet {
     }
 
 
-    public int getId_projet() {
+
+    public Projet(int id, String name) {
+        this.Id_projet=id;
+        this.nomProjet=name;
+    }
+
+    public String getEmailClientById() {
+        UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+        Utilisateur utilisateur = utilisateurDAO.getUserProjById(id_client);
+        Client client = null;
+
+        if (utilisateur instanceof Client) {
+            client = (Client) utilisateur;
+        }
+
+        return (client != null) ? client.getEmail() : null;
+    }
+
+
+
+        public int getId_projet() {
         return Id_projet;
     }
 

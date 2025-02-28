@@ -15,6 +15,14 @@ public class abonnement {
         this.prix = prix;
     }
 
+    public abonnement( String nomAbonnement, String duree, double prix) {
+        this.nomAbonnement = nomAbonnement;
+        this.duree = duree;
+        this.prix = prix;
+    }
+
+
+
     // Getters et Setters
     public int getIdAbonnement() {
         return idAbonnement;

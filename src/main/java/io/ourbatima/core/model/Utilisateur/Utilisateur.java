@@ -1,3 +1,4 @@
+
 package io.ourbatima.core.model.Utilisateur;
 
 import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
@@ -5,6 +6,28 @@ import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 public class Utilisateur {
     private int id;
     private String nom;
+
+    public Utilisateur(String nom, String prenom, String email, String telephone, String adresse, String motDePasse ,Role role) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.telephone = telephone;
+        this.adresse = adresse;
+        this.motDePasse = motDePasse;
+        this.role = role;
+
+    }
+
+
+    public Utilisateur(int id, String nom, String prenom, String email, String telephone, String adresse, Statut actif, boolean b, Role role) {
+
+    }
+
+
+    public Utilisateur(int id, String name) {
+        this.id = id;
+        this.nom = name;//mahdiiiii
+    }
 
     public GestionnaireDeStock getGestionnaireDeStock() {
         return gestionnaireDeStock;
@@ -38,9 +61,7 @@ public class Utilisateur {
     private boolean isConfirmed = false; // Valeur par défaut
     private Role role = Role.Client; // Valeur par défaut
 
-    public Utilisateur(int id, String nom, String prenom, String email, String motDePasse, String telephone, String adresse, UtilisateurDAO.Statut statut, boolean isConfirmed, UtilisateurDAO.Role role) {
 
-    }
 
     // Enumérations
     public enum Role {
@@ -110,20 +131,10 @@ public class Utilisateur {
     public void setConfirmed(boolean isConfirmed) { this.isConfirmed = isConfirmed; }
 
 
-    // Méthode toString pour le débogage
+    //mahdiiiii
     @Override
     public String toString() {
-        return "Utilisateur{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", email='" + email + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", adresse='" + adresse + '\'' +
-                ", statut=" + statut +
-                ", isConfirmed=" + isConfirmed +
-                ", role=" + role +
-                '}';
+        return nom;  // Pour affichage dans ComboBox
     }
 
     public Artisan getArtisan() {
@@ -143,3 +154,4 @@ public class Utilisateur {
 
 
 }
+

@@ -49,4 +49,13 @@ public class Stock {
     public void setDateCreation(String dateCreation) {
         this.dateCreation = dateCreation;
     }
+    @Override
+    public String toString() {
+        return String.format(
+                "id=%d, nom='%s', emplacement='%s', dateCreation='%s",
+                id, nom, emplacement, dateCreation
+        );}
+
+
+
 }

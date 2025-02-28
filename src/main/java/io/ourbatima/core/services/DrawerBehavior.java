@@ -48,6 +48,11 @@ public class DrawerBehavior {
 
         VBox body = (VBox) content.lookup("#drawer-content");
 
+        if (body == null) {
+            System.err.println("ERREUR: L'élément 'body' est null dans DrawerBehavior !");
+            return;
+        }
+
         ScrollPane scrollPane = (ScrollPane) body.lookup("#drawer-scroll");
         VBox box = (VBox) scrollPane.getContent();
 

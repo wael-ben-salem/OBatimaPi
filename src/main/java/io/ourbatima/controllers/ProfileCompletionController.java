@@ -5,13 +5,18 @@ import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.application.Platform;
+import netscape.javascript.JSObject;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import javafx.scene.web.WebView;
+import javafx.scene.web.WebEngine;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
+
+import javafx.event.ActionEvent;
 
 public class ProfileCompletionController extends ActionView {
     @FXML
@@ -20,8 +25,16 @@ public class ProfileCompletionController extends ActionView {
     private Runnable onCompletionSuccess; // Changement ici
 
     @FXML private TextField txtPrenom;
+    @FXML private ComboBox<String> cbCountryCode;
+    @FXML private Label telephoneError;
+    @FXML private Label adresseError;
+    @FXML private Label passwordError;
+
+    private static final String PHONE_REGEX = "^(\\+216|00216)?[2459]\\d{7}$";
+    private static final String PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*\\d).{8,}$";
     @FXML private TextField txtEmail;
     @FXML private TextField txtTelephone;
+
     @FXML private TextField txtAdresse;
     @FXML private PasswordField txtPassword;
     private OnSaveListener onSaveListener; // Interface de rappel
@@ -64,8 +77,65 @@ public class ProfileCompletionController extends ActionView {
             return;
         }
 
+        setupValidations();
+        cbCountryCode.getSelectionModel().selectFirst();
+
+
         // Force l'initialisation UI
         Platform.runLater(this::initFields);
+    }
+
+    private void setupValidations() {
+        txtTelephone.textProperty().addListener((obs, oldVal, newVal) -> validatePhone());
+        txtPassword.textProperty().addListener((obs, oldVal, newVal) -> validatePassword());
+    }
+
+    private boolean validateForm() {
+        boolean isValid = true;
+
+        isValid &= validatePhone();
+        isValid &= validateAddress();
+        isValid &= validatePassword();
+
+        return isValid;
+    }
+
+
+    private boolean validatePhone() {
+        String phone = cbCountryCode.getValue() + txtTelephone.getText();
+        if (txtTelephone.getText().isEmpty()) {
+            telephoneError.setText("Ce champ est obligatoire");
+            return false;
+        }
+        if (!phone.matches(PHONE_REGEX)) {
+            telephoneError.setText("Format tunisien invalide");
+            return false;
+        }
+        telephoneError.setText("");
+        return true;
+    }
+
+    private boolean validateAddress() {
+        if (txtAdresse.getText().trim().isEmpty()) {
+            adresseError.setText("Veuillez saisir une adresse valide");
+            return false;
+        }
+        adresseError.setText("");
+        return true;
+    }
+
+    private boolean validatePassword() {
+        String password = txtPassword.getText();
+        if (password.isEmpty()) {
+            passwordError.setText("Ce champ est obligatoire");
+            return false;
+        }
+        if (!password.matches(PASSWORD_REGEX)) {
+            passwordError.setText("8 caractères min, 1 majuscule, 1 chiffre");
+            return false;
+        }
+        passwordError.setText("");
+        return true;
     }
 
     @FXML
@@ -77,7 +147,7 @@ public class ProfileCompletionController extends ActionView {
             boolean success = dao.updateUser(utilisateur);
 
             if (success) {
-                SessionManager.setUtilisateur(utilisateur); // Ajoutez cette ligne
+                SessionManager.getInstance().startSession(utilisateur); // Ajoutez cette ligne
 
                 sendWelcomeEmail();
 
@@ -97,13 +167,7 @@ public class ProfileCompletionController extends ActionView {
     public Utilisateur getUpdatedUser() {
         return utilisateur;
     }
-    private boolean validateForm() {
-        if (txtPassword.getText().length() < 8) {
-            showAlert(Alert.AlertType.WARNING, "Le mot de passe doit contenir 8 caractères minimum");
-            return false;
-        }
-        return true;
-    }
+
 
     private void updateUserFromForm() {
         utilisateur.setTelephone(txtTelephone.getText());
@@ -157,8 +221,86 @@ public class ProfileCompletionController extends ActionView {
             alert.showAndWait();
         });
     }
+    private Stage mapStage;
 
+    @FXML
+    private void handleMapClick(ActionEvent event) {
+        System.out.println("📍 Ouverture de la carte...");
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+        webEngine.setJavaScriptEnabled(true);
 
+        webEngine.getLoadWorker().stateProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == Worker.State.SUCCEEDED) {
+                JSObject window = (JSObject) webEngine.executeScript("window");
+                window.setMember("javaApp", new JSBridge(this)); // Permet à JS d'appeler Java
 
+                // Demande l'autorisation via une alerte JavaFX
+                requestLocationPermission(webEngine);
+
+                System.out.println("✅ Bridge JS-Java initialisé");
+            }
+        });
+
+        webEngine.load(getClass().getResource("/api/map.html").toExternalForm());
+
+        mapStage = new Stage();
+        mapStage.setScene(new Scene(webView));
+        mapStage.setTitle("Sélection de position");
+        mapStage.show();
+    }
+
+    // Demander l'autorisation de localisation et exécuter le JS
+    private void requestLocationPermission(WebEngine webEngine) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Autorisation de localisation");
+        alert.setHeaderText("L'application souhaite accéder à votre position.");
+        alert.setContentText("Autoriser la géolocalisation ?");
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                System.out.println("🌍 Autorisation accordée, récupération de la position...");
+                webEngine.executeScript("locateUser();"); // Exécute la fonction JS
+            } else {
+                System.out.println("🚫 Autorisation refusée !");
+            }
+        });
+    }
+
+    public void updateAddressField(String address) {
+        System.out.println("📨 Adresse reçue : " + address);
+
+        Platform.runLater(() -> {
+            if (txtAdresse != null) {
+                txtAdresse.setText(address);
+                System.out.println("✅ Adresse mise à jour : " + txtAdresse.getText());
+            } else {
+                System.out.println("❌ ERREUR : txtAdresse est NULL lors de la mise à jour !");
+            }
+            if (mapStage != null) mapStage.close();
+        });
+    }
+
+    public class JSBridge {
+        private final ProfileCompletionController controller;
+
+        public JSBridge(ProfileCompletionController controller) {
+            this.controller = controller;
+        }
+        public void receiveLocation(double latitude, double longitude) {
+            System.out.println("📌 Position reçue : Latitude = " + latitude + ", Longitude = " + longitude);
+            controller.updateLocation(latitude, longitude);
+        }
+
+        public void sendAddress(String address) {
+            System.out.println("📨 Adresse reçue depuis JS : " + address);
+            controller.updateAddressField(address);
+        }
+    }
+    public void updateLocation(double latitude, double longitude) {
+        Platform.runLater(() -> {
+            txtAdresse.setText("Lat: " + latitude + ", Lng: " + longitude);
+        });
+    }
 
 }

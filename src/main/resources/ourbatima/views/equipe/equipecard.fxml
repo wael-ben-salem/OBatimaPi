@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Rectangle?>
+<?import java.net.URL?>
+<HBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="cardRoot"
+      styleClass="equipe-card"
+      spacing="20"
+      alignment="CENTER_LEFT"
+      prefWidth="350"
+      prefHeight="120"
+      fx:controller="io.ourbatima.controllers.Equipe.EquipeCardController">
+
+    <children>
+        <ImageView fx:id="teamLogo" fitWidth="80" fitHeight="80" preserveRatio="true">
+            <HBox.margin>
+                <Insets left="15"/>
+            </HBox.margin>
+        </ImageView>
+
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label fx:id="teamNameLabel" styleClass="card-title" text="Nom de l'équipe"/>
+            <Label fx:id="membersCountLabel" styleClass="card-subtitle" text="Membres : 0"/>
+        </VBox>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button styleClass="icon-button" onAction="#showDetails">
+                <graphic>
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@../../../images/logo.png" />
+
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button styleClass="icon-button" onAction="#updateEquipe">
+                <graphic>
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@../../../images/pencil.png" />
+
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button styleClass="icon-button" onAction="#deleteEquipe">
+                <graphic>
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@../../../images/bin.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </children>
+
+    <padding>
+        <Insets top="10" right="15" bottom="10" left="10"/>
+    </padding>
+
+    <stylesheets>
+
+    </stylesheets>
+</HBox>

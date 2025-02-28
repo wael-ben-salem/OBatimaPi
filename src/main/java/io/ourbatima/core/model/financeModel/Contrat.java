@@ -1,7 +1,7 @@
 package io.ourbatima.core.model.financeModel;
 
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Contrat {
     private int idContrat;
@@ -11,13 +11,11 @@ public class Contrat {
     private String signatureElectronique;
     private Date dateFin;
     private double montantTotal;
-    private int idClient;
     private int idProjet;
-    private int idConstructeur;
 
     // Constructeur
     public Contrat(int idContrat, String typeContrat, Date dateSignature, Date dateDebut, String signatureElectronique,
-                   Date dateFin, double montantTotal, int idClient, int idProjet, int idConstructeur) {
+                   Date dateFin, double montantTotal,  int idProjet) {
         this.idContrat = idContrat;
         this.typeContrat = typeContrat;
         this.dateSignature = dateSignature;
@@ -25,25 +23,19 @@ public class Contrat {
         this.signatureElectronique = signatureElectronique;
         this.dateFin = dateFin;
         this.montantTotal = montantTotal;
-        this.idClient = idClient;
         this.idProjet = idProjet;
-        this.idConstructeur = idConstructeur;
     }
-
-
-    public Contrat(int idContrat, String typeContrat, Date dateSignature, Date dateDebut, String signatureElectronique,
-                   Date dateFin, double montantTotal, int idClient, int idProjet) {
-        this.idContrat = idContrat;
+    public Contrat( String typeContrat, Date dateSignature, Date dateDebut, String signatureElectronique,
+                   Date dateFin, double montantTotal,  int idProjet) {
         this.typeContrat = typeContrat;
         this.dateSignature = dateSignature;
         this.dateDebut = dateDebut;
         this.signatureElectronique = signatureElectronique;
         this.dateFin = dateFin;
         this.montantTotal = montantTotal;
-        this.idClient = idClient;
         this.idProjet = idProjet;
-
     }
+
 
 
     public Contrat() {
@@ -107,13 +99,9 @@ public class Contrat {
         this.montantTotal = montantTotal;
     }
 
-    public int getIdClient() {
-        return idClient;
-    }
 
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
-    }
+
+
 
     public int getIdProjet() {
         return idProjet;
@@ -123,13 +111,7 @@ public class Contrat {
         this.idProjet = idProjet;
     }
 
-    public int getIdConstructeur() {
-        return idConstructeur;
-    }
 
-    public void setIdConstructeur(int idConstructeur) {
-        this.idConstructeur = idConstructeur;
-    }
 
     @Override
     public String toString() {
@@ -141,9 +123,7 @@ public class Contrat {
                 ", signatureElectronique=" + signatureElectronique +
                 ", dateFin=" + dateFin +
                 ", montantTotal=" + montantTotal +
-                ", idClient=" + idClient +
                 ", idProjet=" + idProjet +
-                ", idConstructeur=" + idConstructeur +
                 '}';
     }
 }

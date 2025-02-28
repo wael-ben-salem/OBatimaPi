@@ -7,15 +7,14 @@ public class Constructeur  extends  Utilisateur{
     private String specialite;
     private double salaireHeure;
 
-    public Constructeur(int id, String nom, String prenom, String email, String motDePasse, String telephone, String adresse, UtilisateurDAO.Statut statut, boolean isConfirmed, UtilisateurDAO.Role role, int constructeur_id, String specialite, double salaireHeure) {
-        super(id, nom, prenom, email, motDePasse, telephone, adresse, statut, isConfirmed, role);
-        this.constructeur_id = constructeur_id;
-        this.specialite = specialite;
-        this.salaireHeure = salaireHeure;
-    }
+    public Constructeur(int id, String nom, String prenom, String email,
+                        String motDePasse, String telephone, String adresse,
+                        Utilisateur.Statut statut, boolean isConfirmed,  // Utiliser l'enum du modèle
+                        Utilisateur.Role role,  // Utiliser l'enum du modèle
+                        int constructeur_id, String specialite, double salaireHeure) {
 
-    public Constructeur(int id, String nom, String prenom, String email, String motDePasse, String telephone, String adresse, Statut statut, boolean isConfirmed, Role role, int constructeur_id, String specialite, double salaireHeure) {
-        super(id, nom, prenom, email, motDePasse, telephone, adresse, statut, isConfirmed, role);
+        super(id, nom, prenom, email, motDePasse, telephone, adresse,
+                statut, isConfirmed, role);
         this.constructeur_id = constructeur_id;
         this.specialite = specialite;
         this.salaireHeure = salaireHeure;

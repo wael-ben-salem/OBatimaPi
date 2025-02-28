@@ -69,4 +69,13 @@ public class Fournisseur {
     public void setAdresse(String adresse) {
         this.adresse = adresse;
     }
+
+
+    public String toString() {
+        return String.format(
+                "id=%d, nom='%s', prenom='%s', email='%s', numeroDeTelephone='%s', adresse='%s'",
+                id, nom, prenom, email, numeroDeTelephone, adresse
+        );
+    }
+
 }
