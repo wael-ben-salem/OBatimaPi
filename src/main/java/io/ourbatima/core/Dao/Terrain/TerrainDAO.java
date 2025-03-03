@@ -2,6 +2,7 @@ package io.ourbatima.core.Dao.Terrain;
 
 import io.ourbatima.core.Dao.DatabaseConnection;
 import io.ourbatima.core.model.Terrain;
+import io.ourbatima.core.model.Visite;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -15,28 +16,23 @@ public class TerrainDAO {
         return DatabaseConnection.getConnection();
     }
 
+
     public void addTerrain(Terrain terrain) {
-        String sql = "INSERT INTO Terrain (Id_projet, emplacement, caracteristiques, superficie, detailsGeo) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Terrain (emplacement, caracteristiques, superficie, detailsGeo) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            if (terrain.getId_projet() != null) {
-                pstmt.setInt(1, terrain.getId_projet());
-            } else {
-                pstmt.setNull(1, Types.INTEGER);
-            }
-
-            pstmt.setString(2, terrain.getEmplacement());
-            pstmt.setString(3, terrain.getCaracteristiques());
+            pstmt.setString(1, terrain.getEmplacement());
+            pstmt.setString(2, terrain.getCaracteristiques());
 
             if (terrain.getSuperficie() != null) {
-                pstmt.setBigDecimal(4, terrain.getSuperficie());
+                pstmt.setBigDecimal(3, terrain.getSuperficie());
             } else {
-                pstmt.setNull(4, Types.DECIMAL);
+                pstmt.setNull(3, Types.DECIMAL);
             }
 
-            pstmt.setString(5, terrain.getDetailsGeo());
+            pstmt.setString(4, terrain.getDetailsGeo());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -46,6 +42,8 @@ public class TerrainDAO {
                         System.out.println("Terrain ajouté avec succès ! Id_terrain = " + terrain.getId_terrain());
                     }
                 }
+            } else {
+                System.out.println("Échec de l'ajout du terrain, aucune ligne affectée.");
             }
 
         } catch (SQLException e) {
@@ -54,30 +52,31 @@ public class TerrainDAO {
     }
 
 
+
+
     public List<Terrain> getAllTerrain() {
         List<Terrain> terrains = new ArrayList<>();
-        String sql = "SELECT * FROM Terrain";
+        String sql = "SELECT Id_terrain, detailsGeo, superficie, caracteristiques, emplacement FROM Terrain";
 
         try (Connection conn = connect();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                // Retrieve values first
-                Integer idVisite = rs.getObject("Id_visite") != null ? rs.getInt("Id_visite") : null;
+                int idTerrain = rs.getInt("Id_terrain");
                 BigDecimal superficie = rs.getObject("superficie") != null ? rs.getBigDecimal("superficie") : null;
-                Integer idProjet = rs.getObject("Id_projet") != null ? rs.getInt("Id_projet") : null;
+                String detailsGeo = rs.getString("detailsGeo");
+                String caracteristiques = rs.getString("caracteristiques");
+                String emplacement = rs.getString("emplacement");
+
+                // Create Terrain object
+                Terrain terrain = new Terrain(idTerrain, detailsGeo, superficie, caracteristiques, emplacement);
 
 
-                Terrain terrain = new Terrain(
-                        rs.getInt("Id_terrain"),
-                        idProjet,
-                        rs.getString("detailsGeo"),
-                        superficie,
-                        rs.getString("caracteristiques"),
-                        rs.getString("emplacement"),
-                        idVisite
-                );
+
+                // Fetch visits for this terrain to get the observations
+                List<String> observations = getObservationsForTerrain(idTerrain);
+                terrain.setObservations(observations);
                 terrains.add(terrain);
             }
         } catch (SQLException e) {
@@ -85,6 +84,51 @@ public class TerrainDAO {
         }
         return terrains;
     }
+
+    public List<String> getAllEmplacements() {
+        List<String> emplacements = new ArrayList<>();
+        String query = "SELECT emplacement FROM Terrain";
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                emplacements.add(resultSet.getString("emplacement"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching emplacements: " + e.getMessage());
+        }
+
+        return emplacements;
+    }
+
+
+
+
+    public List<String> getObservationsForTerrain(int idTerrain) {
+        List<String> observations = new ArrayList<>();
+        String sql = "SELECT observations FROM Visite WHERE Id_terrain = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idTerrain);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    observations.add(rs.getString("observations"));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération des observations pour le terrain " + idTerrain + ": " + e.getMessage());
+        }
+        return observations;
+    }
+
+
+
 
     public Terrain getTerrainById(int Id_terrain) {
         String sql = "SELECT * FROM Terrain WHERE Id_terrain = ?";
@@ -96,18 +140,14 @@ public class TerrainDAO {
             pstmt.setInt(1, Id_terrain);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    Integer idProjet = rs.getObject("Id_projet") != null ? rs.getInt("Id_projet") : null;
-                    Integer idVisite = rs.getObject("Id_visite") != null ? rs.getInt("Id_visite") : null;
                     BigDecimal superficie = rs.getObject("superficie") != null ? rs.getBigDecimal("superficie") : null;
 
                     terrain = new Terrain(
                             rs.getInt("Id_terrain"),
-                            idProjet,
                             rs.getString("detailsGeo"),
                             superficie,
                             rs.getString("caracteristiques"),
-                            rs.getString("emplacement"),
-                            idVisite
+                            rs.getString("emplacement")
                     );
                 }
             }
@@ -118,29 +158,23 @@ public class TerrainDAO {
     }
 
 
+
     public void updateTerrain(Terrain terrain) {
-        String sql = "UPDATE Terrain SET Id_projet = ?, emplacement = ?, caracteristiques = ?, superficie = ?, detailsGeo = ?, Id_visite = ? WHERE Id_terrain = ?";
+        String sql = "UPDATE Terrain SET emplacement = ?, caracteristiques = ?, superficie = ?, detailsGeo = ? WHERE Id_terrain = ?";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            if (terrain.getId_projet() != null) {
-                pstmt.setInt(1, terrain.getId_projet());
-            } else {
-                pstmt.setNull(1, Types.INTEGER);
-            }
-
-            pstmt.setString(2, terrain.getEmplacement());
-            pstmt.setString(3, terrain.getCaracteristiques());
+            pstmt.setString(1, terrain.getEmplacement());
+            pstmt.setString(2, terrain.getCaracteristiques());
 
             if (terrain.getSuperficie() != null) {
-                pstmt.setBigDecimal(4, terrain.getSuperficie());
+                pstmt.setBigDecimal(3, terrain.getSuperficie());
             } else {
-                pstmt.setNull(4, Types.DECIMAL);
+                pstmt.setNull(3, Types.DECIMAL);
             }
-            pstmt.setString(5, terrain.getDetailsGeo());
-            pstmt.setObject(6, terrain.getId_visite());
-            pstmt.setInt(7, terrain.getId_terrain());
+            pstmt.setString(4, terrain.getDetailsGeo());
+            pstmt.setInt(5, terrain.getId_terrain());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -151,6 +185,55 @@ public class TerrainDAO {
             System.out.println("Erreur lors de la mise à jour du terrain : " + e.getMessage());
         }
     }
+
+    public void updateVisiteObservations(int idVisite, String observations) {
+        String sql = "UPDATE Visite SET Observations = ? WHERE Id_visite = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, observations);
+            pstmt.setInt(2, idVisite);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Observations updated successfully!");
+            } else {
+                System.out.println("No rows affected, check if the Id_visite exists.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error updating observations: " + e.getMessage());
+        }
+    }
+
+
+    public Terrain getTerrainByEmplacement(String emplacement) {
+        Terrain terrain = null;
+        String sql = "SELECT * FROM Terrain WHERE emplacement = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, emplacement);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    terrain = new Terrain(
+                            rs.getInt("Id_terrain"),
+                            rs.getString("detailsGeo"),
+                            rs.getBigDecimal("superficie"),
+                            rs.getString("caracteristiques"),
+                            rs.getString("emplacement")
+                    );
+                } else {
+                    System.out.println("❌ No Terrain found with emplacement: " + emplacement);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération du terrain : " + e.getMessage());
+        }
+        return terrain;
+    }
+
 
     public void deleteTerrain(int idTerrain) {
         String sql = "DELETE FROM Terrain WHERE Id_terrain = ?";
@@ -169,21 +252,7 @@ public class TerrainDAO {
         }
     }
 
-    public Terrain getTerrainByEmplacement(String emplacement) {
-        String sql = "SELECT * FROM Terrain WHERE emplacement = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, emplacement);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Terrain(rs.getInt("Id_terrain"));
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error retrieving terrain by emplacement: " + e.getMessage());
-        }
-        return null;
-    }
+
     public static String getTerrainEmplacementById(int id) {
         String sql = "SELECT emplacement FROM Terrain WHERE id_terrain = ?";
         String emplacement = null;
@@ -202,6 +271,26 @@ public class TerrainDAO {
             e.printStackTrace();
         }
         return emplacement;
+    }
+
+    public int getIdTerrainByEmplacement(String emplacement) {
+        String sql = "SELECT Id_terrain FROM Terrain WHERE emplacement = ?";
+        int idTerrain = -1; // Default value indicating not found
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, emplacement);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    idTerrain = rs.getInt("Id_terrain"); // Get the Id_terrain from the result set
+                } else {
+                    System.out.println("❌ No Terrain found with emplacement: " + emplacement);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'Id_terrain par emplacement : " + e.getMessage());
+        }
+        return idTerrain;
     }
 
 

@@ -94,6 +94,7 @@ public class Utilisateur {
         this.isConfirmed = false;
     }
 
+
     // Getters et Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -151,4 +152,6 @@ public class Utilisateur {
         this.constructeur = constructeur;
     }
 
+
 }
+

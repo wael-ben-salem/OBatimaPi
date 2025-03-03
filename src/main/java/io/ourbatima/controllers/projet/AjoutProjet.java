@@ -1,5 +1,6 @@
 package io.ourbatima.controllers.projet;
 
+import io.ourbatima.controllers.terrain.AjoutTerrain;
 import io.ourbatima.core.Dao.Projet.ProjetDAO;
 import io.ourbatima.core.Dao.Terrain.TerrainDAO;
 import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
@@ -8,13 +9,19 @@ import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import io.ourbatima.core.model.Utilisateur.Client;
 import io.ourbatima.core.model.Utilisateur.Equipe;
 import io.ourbatima.core.model.Terrain;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.regex.Pattern;
@@ -37,6 +44,8 @@ public class AjoutProjet extends ActionView {
     private TextField budgetTextField;
     @FXML
     private Button ajouterButton;
+    @FXML
+    private Button openAjoutTerrainButton;
 
     private UtilisateurDAO clientDAO = new UtilisateurDAO();
     private EquipeDAO equipeDAO = new EquipeDAO();
@@ -48,6 +57,29 @@ public class AjoutProjet extends ActionView {
         System.out.println("AjoutProjet Controller Initialized");
         ajouterButton.setOnAction(event -> handleAddProjet());
         addInputListeners();
+    }
+
+    @FXML
+    private void openAjoutTerrain() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/Terrain/ajoutTerrain.fxml"));
+            Parent root = loader.load();
+
+            AjoutTerrain ajoutTerrainController = loader.getController();
+            ajoutTerrainController.setAjoutProjetController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Ajouter un Terrain");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setTerrainTextField(String emplacement) {
+        terrainTextField.setText(emplacement);
     }
 
     private void addInputListeners() {
@@ -79,12 +111,12 @@ public class AjoutProjet extends ActionView {
 
     @FXML
     private void handleAddProjet() {
-        String nomProjet = nomProjetTextField.getText();
+        String nomProjet = nomProjetTextField.getText().trim();
         String clientEmail = clientTextField.getText().trim();
         String nomEquipe = equipeTextField.getText().trim();
         String emplacement = terrainTextField.getText().trim();
         String type = typeTextField.getText();
-        String styleArch = styleArchTextField.getText();
+        String styleArch = styleArchTextField.getText().trim();
 
         BigDecimal budget;
         try {

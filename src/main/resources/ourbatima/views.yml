@@ -131,6 +131,7 @@
     fxml: update_plan.fxml
   }
   - {
+
     name: Chatbot,
     title: Chatbot,
     folder: pages,
@@ -148,6 +149,14 @@
     folder: pages,
     fxml: Weather.fxml
   }
+
+    name: afficherTerrain,
+    title: afficherTerrain,
+    folder: Terrain,
+    fxml: afficherTerrain.fxml
+  }
+
+
 
 
   - {

@@ -62,12 +62,19 @@ public class Main extends Launcher {
 
         Loader loadCircle = new LoadCircle("Starting..", "");
 
+        Task<View> loadViews = new LoadViews(context, loadCircle);
+
         Thread tLoadViews = new Thread(loadViews);
         tLoadViews.setDaemon(true);
         tLoadViews.start();
 
         loadViews.setOnSucceeded(event -> {
+
+            layout.setContent(null);
+
+
             Platform.runLater(() -> layout.setContent(context.routes().getView("login").getRoot()));
+
             View loginView = context.routes().getView("login");
             layout.setContent(loginView.getRoot());
         });

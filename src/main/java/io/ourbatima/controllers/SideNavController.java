@@ -426,6 +426,17 @@ public class SideNavController extends ActionView {
     public void setUser(Utilisateur utilisateur) {
     }
 
+
+    public void gototache(ActionEvent actionEvent) {
+    }
+
+    public void gotoplan(ActionEvent actionEvent) {
+    }
+
+    public void gotoplanf(ActionEvent actionEvent) {
+    }
+
+
     public void goAddStock(ActionEvent actionEvent) {
         context.routes().nav("addstock");
     }
@@ -459,6 +470,7 @@ public class SideNavController extends ActionView {
     public void gotoplanf(ActionEvent actionEvent) {
         context.routes().nav("AddTask");
     }
+
     public void gotoAjoutProjet(ActionEvent actionEvent) {
         context.routes().nav("ajoutProjet");
     }
@@ -478,6 +490,14 @@ public class SideNavController extends ActionView {
 
     }
 
+
+
+    public void gotoAfficherTerrain(ActionEvent actionEvent) {
+        context.routes().nav("afficherTerrain");
+
+    }
+
+
     public void gotoAfficherContrats(ActionEvent event) {
 
         context.routes().nav("ListContrats");
@@ -487,4 +507,5 @@ public class SideNavController extends ActionView {
     public void gotoAfficherAbonnemant(ActionEvent event) {
         context.routes().nav("ListAbonnement");
     }
+
 }

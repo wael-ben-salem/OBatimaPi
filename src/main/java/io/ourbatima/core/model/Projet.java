@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import io.ourbatima.core.Dao.Terrain.TerrainDAO;
 import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
@@ -101,6 +102,8 @@ public class Projet {
         this.etapes = (etapes != null) ? etapes : new ArrayList<>();
     }
 
+
+
     public Projet(int id, String name) {
         this.Id_projet=id;
         this.nomProjet=name;
@@ -117,6 +120,7 @@ public class Projet {
 
         return (client != null) ? client.getEmail() : null;
     }
+
 
 
         public int getId_projet() {

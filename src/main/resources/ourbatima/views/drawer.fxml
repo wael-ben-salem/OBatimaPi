@@ -186,6 +186,7 @@
                               <ToggleGroup fx:id="group32" />
                            </toggleGroup>
                         </ToggleButton>
+
                         <Button fx:id="gotoplan" onAction="#gotoplan" styleClass="btn-gradient" text="gotoplan" />
                         <Button fx:id="gotoplanf" onAction="#gotoplanf" styleClass="btn-gradient" text="gotoplanf" />
 
@@ -193,6 +194,8 @@
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjoutProjet" styleClass="drawer-item" text="Ajouter Projet" toggleGroup="$group3" />
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Afficher Projet" toggleGroup="$group3" />
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherTerrain" styleClass="drawer-item" text="Afficher Terrain" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherEtapeProjet" styleClass="drawer-item" text="Afficher Étape projet" toggleGroup="$group3" />
 
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats" toggleGroup="$group3" />
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants" toggleGroup="$group3" />

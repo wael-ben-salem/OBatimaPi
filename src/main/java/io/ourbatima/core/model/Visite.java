@@ -3,37 +3,36 @@ package io.ourbatima.core.model;
 import java.sql.Date;
 
 public class Visite {
-    private int Id_visite;
-    private int Id_projet;
+    private int idVisite;
+    private int idTerrain;
     private Date dateVisite;
     private String observations;
-    private int Id_terrain;
 
-    public Visite(){}
+    public Visite() {}
 
-    public Visite(int Id_projet, String observations, Date dateVisite) {
+    public Visite(int idTerrain, String observations, Date dateVisite) {
         this.observations = observations;
         this.dateVisite = dateVisite;
-        this.Id_projet = Id_projet;
+        this.idTerrain = idTerrain;
     }
 
-    public Visite(int id_visite, int Id_projet, String observations, Date dateVisite) {
-        Id_visite = id_visite;
+    public Visite(int idVisite, int idTerrain, String observations, Date dateVisite) {
+        this.idVisite = idVisite;
         this.observations = observations;
         this.dateVisite = dateVisite;
-        this.Id_projet = Id_projet;
+        this.idTerrain = idTerrain;
     }
 
-    public void setId_projet(int id_projet) {
-        Id_projet = id_projet;
+    public void setIdTerrain(int idTerrain) {
+        this.idTerrain = idTerrain;
     }
 
-    public int getId_projet() {
-        return Id_projet;
+    public int getIdTerrain() {
+        return idTerrain;
     }
 
-    public int getId_visite() {
-        return Id_visite;
+    public int getIdVisite() {
+        return idVisite;
     }
 
     public Date getDateVisite() {
@@ -44,8 +43,8 @@ public class Visite {
         return observations;
     }
 
-    public void setId_visite(int id_visite) {
-        Id_visite = id_visite;
+    public void setIdVisite(int idVisite) {
+        this.idVisite = idVisite;
     }
 
     public void setDateVisite(Date dateVisite) {
@@ -59,8 +58,8 @@ public class Visite {
     @Override
     public String toString() {
         return "Visite{" +
-                "Id_visite=" + Id_visite +
-                ", Id_projet=" + Id_projet +
+                "idVisite=" + idVisite +
+                ", idTerrain=" + idTerrain +
                 ", dateVisite=" + dateVisite +
                 ", observations='" + observations + '\'' +
                 '}';
