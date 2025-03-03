@@ -106,7 +106,7 @@ public class AfficherProjet extends ActionView implements Initializable {
         }
     }
 
-    private Optional<String> getEmailClientById(int id_client, Connection connection) {
+    private Optional<String> getEmailClientById(int id_client, Connection connection) throws SQLException {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
         Utilisateur utilisateur = utilisateurDAO.getUserById(id_client, connection);
 

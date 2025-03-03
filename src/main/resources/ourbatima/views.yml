@@ -131,6 +131,78 @@
     folder: Terrain,
     fxml: afficherTerrain.fxml
   }
+  - {
+    name: AddPlan,
+    title: AddPlan,
+    folder: pages,
+    fxml: AddPlan.fxml
+  }
+  - {
+    name: AddTask,
+    title: AddTask,
+    folder: pages,
+    fxml: AddTask.fxml
+  }
+  - {
+    name: ListTaches,
+    title: ListTaches,
+    folder: pages,
+    fxml: ListTaches.fxml
+  }
+  - {
+    name: UpdateTask,
+    title: UpdateTask,
+    folder: pages,
+    fxml: update_task.fxml
+  }
+  - {
+    name: ListPlan,
+    title: ListPlan,
+    folder: pages,
+    fxml: ListPlan.fxml
+  }
+  - {
+    name: UpdatePlan,
+    title: UpdatePlan,
+    folder: pages,
+    fxml: update_plan.fxml
+  }
+  - {
+
+    name: Chatbot,
+    title: Chatbot,
+    folder: pages,
+    fxml: Chatbot.fxml
+  }
+  - {
+    name: Dashboard,
+    title: Dashboard,
+    folder: pages,
+    fxml: Dashboard.fxml
+  }
+  - {
+    name: Weather,
+    title: Weather,
+    folder: pages,
+    fxml: Weather.fxml
+  }
+  - {
+    name: ListContrats,
+    title: ListContrats,
+    folder: pages/Finance_vews,
+    fxml: ListContrats.fxml
+
+
+  }
+  - {
+    name: ListAbonnement,
+    title: ListAbonnement,
+    folder: pages/Finance_vews,
+    fxml: ListAbonnement.fxml
+
+
+  }
+
 
 
   -

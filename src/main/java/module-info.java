@@ -38,6 +38,9 @@ module io.ourbatima {
     requires json.smart;
     requires opencv;
     requires org.apache.commons.codec;
+    requires java.net.http;
+    requires com.fasterxml.jackson.databind;
+    requires java.sql;
 
 
     opens io.ourbatima to javafx.fxml;
