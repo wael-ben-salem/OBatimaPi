@@ -79,18 +79,18 @@
             </HBox>
 
             <ComboBox fx:id="roleComboBox" promptText="Rôle" styleClass="custom-combobox">
-            <VBox.margin>
-               <Insets left="30.0" />
-            </VBox.margin></ComboBox>
+                <VBox.margin>
+                    <Insets left="30.0" />
+                </VBox.margin></ComboBox>
 
             <!-- Champs spécifiques pour Artisan et Constructeur -->
             <VBox fx:id="specificDetails" spacing="10" visible="false">
                 <Label style="-fx-font-weight: bold;" text="Informations spécifiques" />
 
                 <ComboBox fx:id="SpecialiteBox" prefWidth="286.0" promptText="Spécialité Artisan" styleClass="custom-combobox" visible="false">
-               <VBox.margin>
-                  <Insets left="30.0" />
-               </VBox.margin></ComboBox>
+                    <VBox.margin>
+                        <Insets left="30.0" />
+                    </VBox.margin></ComboBox>
                 <TextField fx:id="specialiteField" prefHeight="38.0" prefWidth="314.0" promptText="Spécialité Constructeur" styleClass="custom-textfield" visible="false" />
                 <TextField fx:id="salaireField" promptText="Salaire" styleClass="custom-textfield" />
             </VBox>
