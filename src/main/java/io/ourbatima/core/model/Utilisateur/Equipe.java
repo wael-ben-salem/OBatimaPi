@@ -8,6 +8,8 @@ public class Equipe {
     private String nom;
     private Constructeur constructeur;
     private GestionnaireDeStock gestionnaireStock;
+    private String agoraChannel;
+    private String agoraChannelToken;
     private LocalDate dateCreation;
     private List<Artisan> artisans;
 
@@ -24,15 +26,26 @@ public class Equipe {
 
     @Override
     public String toString() {
-        return "Equipe{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", constructeur=" + constructeur +
-                ", gestionnaireStock=" + gestionnaireStock +
-                ", dateCreation=" + dateCreation +
-                ", artisans=" + artisans +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Equipe{")
+                .append("id=").append(id)
+                .append(", nom='").append(nom).append('\'')
+                .append(", constructeur=").append(constructeur != null ? constructeur.getNom() + " " + constructeur.getPrenom() : "null")
+                .append(", gestionnaireStock=").append(gestionnaireStock != null ? gestionnaireStock.getNom() + " " + gestionnaireStock.getPrenom() : "null")
+                .append(", dateCreation=").append(dateCreation)
+                .append(", artisans=[");
+
+        if (artisans != null && !artisans.isEmpty()) {
+            for (Artisan artisan : artisans) {
+                sb.append(artisan.getNom()).append(" ").append(artisan.getPrenom()).append(", ");
+            }
+            sb.setLength(sb.length() - 2); // Supprimer la dernière virgule
+        }
+        sb.append("]}");
+
+        return sb.toString();
     }
+
 
     public int getId() {
         return id;
@@ -82,4 +95,8 @@ public class Equipe {
     public void setArtisans(List<Artisan> artisans) {
         this.artisans = artisans;
     }
+    public String getAgoraChannel() { return agoraChannel; }
+    public void setAgoraChannel(String agoraChannel) { this.agoraChannel = agoraChannel; }
+    public String getAgoraChannelToken() { return agoraChannelToken; }
+    public void setAgoraChannelToken(String agoraChannelToken) { this.agoraChannelToken = agoraChannelToken; }
 }

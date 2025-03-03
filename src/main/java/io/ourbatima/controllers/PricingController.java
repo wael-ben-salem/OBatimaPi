@@ -1,2 +1,6 @@
-package io.ourbatima.controllers;public class PricingController {
+package io.ourbatima.controllers;
+
+import io.ourbatima.core.interfaces.ActionView;
+
+public class PricingController  extends ActionView {
 }

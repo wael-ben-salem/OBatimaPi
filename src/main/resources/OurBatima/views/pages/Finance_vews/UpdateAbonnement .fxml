@@ -9,7 +9,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import java.net.URL?>
-<BorderPane style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.FinanceControllers.UpdateAbonnement">
+<BorderPane style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/18.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.FinanceControllers.UpdateAbonnement">
 
 <!-- En-tête avec Titre -->
 <top>

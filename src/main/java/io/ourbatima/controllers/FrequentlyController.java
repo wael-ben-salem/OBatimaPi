@@ -1,2 +1,6 @@
-package io.ourbatima.controllers;public class FrequentlyController {
+package io.ourbatima.controllers;
+
+import io.ourbatima.core.interfaces.ActionView;
+
+public class FrequentlyController extends ActionView {
 }

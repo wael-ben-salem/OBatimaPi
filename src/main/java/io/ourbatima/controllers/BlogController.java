@@ -1,2 +1,6 @@
-package io.ourbatima.controllers;public class BlogController {
+package io.ourbatima.controllers;
+
+import io.ourbatima.core.interfaces.ActionView;
+
+public class BlogController extends ActionView {
 }

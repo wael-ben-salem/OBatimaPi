@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-<StackPane prefHeight="762.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="762.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="io.ourbatima.controllers.ProfileController">
     <stylesheets>
 
         <URL value="@../../style/css/colors.css" />

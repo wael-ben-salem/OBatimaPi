@@ -1,0 +1,68 @@
+/* Dégradé commun */
+.btn-gradient {
+    -fx-background-color: linear-gradient(to right, #c5a814, #372a28);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12 30;
+    -fx-background-radius: 8;
+}
+ .image-container {
+     -fx-background-color: #ffffff;
+     -fx-border-radius: 15px;
+     -fx-background-radius: 15px;
+     -fx-padding: 20px;
+     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+ }
+
+ .round-button {
+     -fx-background-radius: 50%;
+     -fx-min-width: 60px;
+     -fx-min-height: 60px;
+     -fx-background-color: #4CAF50;
+     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0, 0, 2);
+ }
+
+ .round-button:hover {
+     -fx-background-color: #45a049;
+     -fx-cursor: hand;
+ }
+
+ .face-frame {
+     -fx-border-color: #e0e0e0;
+     -fx-border-width: 2px;
+     -fx-border-radius: 10px;
+ }
+
+ .instruction-label {
+     -fx-font-size: 16px;
+     -fx-text-fill: #666;
+     -fx-font-weight: bold;
+ }
+
+ .auth-title {
+     -fx-padding: 0 0 25px 0 !important;
+ }
+ .camera-icon {
+     -fx-background-color: white;
+     -fx-background-radius: 50%;
+     -fx-border-color: #ccc;
+     -fx-border-width: 2px;
+     -fx-pref-width: 70px;
+     -fx-pref-height: 70px;
+     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.3, 0, 2);
+ }
+/* Styles pour les indicateurs de force de mot de passe */
+.strength-weak {
+    -fx-text-fill: red; /* Rouge */
+    -fx-font-size: 20px;
+}
+
+.strength-medium {
+    -fx-text-fill: yellow; /* Jaune */
+    -fx-font-size: 20px;
+}
+
+.strength-strong {
+    -fx-text-fill: green; /* Vert */
+    -fx-font-size: 20px;
+}

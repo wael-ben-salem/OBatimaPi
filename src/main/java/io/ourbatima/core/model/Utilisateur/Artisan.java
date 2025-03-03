@@ -22,6 +22,30 @@ public class Artisan extends Utilisateur{
     }
 
 
+
+    // Constructeur avec Utilisateur existant
+    public Artisan(int artisan_id,
+                   Utilisateur utilisateur,
+                   Specialite specialite,
+                   double salaire_heure) {
+
+        super(utilisateur.getId(),
+                utilisateur.getNom(),
+                utilisateur.getPrenom(),
+                utilisateur.getEmail(),
+                utilisateur.getMotDePasse(),
+                utilisateur.getTelephone(),
+                utilisateur.getAdresse(),
+                utilisateur.getStatut(),
+                utilisateur.isConfirmed(),
+                utilisateur.getRole());
+
+        this.artisan_id = artisan_id;
+        this.specialite = specialite;
+        this.salaireHeure = salaire_heure;
+    }
+
+
     public enum Specialite {
         Menuiserie,Maçonnerie,Électricité,Plomberie,Autre
     }
@@ -35,10 +59,10 @@ public class Artisan extends Utilisateur{
         this.salaireHeure = salaireHeure;
     }
     public Artisan(int id, String nom, String prenom, String email,
-                        String motDePasse, String telephone, String adresse,
-                        Utilisateur.Statut statut, boolean isConfirmed,  // Utiliser l'enum du modèle
-                        Utilisateur.Role role,  // Utiliser l'enum du modèle
-                        int artisan_id, Specialite specialite, double salaireHeure) {
+                   String motDePasse, String telephone, String adresse,
+                   Utilisateur.Statut statut, boolean isConfirmed,  // Utiliser l'enum du modèle
+                   Utilisateur.Role role,  // Utiliser l'enum du modèle
+                   int artisan_id, Specialite specialite, double salaireHeure) {
 
         super(id, nom, prenom, email, motDePasse, telephone, adresse,
                 statut, isConfirmed, role);
@@ -76,6 +100,15 @@ public class Artisan extends Utilisateur{
     }
 
     public void setSalaireHeure(double salaireHeure) {
+        this.salaireHeure = salaireHeure;
+    }
+
+
+    public String toString() {
+        return getNom() + " " + getPrenom(); // Retourne directement "Nom Prénom"
+    }
+    public Artisan(Specialite specialite, double salaireHeure) {
+        this.specialite = specialite;
         this.salaireHeure = salaireHeure;
     }
 }

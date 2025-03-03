@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<SplitPane dividerPositions="0.35001185677021573" prefHeight="568.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.projet.AjoutProjet">
+<SplitPane dividerPositions="0.35001185677021573" prefHeight="568.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/18.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.projet.AjoutProjet">
     <items>
         <StackPane prefWidth="358" style="-fx-background-color: linear-gradient(to bottom, #c5a814, #372a28);">
             <children>

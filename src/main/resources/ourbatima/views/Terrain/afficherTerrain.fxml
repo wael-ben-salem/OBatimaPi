@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="441.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.terrain.AfficherTerrain">
+<AnchorPane prefHeight="441.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/18.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.terrain.AfficherTerrain">
     <children>
       <VBox layoutX="10.399999618530273" layoutY="10.399999618530273" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>

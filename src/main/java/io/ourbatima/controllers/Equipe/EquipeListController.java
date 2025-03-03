@@ -1,8 +1,12 @@
 package io.ourbatima.controllers.Equipe;
 
 import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
+import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.model.Utilisateur.Artisan;
+import io.ourbatima.core.model.Utilisateur.Constructeur;
 import io.ourbatima.core.model.Utilisateur.Equipe;
+import io.ourbatima.core.model.Utilisateur.GestionnaireDeStock;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,7 +24,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class EquipeListController extends ActionView implements Initializable {
 
@@ -33,6 +39,9 @@ public class EquipeListController extends ActionView implements Initializable {
     private EquipeDAO equipeDAO = new EquipeDAO();
     private int currentPage = 0;
     private int totalEquipes = 0;
+    private Runnable refreshParent;
+
+
     private final int pageSize = 9; // Nombre d'équipes par page
 
     @Override
@@ -62,30 +71,25 @@ public class EquipeListController extends ActionView implements Initializable {
             e.printStackTrace();
         }
     }
-
     private HBox createEquipeCard(Equipe equipe) {
-        HBox card = new HBox(10);
-        card.getStyleClass().add("equipe-card");
-        card.setPadding(new Insets(15));
+        try {
+            // Charger le fichier FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/equipe/equipecard.fxml"));
 
-        // Logo de l'équipe (icône par défaut)
-        ImageView logo = new ImageView(new Image(getClass().getResourceAsStream("/images/team.png")));
-        logo.setFitWidth(80);
-        logo.setFitHeight(80);
-        logo.setPreserveRatio(true);
+            // Récupérer le HBox défini dans le fichier FXML
+            HBox card = loader.load();
 
-        // Informations de l'équipe
-        VBox info = new VBox(5);
-        Label nameLabel = new Label(equipe.getNom());
-        nameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+            // Récupérer le contrôleur du FXML
+            EquipeCardController controller = loader.getController();
 
-        Label membersLabel = new Label("Membres : " + equipe.getArtisans().size());
-        membersLabel.setStyle("-fx-font-size: 14px;");
+            // Mettre à jour les éléments du FXML avec les données de l'équipe
+            controller.setEquipe(equipe);  // Vous devez implémenter cette méthode dans votre contrôleur
 
-        info.getChildren().addAll(nameLabel, membersLabel);
-        card.getChildren().addAll(logo, info);
-
-        return card;
+            return card;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new HBox();  // Retourner un HBox vide en cas d'erreur
+        }
     }
 
     private void updatePaginationControls() {
@@ -109,22 +113,70 @@ public class EquipeListController extends ActionView implements Initializable {
             refreshEquipeList();
         }
     }
-
     @FXML
     private void openAddEquipeDialog() {
         try {
+            // Charger le fichier FXML de la page d'ajout d'équipe
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/equipe/equipeadd.fxml"));
             Parent root = loader.load();
 
+            // Récupérer le contrôleur de la page d'ajout
+            EquipeCreateController controller = loader.getController();
+
+            // Initialiser les données nécessaires (constructeurs, gestionnaires, artisans)
+            UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+            List<Constructeur> constructeurs = utilisateurDAO.getAllConstructeurIds().stream()
+                    .map(id -> {
+                        try {
+                            return utilisateurDAO.getConstructeurId(id);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .collect(Collectors.toList());
+
+            List<GestionnaireDeStock> gestionnaires = utilisateurDAO.getAllGestionnaireStockIds().stream()
+                    .map(id -> utilisateurDAO.getGestionnaireStockId(id))
+                    .collect(Collectors.toList());
+            List<Artisan> artisans = utilisateurDAO.getAllArtisanIds().stream()
+                    .map(id -> {
+                        Artisan a = utilisateurDAO.getArtisanId(id);
+                        if (a == null) {
+                        }
+                        return a;
+                    })
+                    .filter(Objects::nonNull) // Filtre crucial ici
+                    .collect(Collectors.toList());
+
+            if (artisans.isEmpty()) {
+                showErrorAlert("Erreur Critique", "Aucun artisan valide trouvé !");
+                return;
+            }
+
+            // Passer les données au contrôleur
+            controller.initData(constructeurs, gestionnaires,artisans);
+
+            // Rafraîchir la liste des équipes après la création
+            controller.setRefreshCallback(this::refreshEquipeList);
+
+
+            // Créer une nouvelle fenêtre modale
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
+            stage.setTitle("Créer une nouvelle équipe");
             stage.showAndWait();
 
-            refreshEquipeList();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | SQLException e) {
+            showErrorAlert("Erreur d'ouverture", "Impossible d'ouvrir la page d'ajout d'équipe :\n" + e.getMessage());
         }
     }
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 }

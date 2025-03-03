@@ -398,31 +398,33 @@ public class SideNavController extends ActionView {
     @Override
     public void onInit(Context context) {
         Utilisateur currentUser = SessionManager.getUtilisateur();
-        String userRole = String.valueOf(currentUser.getRole());
-        System.out.println(userRole);
-        setBackgroundColorBasedOnRole(userRole);
-
-        if(currentUser == null) {
+        if (currentUser == null) {
             System.err.println("Aucun utilisateur connecté !");
-            return;
+            return; // Arrêter l'exécution si l'utilisateur n'est pas connecté
         }
-        if(userEmailText != null&& userNameText!= null && currentUser != null) {
+
+        // Vérifiez que les champs texte sont initialisés
+        if (userNameText != null && userEmailText != null) {
             userNameText.setText(currentUser.getNom() + " " + currentUser.getPrenom());
             userEmailText.setText(currentUser.getEmail());
-
-        }else {
-            System.err.println("Erreur: userNameText non initialisé ou utilisateur non connecté");
+        } else {
+            System.err.println("Erreur: userNameText ou userEmailText non initialisé");
         }
-//        this.context = context;
-        super.onInit(context);
 
+        // Appliquer la couleur de fond en fonction du rôle
+        String userRole = String.valueOf(currentUser.getRole());
+        setBackgroundColorBasedOnRole(userRole);
+
+        // Initialiser le comportement du drawer
         Platform.runLater(() -> {
             behavior = new DrawerBehavior(root, group);
         });
+
+        // Configurer le layout
         configLayout();
+
+        super.onInit(context);
     }
-
-
     public void setUser(Utilisateur utilisateur) {
     }
 

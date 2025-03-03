@@ -163,3 +163,72 @@ statut ENUM('Envoyée', 'En attente') DEFAULT 'En attente',
 date DATETIME DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY (reclamation_id) REFERENCES Reclamation(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+-- Table `messaging_accounts`
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `messaging_accounts` (
+`user_id` INT NOT NULL PRIMARY KEY,
+`role_specific_id` INT NULL COMMENT 'ID spécifique au rôle (artisan_id, constructeur_id, etc.)',
+`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+INDEX `idx_role_specific` (`role_specific_id` ASC),
+CONSTRAINT `fk_user_id`
+FOREIGN KEY (`user_id`)
+REFERENCES `Utilisateur` (`id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+-- Table `notifications`
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `notifications` (
+`notification_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`user_id` INT NOT NULL,
+`message` TEXT NOT NULL,
+`is_read` TINYINT(1) NOT NULL DEFAULT 0,
+`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`read_at` TIMESTAMP NULL,
+INDEX `fk_notification_user_idx` (`user_id` ASC),
+CONSTRAINT `fk_notification_user`
+FOREIGN KEY (`user_id`)
+REFERENCES `Utilisateur` (`id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+-- Table `direct_messages` (Optionnel pour la messagerie privée)
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `direct_messages` (
+`message_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`sender_id` INT NOT NULL,
+`receiver_id` INT NOT NULL,
+`content` TEXT NOT NULL,
+`sent_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`is_read` TINYINT(1) NOT NULL DEFAULT 0,
+INDEX `fk_dm_sender_idx` (`sender_id` ASC),
+INDEX `fk_dm_receiver_idx` (`receiver_id` ASC),
+CONSTRAINT `fk_dm_sender`
+FOREIGN KEY (`sender_id`)
+REFERENCES `Utilisateur` (`id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE,
+CONSTRAINT `fk_dm_receiver`
+FOREIGN KEY (`receiver_id`)
+REFERENCES `Utilisateur` (`id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+-- Index supplémentaires pour les performances
+-- --------------------------------------------------------
+CREATE INDEX idx_notif_created ON notifications(created_at DESC);
+CREATE INDEX idx_messages_sent ON direct_messages(sent_at DESC);
