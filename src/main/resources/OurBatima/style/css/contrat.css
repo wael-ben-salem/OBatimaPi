@@ -1,0 +1,49 @@
+/* Styles généraux */
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+/* Titre */
+.title-text {
+    -fx-fill: #333333;
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 30px;
+}
+
+/* Table des contrats */
+.contract-table {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+/* Colonnes du tableau */
+.table-column {
+    -fx-alignment: CENTER-LEFT;
+}
+
+/* Bouton Ajouter */
+.btn-add {
+    -fx-background-color: #FFD700;
+    -fx-text-fill: #333333;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.btn-add:hover {
+    -fx-background-color: #FFC107;
+}
+.update-button {
+    -fx-background-color: #4CAF50; /* Green */
+    -fx-text-fill: white;
+}
+
+.delete-button {
+    -fx-background-color: #F44336; /* Red */
+    -fx-text-fill: white;
+}
