@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['rangeid_10574',['RangeID',['../structagora_1_1media_1_1base_1_1_color_space.html#a176cfa47f82b46f5dc38038b363773aa',1,'agora::media::base::ColorSpace']]],
+  ['raw_5faudio_5fframe_5fop_5fmode_5ftype_10575',['RAW_AUDIO_FRAME_OP_MODE_TYPE',['../namespaceagora_1_1rtc.html#ae5df06fc9c5b15135e22047c01e565bb',1,'agora::rtc']]],
+  ['receivemode_10576',['ReceiveMode',['../structagora_1_1rtc_1_1_audio_enc_frame_recv_params.html#ab0fb4c870e62353b3210933a4c82af7e',1,'agora::rtc::AudioEncFrameRecvParams']]],
+  ['recorderreasoncode_10577',['RecorderReasonCode',['../namespaceagora_1_1media.html#a76139350b0b4314f8633a5bd57ed2578',1,'agora::media']]],
+  ['recorderstate_10578',['RecorderState',['../namespaceagora_1_1media.html#a5dc8f0d15ce186f379cdf08f65ad49c3',1,'agora::media']]],
+  ['recorderstreamtype_10579',['RecorderStreamType',['../namespaceagora_1_1rtc.html#a309a533b3d387daff767a67137b5635b',1,'agora::rtc']]],
+  ['recordingeventkeyindex_10580',['RecordingEventKeyIndex',['../namespaceagora_1_1rtc.html#a14414ab2c6506acfa5a5da3536e81117',1,'agora::rtc']]],
+  ['recordingeventtype_10581',['RecordingEventType',['../namespaceagora_1_1rtc.html#a09326d6b250ec8687f7d366920b1a8af',1,'agora::rtc']]],
+  ['remote_5faudio_5fstate_10582',['REMOTE_AUDIO_STATE',['../namespaceagora_1_1rtc.html#aa83ef274510d1063e840d6104fd12516',1,'agora::rtc']]],
+  ['remote_5faudio_5fstate_5freason_10583',['REMOTE_AUDIO_STATE_REASON',['../namespaceagora_1_1rtc.html#a532f4584f6ed5962012e1f08bef6f0fc',1,'agora::rtc']]],
+  ['remote_5fuser_5fstate_10584',['REMOTE_USER_STATE',['../namespaceagora_1_1rtc.html#abea15d957502586ecc835763df173a1f',1,'agora::rtc']]],
+  ['remote_5fvideo_5fdownscale_5flevel_10585',['REMOTE_VIDEO_DOWNSCALE_LEVEL',['../namespaceagora_1_1rtc.html#a986ba95b84f37af9ae5790dd90765baa',1,'agora::rtc']]],
+  ['remote_5fvideo_5fstate_10586',['REMOTE_VIDEO_STATE',['../namespaceagora_1_1rtc.html#a8098bde3bb614a7716d0f39105b8f1d8',1,'agora::rtc']]],
+  ['remote_5fvideo_5fstate_5freason_10587',['REMOTE_VIDEO_STATE_REASON',['../namespaceagora_1_1rtc.html#ae31fce5548860cb0a62e4c232fb18bff',1,'agora::rtc']]],
+  ['render_5fmode_5ftype_10588',['RENDER_MODE_TYPE',['../namespaceagora_1_1media_1_1base.html#a25dec515d4baa390b9553c3a7fee4800',1,'agora::media::base']]],
+  ['response_5fcode_10589',['RESPONSE_CODE',['../namespaceagora_1_1rtm.html#a299a3b3304e7691ff8006693a8070bba',1,'agora::rtm']]],
+  ['rtc_5fevent_10590',['RTC_EVENT',['../namespaceagora_1_1rtc.html#ae78dcf0b0e9e1b226c9710f8f6ba6f9f',1,'agora::rtc']]],
+  ['rtmp_5fchannel_5fevent_10591',['RTMP_CHANNEL_EVENT',['../namespaceagora_1_1rtc.html#a771268d89a708e8d344ade4a722a985e',1,'agora::rtc']]],
+  ['rtmp_5fconnection_5ferror_10592',['RTMP_CONNECTION_ERROR',['../namespaceagora_1_1rtc.html#aff7596486950cd8ca8a3010d8c8710de',1,'agora::rtc']]],
+  ['rtmp_5fconnection_5fstate_10593',['RTMP_CONNECTION_STATE',['../namespaceagora_1_1rtc.html#a843a00f1c45fdfe18856a8f835018681',1,'agora::rtc']]],
+  ['rtmp_5fstream_5flife_5fcycle_5ftype_10594',['RTMP_STREAM_LIFE_CYCLE_TYPE',['../namespaceagora_1_1rtc.html#ace6f18fbbc96c628e6ff08da855eed73',1,'agora::rtc']]],
+  ['rtmp_5fstream_5fpublish_5freason_10595',['RTMP_STREAM_PUBLISH_REASON',['../namespaceagora_1_1rtc.html#a967ca9a342a84c3974c22bc72e156ba6',1,'agora::rtc']]],
+  ['rtmp_5fstream_5fpublish_5fstate_10596',['RTMP_STREAM_PUBLISH_STATE',['../namespaceagora_1_1rtc.html#a9fcbfd4d2cce37716aa739ff36c578c5',1,'agora::rtc']]],
+  ['rtmp_5fstreaming_5fevent_10597',['RTMP_STREAMING_EVENT',['../namespaceagora_1_1rtc.html#a82a4c69d97a3dac5b55f9bd5b423f14c',1,'agora::rtc']]],
+  ['rtpextension_10598',['RtpExtension',['../namespaceagora_1_1capability.html#a943226c4abdf41683bb535b6b94e2ac0',1,'agora::capability']]]
+];

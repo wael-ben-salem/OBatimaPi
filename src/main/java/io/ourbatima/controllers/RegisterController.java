@@ -3,17 +3,18 @@ package io.ourbatima.controllers;
 import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
+import javafx.application.Platform;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TextInputDialog;
 import javafx.collections.FXCollections;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 import org.mindrot.jbcrypt.BCrypt;
 import java.util.Optional;
 
@@ -178,17 +179,73 @@ public class RegisterController extends ActionView {
 
     @FXML
     private void handleMapClick(ActionEvent event) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Sélection d'adresse");
-        dialog.setHeaderText("Entrez votre adresse complète (rue, ville, pays)");
-        dialog.setContentText("Adresse:");
+        System.out.println("📍 Ouverture de la carte...");
 
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(adresse -> {
-            adresseField.setText(adresse);
-            validateAdresse();
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+        webEngine.setJavaScriptEnabled(true);
+
+        webEngine.getLoadWorker().stateProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == Worker.State.SUCCEEDED) {
+                JSObject window = (JSObject) webEngine.executeScript("window");
+                window.setMember("javaApp", new JSBridge(this));
+
+                requestLocationPermission(webEngine);
+                System.out.println("✅ Bridge JS-Java initialisé");
+            }
+        });
+
+        webEngine.load(getClass().getResource("/api/map.html").toExternalForm());
+
+        mapStage = new Stage();
+        mapStage.setScene(new Scene(webView));
+        mapStage.setTitle("Sélection de position");
+        mapStage.show();
+    }
+    private Stage mapStage;
+
+    // Demande l'autorisation de localisation et exécute le JS
+    private void requestLocationPermission(WebEngine webEngine) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Autorisation de localisation");
+        alert.setHeaderText("L'application souhaite accéder à votre position.");
+        alert.setContentText("Autoriser la géolocalisation ?");
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                System.out.println("🌍 Autorisation accordée, récupération de la position...");
+                webEngine.executeScript("locateUser();");
+            } else {
+                System.out.println("🚫 Autorisation refusée !");
+            }
         });
     }
+
+    // Met à jour le champ adresse avec l'adresse reçue depuis JS
+    public void updateAddressField(String address) {
+        System.out.println("📨 Adresse reçue : " + address);
+
+        Platform.runLater(() -> {
+            adresseField.setText(address);
+            validateAdresse();
+            if (mapStage != null) mapStage.close();
+        });
+    }
+
+    // Bridge pour la communication entre Java et JavaScript
+    public class JSBridge {
+        private final RegisterController controller;
+
+        public JSBridge(RegisterController controller) {
+            this.controller = controller;
+        }
+
+        public void sendAddress(String address) {
+            System.out.println("📨 Adresse reçue depuis JS : " + address);
+            controller.updateAddressField(address);
+        }
+    }
+
 
     private void resetErrors() {
         nomError.setText("");

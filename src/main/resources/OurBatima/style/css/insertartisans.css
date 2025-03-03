@@ -1,0 +1,68 @@
+.insert-pane {
+    -fx-background-color: #f5f7fa;
+    -fx-padding: 20px;
+}
+
+.header-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3748;
+}
+
+.list-container {
+    -fx-background-color: white;
+    -fx-border-color: #cbd5e0;
+    -fx-border-radius: 8px;
+    -fx-padding: 15px;
+}
+
+.list-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #4a5568;
+}
+
+.artisan-list {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.artisan-list .list-cell {
+    -fx-padding: 10px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.artisan-list .list-cell:drag {
+    -fx-background-color: #ebf8ff;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-fit-to-width: true;
+}
+
+.info-label {
+    -fx-font-weight: 600;
+    -fx-text-fill: #4a5568;
+}
+
+.info-value {
+    -fx-text-fill: #718096;
+    -fx-font-size: 14px;
+}
+
+.save-button {
+    -fx-background-color: #48bb78;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+}
+
+.cancel-button {
+    -fx-background-color: #f56565;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+}

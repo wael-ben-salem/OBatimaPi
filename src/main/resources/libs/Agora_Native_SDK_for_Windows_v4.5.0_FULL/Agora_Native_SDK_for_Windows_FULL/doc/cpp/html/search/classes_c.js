@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['optional_6425',['Optional',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20audience_5flatency_5flevel_5ftype_20_3e_6426',['Optional&lt; AUDIENCE_LATENCY_LEVEL_TYPE &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20bool_20_3e_6427',['Optional&lt; bool &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20camera_5fdirection_20_3e_6428',['Optional&lt; CAMERA_DIRECTION &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20camera_5ffocal_5flength_5ftype_20_3e_6429',['Optional&lt; CAMERA_FOCAL_LENGTH_TYPE &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20channel_5fprofile_5ftype_20_3e_6430',['Optional&lt; CHANNEL_PROFILE_TYPE &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20client_5frole_5ftype_20_3e_6431',['Optional&lt; CLIENT_ROLE_TYPE &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20conn_5fid_5ft_20_3e_6432',['Optional&lt; conn_id_t &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20const_20char_20_2a_20_3e_6433',['Optional&lt; const char * &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20double_20_3e_6434',['Optional&lt; double &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20float_20_3e_6435',['Optional&lt; float &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20int_20_3e_6436',['Optional&lt; int &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20int32_5ft_20_3e_6437',['Optional&lt; int32_t &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20int64_5ft_20_3e_6438',['Optional&lt; int64_t &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20rtc_3a_3athread_5fpriority_5ftype_20_3e_6439',['Optional&lt; rtc::THREAD_PRIORITY_TYPE &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20simulcast_5fstream_5fmode_20_3e_6440',['Optional&lt; SIMULCAST_STREAM_MODE &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20std_3a_3astring_20_3e_6441',['Optional&lt; std::string &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20thread_5fpriority_5ftype_20_3e_6442',['Optional&lt; THREAD_PRIORITY_TYPE &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20uint32_5ft_20_3e_6443',['Optional&lt; uint32_t &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20uint8_5ft_20_3e_6444',['Optional&lt; uint8_t &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20video_5fstream_5ftype_20_3e_6445',['Optional&lt; VIDEO_STREAM_TYPE &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optional_3c_20video_5ftrack_5fid_5ft_20_3e_6446',['Optional&lt; video_track_id_t &gt;',['../classagora_1_1_optional.html',1,'agora']]],
+  ['optionalbase_6447',['OptionalBase',['../classagora_1_1internal_1_1_optional_base.html',1,'agora::internal']]],
+  ['optionalstorage_6448',['OptionalStorage',['../structagora_1_1internal_1_1_optional_storage.html',1,'agora::internal']]],
+  ['optionalstoragebase_6449',['OptionalStorageBase',['../structagora_1_1internal_1_1_optional_storage_base.html',1,'agora::internal']]]
+];

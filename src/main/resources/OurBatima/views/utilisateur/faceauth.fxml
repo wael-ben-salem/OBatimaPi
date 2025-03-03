@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox fx:id="root" alignment="CENTER" spacing="20" style="-fx-background-color: #2c3e50; -fx-padding: 20;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.FaceCaptureController">
+    <Label id="instructions" text="Veuillez positionner votre visage dans le cadre" style="-fx-text-fill: white; -fx-font-size: 16;"/>
+
+    <ImageView fx:id="cameraView" fitWidth="640" fitHeight="480">
+        <viewport>
+            <Rectangle width="640" height="480"/>
+        </viewport>
+    </ImageView>
+
+    <Button fx:id="captureButton" text="Capturer" style="-fx-font-size: 14; -fx-pref-width: 120;"/>
+    <Button fx:id="retryButton" text="Réessayer" visible="false" style="-fx-font-size: 14; -fx-pref-width: 120;"/>
+</VBox>

@@ -25,7 +25,17 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.sql.Connection;
+
+import static io.ourbatima.core.Dao.DatabaseConnection.getConnection;
+import org.opencv.core.Core;
+
+
 public class Main extends Launcher {
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
+
     @Override
     public void build(Context context) {
         Layout layout = new Layout(context);
@@ -76,6 +86,10 @@ public class Main extends Launcher {
 
             View loginView = context.routes().getView("login");
             layout.setContent(loginView.getRoot());
+            System.out.println("OpenCV version: " + Core.VERSION);
+
+
+
         });
 
         // Start the PlannificationStatusUpdater in the background

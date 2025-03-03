@@ -1,5 +1,8 @@
 package io.ourbatima.core.Dao.Utilisateur;
 
+import io.ourbatima.controllers.FaceAuthenticator;
+import io.ourbatima.controllers.FaceEncryption;
+import io.ourbatima.controllers.MessagingService;
 import io.ourbatima.core.Dao.DatabaseConnection;
 import io.ourbatima.core.model.Utilisateur.*;
 import org.mindrot.jbcrypt.BCrypt;
@@ -56,7 +59,9 @@ public class UtilisateurDAO {
                     Utilisateur.Statut.valueOf(rs.getString("statut")), // Utiliser l'enum de la classe Utilisateur
                     rs.getBoolean("isConfirmed"),
                     Utilisateur.Role.valueOf(rs.getString("role")) // Utiliser l'enum de la classe Utilisateur
+
             );
+            utilisateur.setFaceData(rs.getBytes("face_data"));
 
             // Chargement des sous-entités selon le rôle
             int userId = rs.getInt("id");
@@ -92,20 +97,14 @@ public class UtilisateurDAO {
     public static boolean saveUser(Utilisateur utilisateur) {
         Connection conn = null;
         PreparedStatement pstmtUtilisateur = null;
-        PreparedStatement pstmtArtisan = null;
-        PreparedStatement pstmtConstructeur = null;
-        PreparedStatement pstmtClient = null;
-        PreparedStatement pstmtGestionnaireDeStock = null;
-
-
-
+        PreparedStatement pstmtRole = null;
         boolean isSaved = false;
 
         try {
             conn = DatabaseConnection.getConnection();
-            conn.setAutoCommit(false); // Démarrer une transaction
+            conn.setAutoCommit(false); // Start transaction
 
-            // Insérer l'utilisateur dans la table Utilisateur
+            // Insert into Utilisateur table
             String sqlUtilisateur = "INSERT INTO Utilisateur (nom, prenom, email, telephone, role, adresse, mot_de_passe, statut, isConfirmed) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -123,116 +122,98 @@ public class UtilisateurDAO {
             int rowsAffected = pstmtUtilisateur.executeUpdate();
 
             if (rowsAffected > 0) {
-                // Si l'utilisateur a bien été inséré, on récupère son ID
                 ResultSet rs = pstmtUtilisateur.getGeneratedKeys();
                 if (rs.next()) {
-                    int utilisateurId = rs.getInt(1); // ID généré pour l'utilisateur
+                    int utilisateurId = rs.getInt(1);
+                    utilisateur.setId(utilisateurId); // Set generated ID
 
-                    // Si l'utilisateur est un artisan, insérer ses informations dans la table Artisan
-                    if (utilisateur.getRole() == Utilisateur.Role.Artisan) {
-                        Artisan artisan = (Artisan) utilisateur;  // L'instance sera assurément un Artisan ici
-
-                        String sqlArtisan = "INSERT INTO Artisan (artisan_id, specialite, salaire_heure) VALUES (?, ?, ?)";
-                        pstmtArtisan = conn.prepareStatement(sqlArtisan);
-                        pstmtArtisan.setInt(1, utilisateurId); // Utiliser l'ID généré
-                        pstmtArtisan.setString(2, artisan.getSpecialite().name()); // Specialité de l'artisan
-                        pstmtArtisan.setDouble(3, artisan.getSalaireHeure()); // Salaire horaire de l'artisan
-
-                        int rowsAffectedArtisan = pstmtArtisan.executeUpdate();
-                        if (rowsAffectedArtisan > 0) {
-                            // Si l'insertion de l'artisan réussit, on commit la transaction
-                            conn.commit();
-                            isSaved = true;
-                        } else {
-                            // Rollback si l'insertion de l'artisan échoue
-                            conn.rollback();
-                        }
-                    }else if (utilisateur.getRole() == Utilisateur.Role.Constructeur){
-                        Constructeur constructeur = (Constructeur) utilisateur;  // L'instance sera assurément un Artisan ici
-                        String sqlConstructeur = "INSERT INTO Constructeur (constructeur_id, specialite, salaire_heure) VALUES (?, ?, ?)";
-                        pstmtConstructeur = conn.prepareStatement(sqlConstructeur);
-                        pstmtConstructeur.setInt(1, utilisateurId); // Utiliser l'ID généré
-                        pstmtConstructeur.setString(2, constructeur.getSpecialite());
-                        pstmtConstructeur.setDouble(3, constructeur.getSalaireHeure());
-
-                        int rowsAffectedConstructeur = pstmtConstructeur.executeUpdate();
-                        if (rowsAffectedConstructeur > 0) {
-                            // Si l'insertion de l'artisan réussit, on commit la transaction
-                            conn.commit();
-                            isSaved = true;
-                        } else {
-                            // Rollback si l'insertion de l'artisan échoue
-                            conn.rollback();
-                        }
-                    }else if (utilisateur.getRole() == Utilisateur.Role.Client){
-
-                        String sqlClient = "INSERT INTO Client (client_id) VALUES (?)";
-                        pstmtClient = conn.prepareStatement(sqlClient);
-                        pstmtClient.setInt(1, utilisateurId); // Utiliser l'ID généré
-
-
-                        int rowsAffectedClient = pstmtClient.executeUpdate();
-                        if (rowsAffectedClient > 0) {
-                            conn.commit();
-                            isSaved = true;
-                        } else {
-                            conn.rollback();
-                        }
-                    }else if (utilisateur.getRole() == Utilisateur.Role.GestionnaireStock){
-                        if (utilisateur instanceof GestionnaireDeStock) {
-
-                            String sqlGestionnaireDeStock = "INSERT INTO gestionnairestock (gestionnairestock_id) VALUES (?)";
-                            pstmtGestionnaireDeStock = conn.prepareStatement(sqlGestionnaireDeStock);
-                            pstmtGestionnaireDeStock.setInt(1, utilisateurId); // Utiliser l'ID généré
-
-
-                            int rowsAffectedGestionnaireDeStock = pstmtGestionnaireDeStock.executeUpdate();
-                            if (rowsAffectedGestionnaireDeStock > 0) {
-                                conn.commit();
-                                isSaved = true;
-                            } else {
-                                conn.rollback();
+                    // Insert into role-specific table
+                    int roleSpecificId = -1; // ID spécifique au rôle
+                    switch (utilisateur.getRole()) {
+                        case Artisan:
+                            Artisan artisan = utilisateur.getArtisan();
+                            if (artisan == null || artisan.getSpecialite() == null) {
+                                throw new IllegalArgumentException("La spécialité de l'artisan est requise.");
                             }
-                        }else {
-                            System.out.println("L'utilisateur n'est pas un gestionnaire de stock.");
+                            String sqlArtisan = "INSERT INTO Artisan (artisan_id, specialite, salaire_heure) VALUES (?, ?, ?)";
+                            pstmtRole = conn.prepareStatement(sqlArtisan);
+                            pstmtRole.setInt(1, utilisateurId);
+                            pstmtRole.setString(2, artisan.getSpecialite().name());
+                            pstmtRole.setDouble(3, artisan.getSalaireHeure());
+                            roleSpecificId = utilisateurId; // Artisan utilise l'ID utilisateur
+                            break;
 
-                        }
+                        case Constructeur:
+                            Constructeur constructeur = utilisateur.getConstructeur();
+                            if (constructeur == null || constructeur.getSpecialite() == null) {
+                                throw new IllegalArgumentException("La spécialité du constructeur est requise.");
+                            }
+                            String sqlConstructeur = "INSERT INTO Constructeur (constructeur_id, specialite, salaire_heure) VALUES (?, ?, ?)";
+                            pstmtRole = conn.prepareStatement(sqlConstructeur);
+                            pstmtRole.setInt(1, utilisateurId);
+                            pstmtRole.setString(2, constructeur.getSpecialite());
+                            pstmtRole.setDouble(3, constructeur.getSalaireHeure());
+                            roleSpecificId = utilisateurId; // Constructeur utilise l'ID utilisateur
+                            break;
+
+                        case Client:
+                            String sqlClient = "INSERT INTO Client (client_id) VALUES (?)";
+                            pstmtRole = conn.prepareStatement(sqlClient);
+                            pstmtRole.setInt(1, utilisateurId);
+                            roleSpecificId = utilisateurId; // Client utilise l'ID utilisateur
+                            break;
+
+                        case GestionnaireStock:
+                            String sqlGestionnaire = "INSERT INTO gestionnairestock (gestionnairestock_id) VALUES (?)";
+                            pstmtRole = conn.prepareStatement(sqlGestionnaire);
+                            pstmtRole.setInt(1, utilisateurId);
+                            roleSpecificId = utilisateurId; // Gestionnaire utilise l'ID utilisateur
+                            break;
                     }
 
+                    if (pstmtRole != null) {
+                        int roleRowsAffected = pstmtRole.executeUpdate();
+                        if (roleRowsAffected > 0) {
+                            conn.commit(); // Commit transaction
+                            isSaved = true;
+
+                            // Créer le compte de messagerie avec l'ID spécifique au rôle
+                            new MessagingService().createUserMessagingAccount(utilisateur, roleSpecificId);
+                        } else {
+                            conn.rollback(); // Rollback if role insert fails
+                        }
+                    }
                 }
             }
-
         } catch (SQLException e) {
             if (conn != null) {
-                try {
-                    conn.rollback(); // Rollback si une erreur survient
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
+                try { conn.rollback(); }
+                catch (SQLException ex) { ex.printStackTrace(); }
             }
-            e.printStackTrace();
+            handleException("Erreur lors de la sauvegarde", e);
         } finally {
+            // Close resources
             try {
+                if (pstmtRole != null) pstmtRole.close();
                 if (pstmtUtilisateur != null) pstmtUtilisateur.close();
-                if (pstmtArtisan != null) pstmtArtisan.close();
-                if (pstmtConstructeur != null) pstmtConstructeur.close();
-
                 if (conn != null) conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
         return isSaved;
-    }
-    public boolean updateUser(Utilisateur user) {
+    }    public boolean updateUser(Utilisateur user) {
         Connection conn = null;
         try {
             conn = connect();
             conn.setAutoCommit(false); // Début de la transaction
 
-            // 1. Récupérer le rôle actuel de l'utilisateur
+            System.out.println("Tentative de récupération de l'utilisateur avec l'ID: " + user.getId());
             Utilisateur existingUser = getUserById(user.getId(), conn);
+            if (existingUser == null) {
+                System.out.println("Aucun utilisateur trouvé avec l'ID: " + user.getId());
+                throw new SQLException("Utilisateur non trouvé avec l'ID: " + user.getId());
+            }
             Utilisateur.Role oldRole = existingUser.getRole();
             Utilisateur.Role newRole = user.getRole();
 
@@ -270,15 +251,17 @@ public class UtilisateurDAO {
 
     // Méthodes auxiliaires
     private void updateMainUserData(Utilisateur user, Connection conn) throws SQLException {
-        String sql = "UPDATE utilisateur SET nom=?, prenom=?, telephone=?, adresse=?, mot_de_passe=?, role=? WHERE id=?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "UPDATE utilisateur SET nom=?, prenom=?, telephone=?, adresse=?, mot_de_passe=?, role=?, face_data=? WHERE id=?";        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getNom());
             pstmt.setString(2, user.getPrenom());
             pstmt.setString(3, user.getTelephone());
             pstmt.setString(4, user.getAdresse());
             pstmt.setString(5, user.getMotDePasse());
             pstmt.setString(6, user.getRole().name());
-            pstmt.setInt(7, user.getId());
+            pstmt.setBytes(7, user.getFaceData());
+
+            pstmt.setInt(8, user.getId());
+
             pstmt.executeUpdate();
         }
     }
@@ -428,8 +411,27 @@ public class UtilisateurDAO {
         }
     }
 
-    public Utilisateur getUserById(int id, Connection conn) {
-        return getUserByField("id", String.valueOf(id));
+    public Utilisateur getUserById(int userId, Connection conn) throws SQLException {
+        String sql = "SELECT * FROM Utilisateur WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    Utilisateur user = new Utilisateur();
+                    user.setId(rs.getInt("id"));
+                    user.setNom(rs.getString("nom"));
+                    user.setPrenom(rs.getString("prenom"));
+                    user.setEmail(rs.getString("email"));
+                    user.setTelephone(rs.getString("telephone"));
+                    user.setAdresse(rs.getString("adresse"));
+                    user.setMotDePasse(rs.getString("mot_de_passe"));
+                    user.setRole(Utilisateur.Role.valueOf(rs.getString("role"))); // Assurez-vous que le rôle est correctement mappé
+                    return user;
+                } else {
+                    return null; // Aucun utilisateur trouvé avec cet ID
+                }
+            }
+        }
     }
 
     public Utilisateur getUserProjById(int id) {
@@ -465,7 +467,7 @@ public class UtilisateurDAO {
         pstmt.setString(5, user.getMotDePasse());
     }
 
-    private void handleException(String message, SQLException e) {
+    private static void handleException(String message, SQLException e) {
         System.err.println(message + " : " + e.getMessage());
         e.printStackTrace();
     }
@@ -499,7 +501,7 @@ public class UtilisateurDAO {
         }
         return users;
     }
-    private Artisan getArtisanByUserId(int userId) {
+    public Artisan getArtisanByUserId(int userId) {
         String sql = "SELECT * FROM Artisan WHERE artisan_id = ?";
 
         try (Connection conn = connect();
@@ -528,11 +530,52 @@ public class UtilisateurDAO {
         }
         return null;
     }
-    Constructeur getConstructeurId(int userId) {
-        String sql = "SELECT u.nom, u.prenom, c.* "
+    public Constructeur getConstructeurId(int constructeurId) throws SQLException {
+        System.out.println("Recherche du constructeur avec ID: " + constructeurId);
+
+        String sql = "SELECT u.*, c.specialite, c.salaire_heure "
                 + "FROM Utilisateur u "
-                + "JOIN Constructeur c ON u.id = c.constructeur_id " // Adaptez la jointure
+                + "INNER JOIN Constructeur c ON u.id = c.constructeur_id "
                 + "WHERE c.constructeur_id = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, constructeurId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("Constructeur trouvé : " + rs.getString("nom"));
+                // Création du Constructeur
+                return new Constructeur(
+                        constructeurId,
+                        new Utilisateur(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getString("email"),
+                                rs.getString("mot_de_passe"),
+                                rs.getString("telephone"),
+                                rs.getString("adresse"),
+                                Utilisateur.Statut.valueOf(rs.getString("statut")),
+                                rs.getBoolean("isConfirmed"),
+                                Utilisateur.Role.Constructeur
+                        ),
+                        rs.getString("specialite"),
+                        rs.getDouble("salaire_heure")
+                );
+            } else {
+                System.out.println("Aucun constructeur trouvé pour ID: " + constructeurId);
+                throw new SQLException("Constructeur introuvable pour ID: " + constructeurId);
+            }
+        }
+    }
+    public Artisan getArtisanId(int userId) {
+        String sql = "SELECT u.nom, u.prenom, a.* "
+                + "FROM Utilisateur u "
+                + "JOIN Artisan a ON u.id = a.artisan_id " // Adaptez la jointure
+                + "WHERE a.artisan_id = ?";
+
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -541,28 +584,27 @@ public class UtilisateurDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                Constructeur constructeur = new Constructeur();
+                Artisan artisan = new Artisan();
                 // Remplir les champs Utilisateur
-                constructeur.setId(rs.getInt("constructeur_id"));
-                constructeur.setNom(rs.getString("nom")); // Chargé depuis Utilisateur
-                constructeur.setPrenom(rs.getString("prenom"));
+                artisan.setArtisan_id(rs.getInt("artisan_id")); // ✅ Initialise Constructeur.constructeur_id
+                artisan.setNom(rs.getString("nom")); // Chargé depuis Utilisateur
+                artisan.setPrenom(rs.getString("prenom"));
 
                 // Remplir les champs spécifiques
-                constructeur.setSpecialite(rs.getString("specialite"));
-                constructeur.setSalaireHeure(rs.getDouble("salaire_heure"));
-                return constructeur;
+                artisan.setSpecialite(Artisan.Specialite.valueOf(rs.getString("specialite")));
+                artisan.setSalaireHeure(rs.getDouble("salaire_heure"));
+                return artisan;
             }
         } catch (SQLException e) {
-            handleException("Erreur de récupération constructeur", e);
+            handleException("Erreur de récupération artisan", e);
         }
-        return null;
-    }
-
-    GestionnaireDeStock getGestionnaireStockId(int userId) {
+        return null; }
+    public GestionnaireDeStock getGestionnaireStockId(int userId) {
         String sql = "SELECT u.nom, u.prenom, g.* "
                 + "FROM Utilisateur u "
                 + "JOIN gestionnairestock g ON u.id = g.gestionnairestock_id " // Adaptez la jointure
                 + "WHERE g.gestionnairestock_id = ?";
+
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -573,7 +615,7 @@ public class UtilisateurDAO {
             if (rs.next()) {
                 GestionnaireDeStock gestionnaire = new GestionnaireDeStock();
                 // Remplir les champs Utilisateur
-                gestionnaire.setId(rs.getInt("gestionnairestock_id"));
+                gestionnaire.setGestionnairestock_id(rs.getInt("gestionnairestock_id")); // ✅ Initialise Constructeur.constructeur_id
                 gestionnaire.setNom(rs.getString("nom")); // Chargé depuis Utilisateur
                 gestionnaire.setPrenom(rs.getString("prenom"));
                 return gestionnaire;
@@ -664,6 +706,119 @@ public class UtilisateurDAO {
             System.out.println("Error fetching client by email: " + e.getMessage());
         }
         return -1;
+    }
+    public List<Integer> getAllConstructeurIds() throws SQLException {
+        return getIdsByRole(Utilisateur.Role.Constructeur);
+    }
+
+    public List<Integer> getAllGestionnaireStockIds() throws SQLException {
+        return getIdsByRole(Utilisateur.Role.GestionnaireStock);
+    }
+    public List<Integer> getAllArtisanIds() throws SQLException {
+        return getIdsByRole(Utilisateur.Role.Artisan);
+    }
+
+    private List<Integer> getIdsByRole(Utilisateur.Role role) throws SQLException {
+        List<Integer> ids = new ArrayList<>();
+        String sql = "SELECT id FROM Utilisateur WHERE role = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, role.name());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    ids.add(rs.getInt("id"));
+                }
+            }
+        }
+        return ids;
+    }
+    public void saveFaceData(int userId, byte[] faceData) throws SQLException {
+        try {
+            byte[] encryptedData = FaceEncryption.encrypt(faceData);
+            System.out.println("[DEBUG] Taille des données avant chiffrement : " + faceData.length);
+            System.out.println("[DEBUG] Taille des données après chiffrement : " + encryptedData.length);
+
+            String sql = "UPDATE Utilisateur SET face_data = ? WHERE id = ?";
+            try (Connection conn = connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setBytes(1, encryptedData);
+                pstmt.setInt(2, userId);
+                pstmt.executeUpdate();
+            }
+        } catch (Exception e) {
+            throw new SQLException("Erreur de chiffrement des données faciales", e);
+        }
+    }
+    public byte[] getFaceData(int userId) throws SQLException {
+        String sql = "SELECT face_data FROM Utilisateur WHERE id = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                byte[] faceData = rs.getBytes("face_data");
+                System.out.println("[DEBUG] Taille des données récupérées : " + (faceData != null ? faceData.length + " octets" : "null"));
+                return faceData;
+            }
+        }
+        return null;
+    }
+    public Utilisateur authenticateByFace(byte[] liveFaceData) throws SQLException {
+        if (liveFaceData == null || liveFaceData.length == 0) {
+            System.err.println("Aucune donnée faciale fournie");
+            return null;
+        }
+
+        String sql = "SELECT * FROM Utilisateur WHERE face_data IS NOT NULL";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                byte[] storedEncrypted = rs.getBytes("face_data");
+                if (storedEncrypted == null) continue;
+
+                try {
+                    byte[] storedDecrypted = FaceEncryption.decrypt(storedEncrypted);
+                    if (FaceAuthenticator.compareFaces(storedDecrypted, liveFaceData)) {
+                        System.out.println("[DEBUG] Utilisateur trouvé : " + rs.getString("email"));
+                        return mapUtilisateur(rs);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erreur de déchiffrement pour l'utilisateur " + rs.getInt("id") + ": " + e.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erreur lors de l'authentification faciale", e);
+        }
+        System.out.println("[DEBUG] Aucun utilisateur correspondant trouvé.");
+        return null;
+    }
+    public void saveFaceTemplate(int userId, byte[] template) {
+        String sql = "UPDATE Utilisateur SET face_data = ? WHERE id = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setBytes(1, template);
+            pstmt.setInt(2, userId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            handleException("Erreur sauvegarde visage", e);
+        }
+    }
+
+    public void checkFaceData(int userId) throws SQLException {
+        String sql = "SELECT face_data FROM Utilisateur WHERE id = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                byte[] faceData = rs.getBytes("face_data");
+                System.out.println("[DEBUG] Données faciales stockées pour l'utilisateur " + userId + " : " + (faceData != null ? faceData.length + " octets" : "null"));
+            }
+        }
     }
 
     public Optional<Utilisateur> getClientById(int id) {

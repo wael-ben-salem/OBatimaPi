@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserCreateController {
     @FXML private TextField nomField;
@@ -70,57 +71,53 @@ public class UserCreateController {
             return;
         }
 
-        Utilisateur newUser = null;
-        double salaire;
+        // Créer l'utilisateur de base
+        Utilisateur newUser = new Utilisateur();
+        newUser.setNom(nom);
+        newUser.setPrenom(prenom);
+        newUser.setEmail(email);
+        newUser.setTelephone(telephone);
+        newUser.setAdresse(adresse);
+        newUser.setMotDePasse(BCrypt.hashpw(motDePasse, BCrypt.gensalt())); // Hash du mot de passe
+        newUser.setRole(role);
+        newUser.setStatut(Utilisateur.Statut.en_attente);
+        newUser.setConfirmed(true);
 
+        // Gestion des rôles spécifiques
+        try {
+            if (role == Utilisateur.Role.Artisan) {
+                Artisan.Specialite artisanSpecialite = SpecialiteBox.getValue();
+                double salaire = Double.parseDouble(salaireField.getText());
 
+                if (artisanSpecialite == null) {
+                    showAlert("Erreur", "Veuillez sélectionner une spécialité.");
+                    return;
+                }
 
-        if (role == Utilisateur.Role.Artisan) {
-            salaire = Double.parseDouble(salaireField.getText());
+                // Créer un Artisan avec les détails spécifiques
+                Artisan artisan = new Artisan();
+                artisan.setSpecialite(artisanSpecialite);
+                artisan.setSalaireHeure(salaire);
+                newUser.setArtisan(artisan); // Attacher l'artisan à l'utilisateur
 
-            Artisan.Specialite artisanSpecialite = SpecialiteBox.getValue();
-            if (salaire < 0) {
-                showAlert("Erreur", "Le salaire ne peut pas être négatif.");
-                return;
+            } else if (role == Utilisateur.Role.Constructeur) {
+                String specialite = specialiteField.getText();
+                double salaire = Double.parseDouble(salaireField.getText());
+
+                if (specialite.isEmpty()) {
+                    showAlert("Erreur", "Veuillez entrer une spécialité.");
+                    return;
+                }
+
+                // Créer un Constructeur avec les détails spécifiques
+                Constructeur constructeur = new Constructeur();
+                constructeur.setSpecialite(specialite);
+                constructeur.setSalaireHeure(salaire);
+                newUser.setConstructeur(constructeur); // Attacher le constructeur à l'utilisateur
             }
-
-
-            if (artisanSpecialite == null) {
-                showAlert("Erreur", "Veuillez sélectionner une spécialité.");
-                return;
-            }
-
-            Artisan artisan = new Artisan(0, nom, prenom, email, motDePasse, telephone, adresse, Utilisateur.Statut.en_attente, true, role, artisanSpecialite, salaire);
-            newUser = artisan;
-
-        } else if (role == Utilisateur.Role.Constructeur) {
-            salaire = Double.parseDouble(salaireField.getText());
-
-            String specialite = specialiteField.getText();
-            if (salaire < 0) {
-                showAlert("Erreur", "Le salaire ne peut pas être négatif.");
-                return;
-            }
-            if (specialite.isEmpty()) {
-                showAlert("Erreur", "Veuillez entrer une spécialité.");
-                return;
-            }
-
-            Constructeur constructeur = new Constructeur(0, nom, prenom, email, motDePasse, telephone, adresse, Utilisateur.Statut.en_attente, true, role, 0, specialite, salaire);
-            newUser = constructeur;
-
-        } else if (role == Utilisateur.Role.GestionnaireStock) {
-            GestionnaireDeStock gestionnaireDeStock = new GestionnaireDeStock(0, nom, prenom, email, motDePasse, telephone, adresse, Utilisateur.Statut.en_attente, true, role, 0);
-            newUser = gestionnaireDeStock;
-
-        }
-           else if (role == Utilisateur.Role.Client) {
-            Client client = new Client(0, nom, prenom, email, motDePasse, telephone, adresse, Utilisateur.Statut.en_attente, true, role,0);
-            newUser = client;
-
-        }else{
-            Utilisateur utilisateur = new Utilisateur(0, nom, prenom, email, motDePasse, telephone, adresse, Utilisateur.Statut.en_attente, true, role);
-            newUser = utilisateur;
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Format de salaire invalide.");
+            return;
         }
 
         // Sauvegarde en base de données

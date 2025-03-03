@@ -7,22 +7,24 @@ import io.ourbatima.core.controls.icon.Icons;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.NotificationCell;
 import io.ourbatima.core.model.SearchViewBox;
+import io.ourbatima.core.model.Utilisateur.Notification;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import io.ourbatima.core.view.layout.Bar;
 import io.ourbatima.core.view.layout.BoxUser;
 import io.ourbatima.core.view.layout.DialogContainer;
 import io.ourbatima.core.view.layout.creators.ScheduleListCreator;
 import io.ourbatima.core.view.layout.creators.ScheduleListItem;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.*;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -31,14 +33,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -53,12 +55,17 @@ public final class DashController extends ActionView {
     private Label lblUserName;
     @FXML
     private StackPane root;
+    private GNBadge notification; // Déclaration comme variable de classe
+
+    private ObservableList<Notification> notifications = FXCollections.observableArrayList();
+
     @FXML
     private GridPane gridTiles;
     @FXML
     private GridPane footer;
     @FXML
     private StackedAreaChart<Number, Number> graphic;
+
 
     private Utilisateur currentUser;
 
@@ -203,10 +210,62 @@ public final class DashController extends ActionView {
         GridPane.setConstraints(barChart, 1, 0, 1, 1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
         GridPane.setConstraints(scheduleList, 0, 1, 1, 1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
         GridPane.setConstraints(curvedChart, 1, 1, 1, 1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-
+        loadNotifications();
+        setupRealTimeUpdates();
 
     }
+    private void loadNotifications() {
+        try {
+            if(SessionManager.getUtilisateur() != null) {
+                List<Notification> latestNotifications =
+                        new MessagingService().getUserNotifications(
+                                SessionManager.getUtilisateur().getId()
+                        );
+                notifications.setAll(latestNotifications);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer l'erreur (log + notification utilisateur)
+            showErrorAlert("Erreur de chargement des notifications");
+        }
+    }
+    private void showErrorAlert(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
+    private void setupRealTimeUpdates() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(5),
+                        e -> updateNotifications())
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
 
+    private void updateNotifications() {
+        try {
+            List<Notification> newNotifications =
+                    new MessagingService().getUserNotifications(
+                            SessionManager.getUtilisateur().getId()
+                    );
+            notifications.setAll(newNotifications);
+            updateNotificationBadge();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void updateNotificationBadge() {
+        // Mettre à jour le badge de notifications
+        int unreadCount = (int) notifications.stream()
+                .filter(n -> !n.isRead())
+                .count();
+        notification.setNumberOfNotifications(unreadCount);
+    }
 
     @Override
     public void onInit(Context context) {
@@ -288,8 +347,7 @@ public final class DashController extends ActionView {
         context.layout().bar().addInLeft( title );
         HBox.setMargin(title, new Insets(0,0,0,5));
 
-        GNBadge notification = new GNBadge(Icons.NOTIFICATIONS);
-        notification.setNumberOfNotifications(2);
+        notification = new GNBadge(Icons.NOTIFICATIONS);
         notification.getStyleClass().add("bd-danger");
 //            notification.setColorCircle(Color.web(Colors.AQUA.toString()));
         GNBadge sms = new GNBadge(Icons.SMS);
@@ -390,26 +448,16 @@ public final class DashController extends ActionView {
 //        ListView<NotificationCell> listView = new ListView<>();
 //        listView.setCellFactory(new NotificationListFactory());
 
-        VBox vBox = createNotifications(
-                new NotificationCell(
-                        true,
-                        "Your Password has been changed successfully.",
-                        new GNIconButton(Icons.BADGE),
-                        LocalDateTime.now()
-                ),
-                new NotificationCell(
-                        false,
-                        "Thank you for booking a meeting with us.",
-                        new GNAvatar(new Image(context.getResource("style/avatars/man1@50.png").toExternalForm()), 20),
-                        LocalDateTime.now()
-                ),
-                new NotificationCell(
-                        false,
-                        "Great News! We are launching our 5th fund: DLE Senior Living.",
-                        new GNAvatar(new Image(context.getResource("style/avatars/man2@50.png").toExternalForm()), 20),
-                        LocalDateTime.now()
-                )
-        );
+            VBox vBox = createNotifications(
+                    notifications.stream()
+                            .map(n -> new NotificationCell(
+                                    n.isRead(),
+                                    n.getMessage(),
+                                    new GNIconButton(Icons.NOTIFICATIONS),
+                                    n.getCreatedAt()
+                            ))
+                            .toArray(NotificationCell[]::new)
+            );
 
 
 //        listView.setPrefHeight(3 * 45);

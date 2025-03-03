@@ -4,8 +4,14 @@ import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 
 public class Constructeur  extends  Utilisateur{
     int constructeur_id ;
+    private  Utilisateur utilisateur;
     private String specialite;
     private double salaireHeure;
+
+    @Override
+    public String toString() {
+        return getNom() + " " + getPrenom(); // Retourne directement "Nom Prénom"
+    }
 
     public Constructeur(int id, String nom, String prenom, String email,
                         String motDePasse, String telephone, String adresse,
@@ -25,6 +31,27 @@ public class Constructeur  extends  Utilisateur{
         this.specialite = specialite;
         this.salaireHeure = salaireHeure;
     }
+    public Constructeur(int constructeur_id,
+                   Utilisateur utilisateur,
+                   String  specialite,
+                   double salaire_heure) {
+
+        super(utilisateur.getId(),
+                utilisateur.getNom(),
+                utilisateur.getPrenom(),
+                utilisateur.getEmail(),
+                utilisateur.getMotDePasse(),
+                utilisateur.getTelephone(),
+                utilisateur.getAdresse(),
+                utilisateur.getStatut(),
+                utilisateur.isConfirmed(),
+                utilisateur.getRole());
+
+        this.constructeur_id = constructeur_id;
+        this.specialite = specialite;
+        this.salaireHeure = salaire_heure;
+    }
+
 
     public Constructeur() {
 
@@ -51,6 +78,10 @@ public class Constructeur  extends  Utilisateur{
     }
 
     public void setSalaireHeure(double salaireHeure) {
+        this.salaireHeure = salaireHeure;
+    }
+    public Constructeur(String specialite, double salaireHeure) {
+        this.specialite = specialite;
         this.salaireHeure = salaireHeure;
     }
 }

@@ -1,0 +1,107 @@
+/* Style général */
+.form-pane {
+    -fx-background-color: #f5f6fa;
+    -fx-padding: 25px;
+}
+
+/* Titre principal */
+.form-title {
+    -fx-text-fill: #2d3436;
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+}
+
+/* Sections */
+.section-subtitle {
+    -fx-text-fill: #636e72;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* Champs de formulaire */
+.field-label {
+    -fx-text-fill: #2d3436;
+    -fx-font-size: 14px;
+}
+
+.text-field, .modern-datepicker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 4px;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+/* Combo boxes */
+.modern-combo {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 4px;
+    -fx-padding: 6px 12px;
+    -fx-font-size: 14px;
+}
+
+/* Images */
+.image-frame {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+    -fx-border-radius: 50%;
+    -fx-background-radius: 50%;
+}
+
+/* Listes d'artisans */
+.artisan-section {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 8px;
+    -fx-padding: 15px;
+}
+
+.artisan-list {
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.artisan-list .list-cell {
+    -fx-padding: 8px;
+    -fx-background-color: transparent;
+}
+
+.artisan-list .list-cell:filled:hover {
+    -fx-background-color: #f5f6fa;
+}
+
+/* Boutons */
+.save-button {
+    -fx-background-color: #00b894;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 25px;
+    -fx-background-radius: 5px;
+}
+
+.cancel-button {
+    -fx-background-color: #dfe6e9;
+    -fx-text-fill: #2d3436;
+    -fx-padding: 10px 25px;
+    -fx-background-radius: 5px;
+}
+
+.save-button:hover {
+    -fx-background-color: #00cec9;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #b2bec3;
+}
+
+/* Labels spéciaux */
+.selected-member-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3436;
+    -fx-font-size: 14px;
+}
+
+.placeholder-label {
+    -fx-text-fill: #b2bec3;
+    -fx-font-style: italic;
+}

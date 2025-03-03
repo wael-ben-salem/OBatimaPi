@@ -1,36 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Button?>
-<VBox xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="io.ourbatima.controllers.Equipe.EquipeUpdateController"
-      spacing="10"
-      style="-fx-padding: 20;"
-      prefWidth="400"
-      prefHeight="500">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 
-    <Label text="Modifier l'équipe" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+<GridPane hgap="15" prefHeight="700" prefWidth="800" styleClass="form-pane" vgap="20"
+          xmlns="http://javafx.com/javafx/18.0.2"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="io.ourbatima.controllers.Equipe.EquipeUpdateController">
 
-    <TextField fx:id="nomField" promptText="Nom de l'équipe"/>
-    <DatePicker fx:id="dateCreationPicker" promptText="Date de création"/>
+    <padding>
+        <Insets bottom="25" left="35" right="35" top="25"/>
+    </padding>
 
-    <Label text="Constructeur :"/>
-    <ComboBox fx:id="constructeurComboBox" promptText="Sélectionner un constructeur"/>
+    <columnConstraints>
+        <ColumnConstraints percentWidth="50"/>
+        <ColumnConstraints percentWidth="50"/>
+    </columnConstraints>
 
-    <Label text="Gestionnaire de stock :"/>
-    <ComboBox fx:id="gestionnaireComboBox" promptText="Sélectionner un gestionnaire"/>
+    <rowConstraints>
+        <RowConstraints prefHeight="50" maxHeight="100"/>
+        <RowConstraints prefHeight="150"/>
+        <RowConstraints prefHeight="200"/>
+        <RowConstraints prefHeight="200"/>
+        <RowConstraints prefHeight="50"/>
+    </rowConstraints>
 
-    <Label text="Artisans :"/>
-    <ComboBox fx:id="artisansComboBox" promptText="Ajouter un artisan"/>
+    <!-- En-tête -->
+    <Label styleClass="form-title" text="Édition d'Équipe" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
 
-    <HBox spacing="10">
-        <Button text="Enregistrer" onAction="#updateEquipe" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
-        <Button text="Annuler" onAction="#close" style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+    <!-- Section Formulaire -->
+    <GridPane hgap="15" vgap="12" GridPane.rowIndex="1" GridPane.columnSpan="2">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="150"/>
+            <ColumnConstraints prefWidth="250"/>
+            <ColumnConstraints prefWidth="150"/>
+            <ColumnConstraints prefWidth="250"/>
+        </columnConstraints>
+
+        <Label text="􀣋 Nom" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="nomField" promptText="Creative Team Name" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="􀉞 Date de Création" styleClass="field-label" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+        <DatePicker fx:id="dateCreationPicker" styleClass="modern-datepicker" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+    </GridPane>
+
+    <!-- Section Sélection Membres -->
+    <HBox spacing="30" alignment="CENTER" GridPane.rowIndex="2" GridPane.columnSpan="2">
+        <!-- Constructeur -->
+        <VBox spacing="10" alignment="CENTER">
+            <Label text="Constructeur" styleClass="section-subtitle"/>
+            <ImageView fx:id="selectedConstructeurImage" fitHeight="80" fitWidth="80" styleClass="image-frame"/>
+            <Label fx:id="selectedConstructeurLabel" styleClass="selected-member-label"/>
+            <ComboBox fx:id="constructeurCombo" onAction="#toggleTeamVisibility" prefWidth="200" styleClass="modern-combo"/>
+        </VBox>
+
+
+        <!-- Gestionnaire -->
+        <VBox spacing="10" alignment="CENTER">
+            <Label text="Gestionnaire" styleClass="section-subtitle"/>
+            <ImageView fx:id="selectedGestionnaireImage" fitHeight="80" fitWidth="80" styleClass="image-frame"/>
+            <Label fx:id="selectedGestionnaireLabel" styleClass="selected-member-label"/>
+            <ComboBox fx:id="gestionnaireCombo" onAction="#toggleTeamVisibility"  prefWidth="200" styleClass="modern-combo"/>
+        </VBox>
     </HBox>
-</VBox>
+
+    <!-- Section Artisans -->
+    <HBox spacing="30" alignment="CENTER" GridPane.rowIndex="3" GridPane.columnSpan="2">
+        <!-- Artisans Assignés -->
+        <VBox spacing="10" styleClass="artisan-section" prefWidth="350">
+            <Label text="Membres de l'équipe" styleClass="section-subtitle"/>
+            <ListView fx:id="assignedList" prefHeight="250" styleClass="artisan-list">
+                <placeholder>
+                    <Label text="Aucun artisan assigné" styleClass="placeholder-label"/>
+                </placeholder>
+            </ListView>
+        </VBox>
+
+        <!-- Artisans Disponibles -->
+        <VBox spacing="10" styleClass="artisan-section" prefWidth="350">
+            <Label text="Artisans disponibles" styleClass="section-subtitle"/>
+            <ListView fx:id="availableList" prefHeight="250" styleClass="artisan-list">
+                <placeholder>
+                    <Label text="Aucun artisan disponible" styleClass="placeholder-label"/>
+                </placeholder>
+            </ListView>
+        </VBox>
+    </HBox>
+
+    <!-- Boutons -->
+    <HBox spacing="20" alignment="CENTER_RIGHT" GridPane.rowIndex="4" GridPane.columnSpan="2">
+        <Button onAction="#close" text="Annuler" styleClass="cancel-button"/>
+        <Button onAction="#save" text="Enregistrer" styleClass="save-button"/>
+    </HBox>
+
+    <stylesheets>
+        <URL value="@../../style/css/equipeupdate.css"/>
+    </stylesheets>
+</GridPane>

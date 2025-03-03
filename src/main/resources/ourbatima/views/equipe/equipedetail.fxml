@@ -2,31 +2,53 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="io.ourbatima.controllers.Equipe.EquipeDetailController">
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="io.ourbatima.controllers.Equipe.EquipeDetailController"
+      spacing="20" styleClass="root"
+      stylesheets="@../../style/css/equipedetail.css"
+      style="-fx-padding: 25px;">
 
-    <top>
+    <!-- Header Section -->
+    <HBox styleClass="header-container" spacing="20">
+        <ImageView fx:id="teamLogo" fitWidth="120" fitHeight="120" styleClass="member-image"/>
 
-    </top>
-
-    <center>
         <VBox spacing="10">
-            <!-- Informations de base -->
-            <Label fx:id="nomLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-            <Label fx:id="dateCreationLabel" />
-
-            <!-- Constructeur et Gestionnaire -->
-            <HBox spacing="10">
-                <VBox fx:id="constructeurBox" spacing="5" />
-                <VBox fx:id="gestionnaireBox" spacing="5" />
-            </HBox>
-
-            <!-- Liste des artisans -->
-            <Label text="Artisans" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-            <FlowPane fx:id="artisansFlowPane" hgap="10" vgap="10" />
+            <Label fx:id="teamName" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2d3436;"/>
+            <Label fx:id="dateCreation" style="-fx-text-fill: #636e72; -fx-font-size: 14px;"/>
         </VBox>
-    </center>
-</BorderPane>
+    </HBox>
+
+    <!-- Leadership Section -->
+    <VBox spacing="15">
+        <Label text="Responsables" styleClass="section-title"/>
+
+        <HBox spacing="30">
+            <!-- Constructeur Card -->
+            <VBox styleClass="member-card" spacing="10" alignment="CENTER">
+                <ImageView fx:id="constructeurImage" fitWidth="80" fitHeight="80" styleClass="member-image"/>
+                <VBox spacing="5" alignment="CENTER">
+                    <Label text="Constructeur" style="-fx-text-fill: #636e72;"/>
+                    <Label fx:id="constructeurLabel" style="-fx-font-weight: bold;"/>
+                </VBox>
+            </VBox>
+
+            <!-- Gestionnaire Card -->
+            <VBox styleClass="member-card" spacing="10" alignment="CENTER">
+                <ImageView fx:id="gestionnaireImage" fitWidth="80" fitHeight="80" styleClass="member-image"/>
+                <VBox spacing="5" alignment="CENTER">
+                    <Label text="Gestionnaire" style="-fx-text-fill: #636e72;"/>
+                    <Label fx:id="gestionnaireLabel" style="-fx-font-weight: bold;"/>
+                </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <!-- Artisans Section -->
+    <VBox spacing="15">
+        <Label text="Membres de l'équipe" styleClass="section-title"/>
+        <FlowPane fx:id="artisansFlowPane" hgap="15" vgap="15"/>
+    </VBox>
+
+</VBox>

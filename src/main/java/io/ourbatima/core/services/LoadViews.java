@@ -39,17 +39,21 @@ public class LoadViews extends Task<View> {
     @Override
     protected View call() throws Exception {
 
-        for (ViewComposer viewComposer : data.getViews()) {
-            Thread.sleep(100);
+       for (ViewComposer viewComposer : data.getViews()) {
+    if (viewComposer == null) {
+        System.err.println("Warning: Found null ViewComposer in the list. Skipping...");
+        continue; // Skip null elements
+    }
 
+    Thread.sleep(100);
 
-            Platform.runLater(() -> {
-                loader.updateLegend("Loading view... " + viewComposer.getName());
-                loadView(viewComposer);
-            });
+    Platform.runLater(() -> {
+        loader.updateLegend("Loading view... " + viewComposer.getName());
+        loadView(viewComposer);
+    });
 
-            Thread.sleep(1000);
-        }
+    Thread.sleep(1000);
+}
         return null;
     }
 
