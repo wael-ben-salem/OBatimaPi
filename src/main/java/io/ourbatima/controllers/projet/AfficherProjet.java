@@ -3,6 +3,7 @@ package io.ourbatima.controllers.projet;
 import io.ourbatima.core.Dao.Projet.ProjetDAO;
 import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.interfaces.Initializable;
 import io.ourbatima.core.model.EtapeProjet;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Terrain;
@@ -17,6 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -33,7 +36,7 @@ import java.util.stream.Collectors;
 
 
 
-public class AfficherProjet extends ActionView {
+public class AfficherProjet extends ActionView implements Initializable {
 
     private final ProjetDAO projetDAO = new ProjetDAO();
     @FXML private TableView<Projet> projetTable;
@@ -54,7 +57,7 @@ public class AfficherProjet extends ActionView {
 
     private ObservableList<Projet> projetData = FXCollections.observableArrayList();
 
-    @FXML
+    @Override
     public void initialize() {
         System.out.println("AfficherProjet Controller Initialized");
         setupTable();
@@ -75,7 +78,6 @@ public class AfficherProjet extends ActionView {
                 handleSearch();
             }
         });
-
     }
 
     @FXML
@@ -104,16 +106,27 @@ public class AfficherProjet extends ActionView {
         }
     }
 
-    private Optional<String> getEmailClientById(int id_client) {
+    private Optional<String> getEmailClientById(int id_client, Connection connection) {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
-        Utilisateur utilisateur = utilisateurDAO.getUserById(id_client);
+        Utilisateur utilisateur = utilisateurDAO.getUserById(id_client, connection);
+
         if (utilisateur == null) {
+            System.out.println("No user found for ID: " + id_client);
             return Optional.empty();
         }
 
-        if (utilisateur instanceof Client) {
-            return Optional.ofNullable(utilisateur.getEmail());
+        // Check if the user is a client and has an email
+        if (utilisateur.getRole() == Utilisateur.Role.Client) {
+            String email = utilisateur.getEmail();
+            if (email != null && !email.isEmpty()) {
+                System.out.println("Client email found: " + email);
+                return Optional.of(email);
+            } else {
+                System.out.println("Client has no email assigned.");
+                return Optional.empty();
+            }
         } else {
+            System.out.println("User is not a client: " + utilisateur.getEmail());
             return Optional.empty();
         }
     }
@@ -125,16 +138,31 @@ public class AfficherProjet extends ActionView {
             Projet projet = cellData.getValue();
             int idClient = projet.getId_client();
             System.out.println("Fetching email for client ID: " + idClient);
-            Optional<String> email = getEmailClientById(idClient);
-            if (email.isPresent()) {
-                System.out.println("Client email found: " + email.get());
-                return new SimpleStringProperty(email.get());
-            } else {
-                System.out.println("No client found for ID: " + idClient);
-                return new SimpleStringProperty("Aucun client attribué.");
+
+            Connection connection = null;
+            try {
+                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ourbatimapi", "root", "");
+                Optional<String> email = getEmailClientById(idClient, connection);
+                if (email.isPresent()) {
+                    System.out.println("Client email found: " + email.get());
+                    return new SimpleStringProperty(email.get());
+                } else {
+                    System.out.println("No client found for ID: " + idClient);
+                    return new SimpleStringProperty("Aucun client attribué.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return new SimpleStringProperty("Database connection error");
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
-
 
         colEquipe.setCellValueFactory(cellData -> {
             Projet projet = cellData.getValue();
@@ -156,7 +184,7 @@ public class AfficherProjet extends ActionView {
         colEtapes.setCellValueFactory(cellData -> {
             List<EtapeProjet> etapes = cellData.getValue().getEtapes();
             String etapesString = (etapes != null) ?
-                    etapes.stream().map(EtapeProjet::getNomEtape).collect(Collectors.joining(", "))
+                    etapes.stream().map(EtapeProjet::getNomEtape).collect(Collectors.joining("\n"))
                     : "No Steps";
             return new SimpleStringProperty(etapesString);
         });
@@ -165,12 +193,23 @@ public class AfficherProjet extends ActionView {
             @Override
             public TableCell<Projet, String> call(TableColumn<Projet, String> param) {
                 return new TableCell<Projet, String>() {
-                    private final Button updateButton = new Button("Modifier");
-                    private final Button deleteButton = new Button("Supprimer");
+                    private final Button updateButton = new Button();
+                    private final Button deleteButton = new Button();
                     {
-                        updateButton.setStyle("-fx-background-color: #b39427; -fx-text-fill: white;");
-                        deleteButton.setStyle("-fx-background-color: #4c3f0a; -fx-text-fill: white;");
-                    }
+                        ImageView pencilIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/pencil.png")));
+                        pencilIcon.setFitWidth(16);
+                        pencilIcon.setFitHeight(16);
+
+                        // Set the image as the button's graphic
+                        updateButton.setGraphic(pencilIcon);
+                        updateButton.setStyle("-fx-background-color: transparent;");
+
+                        ImageView binIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/bin.png")));
+                        binIcon.setFitWidth(20);
+                        binIcon.setFitHeight(20);
+                        deleteButton.setGraphic(binIcon);
+                        deleteButton.setStyle("-fx-background-color: transparent;");                    }
+
                     @Override
                     protected void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
@@ -189,7 +228,7 @@ public class AfficherProjet extends ActionView {
                                 deleteProjet(projet.getId_projet());
                             });
 
-                            HBox hBox = new HBox(10, updateButton, deleteButton);
+                            HBox hBox = new HBox(5, updateButton, deleteButton);
                             setGraphic(hBox);
                             setText(null);
                         }
@@ -197,8 +236,6 @@ public class AfficherProjet extends ActionView {
                 };
             }
         });
-
-
     }
 
     private void openUpdateProjetWindow(Projet projet) {
@@ -241,9 +278,40 @@ public class AfficherProjet extends ActionView {
 
 
     private void deleteProjet(int projetId) {
-        projetDAO.deleteProjet(projetId);
-        projetData.removeIf(p -> p.getId_projet() == projetId);
-        projetTable.setItems(projetData);
+        // Create a confirmation dialog
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationDialog.setTitle("Confirmation de suppression");
+        confirmationDialog.setHeaderText("Êtes-vous sûr de vouloir supprimer ce projet ?");
+        confirmationDialog.setContentText("Cette action est irréversible.");
+
+        // Translate the buttons to French
+        ButtonType confirmButton = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButton = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
+        confirmationDialog.getButtonTypes().setAll(confirmButton, cancelButton);
+
+        // Show the dialog and wait for the user's response
+        Optional<ButtonType> result = confirmationDialog.showAndWait();
+
+        // If the user confirms, proceed with the deletion
+        if (result.isPresent() && result.get() == confirmButton) {
+            projetDAO.deleteProjet(projetId);
+            projetData.removeIf(p -> p.getId_projet() == projetId);
+            projetTable.setItems(projetData);
+
+            // Show a success message
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Succès");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Le projet a été supprimé avec succès.");
+            successAlert.showAndWait();
+        } else {
+            // Show a cancellation message
+            Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
+            cancelAlert.setTitle("Annulation");
+            cancelAlert.setHeaderText(null);
+            cancelAlert.setContentText("La suppression du projet a été annulée.");
+            cancelAlert.showAndWait();
+        }
     }
 
     @FXML
@@ -252,9 +320,6 @@ public class AfficherProjet extends ActionView {
         loadProjets();
         initialize();
     }
-
-
-
 
 
 }

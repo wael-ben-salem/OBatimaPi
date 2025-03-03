@@ -49,8 +49,8 @@ public class UpdateEtapeProjet {
 
         etapeProjet.setNomEtape(nomEtapeField.getText());
         etapeProjet.setDescription(descriptionField.getText());
-        etapeProjet.setDteDebut(Date.valueOf(dateDebutPicker.getValue()));
-        etapeProjet.setDatefin(Date.valueOf(dateFinPicker.getValue()));
+        etapeProjet.setDateDebut(Date.valueOf(dateDebutPicker.getValue()));
+        etapeProjet.setDateFin(Date.valueOf(dateFinPicker.getValue()));
         etapeProjet.setStatut(statutComboBox.getValue());
         etapeProjet.setMontant(new BigDecimal(montantField.getText()));
 

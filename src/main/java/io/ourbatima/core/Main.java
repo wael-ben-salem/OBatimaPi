@@ -62,7 +62,6 @@ public class Main extends Launcher {
 
         Loader loadCircle = new LoadCircle("Starting..", "");
 
-        Task<View> loadViews = new LoadViews(context, loadCircle);
 
         Thread tLoadViews = new Thread(loadViews);
         tLoadViews.setDaemon(true);

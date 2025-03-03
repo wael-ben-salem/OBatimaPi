@@ -675,10 +675,10 @@ public class UtilisateurDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     String roleStr = rs.getString("role");
-                    Role role = Role.valueOf(roleStr);
-                    Statut statut = Statut.valueOf(rs.getString("statut"));
+                    Utilisateur.Role role = Utilisateur.Role.valueOf(roleStr);
+                    Utilisateur.Statut statut = Utilisateur.Statut.valueOf(rs.getString("statut"));
 
-                    if (role == Role.Client) {
+                    if (role == Utilisateur.Role.Client) {
                         return Optional.of(new Client(
                                 rs.getInt("id"),
                                 rs.getString("nom"),

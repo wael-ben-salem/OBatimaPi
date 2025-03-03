@@ -430,11 +430,7 @@ public class SideNavController extends ActionView {
     public void gototache(ActionEvent actionEvent) {
     }
 
-    public void gotoplan(ActionEvent actionEvent) {
-    }
 
-    public void gotoplanf(ActionEvent actionEvent) {
-    }
 
 
     public void goAddStock(ActionEvent actionEvent) {

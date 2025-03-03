@@ -150,6 +150,7 @@
     fxml: Weather.fxml
   }
 
+  - {
     name: afficherTerrain,
     title: afficherTerrain,
     folder: Terrain,
