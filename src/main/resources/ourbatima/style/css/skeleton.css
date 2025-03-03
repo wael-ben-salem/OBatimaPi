@@ -19,7 +19,7 @@
     /* Text */
 
     -text-color : -dark-gray;
-    -inner-color: #333;
+    -inner-color : white;
     -icon-color : -text-color;
 
     /* Borders */
@@ -682,6 +682,13 @@ SVGPath {
     -fx-border-radius: 0px;
     -fx-background-color: red;
 }
+
+/*******************************************************************************
+*                                                                              *
+    @ToggleSwitch
+*                                                                              *
+*******************************************************************************/
+
 .gn-carousel
 {
     -fx-background-color : rgba(0,0,0,.2);
@@ -748,6 +755,11 @@ SVGPath {
     -fx-translate-y : -10px;
 }
 
+/*******************************************************************************
+*                                                                              *
+    @MenuBar
+*                                                                              *
+*******************************************************************************/
 
 .menu-bar {
     -fx-background-color: transparent;
@@ -766,7 +778,7 @@ SVGPath {
 .menu-bar > .container > .menu-button:hover > .label,
 .menu-bar > .container > .menu-button:focused > .label,
 .menu-bar > .container > .menu-button:showing  > .label {
-    -fx-text-fill: -inner-color;
+    -fx-text-fill: white;
 }
 
 .menu-bar > .container > .menu-button:hover > .menu-item {
@@ -1571,10 +1583,3 @@ SVGPath {
 }
 
 
-.button {
-    -inner-color: #333;
-    -fx-text-fill: -inner-color;
-}
-.inner-color {
-    -inner-color: #FFFFFF; // Couleur par défaut
-}
