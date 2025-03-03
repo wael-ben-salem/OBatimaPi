@@ -1,125 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="700" prefWidth="1200" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.ProfileCompletionController">
-    <content>
-        <HBox alignment="TOP_CENTER" spacing="50" style="-fx-padding: 40; -fx-background-color: #f8f9fa;">
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="io.ourbatima.controllers.ProfileCompletionController"
+      spacing="20"
+      style="-fx-padding: 30; -fx-background-color: #f4f4f4;"
+      prefWidth="400">
 
-            <stylesheets>
-                <URL value="@../../style/css/colors.css" />
-                <URL value="@../../style/css/skeleton.css" />
-                <URL value="@../../style/css/typographic.css" />
-                <URL value="@../../style/css/profileCompletion.css" />
-            </stylesheets>
+    <Label text="Compléter votre profil"
+           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
 
-            <!-- Colonne gauche - Formulaire -->
-            <VBox alignment="TOP_LEFT" prefWidth="600" spacing="20" style="-fx-padding: 0 20;">
-                <Label style="-fx-font-size: 24px;" styleClass="auth-title" text="Compléter votre profil" />
+    <!-- Champ Nom -->
+    <TextField fx:id="txtNom"
+               promptText="Nom"
+               editable="false"
+               style="-fx-background-color: #ffffff;"/>
 
-                <!-- Champs du formulaire -->
-                <VBox spacing="15">
-                    <VBox spacing="5">
-                        <Label styleClass="input-label" text="Nom" />
-                        <TextField fx:id="txtNom" editable="false" styleClass="input-modern" />
-                    </VBox>
+    <!-- Champ Prénom -->
+    <TextField fx:id="txtPrenom"
+               promptText="Prénom"
+               editable="false"
+               style="-fx-background-color: #ffffff;"/>
 
-                    <VBox spacing="5">
-                        <Label styleClass="input-label" text="Prénom" />
-                        <TextField fx:id="txtPrenom" editable="false" styleClass="input-modern" />
-                    </VBox>
+    <!-- Champ Email -->
+    <TextField fx:id="txtEmail"
+               promptText="Email"
+               editable="false"
+               style="-fx-background-color: #e8e8e8;"/>
 
-                    <VBox spacing="5">
-                        <Label styleClass="input-label" text="Email" />
-                        <TextField fx:id="txtEmail" editable="false" styleClass="input-modern" />
-                    </VBox>
+    <!-- Champ Téléphone -->
+    <TextField fx:id="txtTelephone"
+               promptText="Téléphone"
+               style="-fx-background-color: #ffffff;"/>
 
-                    <VBox spacing="5">
-                        <Label styleClass="input-label" text="Téléphone *" />
-                        <HBox spacing="10">
-                            <ComboBox fx:id="cbCountryCode" prefWidth="100" styleClass="country-combo">
-                                <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="+216" />
-                                        <String fx:value="00216" />
-                                    </FXCollections>
-                                </items>
-                            </ComboBox>
-                            <TextField fx:id="txtTelephone" promptText="XX XXX XXX" styleClass="input-modern" HBox.hgrow="ALWAYS" />
-                        </HBox>
-                        <Label fx:id="telephoneError" styleClass="error-label" />
-                    </VBox>
+    <!-- Champ Adresse -->
+    <TextField fx:id="txtAdresse"
+               promptText="Adresse"
+               style="-fx-background-color: #ffffff;"/>
 
-                    <VBox spacing="5">
-                        <Label styleClass="input-label" text="Adresse *" />
-                        <HBox alignment="CENTER_LEFT" spacing="10">
-                            <Button onAction="#handleMapClick" style="-fx-background-color: transparent;                 -fx-background-radius: 50%;                 -fx-border-color: transparent; /* Pas de bordure visible */                 -fx-border-width: 0px; /* Pas de bordure */                 -fx-pref-width: 70px;                 -fx-pref-height: 70px;                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.3, 0, 2);">
-                                <graphic>
-                                    <ImageView fitHeight="31.0" fitWidth="34.0" preserveRatio="true">
-                                        <image>
-                                            <Image url="@../../../images/map.png" />
-                                        </image>
-                                    </ImageView>
-                                </graphic>
-                            </Button>
-                            <TextField fx:id="txtAdresse" promptText="Adresse complète" styleClass="input-modern" />
-                        </HBox>
-                        <Label fx:id="adresseError" styleClass="error-label" />
-                    </VBox>
+    <!-- Mot de passe -->
+    <PasswordField fx:id="txtPassword"
+                   promptText="Nouveau mot de passe (8 caractères minimum)"
+                   style="-fx-background-color: #ffffff;"/>
 
-                    <VBox spacing="5">
-                        <Label styleClass="input-label" text="Nouveau mot de passe *" />
-                        <PasswordField fx:id="txtPassword" promptText="8 caractères minimum, 1 majuscule, 1 chiffre" styleClass="input-modern" />
-                        <HBox alignment="CENTER_LEFT" spacing="5">
-                            <Label styleClass="strength-weak" text="●" />
-                            <Label styleClass="strength-medium" text="●" />
-                            <Label styleClass="strength-strong" text="●" />
-                        </HBox>
-                        <Label fx:id="passwordError" styleClass="error-label" />
-                    </VBox>
-                </VBox>
+    <!-- Boutons -->
+    <HBox spacing="10"
+          alignment="CENTER_RIGHT"
+          style="-fx-padding: 20 0 0 0;">
 
-                <!-- Bouton Enregistrer -->
-                <Button defaultButton="true" onAction="#onSave" styleClass="btn-gradient" text="Enregistrer" />
-            </VBox>
 
-            <!-- Colonne droite - Capture photo -->
-            <VBox alignment="CENTER" spacing="20">
-                <Label styleClass="instruction-label" text="Positionnez votre visage dans le cadre" />
 
-                <StackPane styleClass="image-container">
-                    <ImageView fx:id="facePreview" fitHeight="400" fitWidth="400" styleClass="face-frame">
-                        <effect>
-                            <DropShadow color="rgba(0,0,0,0.1)" radius="15" />
-                        </effect>
-                    </ImageView>
-                </StackPane>
+        <Button text="Enregistrer"
+                onAction="#onSave"
+                style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+    </HBox>
 
-                <Button fx:id="btnEnrollFace" onAction="#handleFaceEnrollment" style="-fx-background-color: transparent;                 -fx-background-radius: 50%;                 -fx-border-color: transparent; /* Pas de bordure visible */                 -fx-border-width: 0px; /* Pas de bordure */                 -fx-pref-width: 70px;                 -fx-pref-height: 70px;                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.3, 0, 2);">
-                    <graphic>
-                        <ImageView fitHeight="50" fitWidth="50">
-                            <image>
-                                <Image url="@../../../images/camera.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-
-            </VBox>
-        </HBox>
-    </content>
-</ScrollPane>
+</VBox>

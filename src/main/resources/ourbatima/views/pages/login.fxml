@@ -63,6 +63,7 @@
                         <Label style="-fx-text-fill: #372a28;" styleClass="h1" text="Connexion" />
                         <Label styleClass="h4 text-muted" text="Accédez à votre espace personnel" />
                      </VBox>
+
                      <!-- Formulaire avec fond gris -->
                      <GridPane alignment="CENTER" hgap="15" maxWidth="400" style="-fx-background-color: rgba(245,245,245,0.9); -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 3);" vgap="20">
 
@@ -112,7 +113,7 @@
                      </GridPane>
                      <VBox alignment="CENTER" spacing="15">
                         <HBox alignment="CENTER" spacing="10">
-                           <Label text="Continuer avec Google" style="-fx-text-fill: #6c757d; -fx-font-weight: bold;"/>
+                              <Label text="Continuer avec Google" style="-fx-text-fill: #6c757d; -fx-font-weight: bold;"/>
                            <Button fx:id="btn_google" onAction="#handleGoogleLogin" styleClass="btn-social">
                               <graphic>
                                  <ImageView fitHeight="24" fitWidth="24">
@@ -124,19 +125,6 @@
 
                            </Button>
                         </HBox>
-                        <HBox alignment="CENTER" spacing="10">
-                           <Label text="Continuer avec le visage" style="-fx-text-fill: #6c757d; -fx-font-weight: bold;"/>
-                           <Button fx:id="btnFaceLogin" onAction="#handleFaceLogin" styleClass="btn-social">
-                              <graphic>
-                                 <ImageView fitHeight="24" fitWidth="24">
-                                    <image>
-                                       <Image url="@../../../images/faceid.png" />
-                                    </image>
-                                 </ImageView>
-                              </graphic>
-                           </Button>
-                        </HBox>
-
 
                         <!-- Séparateur stylisé -->
                         <HBox alignment="CENTER" spacing="10">

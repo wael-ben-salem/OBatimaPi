@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<StackPane fx:id="root" prefHeight="1045.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="io.ourbatima.controllers.BlogController">
+<StackPane fx:id="root" prefHeight="1045.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets>
       <URL value="@../style/css/colors.css" />
       <URL value="@../style/css/skeleton.css" />

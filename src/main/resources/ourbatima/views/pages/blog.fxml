@@ -37,7 +37,7 @@
   ~
   -->
 
-<StackPane fx:id="root" prefHeight="1591.0" prefWidth="1005.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="io.ourbatima.controllers.BlogController">
+<StackPane fx:id="root" prefHeight="1591.0" prefWidth="1005.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@../../style/css/colors.css" />
         <URL value="@../../style/css/skeleton.css" />
