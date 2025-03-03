@@ -1,0 +1,74 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #4a90e2, #63d8ff);
+    -fx-padding: 20;
+}
+
+.weather-card, .forecast-card {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+.header-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.temp-label {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.condition-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #34495e;
+}
+
+.detail-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.forecast-card {
+    -fx-alignment: center;
+    -fx-min-width: 120;
+}
+
+.forecast-date {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.forecast-temp {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+    -fx-alignment: center;
+}
+
+.forecast-condition {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d;
+    -fx-wrap-text: true;
+    -fx-alignment: center;
+}
+
+.location-field {
+    -fx-pref-width: 200;
+    -fx-pref-height: 35;
+    -fx-font-size: 14px;
+}
+
+.fetch-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20;
+}
+
+.fetch-button:hover {
+    -fx-background-color: #2980b9;
+}

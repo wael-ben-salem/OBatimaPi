@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="io.ourbatima.controllers.Dashboard">
+    <LineChart fx:id="plannificationChart" title="Plannifications Terminées par Artisan"
+               layoutX="50" layoutY="50" prefWidth="600" prefHeight="400">
+        <xAxis>
+            <CategoryAxis label="Date"/>
+        </xAxis>
+        <yAxis>
+            <NumberAxis label="Plannifications Terminées"/>
+        </yAxis>
+    </LineChart>
+
+    <Button text="Reload Chart" layoutX="700" layoutY="50" onAction="#onReloadClicked"/>
+</AnchorPane>

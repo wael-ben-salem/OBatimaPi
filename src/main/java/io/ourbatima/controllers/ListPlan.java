@@ -169,4 +169,16 @@ public class ListPlan extends ActionView {
     public void gotoplanifs(ActionEvent actionEvent) {
         context.routes().nav("AddPlan");
     }
+
+    public void gotochat(ActionEvent actionEvent) {
+        context.routes().nav("Chatbot");
+    }
+
+    public void gotoDashboard(ActionEvent actionEvent) {
+        context.routes().nav("Dashboard");
+    }
+
+    public void gotoWeather(ActionEvent actionEvent) {
+        context.routes().nav("Weather");
+    }
 }
