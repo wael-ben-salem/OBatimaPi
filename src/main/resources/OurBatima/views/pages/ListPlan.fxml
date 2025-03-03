@@ -27,6 +27,9 @@
             <children>
                 <Button text="Refresh List" onAction="#refreshList"/>
                 <Button text="Add a Plannification" onAction="#gotoplanifs"/>
+                <Button text="SEE chat" onAction="#gotochat"/>
+                <Button onAction="#gotoDashboard" text="Dashboard"/>
+                <Button onAction="#gotoWeather" text="Weather"/>
             </children>
         </HBox>
     </children>

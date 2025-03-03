@@ -130,6 +130,24 @@
     folder: pages,
     fxml: update_plan.fxml
   }
+  - {
+    name: Chatbot,
+    title: Chatbot,
+    folder: pages,
+    fxml: Chatbot.fxml
+  }
+  - {
+    name: Dashboard,
+    title: Dashboard,
+    folder: pages,
+    fxml: Dashboard.fxml
+  }
+  - {
+    name: Weather,
+    title: Weather,
+    folder: pages,
+    fxml: Weather.fxml
+  }
 
 
 #  - {

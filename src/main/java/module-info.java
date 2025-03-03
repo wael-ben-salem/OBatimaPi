@@ -38,6 +38,8 @@ module io.ourbatima {
     requires json.smart;
     requires com.fasterxml.jackson.databind;
     requires java.sql;
+    requires org.apache.commons.lang3;
+    requires java.net.http;
 
     opens io.ourbatima to javafx.fxml;
     opens io.ourbatima.controllers to javafx.fxml;

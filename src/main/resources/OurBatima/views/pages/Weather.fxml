@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import java.net.URL?>
+<VBox fx:id="mainContainer" spacing="20" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="io.ourbatima.controllers.Weather">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+
+    <HBox spacing="20" alignment="CENTER_LEFT">
+        <TextField fx:id="locationField" promptText="Enter city" styleClass="location-field" />
+        <Button text="Get Weather" onAction="#fetchWeather" styleClass="fetch-button" />
+    </HBox>
+
+    <!-- Current Weather Card -->
+    <VBox styleClass="weather-card">
+        <Label text="Current Weather" styleClass="header-label" />
+        <HBox spacing="30" alignment="CENTER_LEFT">
+            <VBox spacing="10">
+                <Label fx:id="currentTemp" styleClass="temp-label" />
+                <Label fx:id="conditionText" styleClass="condition-label" />
+                <Label fx:id="feelsLike" styleClass="detail-label" />
+            </VBox>
+            <VBox spacing="10">
+                <Label fx:id="humidity" styleClass="detail-label" />
+                <Label fx:id="windSpeed" styleClass="detail-label" />
+                <Label fx:id="uvIndex" styleClass="detail-label" />
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <!-- Forecast Container -->
+    <VBox spacing="10">
+        <Label text="3-Day Forecast" styleClass="header-label" />
+        <HBox fx:id="forecastContainer" spacing="15" />
+    </VBox>
+</VBox>
