@@ -1,0 +1,41 @@
+.custom-textfield, .custom-combobox {
+    -fx-pref-width: 300px;
+    -fx-padding: 8px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #CCC;
+    -fx-font-size: 14px;
+}
+
+.custom-textfield:focused, .custom-combobox:focused {
+    -fx-border-color: #4CAF50;
+    -fx-effect: dropshadow(three-pass-box, rgba(76,175,80,0.5), 10, 0, 0, 3);
+}
+
+.primary-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 12px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-alignment: center;
+}
+
+.primary-button:hover {
+    -fx-background-color: #45A049;
+}
+
+.secondary-button {
+    -fx-background-color: #F44336;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 12px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-alignment: center;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #D32F2F;
+}
