@@ -13,6 +13,8 @@ module io.ourbatima {
     requires org.yaml.snakeyaml;
     requires org.jetbrains.annotations;
     requires animatefx;
+    exports io.ourbatima.core.view.layout to javafx.fxml; // Ajout crucial
+
 //    requires io.ourbatima.gncarousel;
 
     requires GNAvatarView;

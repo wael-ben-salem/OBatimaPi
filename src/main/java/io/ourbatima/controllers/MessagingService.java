@@ -1,13 +1,13 @@
 package io.ourbatima.controllers;
 
 import io.ourbatima.core.Dao.DatabaseConnection;
+import io.ourbatima.core.Dao.Utilisateur.DirectMessageDAO;
 import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
 import io.ourbatima.core.Dao.Utilisateur.NotificationDAO;
 import io.ourbatima.core.model.Utilisateur.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,8 @@ public class MessagingService {
 
     private final EquipeDAO equipeDAO = new EquipeDAO();
     private final NotificationDAO notificationDAO = new NotificationDAO();
+    private final DirectMessageDAO messageDao = new DirectMessageDAO();
+
 
     public void createUserMessagingAccount(Utilisateur user, int roleSpecificId) {
         try (Connection messagingConn = DatabaseConnection.getConnection()) {
@@ -75,4 +77,77 @@ public class MessagingService {
     public List<Notification> getUserNotifications(int userId) throws SQLException {
         return notificationDAO.getNotificationsByUser(userId);
     }
+    // Nouvelle méthode pour les messages directs
+    public void sendDirectMessage(int senderId, int receiverId, String message) throws SQLException {
+        String sql = "INSERT INTO direct_messages (sender_id, receiver_id, content) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, senderId);
+            pstmt.setInt(2, receiverId);
+            pstmt.setString(3, message);
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Récupération des messages directs
+    public List<DirectMessage> getDirectMessages(int userId) throws SQLException {
+        List<DirectMessage> messages = new ArrayList<>();
+        String sql = "SELECT * FROM direct_messages WHERE receiver_id = ? ORDER BY sent_at DESC";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                messages.add(new DirectMessage(
+                        rs.getInt("message_id"),
+                        rs.getInt("sender_id"),
+                        rs.getInt("receiver_id"),
+                        rs.getString("content"),
+                        rs.getTimestamp("sent_at").toLocalDateTime(),
+                        rs.getBoolean("is_read")
+                ));
+            }
+        }
+        return messages;
+    }
+
+    public List<Notification> getUserNotificationsSince(int userId, LocalDateTime since) throws SQLException {
+        String sql = "SELECT * FROM notifications WHERE user_id = ? AND created_at > ? ORDER BY created_at DESC";
+        List<Notification> notifications = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userId);
+            pstmt.setTimestamp(2, Timestamp.valueOf(since));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    notifications.add(new Notification(
+                            rs.getInt("notification_id"),
+                            rs.getInt("user_id"),
+                            rs.getString("message"),
+                            rs.getBoolean("is_read"),
+                            rs.getTimestamp("created_at").toLocalDateTime(),
+                            rs.getTimestamp("read_at") != null ? rs.getTimestamp("read_at").toLocalDateTime() : null
+                    ));
+                }
+            }
+        }
+        return notifications;
+    }
+    public void sendMessage(int senderId, int receiverId, String content) throws SQLException {
+        DirectMessage message = new DirectMessage(senderId, receiverId, content);
+        messageDao.createMessage(message);
+    }
+
+    public List<DirectMessage> getConversation(int user1, int user2) throws SQLException {
+        return messageDao.getConversation(user1, user2);
+    }
+
+    public void markMessageAsRead(int messageId) throws SQLException {
+        messageDao.markAsRead(messageId);
+    }
+
+
 }

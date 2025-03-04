@@ -1,6 +1,7 @@
 package io.ourbatima.controllers;
 
 import io.ourbatima.core.Context;
+import io.ourbatima.core.Dao.Utilisateur.NotificationDAO;
 import io.ourbatima.core.controls.*;
 import io.ourbatima.core.controls.icon.IconContainer;
 import io.ourbatima.core.controls.icon.Icons;
@@ -331,8 +332,8 @@ public final class DashController extends ActionView {
             context.wrapper()
                     .content(
                             new DialogContainer(searchViewBox)
-                            .style("-fx-background-radius: 5px;")
-                            .size(800, 400)
+                                    .style("-fx-background-radius: 5px;")
+                                    .size(800, 400)
                     )
                     .onShown(e -> searchViewBox.focus())
                     .show();
@@ -364,10 +365,10 @@ public final class DashController extends ActionView {
         Separator separator =  new Separator(Orientation.VERTICAL);
         HBox.setMargin(boxUser, new Insets(0,0,0,10));
 
-         context.layout().bar().addInRight(rightBar);
+        context.layout().bar().addInRight(rightBar);
 
 
-         rightBar.getChildren().addAll(btnSearch, sms, notification);
+        rightBar.getChildren().addAll(btnSearch, sms, notification);
 
         HBox.setMargin(notification, new Insets(0, 15, 0,5));
 
@@ -375,12 +376,12 @@ public final class DashController extends ActionView {
 
         notification.setOnMouseClicked(event ->
                 context.flow()
-                .content(
-                        new DialogContainer(b)
-                                .size(400, 280)
-                )
+                        .content(
+                                new DialogContainer(b)
+                                        .size(400, 280)
+                        )
 //                    .background(Wrapper.WrapperBackgroundType.GRAY)
-                .show(Pos.BOTTOM_CENTER, notification));
+                        .show(Pos.BOTTOM_CENTER, notification));
 
 
         root.widthProperty()
@@ -429,7 +430,7 @@ public final class DashController extends ActionView {
                 break;
         }
     }
-        private VBox createDialogNotification() {
+    private VBox createDialogNotification() {
         VBox root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
 
@@ -440,36 +441,89 @@ public final class DashController extends ActionView {
         btn.setPadding(new Insets(10));
         btn.getStyleClass().addAll("text-bold","transparent", "text-info", "no-border");
 
+        // Action pour "Mark as read"
+        btn.setOnAction(event -> {
+            try {
+                new NotificationDAO().markAllAsRead(currentUser.getId());
+                loadNotifications(); // Recharger les notifications
+                updateNotificationBadge(); // Mettre à jour le badge
+                // Rafraîchir l'affichage
+                VBox updatedNotifications = createNotifications(notifications.toArray(new Notification[0]));
+                root.getChildren().set(1, updatedNotifications);
+            } catch (SQLException e) {
+                showErrorAlert("Erreur lors de la mise à jour des notifications");
+            }
+        });
+
         GridPane header = new GridPane();
         header.getChildren().addAll(title, btn);
         GridPane.setConstraints(title, 0,0,1,1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
         GridPane.setConstraints(btn, 1,0,1,1, HPos.RIGHT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
 
-//        ListView<NotificationCell> listView = new ListView<>();
-//        listView.setCellFactory(new NotificationListFactory());
-
-            VBox vBox = createNotifications(
-                    notifications.stream()
-                            .map(n -> new NotificationCell(
-                                    n.isRead(),
-                                    n.getMessage(),
-                                    new GNIconButton(Icons.NOTIFICATIONS),
-                                    n.getCreatedAt()
-                            ))
-                            .toArray(NotificationCell[]::new)
-            );
-
-
-//        listView.setPrefHeight(3 * 45);
-//        listView.setStyle("-fx-fixed-cell-size : 100px;");
-//
+        VBox vBox = createNotifications(notifications.toArray(new Notification[0]));
 
         Hyperlink btnAll = new Hyperlink("View All Notifications");
         btnAll.setPadding(new Insets(10));
         btnAll.getStyleClass().addAll("text-bold", "transparent", "no-border", "text-info");
 
+        // Action pour "View All Notifications"
+        btnAll.setOnAction(event -> showAllNotificationsDialog());
+
         root.getChildren().setAll(header, vBox, btnAll);
         return root;
+    }
+
+    private void showAllNotificationsDialog() {
+        ListView<Notification> listView = new ListView<>(notifications);
+        listView.setCellFactory(param -> new ListCell<Notification>() {
+            @Override
+            protected void updateItem(Notification notification, boolean empty) {
+                super.updateItem(notification, empty);
+                if (empty || notification == null) {
+                    setGraphic(null);
+                } else {
+                    ToggleButton toggleButton = new ToggleButton();
+                    toggleButton.setMaxWidth(Double.MAX_VALUE);
+                    toggleButton.getStyleClass().addAll("btn-flat", "transparent");
+
+                    Text text = new Text(notification.getMessage());
+                    TextFlow textFlow = new TextFlow(text);
+                    text.getStyleClass().addAll("text-12", "text-bold");
+                    String pattern = "dd MMM yyyy HH:mm:ss";
+                    Text time = new Text(notification.getCreatedAt().format(DateTimeFormatter.ofPattern(pattern, Locale.US)));
+
+                    Circle circle = new Circle(5);
+                    circle.setStyle(notification.isRead() ? "-fx-fill : -info;" : "-fx-fill : white;");
+
+                    GridPane grid = new GridPane();
+                    grid.add(circle, 0, 0, 1, 2);
+                    grid.add(textFlow, 1, 0);
+                    grid.add(time, 1, 1);
+                    grid.setHgap(10);
+
+                    toggleButton.setGraphic(grid);
+
+                    // Action pour marquer comme lu
+                    toggleButton.setOnAction(event -> {
+                        try {
+                            notification.markAsRead();
+                            new NotificationDAO().markAsRead(notification.getId());
+                            updateNotifications(); // Rafraîchir la liste
+                        } catch (SQLException e) {
+                            showErrorAlert("Erreur lors du marquage comme lu");
+                        }
+                    });
+
+                    setGraphic(toggleButton);
+                }
+            }
+        });
+
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.getDialogPane().setContent(listView);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dialog.setTitle("Toutes les notifications");
+        dialog.showAndWait();
     }
 
     private DonutChart createDonut() {
@@ -490,40 +544,43 @@ public final class DashController extends ActionView {
         return donutChart;
     }
 
-    private VBox createNotifications(NotificationCell... cells) {
+    private VBox createNotifications(Notification... notifications) {
         VBox box = new VBox();
-        for (NotificationCell item : cells) {
-
+        for (Notification notification : notifications) {
             ToggleButton toggleButton = new ToggleButton();
             toggleButton.setMaxWidth(Double.MAX_VALUE);
             toggleButton.getStyleClass().addAll("btn-flat", "transparent");
 
-            Text text = new Text(item.text());
+            Text text = new Text(notification.getMessage());
             TextFlow textFlow = new TextFlow(text);
             text.getStyleClass().addAll("text-12", "text-bold");
             String pattern = "dd MMM yyyy HH:mm:ss";
-            Text time = new Text(item.time().format(DateTimeFormatter.ofPattern(pattern, Locale.US)));
+            Text time = new Text(notification.getCreatedAt().format(DateTimeFormatter.ofPattern(pattern, Locale.US)));
+
+            Circle circle = new Circle(5);
+            circle.setStyle(notification.isRead() ? "-fx-fill : -info;" : "-fx-fill : white;");
+
             GridPane grid = new GridPane();
-            Node icon = item.icon();
-            icon.setStyle("-fx-fill : white; -fx-text-fill: white; -text-color : white;");
-            Circle circle = new Circle();
-            circle.setRadius(5);
-            if (item.read()) {
-                circle.setStyle("-fx-fill : -info;");
-            } else {
-                circle.setStyle("-fx-fill : white;");
-            }
-            grid.getChildren().setAll(circle, textFlow, time, icon);
-//            grid.setGridLinesVisible(true);
-            GridPane.setConstraints(circle, 0,0,1,2, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-            GridPane.setConstraints(textFlow, 1,0,1,1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-            GridPane.setConstraints(time, 1,1,1,1, HPos.LEFT, VPos.TOP, Priority.ALWAYS, Priority.ALWAYS);
-            GridPane.setConstraints(icon, 2,0,1,2, HPos.RIGHT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+            grid.add(circle, 0, 0, 1, 2);
+            grid.add(textFlow, 1, 0);
+            grid.add(time, 1, 1);
             grid.setHgap(10);
+
             toggleButton.setGraphic(grid);
+
+            // Action pour marquer comme lu
+            toggleButton.setOnAction(event -> {
+                try {
+                    notification.markAsRead();
+                    new NotificationDAO().markAsRead(notification.getId());
+                    updateNotifications(); // Rafraîchir la liste
+                } catch (SQLException e) {
+                    showErrorAlert("Erreur lors du marquage comme lu");
+                }
+            });
+
             box.getChildren().addAll(toggleButton, new Separator());
         }
-
         return box;
     }
 }

@@ -80,6 +80,11 @@ public class ScheduleListItem extends GridPane {
         this.setHgap(5);
     }
 
+    public ScheduleListItem(int i, String revueDesStocks, String entrepôt, LocalTime of) {
+
+    }
+
+
     private Label createIcon(int num) {
         Label lbl = new Label(String.valueOf(num));
 

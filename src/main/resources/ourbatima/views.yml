@@ -126,6 +126,12 @@
     fxml: equipeadd.fxml
   }
   - {
+  name: notificationsView,
+  title: "Liste des Notif",
+  folder: equipe,
+  fxml: notificationsView.fxml
+}
+  - {
     name: equipecard,
     title: "Liste des Equipes",
     folder: equipe,

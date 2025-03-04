@@ -33,12 +33,12 @@
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
             <ImageView fitHeight="48.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../style/img/logo_64.png" />
+               <Image url="@../../images/logo2.png" />
             </ImageView>
          </VBox>
          <VBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="135.0" HBox.hgrow="ALWAYS">
-            <Label contentDisplay="RIGHT" style="-fx-text-fill: -cyan; -fx-font-weight: bold;" styleClass="h4" text="DashboardFx" />
-            <Label text="gleidsonmt, Inc." />
+            <Label contentDisplay="RIGHT" style="-fx-text-fill: -cyan; -fx-font-weight: bold;" styleClass="h4" text="𝓞𝓾𝓻 𝓑𝓪𝓽𝓲𝓶𝓪" />
+            <Label fx:id="RoleUser"  />
          </VBox>
       </HBox>
       <ScrollPane id="drawer-scroll" fitToWidth="true" VBox.vgrow="ALWAYS">
@@ -168,6 +168,46 @@
                   </VBox>
                </content>
             </TitledPane>
+            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Projet" textAlignment="JUSTIFY">
+               <graphic>
+                  <Group>
+                     <children>
+                     </children>
+                  </Group>
+               </graphic>
+               <content>
+                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                     <children>
+
+                     <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Projet" toggleGroup="$group3" />
+                     <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjoutProjet" styleClass="drawer-item" text="Ajouter Projet" toggleGroup="$group3" />
+                     <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherEtapeProjet" styleClass="drawer-item" text="Étape projet" toggleGroup="$group3" />
+
+                     <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherTerrain" styleClass="drawer-item" text="Terrain" toggleGroup="$group3" />
+
+
+
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Plannifiacation et Tache" textAlignment="JUSTIFY">
+               <graphic>
+                  <Group>
+                     <children>
+                     </children>
+                  </Group>
+               </graphic>
+               <content>
+                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                     <children>
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoplan" styleClass="drawer-item" text="Planification" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoplanf" styleClass="drawer-item" text="Tache" toggleGroup="$group3" />
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
 
             <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Equipe" textAlignment="JUSTIFY" onMouseClicked="#goEquipe">
                <graphic>
@@ -225,9 +265,6 @@
                               <ToggleGroup fx:id="group32" />
                            </toggleGroup>
                         </ToggleButton>
-                        <Button fx:id="gototache" onAction="#gototache" styleClass="btn-gradient" text="gototache" />
-                        <Button fx:id="gotoplan" onAction="#gotoplan" styleClass="btn-gradient" text="gotoplan" />
-                        <Button fx:id="gotoplanf" onAction="#gotoplanf" styleClass="btn-gradient" text="gotoplanf" />
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjoutProjet" styleClass="drawer-item" text="Ajouter Projet" toggleGroup="$group3" />
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Afficher Projet" toggleGroup="$group3" />
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" toggleGroup="$group3" />
