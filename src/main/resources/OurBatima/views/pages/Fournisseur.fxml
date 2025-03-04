@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<StackPane xmlns="http://javafx.com/javafx/18.0.2"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="io.ourbatima.controllers.FournisseurController">
+
+    <children>
+        <VBox spacing="20" alignment="CENTER">
+            <Label text="Ajouter Fournisseur" />
+            <Label text="Entrez les détails du fournisseur" />
+
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+                <content>
+                    <VBox spacing="20" alignment="CENTER">
+                        <GridPane hgap="10" vgap="15">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="LEFT" />
+                                <ColumnConstraints halignment="RIGHT" />
+                            </columnConstraints>
+
+                            <children>
+                                <TextField fx:id="nomField" promptText="Nom" />
+                                <TextField fx:id="prenomField" promptText="Prénom" GridPane.rowIndex="1" />
+                                <TextField fx:id="emailField" promptText="Email" GridPane.rowIndex="2" />
+                                <TextField fx:id="telephoneField" promptText="Numéro de Téléphone" GridPane.rowIndex="3" />
+                                <TextField fx:id="adresseField" promptText="Adresse" GridPane.rowIndex="4" />
+
+                                <Button fx:id="addFournisseurButton" text="Ajouter Fournisseur"
+                                        onAction="#handleAddFournisseur" GridPane.rowIndex="5" />
+
+                                <HBox alignment="CENTER" spacing="5" GridPane.rowIndex="6">
+                                    <Label text="Retour à la page principale ?" />
+                                    <Hyperlink fx:id="homeLink" text="Accueil"
+                                               onAction="#goToHome" />
+                                </HBox>
+                            </children>
+                        </GridPane>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </children>
+</StackPane>
