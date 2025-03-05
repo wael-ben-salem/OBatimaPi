@@ -1,7 +1,9 @@
 package io.ourbatima.controllers.FinanceControllers;
 
+import io.ourbatima.core.Context;
 import io.ourbatima.core.Dao.FinanceService.ContratServise;
 import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.model.financeModel.Contrat;
 import io.ourbatima.core.model.financeModel.ContratDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -58,6 +60,7 @@ public class ListContrats extends ActionView {
             private final HBox container = new HBox(5); // HBox to hold buttons
             private final Button updateButton = new Button("Update");
             private final Button deleteButton = new Button("Delete");
+            private final  Button consulterbutton = new Button("Consulter");
 
             {
                 // Set button styles
@@ -74,8 +77,16 @@ public class ListContrats extends ActionView {
                     ContratDTO rowData = getTableView().getItems().get(getIndex());
                     handleDeleteAction(rowData);
                 });
+                consulterbutton.setOnAction(event -> {
+                    ContratDTO rowData= getTableView().getItems().get(getIndex());
+                    try {
+                        hndleaConsulter(rowData);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
-                container.getChildren().addAll(updateButton, deleteButton);
+                container.getChildren().addAll(updateButton, deleteButton,consulterbutton);
             }
 
             @Override
@@ -88,6 +99,25 @@ public class ListContrats extends ActionView {
                 }
             }
         };
+    }
+
+    private void hndleaConsulter(ContratDTO rowData) throws IOException {
+        Contrat con =new Contrat(rowData.getIdContrat(),rowData.getTypeContrat(),rowData.getDateSignature(),rowData.getDateDebut(),rowData.isSignatureElectronique(),rowData.getDateFin(),rowData.getMontantTotal(),rowData.getIdProjet());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/pages/Finance_vews/ConsulterContratAjouter.fxml"));
+        Parent root = loader.load();
+
+        // Get the controller instance created by the FXMLLoader
+        ConsulterContratAjouter controller = loader.getController();
+
+        // Set the Contrat object and load data
+        controller.setdataCOntrat(con);
+
+        // Show the new stage
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+
     }
 
     private void loadAndDisplayContrats() {
@@ -167,16 +197,15 @@ public class ListContrats extends ActionView {
         return name;
     }
 
-    public void alolao(ActionEvent event) {
-        System.out.println("Initializing ListContrats...");
-        if (tableContrats == null) {
-            System.err.println("Error: tableContrats is null!");
-            return;
-        }
+    @Override
+    public void onInit(Context context) {
+        super.onInit(context);
         loadAndDisplayContrats();
         actionsColumn.setCellFactory(createButtonCellFactory());
 
     }
+
+
 
     private void handleUpdateAction(ContratDTO rowData) {
         // Handle update action

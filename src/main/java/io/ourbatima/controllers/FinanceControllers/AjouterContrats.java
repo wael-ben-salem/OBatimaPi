@@ -33,6 +33,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -272,13 +273,14 @@ public void onInit(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/pages/Finance_vews/CreteSignature.fxml"));
             Parent root = loader.load();
-            CreateSignature createSignatureController = loader.getController();
-            createSignatureController.setAjouterContratsController(this);
 
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+                 CreateSignature createSignatureController = loader.getController();
+                 createSignatureController.setAjouterContratsController(this);
+
+                 Stage stage = new Stage();
+                 stage.initModality(Modality.APPLICATION_MODAL);
+                 stage.setScene(new Scene(root));
+                 stage.showAndWait();
 
             // Recharger la liste des utilisateurs après création
 
@@ -287,6 +289,12 @@ public void onInit(){
 
         }
     }
+
+
+
+
+
 }
+
 
 
