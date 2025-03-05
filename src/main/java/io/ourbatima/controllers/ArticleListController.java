@@ -3,9 +3,11 @@ package io.ourbatima.controllers;
 import io.ourbatima.core.model.Article;
 import io.ourbatima.core.model.Fournisseur;
 import io.ourbatima.core.model.Stock;
+import io.ourbatima.core.model.EtapeProjet;
 import io.ourbatima.core.Dao.Stock.ArticleDAO;
 import io.ourbatima.core.Dao.Stock.StockDAO;
 import io.ourbatima.core.Dao.Stock.FournisseurDAO;
+import io.ourbatima.core.Dao.EtapeProjet.EtapeProjetDAO;
 import io.ourbatima.core.interfaces.ActionView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,6 +26,7 @@ public class ArticleListController extends ActionView {
     private final ArticleDAO articleDAO = new ArticleDAO();
     private final StockDAO stockDAO = new StockDAO();
     private final FournisseurDAO fournisseurDAO = new FournisseurDAO();
+    private final EtapeProjetDAO etapeProjetDAO = new EtapeProjetDAO();
 
     @FXML
     private void initialize() {
@@ -35,6 +38,7 @@ public class ArticleListController extends ActionView {
         List<Article> articles = articleDAO.getAllArticles();
         List<Stock> allStocks = stockDAO.getAllStocks();
         List<Fournisseur> allFournisseurs = fournisseurDAO.getAllFournisseurs();
+        List<EtapeProjet> allEtapes = etapeProjetDAO.getAllEtapeProjets();
 
         // Clear existing rows (keep header row)
         articleGrid.getChildren().removeIf(node -> {
@@ -63,18 +67,22 @@ public class ArticleListController extends ActionView {
             fournisseurCombo.setConverter(createFournisseurConverter());
             fournisseurCombo.setValue(findFournisseurById(allFournisseurs, article.getFournisseurId()));
 
-            TextField etapeProjetField = createEditableField(String.valueOf(article.getEtapeProjetId()));
+            // Etape Projet ComboBox
+            ComboBox<EtapeProjet> etapeProjetCombo = new ComboBox<>();
+            etapeProjetCombo.getItems().addAll(allEtapes);
+            etapeProjetCombo.setConverter(createEtapeProjetConverter());
+            etapeProjetCombo.setValue(findEtapeProjetById(allEtapes, article.getEtapeProjetId()));
 
             // Action buttons
             Button saveButton = createSaveButton(article, nomField, descriptionField,
-                    prixUnitaireField, stockCombo, fournisseurCombo, etapeProjetField);
+                    prixUnitaireField, stockCombo, fournisseurCombo, etapeProjetCombo);
 
             Button deleteButton = createDeleteButton(article);
 
             // Add to grid
             articleGrid.addRow(rowIndex++,
                     idField, nomField, descriptionField, prixUnitaireField,
-                    photoView, stockCombo, fournisseurCombo, etapeProjetField,
+                    photoView, stockCombo, fournisseurCombo, etapeProjetCombo,
                     saveButton, deleteButton
             );
         }
@@ -129,6 +137,20 @@ public class ArticleListController extends ActionView {
         };
     }
 
+    private StringConverter<EtapeProjet> createEtapeProjetConverter() {
+        return new StringConverter<EtapeProjet>() {
+            @Override
+            public String toString(EtapeProjet etapeProjet) {
+                return etapeProjet != null ? etapeProjet.getNomEtape() : "";
+            }
+
+            @Override
+            public EtapeProjet fromString(String string) {
+                return null; // Not needed for display
+            }
+        };
+    }
+
     private Stock findStockById(List<Stock> stocks, int id) {
         return stocks.stream()
                 .filter(s -> s.getId() == id)
@@ -143,9 +165,16 @@ public class ArticleListController extends ActionView {
                 .orElse(null);
     }
 
+    private EtapeProjet findEtapeProjetById(List<EtapeProjet> etapes, int id) {
+        return etapes.stream()
+                .filter(e -> e.getId_etapeProjet() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
     private Button createSaveButton(Article article, TextField nomField, TextField descriptionField,
                                     TextField prixUnitaireField, ComboBox<Stock> stockCombo,
-                                    ComboBox<Fournisseur> fournisseurCombo, TextField etapeProjetField) {
+                                    ComboBox<Fournisseur> fournisseurCombo, ComboBox<EtapeProjet> etapeProjetCombo) {
         Button button = new Button("Save");
         button.setOnAction(e -> handleSave(
                 article,
@@ -154,7 +183,7 @@ public class ArticleListController extends ActionView {
                 prixUnitaireField.getText(),
                 stockCombo.getValue(),
                 fournisseurCombo.getValue(),
-                etapeProjetField.getText()
+                etapeProjetCombo.getValue()
         ));
         return button;
     }
@@ -168,7 +197,7 @@ public class ArticleListController extends ActionView {
 
     // Event handlers
     private void handleSave(Article article, String nom, String description, String prixUnitaire,
-                            Stock selectedStock, Fournisseur selectedFournisseur, String etapeProjetId) {
+                            Stock selectedStock, Fournisseur selectedFournisseur, EtapeProjet selectedEtapeProjet) {
         try {
             article.setNom(nom);
             article.setDescription(description);
@@ -182,7 +211,9 @@ public class ArticleListController extends ActionView {
                 article.setFournisseurId(selectedFournisseur.getId());
             }
 
-            article.setEtapeProjetId(Integer.parseInt(etapeProjetId));
+            if (selectedEtapeProjet != null) {
+                article.setEtapeProjetId(selectedEtapeProjet.getId_etapeProjet());
+            }
 
             if (articleDAO.updateArticle(article)) {
                 System.out.println("Successfully updated article: " + article.getId());

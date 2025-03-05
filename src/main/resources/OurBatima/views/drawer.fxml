@@ -170,7 +170,9 @@
             </TitledPane>
 
 
-            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Finance" textAlignment="JUSTIFY">
+
+            
+            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Stock" textAlignment="JUSTIFY">
                <graphic>
                   <Group>
                      <children>
@@ -181,12 +183,47 @@
                <content>
                   <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
                      <children>
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants" toggleGroup="$group3" />
+
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goListeStock" styleClass="drawer-item" text="Liste de Stock" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAjouterStock" styleClass="drawer-item" text="Ajouter des Stock" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goListeFournisseurs" styleClass="drawer-item" text="Liste des Fournisseurs" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAjouterFournisseur" styleClass="drawer-item" text="Ajouter des Fournisseurs" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goListeArticles" styleClass="drawer-item" text="Liste des Articles" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAjouterArticle" styleClass="drawer-item" text="Ajouter des Articles" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#BOT" styleClass="drawer-item" text="oba bot" />
+
+
+
                      </children>
                   </VBox>
                </content>
             </TitledPane>
+           
+           
+                       <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Finance" textAlignment="JUSTIFY">
+               <graphic>
+                  <Group>
+                     <children>
+                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                     </children>
+                  </Group>
+               </graphic>
+               <content>
+                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                     <children>
+
+
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants" toggleGroup="$group3" />
+
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+
+
+
+
 
             <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Projet" textAlignment="JUSTIFY">
                <graphic>
