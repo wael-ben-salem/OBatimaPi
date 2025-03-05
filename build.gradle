@@ -155,6 +155,12 @@ dependencies {
 
 //    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
 //    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    implementation 'org.apache.pdfbox:pdfbox:2.0.27' // PDFBox dependency
+    implementation 'org.openjfx:javafx-controls:17.0.2' // JavaFX dependencies (if needed)
+    implementation 'org.openjfx:javafx-fxml:17.0.2'
+
+
 }
 
 //test {

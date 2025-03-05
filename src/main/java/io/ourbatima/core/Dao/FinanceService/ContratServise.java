@@ -1,5 +1,7 @@
 package io.ourbatima.core.Dao.FinanceService;
 
+import io.ourbatima.core.model.Projet;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import io.ourbatima.core.model.financeModel.Contrat;
 
 import java.sql.*;
@@ -232,9 +234,69 @@ public class ContratServise {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-return  mail;
+        return mail;
 
     }
 
+
+    public Utilisateur getclientbyid(int idclient) {
+        Utilisateur clt = new Utilisateur();
+
+        try (Connection conn = getConnection()) {
+
+
+            String query = "SELECT * " +
+                    "FROM utilisateur " +
+                    "WHERE id = ? ";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, idclient);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                clt.setNom(rs.getString("nom"));
+                clt.setAdresse(rs.getString("adresse"));
+                clt.setPrenom(rs.getString("prenom"));
+                clt.setEmail(rs.getString("email"));
+                clt.setId(idclient);
+                clt.setTelephone(rs.getString("telephone"));
+
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return clt;
+
+    }
+
+
+    public Projet getProjetbyid(int idprojet) {
+        Projet proj = new Projet();
+        try (Connection conn = getConnection()) {
+
+
+            String query = "SELECT * " +
+                    "FROM projet " +
+                    "WHERE Id_projet = ? ";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, idprojet);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+proj.setId_projet(rs.getInt("Id_projet"));
+proj.setNomProjet(rs.getString("nomProjet"));
+proj.setStyleArch(rs.getString("styleArch"));
+proj.setType(rs.getString("type"));
+
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
+     return proj;
+    }
 
 }
