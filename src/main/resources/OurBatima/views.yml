@@ -265,8 +265,43 @@
   }
 
 
+  - {
+    name: addstock,
+    title: addstock,
+    folder: pages,
+    fxml: addstock.fxml
+  }
+  - {
+    name: stock_table,
+    title: stock_table,
+    folder: pages,
+    fxml: stock_table.fxml
+  }
+  - {
+    name: fournisseur_table,
+    title: fournisseur_table,
+    folder: pages,
+    fxml: fournisseur_table.fxml
+  }
+  - {
+    name: articlelist,
+    title: articlelist,
+    folder: pages,
+    fxml: articlelist.fxml
+  }
+  - {
+    name: Fournisseur,
+    title: Fournisseur,
+    folder: pages,
+    fxml: Fournisseur.fxml
+  }
+  - {
+    name: Article,
+    title: Article,
+    folder: pages,
+    fxml: Article.fxml
+  }
 
-  -
 #  - {
 #    name: sales_left,
 #    title: Sales Column,

@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane xmlns="http://javafx.com/javafx/18.0.2"
+<StackPane xmlns="http://javafx.com/javafx/23.0.1"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="io.ourbatima.controllers.ArticleController">
 
@@ -58,7 +58,7 @@
 
                                     <ComboBox fx:id="stockComboBox" promptText="Sélectionnez le Stock" GridPane.rowIndex="4" onMouseClicked="#loadStocks" />
                                     <ComboBox fx:id="fournisseurComboBox" promptText="Sélectionnez le Fournisseur" GridPane.rowIndex="5" onMouseClicked="#loadFournisseurs" />
-                                    <TextField fx:id="etapeProjetIdField" promptText="ID d'Étape de Projet" GridPane.rowIndex="6" />
+                                    <ComboBox fx:id="etapeProjetComboBox" promptText="Sélectionnez l'Étape de Projet" GridPane.rowIndex="6" onMouseClicked="#loadEtapesProjets" />
 
                                     <Button fx:id="addArticleButton" text="Ajouter Article" onAction="#handleAddArticle" GridPane.rowIndex="7" />
 
