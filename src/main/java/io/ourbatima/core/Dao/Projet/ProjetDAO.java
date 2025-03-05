@@ -25,6 +25,9 @@ public class ProjetDAO {
 
     // Add a new project
     public int addProjet(Projet projet) {
+        if (projet.getEtat() == null || projet.getEtat().isEmpty()) {
+            projet.setEtat("En attente");
+        }
         String sql = "INSERT INTO Projet (nomProjet, Id_equipe, id_client, Id_terrain, budget, type, styleArch, etat, dateCreation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -112,13 +115,12 @@ public class ProjetDAO {
                 Timestamp dateCreation = rs.getTimestamp("dateCreation");
 
                 UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
-                Optional<Utilisateur> optionalUtilisateur = utilisateurDAO.getClientById(id_client);
+                Utilisateur utilisateur = utilisateurDAO.getUserById(id_client, conn);
 
-                // Retrieve the email directly if the Optional is present
-                String emailClient = optionalUtilisateur
-                        .filter(u -> u instanceof Client) // Check if it's an instance of Client
-                        .map(u -> ((Client) u).getEmail()) // Get the email if it is a Client
-                        .orElse("Aucun client attribué."); // Default message if no client found
+                String emailClient = Optional.ofNullable(utilisateur)
+                        .filter(u -> u instanceof Client)
+                        .map(u -> ((Client) u).getEmail())
+                        .orElse("Aucun client attribué.");
 
                 // Retrieve the list of EtapeProjet for this project
                 List<EtapeProjet> etapes = getEtapesForProjet(Id_projet);
@@ -304,7 +306,22 @@ public class ProjetDAO {
         return types;
     }
 
+    public Projet getLastInsertedProjet() {
+        String sql = "SELECT type, styleArch FROM Projet ORDER BY id_projet DESC LIMIT 1";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
+            if (rs.next()) {
+                String type = rs.getString("type");
+                String styleArch = rs.getString("styleArch");
+                return new Projet(type, styleArch);  // Assuming your Projet class has this constructor
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 

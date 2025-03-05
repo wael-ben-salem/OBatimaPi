@@ -34,7 +34,6 @@ public class Projet {
         this.client = null;
     }
 
-
     public Projet(String nomProjet, int Id_equipe, int id_client, int id_terrain, BigDecimal budget, String type, String styleArch, Timestamp dateCreation) {
         this.nomProjet = nomProjet;
         this.Id_equipe = Id_equipe;
@@ -109,6 +108,11 @@ public class Projet {
         this.nomProjet=name;
     }
 
+    public Projet(String type, String styleArch) {
+        this.type = type;
+        this.styleArch = styleArch;
+    }
+
     public String getEmailClientById() {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
         Utilisateur utilisateur = utilisateurDAO.getUserProjById(id_client);
@@ -123,7 +127,7 @@ public class Projet {
 
 
 
-        public int getId_projet() {
+    public int getId_projet() {
         return Id_projet;
     }
 

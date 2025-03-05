@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="685.0" prefWidth="1262.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.projet.AfficherProjet">
+<AnchorPane prefHeight="718.0" prefWidth="1262.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.projet.AfficherProjet">
    <children>
       <HBox spacing="10">
          <TextField fx:id="searchField" prefHeight="26.0" prefWidth="206.0" promptText="🔍 Vous cherchez un projet précis?">
@@ -26,7 +26,7 @@
 
       </HBox>
       <ListView fx:id="suggestionsList" layoutX="57.0" layoutY="35.0" prefHeight="200.0" prefWidth="206.0" visible="false" />
-      <TableView fx:id="projetTable" layoutX="45.0" layoutY="75.0" prefHeight="558.0" prefWidth="1091.0" style="-fx-border-color: #4c3f0a;" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="11.0">
+      <TableView fx:id="projetTable" layoutX="63.4" layoutY="106.0" prefHeight="558.0" prefWidth="1091.0" style="-fx-border-color: #4c3f0a;" AnchorPane.leftAnchor="63.4" AnchorPane.rightAnchor="7.7999999999999545">
          <columns>
             <TableColumn fx:id="colProjet" prefWidth="138.4000313282013" text="Projets" />
             <TableColumn fx:id="colClient" prefWidth="118.39993286132812" text="Client" />
@@ -41,12 +41,12 @@
             <TableColumn fx:id="colActions" prefWidth="155.60009765625" text="Actions" />
          </columns>
       </TableView>
-      <Button fx:id="Reload" layoutX="21.0" layoutY="647.0" mnemonicParsing="false" onAction="#handleReload" style="-fx-background-color: #4c3f0a;" text="Reload" textFill="WHITE">
+      <Button fx:id="Reload" layoutX="21.0" layoutY="669.0" mnemonicParsing="false" onAction="#handleReload" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Reload" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="12.0" />
          </font>
       </Button>
-      <Label layoutX="487.0" layoutY="22.0" text="Tableau des projets" textFill="#4c3f0a">
+      <Label layoutX="487.0" layoutY="39.0" text="Tableau des projets" textFill="#4c3f0a">
          <font>
             <Font name="Arial Rounded MT Bold" size="30.0" />
          </font>

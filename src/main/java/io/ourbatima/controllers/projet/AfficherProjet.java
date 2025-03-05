@@ -320,6 +320,4 @@ public class AfficherProjet extends ActionView implements Initializable {
         loadProjets();
         initialize();
     }
-
-
 }

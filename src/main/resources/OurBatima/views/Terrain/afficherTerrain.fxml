@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+<AnchorPane prefHeight="805.0" prefWidth="1201.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.terrain.AfficherTerrain">
+    <children>
+      <HBox layoutX="20.0" layoutY="20.0">
+         <children>
+              <Button fx:id="Reload" mnemonicParsing="false" onAction="#handleReload" prefHeight="39.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Reload" textFill="WHITE">
+      
+                  <font>
+                      <Font name="Arial Rounded MT Bold" size="12.0" />
+                  </font>
+              </Button>
+            <TextField fx:id="searchField" prefHeight="26.0" prefWidth="293.0" promptText="🔍 Vous cherchez un térrain précis?">
+               <HBox.margin>
+                  <Insets left="55.0" top="15.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+        <VBox layoutX="151.0" layoutY="101.0" prefHeight="646.0" prefWidth="898.0" AnchorPane.leftAnchor="151.0" AnchorPane.topAnchor="101.0">
+            <children>
+                <GridPane prefHeight="82.0" prefWidth="846.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="271.2000366210938" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.1999633789063" minWidth="10.0" prefWidth="575.1999633789063" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="277.0" text="Emplacements" textFill="#4c3f0a">
+                            <font>
+                                <Font name="Arial Rounded MT Bold" size="25.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="576.0" text="Détails du terrain" textFill="#4c3f0a" GridPane.columnIndex="1">
+                            <font>
+                                <Font name="Arial Rounded MT Bold" size="25.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </GridPane>
+                <HBox prefHeight="563.0" prefWidth="846.0" spacing="5.0">
+                    <children>
+                        <ListView fx:id="listViewEmplacement" prefHeight="462.0" prefWidth="309.0" style="-fx-border-color: #4c3f0a; -fx-border-width: 1px; -fx-border-radius: 5px;" />
+                        <VBox style="-fx-border-color: #4c3f0a; -fx-border-width: 1px; -fx-border-radius: 5px;">
+                            <children>
+                                <TextArea fx:id="terrainDetails" editable="false" prefHeight="309.0" prefWidth="614.0" wrapText="true">
+                                    <font>
+                                        <Font name="Arial Rounded MT Bold" size="15.0" />
+                                    </font>
+                                </TextArea>
+                                <Separator prefWidth="614.0" style="-fx-background-color: #4c3f0a;" />
+                                <WebView fx:id="mapView" prefHeight="261.0" prefWidth="598.0" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="110.0" prefWidth="898.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="updateButton" onAction="#handleUpdate" prefHeight="135.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Update">
+                            <font>
+                                <Font name="Arial Rounded MT Bold" size="12.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="deleteButton" onAction="#handleDelete" prefHeight="135.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Delete">
+                            <font>
+                                <Font name="Arial Rounded MT Bold" size="12.0" />
+                            </font>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets top="30.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+      <ListView fx:id="suggestionsTerrainList" layoutX="182.0" layoutY="61.0" prefHeight="194.0" prefWidth="294.0" visible="false" />
+    </children>
+</AnchorPane>
