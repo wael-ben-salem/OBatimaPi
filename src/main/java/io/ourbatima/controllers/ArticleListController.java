@@ -1,5 +1,6 @@
 package io.ourbatima.controllers;
 
+import io.ourbatima.core.Context;
 import io.ourbatima.core.model.Article;
 import io.ourbatima.core.model.Fournisseur;
 import io.ourbatima.core.model.Stock;
@@ -9,6 +10,7 @@ import io.ourbatima.core.Dao.Stock.StockDAO;
 import io.ourbatima.core.Dao.Stock.FournisseurDAO;
 import io.ourbatima.core.Dao.EtapeProjet.EtapeProjetDAO;
 import io.ourbatima.core.interfaces.ActionView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -16,8 +18,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ArticleListController extends ActionView {
@@ -28,9 +36,13 @@ public class ArticleListController extends ActionView {
     private final FournisseurDAO fournisseurDAO = new FournisseurDAO();
     private final EtapeProjetDAO etapeProjetDAO = new EtapeProjetDAO();
 
-    @FXML
-    private void initialize() {
-        loadArticles();
+    private static final String LOG_FILE_NAME = "log.txt";
+    private static final String DEFAULT_PHOTO_PATH = "C:\\xest.png";
+
+    @Override
+    public void onInit(Context context) {
+        super.onInit(context);
+        loadArticles(); // Automatically load articles on initialization
     }
 
     @FXML
@@ -49,11 +61,11 @@ public class ArticleListController extends ActionView {
         int rowIndex = 1;
         for (Article article : articles) {
             // Create UI components
-            TextField idField = createReadOnlyField(String.valueOf(article.getId()));
             TextField nomField = createEditableField(article.getNom());
             TextField descriptionField = createEditableField(article.getDescription());
             TextField prixUnitaireField = createEditableField(article.getPrixUnitaire());
             ImageView photoView = createImageView(article.getPhoto());
+            photoView.setOnMouseClicked(e -> handlePhotoChange(photoView, article));
 
             // Stock ComboBox
             ComboBox<Stock> stockCombo = new ComboBox<>();
@@ -74,14 +86,15 @@ public class ArticleListController extends ActionView {
             etapeProjetCombo.setValue(findEtapeProjetById(allEtapes, article.getEtapeProjetId()));
 
             // Action buttons
-            Button saveButton = createSaveButton(article, nomField, descriptionField,
-                    prixUnitaireField, stockCombo, fournisseurCombo, etapeProjetCombo);
+            Button saveButton = createIconButton("pencil.png", "Save");
+            saveButton.setOnAction(e -> handleSave(article, nomField, descriptionField, prixUnitaireField, stockCombo, fournisseurCombo, etapeProjetCombo, photoView));
 
-            Button deleteButton = createDeleteButton(article);
+            Button deleteButton = createIconButton("bin.png", "Delete");
+            deleteButton.setOnAction(e -> handleDelete(article));
 
             // Add to grid
             articleGrid.addRow(rowIndex++,
-                    idField, nomField, descriptionField, prixUnitaireField,
+                    nomField, descriptionField, prixUnitaireField,
                     photoView, stockCombo, fournisseurCombo, etapeProjetCombo,
                     saveButton, deleteButton
             );
@@ -95,15 +108,16 @@ public class ArticleListController extends ActionView {
         return field;
     }
 
-    private TextField createReadOnlyField(String text) {
-        TextField field = new TextField(text);
-        field.setEditable(false);
-        field.setStyle("-fx-padding: 5; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
-        return field;
-    }
-
     private ImageView createImageView(String imageUrl) {
-        ImageView imageView = new ImageView(new Image(imageUrl));
+        ImageView imageView = new ImageView();
+        try {
+            Image image = new Image(imageUrl);
+            imageView.setImage(image);
+        } catch (Exception e) {
+            // If the image path is invalid, use the default image
+            Image defaultImage = new Image(DEFAULT_PHOTO_PATH);
+            imageView.setImage(defaultImage);
+        }
         imageView.setFitHeight(100);
         imageView.setFitWidth(100);
         return imageView;
@@ -172,56 +186,67 @@ public class ArticleListController extends ActionView {
                 .orElse(null);
     }
 
-    private Button createSaveButton(Article article, TextField nomField, TextField descriptionField,
-                                    TextField prixUnitaireField, ComboBox<Stock> stockCombo,
-                                    ComboBox<Fournisseur> fournisseurCombo, ComboBox<EtapeProjet> etapeProjetCombo) {
-        Button button = new Button("Save");
-        button.setOnAction(e -> handleSave(
-                article,
-                nomField.getText(),
-                descriptionField.getText(),
-                prixUnitaireField.getText(),
-                stockCombo.getValue(),
-                fournisseurCombo.getValue(),
-                etapeProjetCombo.getValue()
-        ));
-        return button;
-    }
-
-    private Button createDeleteButton(Article article) {
-        Button button = new Button("Delete");
-        button.setStyle("-fx-background-color: #ff4444; -fx-text-fill: white;");
-        button.setOnAction(e -> handleDelete(article));
-        return button;
-    }
-
-    // Event handlers
-    private void handleSave(Article article, String nom, String description, String prixUnitaire,
-                            Stock selectedStock, Fournisseur selectedFournisseur, EtapeProjet selectedEtapeProjet) {
+    private void handleSave(Article article, TextField nomField, TextField descriptionField,
+                            TextField prixUnitaireField, ComboBox<Stock> stockCombo,
+                            ComboBox<Fournisseur> fournisseurCombo, ComboBox<EtapeProjet> etapeProjetCombo,
+                            ImageView photoView) {
         try {
-            article.setNom(nom);
-            article.setDescription(description);
-            article.setPrixUnitaire(prixUnitaire);
+            boolean changed = false;
 
-            if (selectedStock != null) {
-                article.setStockId(selectedStock.getId());
+            // Check for changes in fields
+            if (!article.getNom().equals(nomField.getText())) {
+                article.setNom(nomField.getText());
+                changed = true;
             }
 
-            if (selectedFournisseur != null) {
-                article.setFournisseurId(selectedFournisseur.getId());
+            if (!article.getDescription().equals(descriptionField.getText())) {
+                article.setDescription(descriptionField.getText());
+                changed = true;
             }
 
-            if (selectedEtapeProjet != null) {
-                article.setEtapeProjetId(selectedEtapeProjet.getId_etapeProjet());
+            if (!article.getPrixUnitaire().equals(prixUnitaireField.getText())) {
+                article.setPrixUnitaire(prixUnitaireField.getText());
+                changed = true;
             }
 
-            if (articleDAO.updateArticle(article)) {
-                System.out.println("Successfully updated article: " + article.getId());
+            if (stockCombo.getValue() != null && article.getStockId() != stockCombo.getValue().getId()) {
+                logChange("Stock", article.getNom(), findStockById(stockDAO.getAllStocks(), article.getStockId()), stockCombo.getValue());
+                article.setStockId(stockCombo.getValue().getId());
+                changed = true;
+            }
+
+            if (fournisseurCombo.getValue() != null && article.getFournisseurId() != fournisseurCombo.getValue().getId()) {
+                logChange("Fournisseur", article.getNom(), findFournisseurById(fournisseurDAO.getAllFournisseurs(), article.getFournisseurId()), fournisseurCombo.getValue());
+                article.setFournisseurId(fournisseurCombo.getValue().getId());
+                changed = true;
+            }
+
+            if (etapeProjetCombo.getValue() != null && article.getEtapeProjetId() != etapeProjetCombo.getValue().getId_etapeProjet()) {
+                logChange("EtapeProjet", article.getNom(), findEtapeProjetById(etapeProjetDAO.getAllEtapeProjets(), article.getEtapeProjetId()), etapeProjetCombo.getValue());
+                article.setEtapeProjetId(etapeProjetCombo.getValue().getId_etapeProjet());
+                changed = true;
+            }
+
+            // Handle photo update
+            String newPhotoPath = photoView.getImage().getUrl();
+            if (!article.getPhoto().equals(newPhotoPath)) {
+                article.setPhoto(newPhotoPath);
+                changed = true; // Ensure the flag is set to true if only the photo is updated
+            }
+
+            // Save changes to the database
+            if (changed) {
+                if (articleDAO.updateArticle(article)) {
+                    System.out.println("Successfully updated article: " + article.getId());
+                } else {
+                    System.out.println("Failed to update article: " + article.getId());
+                }
             } else {
-                System.out.println("Failed to update article: " + article.getId());
+                System.out.println("No changes detected for article: " + article.getId());
             }
-        } catch (NumberFormatException ex) {
-            System.err.println("Invalid number format: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.err.println("Error updating article: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -232,5 +257,85 @@ public class ArticleListController extends ActionView {
         } else {
             System.out.println("Failed to delete article: " + article.getId());
         }
+    }
+
+    private Button createIconButton(String iconName, String tooltipText) {
+        Button button = new Button();
+        try {
+            ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/images/" + iconName)));
+            icon.setFitWidth(28);
+            icon.setFitHeight(28);
+            button.setGraphic(icon);
+            button.setStyle("-fx-background-color: transparent;");
+        } catch (Exception e) {
+            System.err.println("Failed to load image: " + iconName);
+            e.printStackTrace();
+        }
+        return button;
+    }
+
+    private void logChange(String attributeType, String articleName, Object oldValue, Object newValue) {
+        File logFile = new File(LOG_FILE_NAME);
+        try {
+            if (!logFile.exists()) {
+                logFile.createNewFile();
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true))) {
+                String logEntry = String.format(
+                        "[%s] Article '%s' has a new %s: '%s' -> '%s'%n",
+                        LocalDateTime.now(), articleName, attributeType,
+                        oldValue != null ? oldValue.toString() : "None",
+                        newValue != null ? newValue.toString() : "None"
+                );
+                writer.write(logEntry);
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to write to log file: " + e.getMessage());
+        }
+    }
+
+    private void handlePhotoChange(ImageView photoView, Article article) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select New Photo");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            String newPhotoPath = selectedFile.toURI().toString();
+            photoView.setImage(new Image(newPhotoPath));
+            article.setPhoto(newPhotoPath); // Update the article's photo path
+        }
+    }
+
+    public void PDF(ActionEvent actionEvent) {
+
+
+
+        String pythonExe = "python"; // or "python3" depending on your setup
+
+        // Path to the bot.py script
+        String scriptPath = "C:/last version/OBatimaPi/src/main/resources/pdf.py"; // Adjust this path as needed
+
+        // Create a process builder
+        ProcessBuilder processBuilder = new ProcessBuilder(pythonExe, scriptPath);
+
+        // Optional: Set working directory if necessary
+        processBuilder.directory(new File("src/main/resources"));
+
+        try {
+            // Start the process
+            Process process = processBuilder.start();
+
+            // Optionally, you can handle the output and errors of the script
+            // InputStream inputStream = process.getInputStream();
+            // InputStream errorStream = process.getErrorStream();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
