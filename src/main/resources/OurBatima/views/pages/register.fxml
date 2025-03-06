@@ -1,41 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
-<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="io.ourbatima.controllers.RegisterController">
-
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.RegisterController">
     <stylesheets>
         <URL value="@../../style/css/colors.css" />
         <URL value="@../../style/css/skeleton.css" />
         <URL value="@../../style/css/typographic.css" />
-        <URL value="@../../style/css/scroll.css" />
-    </stylesheets>
+        <URL value="@../../style/css/register.css" />
 
+    </stylesheets>
     <children>
-        <HBox prefHeight="546" prefWidth="1134" spacing="0">
-            <!-- Section gauche avec effet de métal brossé -->
+        <HBox prefHeight="600" prefWidth="1200" styleClass="auth-container">
+            <!-- Section gauche -->
             <StackPane prefWidth="358" style="-fx-background-color: linear-gradient(to bottom, #c5a814, #372a28);">
                 <children>
                     <VBox alignment="CENTER" prefHeight="546.0" prefWidth="406.0" spacing="30">
@@ -55,64 +49,120 @@
                 </children>
             </StackPane>
 
-            <!-- Section droite avec formulaire -->
-            <StackPane style="-fx-background-color: #f8f9fa;" HBox.hgrow="ALWAYS">
-                <ScrollPane id="bodyLogin" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background: transparent;">
+            <!-- Section droite -->
+            <StackPane styleClass="right-auth-pane" HBox.hgrow="ALWAYS">
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="auth-scroll">
                     <content>
-                        <VBox fx:id="loginContent" alignment="CENTER" spacing="40" style="-fx-padding: 40 0;">
+                        <VBox alignment="TOP_CENTER" spacing="30" styleClass="auth-content">
                             <!-- En-tête -->
-                            <VBox alignment="CENTER" spacing="10">
-                                <Label styleClass="h1" text="Inscription" />
-                                <Label styleClass="h4 text-muted" text="Créez votre compte" />
+                            <VBox spacing="5" styleClass="auth-header">
+                                <Label styleClass="auth-title" text="Inscription" />
+                                <Label styleClass="auth-subtitle" text="Créez votre compte en 2 minutes" />
                             </VBox>
 
                             <!-- Formulaire -->
-                            <GridPane alignment="CENTER" hgap="15" maxWidth="400" vgap="20">
-                                <columnConstraints>
-                                    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
-                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
-                                </columnConstraints>
+                            <VBox spacing="20" styleClass="form-container">
+                                <!-- Nom et Prénom -->
+                                <HBox alignment="CENTER_LEFT" spacing="20">
+                                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                        <Label styleClass="input-label" text="Nom *" />
+                                        <TextField fx:id="nomField" promptText="Votre nom" styleClass="input-modern" />
+                                        <Label fx:id="nomError" styleClass="error-label" />
+                                    </VBox>
+                                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                        <Label styleClass="input-label" text="Prénom *" />
+                                        <TextField fx:id="prenomField" promptText="Votre prénom" styleClass="input-modern" />
+                                        <Label fx:id="prenomError" styleClass="error-label" />
+                                    </VBox>
+                                </HBox>
 
-                                <rowConstraints>
-                                    <RowConstraints prefHeight="60" />
-                                    <RowConstraints prefHeight="60" />
-                                    <RowConstraints prefHeight="60" />
-                                    <RowConstraints prefHeight="60" />
-                                    <RowConstraints prefHeight="60" />
-                                    <RowConstraints prefHeight="60" />
-                                </rowConstraints>
+                                <!-- Email -->
+                                <VBox spacing="5">
+                                    <Label styleClass="input-label" text="Email *" />
+                                    <TextField fx:id="emailField" promptText="exemple@domaine.com" styleClass="input-modern" />
+                                    <Label fx:id="emailError" styleClass="error-label" />
+                                </VBox>
 
-                                <children>
-                                    <!-- Nom et Prénom -->
-                                    <HBox alignment="CENTER_LEFT" spacing="15" GridPane.columnSpan="2">
-                                        <TextField fx:id="nomField" promptText="Nom" styleClass="input-modern" />
-                                        <TextField fx:id="prenomField" promptText="Prénom" styleClass="input-modern" />
+                                <!-- Téléphone -->
+                                <VBox spacing="5">
+                                    <Label styleClass="input-label" text="Téléphone *" />
+                                    <HBox alignment="CENTER_LEFT" spacing="10">
+                                        <ComboBox fx:id="countryCode" prefWidth="100" styleClass="country-combo">
+                                            <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                    <String fx:value="+216" />
+                                                    <String fx:value="00216" />
+                                                </FXCollections>
+                                            </items>
+                                        </ComboBox>
+                                        <TextField fx:id="telephoneField" promptText="XX XXX XXX" styleClass="input-modern" HBox.hgrow="ALWAYS" />
                                     </HBox>
+                                    <Label fx:id="telephoneError" styleClass="error-label" />
+                                </VBox>
 
-                                    <!-- Email et Téléphone -->
-                                    <HBox alignment="CENTER_LEFT" spacing="15" GridPane.columnSpan="2" GridPane.rowIndex="1">
-                                        <TextField fx:id="emailField" promptText="Email" styleClass="input-modern" />
-                                        <TextField fx:id="telephoneField" promptText="Téléphone" styleClass="input-modern" />
+                                <!-- Adresse -->
+                                <VBox spacing="5">
+                                    <Label styleClass="input-label" text="Adresse *" />
+                                    <HBox alignment="CENTER_LEFT" spacing="10">
+                                        <TextField fx:id="adresseField" promptText="Adresse complète" styleClass="input-modern" HBox.hgrow="ALWAYS" />
+                                        <Button onAction="#handleMapClick" styleClass="map-button">
+                                            <graphic>
+                                                <ImageView fitHeight="20" fitWidth="20" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../../../images/map.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </Button>
                                     </HBox>
+                                    <Label fx:id="adresseError" styleClass="error-label" />
+                                </VBox>
 
-                                    <!-- Adresse -->
-                                    <TextField fx:id="adresseField" promptText="Adresse" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-
-                                    <!-- Mot de passe -->
-                                    <PasswordField fx:id="motDePasseField" promptText="Mot de passe" styleClass="input-modern" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-
-                                    <!-- Bouton d'inscription -->
-                                    <Button fx:id="registerButton" text="S'inscrire" styleClass="btn-primary"
-                                            onAction="#handleRegister" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-
-                                    <!-- Lien de connexion -->
-                                    <HBox alignment="CENTER" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="5">
-                                        <Label text="Déjà un compte ?" styleClass="text-muted" />
-                                        <Hyperlink fx:id="loginLink" text="Connectez-vous ici"
-                                                   onAction="#goToLogin" styleClass="link" />
+                                <!-- Mot de passe -->
+                                <VBox spacing="5">
+                                    <Label styleClass="input-label" text="Mot de passe *" />
+                                    <PasswordField fx:id="motDePasseField" promptText="●●●●●●●●" styleClass="input-modern" />
+                                    <HBox alignment="CENTER_LEFT" spacing="5">
+                                        <Label styleClass="strength-weak" text="●" />
+                                        <Label styleClass="strength-medium" text="●" />
+                                        <Label styleClass="strength-strong" text="●" />
+                                        <Label styleClass="hint-text" text="8 caractères min, 1 majuscule, 1 chiffre" />
                                     </HBox>
-                                </children>
-                            </GridPane>
+                                    <Label fx:id="passwordError" styleClass="error-label" />
+                                </VBox>
+
+                                <VBox alignment="CENTER" spacing="20">
+                                    <Label styleClass="instruction-label" text="Positionnez votre visage dans le cadre" />
+
+                                    <StackPane styleClass="image-container">
+                                        <ImageView fx:id="facePreview" fitHeight="400" fitWidth="400" styleClass="face-frame">
+                                            <effect>
+                                                <DropShadow color="rgba(0,0,0,0.1)" radius="15" />
+                                            </effect>
+                                        </ImageView>
+                                    </StackPane>
+
+                                    <Button fx:id="btnEnrollFace" onAction="#handleFaceEnrollment" style="-fx-background-color: transparent;                 -fx-background-radius: 50%;                 -fx-border-color: transparent; /* Pas de bordure visible */                 -fx-border-width: 0px; /* Pas de bordure */                 -fx-pref-width: 70px;                 -fx-pref-height: 70px;                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.3, 0, 2);">
+                                        <graphic>
+                                            <ImageView fitHeight="50" fitWidth="50">
+                                                <image>
+                                                    <Image url="@../../../images/camera.png" />
+                                                </image>
+                                            </ImageView>
+                                        </graphic>
+                                    </Button>
+
+                                </VBox>
+
+                                <!-- Bouton d'inscription -->
+                                <Button fx:id="registerButton" onAction="#handleRegister" styleClass="auth-button primary" text="S'inscrire maintenant" />
+
+                                <!-- Lien de connexion -->
+                                <HBox alignment="CENTER" spacing="5" styleClass="auth-link-container">
+                                    <Label styleClass="text-muted" text="Déjà un compte ?" />
+                                    <Hyperlink fx:id="loginLink" onAction="#goToLogin" styleClass="auth-link" text="Se connecter" />
+                                </HBox>
+                            </VBox>
                         </VBox>
                     </content>
                 </ScrollPane>
