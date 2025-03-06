@@ -8,7 +8,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<BorderPane xmlns="http://javafx.com/javafx/17"
+<BorderPane fx:id="ala" xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="io.ourbatima.controllers.FinanceControllers.ListAbonnement">
 
@@ -19,11 +19,11 @@
     </center>
 
     <!-- Top Bar avec titre dynamique -->
-    <top>
-        <ToolBar>
+    <top >
+        <ToolBar fx:id="top">
             <Label fx:id="titleLabel" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
             <Pane HBox.hgrow="ALWAYS"/>  <!-- Pousse le bouton à droite -->
-            <Button onAction="#openCreateUserForm" >
+            <Button fx:id="crreatebuton"  onAction="#openCreateUserForm" >
                 <graphic>
                     <ImageView fitWidth="20" fitHeight="20">
                         <image>

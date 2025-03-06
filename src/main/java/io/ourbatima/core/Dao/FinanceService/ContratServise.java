@@ -286,17 +286,47 @@ public class ContratServise {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-proj.setId_projet(rs.getInt("Id_projet"));
-proj.setNomProjet(rs.getString("nomProjet"));
-proj.setStyleArch(rs.getString("styleArch"));
-proj.setType(rs.getString("type"));
+                proj.setId_projet(rs.getInt("Id_projet"));
+                proj.setNomProjet(rs.getString("nomProjet"));
+                proj.setStyleArch(rs.getString("styleArch"));
+                proj.setType(rs.getString("type"));
 
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
 
-     return proj;
+        return proj;
     }
 
+    public List<Contrat> getContratsbyidclient(int id) throws SQLException {
+        List<Contrat> contrat = new ArrayList<>();
+
+
+        try (Connection conn = getConnection()) {
+
+
+            String query = "SELECT * " +
+                    "FROM contrat cl " +
+                    "WHERE cl.Id_projet = ( " +
+                    "    SELECT p.Id_projet  " +
+                    "    FROM projet p " +
+                    "    WHERE p.id_client  = ? " +
+                    ");";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Contrat con = new Contrat(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getString(5), rs.getDate(6), rs.getDouble(7), rs.getInt(8),rs.getString(9),rs.getDate(10));
+
+
+                contrat.add(con);
+
+            }
+            return contrat;
+
+
+        }
+
+    }
 }

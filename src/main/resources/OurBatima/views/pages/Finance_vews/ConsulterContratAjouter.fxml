@@ -83,11 +83,24 @@
 
         <!-- Signature -->
         <Label styleClass="text" text="Fait à Tunisie, en deux exemplaires originaux." />
-        <VBox spacing="10">
+        <VBox fx:id="rootd" spacing="10">
             <Label styleClass="signature-label" text="Le Client" />
-            <Text styleClass="text" text="Signature : ________________________" />
+            <Text styleClass="text" text="Signature : " wrappingWidth="203.255859375" />
+            <ImageView fx:id="image" fitHeight="150.0" fitWidth="263.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
+            </ImageView>
             <Text fx:id="nmclt" styleClass="text" />
-            <Text styleClass="text" text="Date : " />
+            <Button fx:id="Signier" minHeight="0.0" mnemonicParsing="false" onAction="#signier" prefHeight="35.0" prefWidth="95.0" text="Signier">
+               <VBox.margin>
+                  <Insets left="500.0" />
+               </VBox.margin>
+            </Button>
+            <Text fx:id="datesinclt"  styleClass="text" text="Date : " />
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
         </VBox>
         <VBox spacing="10">
             <Label styleClass="signature-label" text="L'Entreprise" />

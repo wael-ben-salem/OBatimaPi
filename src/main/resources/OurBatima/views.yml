@@ -263,6 +263,14 @@
 
 
   }
+  - {
+    name: ContatsClient,
+    title: ContatsClient,
+    folder: pages/Finance_vews,
+    fxml: ContatsClient.fxml
+
+
+  }
 #  - {
 #    name: sales_left,
 #    title: Sales Column,

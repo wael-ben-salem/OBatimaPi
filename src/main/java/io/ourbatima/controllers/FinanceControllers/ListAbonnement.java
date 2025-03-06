@@ -1,5 +1,6 @@
 package io.ourbatima.controllers.FinanceControllers;
 
+import io.ourbatima.controllers.SessionManager;
 import io.ourbatima.controllers.Utilisateur.UserCardController;
 import io.ourbatima.core.Context;
 import io.ourbatima.core.Dao.FinanceService.abonnementService;
@@ -10,9 +11,12 @@ import io.ourbatima.core.model.financeModel.abonnement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
@@ -22,6 +26,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class ListAbonnement extends ActionView {
+    public Button crreatebuton;
+    public ToolBar top;
+    public BorderPane ala;
     @FXML private Button nextPageButton;
     @FXML private Button previousPageButton;
     @FXML
@@ -39,11 +46,24 @@ public class ListAbonnement extends ActionView {
 
     public void onInit(Context context) {
         this.context = context;
+        if (SessionManager.getUtilisateur().getRole()== Utilisateur.Role.Client){
+            ala.getChildren().remove(crreatebuton);
+            System.out.println("aaaaaaaaa^saepzl;d");
+        }
         loadUsers();
     }
 
 
     void loadUsers() {
+        if (SessionManager.getUtilisateur().getRole()== Utilisateur.Role.Client){
+
+            Node topNode = ala.getTop();
+            ToolBar toolBar = (ToolBar) topNode;
+
+            toolBar.getItems().remove(crreatebuton);
+
+
+        }
         AbonnementContainer.getChildren().clear();
         List<abonnement> abo = as.getAllAbonnement();
         System.out.println(abo);
