@@ -269,16 +269,31 @@ public class AfficherTerrain extends ActionView implements Refreshable, Initiali
         if (selectedEmplacement != null) {
             Terrain terrain = terrainDAO.getTerrainByEmplacement(selectedEmplacement);
             if (terrain != null) {
-                terrainDAO.deleteTerrain(terrain.getId_terrain());
-                loadEmplacementList(); //
-                showAlert("Success", "Terrain deleted successfully.");
+                // Show confirmation dialog
+                Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmationAlert.setTitle("Confirmer la suppression");
+                confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer ce terrain ?");
+                confirmationAlert.setContentText("Cette action est irréversible.");
+
+                // Wait for user response
+                Optional<ButtonType> result = confirmationAlert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    // Proceed with deletion if confirmed
+                    terrainDAO.deleteTerrain(terrain.getId_terrain());
+                    loadEmplacementList(); // Refresh the list
+                    showAlert("Succès", "Terrain supprimé avec succès.");
+                } else {
+                    // If user cancels, show cancellation message (optional)
+                    showAlert("Suppression annulée", "Aucun terrain n'a été supprimé.");
+                }
             } else {
-                showAlert("Deletion Error", "Terrain not found for deletion.");
+                showAlert("Erreur de suppression", "Le terrain n'a pas été trouvé pour la suppression.");
             }
         } else {
-            showAlert("Selection Error", "No terrain selected for deletion.");
+            showAlert("Erreur de sélection", "Aucun terrain sélectionné pour la suppression.");
         }
     }
+
 
     private double[] extractCoordinates(String detailsGeo) {
         if (detailsGeo == null || !detailsGeo.contains("Latitude:") || !detailsGeo.contains("Longitude:")) {

@@ -306,9 +306,23 @@ public class AfficherEtapeProjet extends ActionView implements Initializable {
 
             EtapeProjet etape = etapeProjetDAO.getEtapeProjetByNom(selectedEtape);
             if (etape != null) {
-                etapeProjetDAO.deleteEtapeProjet(etape.getId_etapeProjet());
-                loadEtapeList();
-                showAlert("Succès", "L'étape projet a été supprimée avec succès.");
+                // Afficher la boîte de dialogue de confirmation
+                Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmationAlert.setTitle("Confirmer la suppression");
+                confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette étape ?");
+                confirmationAlert.setContentText("Cette action est irréversible.");
+
+                // Attendre la réponse de l'utilisateur
+                Optional<ButtonType> result = confirmationAlert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    // Procéder à la suppression si confirmée
+                    etapeProjetDAO.deleteEtapeProjet(etape.getId_etapeProjet());
+                    loadEtapeList(); // Rafraîchir la liste
+                    showAlert("Succès", "L'étape projet a été supprimée avec succès.");
+                } else {
+                    // Si l'utilisateur annule, afficher le message d'annulation
+                    showAlert("Suppression annulée", "Aucune étape projet n'a été supprimée.");
+                }
             } else {
                 showAlert("Erreur de suppression", "Étape projet non trouvée pour la suppression.");
             }
@@ -316,7 +330,5 @@ public class AfficherEtapeProjet extends ActionView implements Initializable {
             showAlert("Erreur de sélection", "Aucune étape sélectionnée pour la suppression.");
         }
     }
-
-
 
 }

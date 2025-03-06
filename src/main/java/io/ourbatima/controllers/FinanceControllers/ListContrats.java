@@ -5,6 +5,7 @@ import io.ourbatima.core.Dao.FinanceService.ContratServise;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.financeModel.Contrat;
 import io.ourbatima.core.model.financeModel.ContratDTO;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,6 +39,10 @@ public class ListContrats extends ActionView {
     @FXML
     private TableColumn<ContratDTO, Void> actionsColumn;
 
+    @FXML private TextField searchField;
+
+    @FXML private ListView<String> suggestionsProjetList;
+
     private final ContratServise cs = new ContratServise();
 
     @FXML
@@ -50,10 +55,98 @@ public class ListContrats extends ActionView {
 
         // Set the cell factory for the Actions column
         actionsColumn.setCellFactory(createButtonCellFactory());
-
-        // Load and display contracts
         loadAndDisplayContrats();
     }
+
+    private void filterContractsByName(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            suggestionsProjetList.getItems().clear();
+            loadAndDisplayContrats();
+            return;
+        }
+
+        // Get the list of all contracts
+        List<ContratDTO> allContrats = cs.getAllContart().stream()
+                .map(contrat -> {
+                    try {
+                        int idProjet = contrat.getIdProjet();
+                        String nomClient = cs.getClientNOMEtidbyidcontrat(idProjet);
+                        String nomProjet = getNOMFromDatabase(idProjet);
+
+                        return new ContratDTO(
+                                contrat.getIdContrat(),
+                                contrat.getTypeContrat(),
+                                contrat.getDateSignature(),
+                                contrat.getDateDebut(),
+                                contrat.isSignatureElectronique(),
+                                contrat.getDateFin(),
+                                contrat.getMontantTotal(),
+                                contrat.getIdProjet(),
+                                nomClient,
+                                nomProjet
+                        );
+
+                    } catch (SQLException e) {
+                        System.err.println("Error fetching contract details: " + e.getMessage());
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        // Filter the contracts based on project name (nomProjet)
+        ObservableList<String> filteredSuggestions = FXCollections.observableArrayList(
+                allContrats.stream()
+                        .filter(contrat -> contrat.getNomProjet().toLowerCase().contains(query.toLowerCase()))
+                        .map(ContratDTO::getNomProjet)
+                        .distinct()
+                        .collect(Collectors.toList())
+        );
+
+
+        // Set the filtered list of suggestions in the ListView
+        Platform.runLater(() -> {
+            suggestionsProjetList.setItems(filteredSuggestions);
+        });    }
+
+    private void onSuggestionSelected(String selectedProjet) {
+        if (selectedProjet != null) {
+            List<ContratDTO> matchingContracts = cs.getAllContart().stream()
+                    .map(contrat -> {
+                        try {
+                            int idProjet = contrat.getIdProjet();
+                            String nomClient = cs.getClientNOMEtidbyidcontrat(idProjet);
+                            String nomProjet = getNOMFromDatabase(idProjet);
+
+                            return new ContratDTO(
+                                    contrat.getIdContrat(),
+                                    contrat.getTypeContrat(),
+                                    contrat.getDateSignature(),
+                                    contrat.getDateDebut(),
+                                    contrat.isSignatureElectronique(),
+                                    contrat.getDateFin(),
+                                    contrat.getMontantTotal(),
+                                    contrat.getIdProjet(),
+                                    nomClient,
+                                    nomProjet
+                            );
+
+                        } catch (SQLException e) {
+                            System.err.println("Error fetching contract details: " + e.getMessage());
+                        }
+                        return null;
+                    })
+                    .filter(Objects::nonNull)
+                    .filter(contrat -> contrat.getNomProjet().equalsIgnoreCase(selectedProjet))
+                    .collect(Collectors.toList());
+
+            // Update the table with matching contracts
+            ObservableList<ContratDTO> contractsToShow = FXCollections.observableArrayList(matchingContracts);
+            tableContrats.setItems(contractsToShow);
+        }
+    }
+
+
 
     private Callback<TableColumn<ContratDTO, Void>, TableCell<ContratDTO, Void>> createButtonCellFactory() {
         return param -> new TableCell<ContratDTO, Void>() {
@@ -202,6 +295,16 @@ public class ListContrats extends ActionView {
         super.onInit(context);
         loadAndDisplayContrats();
         actionsColumn.setCellFactory(createButtonCellFactory());
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterContractsByName(newValue);
+        });
+        suggestionsProjetList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                onSuggestionSelected(newValue);
+            }
+        });
+        suggestionsProjetList.setVisible(true);
+        suggestionsProjetList.setManaged(true);
 
     }
 

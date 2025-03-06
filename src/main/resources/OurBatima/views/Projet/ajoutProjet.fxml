@@ -32,7 +32,7 @@
       </Text>
       <TextField fx:id="styleArchTextField" layoutX="369.0" layoutY="372.0" prefHeight="26.0" prefWidth="206.0" promptText="Moderne, traditionnel, minimaliste..." />
       <TextField fx:id="budgetTextField" layoutX="625.0" layoutY="307.0" prefHeight="26.0" prefWidth="206.0" promptText="Entrez votre budget..." />
-      <Button fx:id="ajouterButton" alignment="CENTER" contentDisplay="CENTER" layoutX="564.0" layoutY="568.0" mnemonicParsing="false" onAction="#handleAddProjet" prefHeight="45.0" prefWidth="122.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Ajouter" textFill="WHITE">
+      <Button fx:id="ajouterButton" alignment="CENTER" contentDisplay="CENTER" layoutX="564.0" layoutY="568.0" mnemonicParsing="false" onAction="#handleAddProjet" prefHeight="45.0" prefWidth="122.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Créer" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="12.0" />
          </font>
