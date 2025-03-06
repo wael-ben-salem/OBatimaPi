@@ -7,18 +7,22 @@ import io.ourbatima.core.model.Utilisateur.Artisan;
 import io.ourbatima.core.model.Utilisateur.Constructeur;
 import io.ourbatima.core.model.Utilisateur.Equipe;
 import io.ourbatima.core.model.Utilisateur.GestionnaireDeStock;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,7 +50,16 @@ public class EquipeListController extends ActionView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        setupAutoRefresh();
+
         refreshEquipeList();
+    }
+    private void setupAutoRefresh() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(10), e -> refreshEquipeList())
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
     void refreshEquipeList() {

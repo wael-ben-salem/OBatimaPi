@@ -1,14 +1,13 @@
     package io.ourbatima.core.Dao.Utilisateur;
 
     import io.ourbatima.controllers.MessagingService;
-    import io.ourbatima.core.Dao.DatabaseConnection;
     import io.ourbatima.core.model.Utilisateur.*;
 
     import java.sql.*;
     import java.util.ArrayList;
+    import java.util.HashSet;
     import java.util.List;
-    import java.sql.Connection;
-    import java.sql.SQLException;
+    import java.util.Set;
 
     import static io.ourbatima.core.Dao.DatabaseConnection.getConnection;
 
@@ -18,6 +17,7 @@
         private Connection connect() throws SQLException {
             return getConnection();
         }
+
         public void create(Equipe equipe) throws SQLException {
             System.out.println("Début de la création de l'équipe : " + equipe.getNom());
 
@@ -42,20 +42,26 @@
                 // Insertion artisans
                 insertArtisans(conn, equipe);
 
+
                 conn.commit(); // Validation transaction
 
                 System.out.println("Équipe créée avec succès : " + equipe.getNom());
 
                 // Envoi de la notification
-                new MessagingService().sendTeamNotification(equipe,
-                        "Vous avez été ajouté à l'équipe " + equipe.getNom() +
-                                " - Date de création : " + equipe.getDateCreation());
+                String notification1 = "Vous avez été ajouté à l'équipe " + equipe.getNom();
+                String notification2 = "Vous avez rejoint la conversation de l'équipe " + equipe.getNom();
+
+                MessagingService messagingService = new MessagingService();
+                messagingService.sendTeamNotification(equipe, notification1);
+                messagingService.sendTeamNotification(equipe, notification2);
+
 
             } catch (SQLException e) {
                 System.out.println("Erreur lors de la création de l'équipe : " + e.getMessage());
                 throw new SQLException("Erreur création équipe: " + e.getMessage(), e);
             }
         }
+
         public void update(Equipe equipe) throws SQLException {
             String sql = "UPDATE Equipe SET nom=?, constructeur_id=?, gestionnairestock_id=? WHERE id=?";
 
@@ -134,6 +140,7 @@
             }
             return equipes;
         }
+
         public Equipe findById(int id) throws SQLException {
             String sql = "SELECT * FROM Equipe WHERE id=?";
             Equipe equipe = null;
@@ -144,7 +151,7 @@
                 stmt.setInt(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
-                        equipe = mapEquipe(rs,conn);
+                        equipe = mapEquipe(rs, conn);
                         equipe.setArtisans(getArtisansForEquipe(conn, id));
                     }
                 }
@@ -155,7 +162,7 @@
         }
 
         private List<Artisan> getArtisansForEquipe(Connection conn, int equipeId) throws SQLException {
-            String sql = "SELECT u.id, u.nom, u.prenom, u.email, u.mot_de_passe, u.telephone, u.adresse, u.role, " +
+            String sql = "SELECT u.id, u.nom, u.prenom, u.email, u.mot_de_passe, u.telephone, u.adresse, u.role,  " +
                     "a.artisan_id, a.specialite, a.salaire_heure " +
                     "FROM utilisateur u " +
                     "JOIN Artisan a ON u.id = a.artisan_id " +
@@ -220,42 +227,40 @@
         }
 
 
-
-
-    public int getEquipeByName(String nomEquipe) {
-        // Retrieve the equipe based on nom
-        String sql = "SELECT * FROM Equipe WHERE nom = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nomEquipe);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("id");
+        public int getEquipeByName(String nomEquipe) {
+            // Retrieve the equipe based on nom
+            String sql = "SELECT * FROM Equipe WHERE nom = ?";
+            try (Connection conn = getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, nomEquipe);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt("id");
+                    }
                 }
+            } catch (SQLException e) {
+                System.out.println("Error retrieving equipe by name: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            System.out.println("Error retrieving equipe by name: " + e.getMessage());
+            return -1;
         }
-        return -1;
-    }
 
-    public String getNomEquipeById(int id) {
-        String nomEquipe = null;
-        String query = "SELECT nom FROM Equipe WHERE id = ?";
+        public String getNomEquipeById(int id) {
+            String nomEquipe = null;
+            String query = "SELECT nom FROM Equipe WHERE id = ?";
 
-        try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    nomEquipe = rs.getString("nom");
+            try (Connection conn = connect();
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, id);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        nomEquipe = rs.getString("nom");
+                    }
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return nomEquipe;
         }
-        return nomEquipe;
-    }
 
         public List<Artisan> findAvailableArtisans(int equipeId) throws SQLException {
             String query = "SELECT a.artisan_id, u.id AS user_id, u.nom, u.prenom, u.email, u.telephone, u.adresse, u.mot_de_passe, u.statut, u.isConfirmed, u.role, a.specialite, a.salaire_heure " +
@@ -331,6 +336,7 @@
                             Utilisateur.Statut.valueOf(rs.getString("statut")),
                             rs.getBoolean("isConfirmed"),
                             Utilisateur.Role.valueOf(rs.getString("role"))
+
                     );
 
                     // Création de l'objet Constructeur
@@ -347,11 +353,12 @@
 
             return constructeurs;  // Retourne la liste des constructeurs
         }
+
         public List<GestionnaireDeStock> findAllGestionnaires() throws SQLException {
             String query = "SELECT a.gestionnairestock_id, u.id AS user_id, u.nom, u.prenom, u.email, u.telephone, u.adresse, " +
                     "u.mot_de_passe, u.statut, u.isConfirmed, u.role" +
                     "FROM Gestionnairestock a " +
-                    "JOIN Utilisateur u ON a.gestionnairestock_id = u.id " ;
+                    "JOIN Utilisateur u ON a.gestionnairestock_id = u.id ";
 
 
             List<GestionnaireDeStock> gestionnaires = new ArrayList<>();
@@ -374,6 +381,8 @@
                             Utilisateur.Statut.valueOf(rs.getString("statut")),
                             rs.getBoolean("isConfirmed"),
                             Utilisateur.Role.valueOf(rs.getString("role"))
+
+
                     );
 
                     // Création de l'objet Constructeur
@@ -401,6 +410,7 @@
                 stmt.executeBatch();
             }
         }
+
         public void updateArtisans(int equipeId, List<Artisan> artisans) throws SQLException {
             try (Connection conn = connect()) {
                 conn.setAutoCommit(false); // Début de la transaction
@@ -419,6 +429,7 @@
                 }
             }
         }
+
         public List<Artisan> getAssignedArtisans(int equipeId) throws SQLException {
             String sql = "SELECT a.*, u.* FROM Artisan a " +
                     "JOIN Utilisateur u ON a.artisan_id = u.id " +
@@ -445,6 +456,7 @@
                                 Utilisateur.Statut.valueOf(rs.getString("statut")),
                                 rs.getBoolean("isConfirmed"),
                                 Utilisateur.Role.valueOf(rs.getString("role"))
+
                         );
 
                         Artisan artisan = new Artisan(
@@ -461,11 +473,204 @@
             return artisans;
         }
 
+        private int createConversation(Connection conn, Equipe equipe) throws SQLException {
+            String sql = "INSERT INTO Conversation (equipe_id, nom) VALUES (?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                stmt.setInt(1, equipe.getId());
+                stmt.setString(2, "Discussion - " + equipe.getNom());
+                stmt.executeUpdate();
 
+                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                    if (rs.next()) return rs.getInt(1);
+                }
+            }
+            return -1;
+        }
 
+        private void addMembersToConversation(Connection conn, int conversationId, Equipe equipe) throws SQLException {
+            String sql = "INSERT INTO Conversation_Membre (conversation_id, utilisateur_id) VALUES (?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                Set<Integer> membres = new HashSet<>();
 
+                // Récupération des IDs utilisateur
+                membres.add(getUserIdByRoleId(equipe.getConstructeur().getConstructeur_id()));
+                membres.add(getUserIdByRoleId(equipe.getGestionnaireStock().getGestionnairestock_id()));
+                for (Artisan a : equipe.getArtisans()) {
+                    membres.add(getUserIdByRoleId(a.getArtisan_id()));
+                }
 
+                for (Integer userId : membres) {
+                    stmt.setInt(1, conversationId);
+                    stmt.setInt(2, userId);
+                    stmt.addBatch();
+                }
+                stmt.executeBatch();
+            }
+        }
 
+        private void sendConversationNotifications(Connection conn, Equipe equipe, int conversationId) throws SQLException {
+            String message = "Vous avez été ajouté à la conversation de l'équipe " + equipe.getNom();
 
+            Set<Integer> membres = new HashSet<>();
+            membres.add(getUserIdByRoleId(equipe.getConstructeur().getConstructeur_id()));
+            membres.add(getUserIdByRoleId(equipe.getGestionnaireStock().getGestionnairestock_id()));
+            for (Artisan a : equipe.getArtisans()) {
+                membres.add(getUserIdByRoleId(a.getArtisan_id()));
+            }
 
+            for (Integer userId : membres) {
+                NotificationDAO notificationDAO = new NotificationDAO();
+                notificationDAO.createNotifications(new Notification(
+                        userId,
+                        message,
+                        "CONVERSATION",
+                        conversationId
+                ));
+            }
+        }
+        public int getUserIdByRoleId(int roleSpecificId) throws SQLException {
+            String sql = "SELECT user_id FROM messaging_accounts WHERE role_specific_id = ?";
+
+            try (Connection conn = connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, roleSpecificId);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    return rs.getInt("user_id");
+                } else {
+                    throw new SQLException("Aucun utilisateur trouvé pour le roleSpecificId: " + roleSpecificId);
+                }
+            }
+        }
+        public List<Equipe> getTeamsByUserId(int userId) throws SQLException {
+            String sql = """
+        SELECT e.* 
+        FROM equipe e
+        LEFT JOIN constructeur c ON e.constructeur_id = c.constructeur_id
+        LEFT JOIN utilisateur u1 ON c.constructeur_id = u1.id
+        LEFT JOIN gestionnairestock g ON e.gestionnairestock_id = g.gestionnairestock_id
+        LEFT JOIN utilisateur u2 ON g.gestionnairestock_id = u2.id
+        LEFT JOIN equipe_artisan ea ON e.id = ea.equipe_id
+        LEFT JOIN artisan a ON ea.artisan_id = a.artisan_id
+        LEFT JOIN utilisateur u3 ON a.artisan_id = u3.id
+        WHERE u1.id = ? OR u2.id = ? OR u3.id = ?
+        """;
+
+            List<Equipe> equipes = new ArrayList<>();
+
+            try (Connection conn = connect();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setInt(1, userId);
+                stmt.setInt(2, userId);
+                stmt.setInt(3, userId);
+
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    Equipe equipe = new Equipe();
+                    equipe.setId(rs.getInt("id"));
+                    equipe.setNom(rs.getString("nom"));
+
+                    // Chargement du constructeur
+                    int constructeurId = rs.getInt("constructeur_id");
+                    Constructeur constructeur = new UtilisateurDAO().getConstructeurId(constructeurId);
+                    equipe.setConstructeur(constructeur);
+
+                    // Chargement du gestionnaire de stock
+                    int gestionnaireId = rs.getInt("gestionnairestock_id");
+                    GestionnaireDeStock gestionnaire = new UtilisateurDAO().getGestionnaireStockId(gestionnaireId);
+                    equipe.setGestionnaireStock(gestionnaire);
+
+                    // Chargement des artisans
+                    equipe.setArtisans(getArtisansForEquipe(conn, equipe.getId()));
+
+                    equipes.add(equipe);
+                }
+            } catch (SQLException e) {
+                System.err.println("Erreur lors de la récupération des équipes : " + e.getMessage());
+                throw e;
+            }
+            return equipes;
+        }
+        public List<Utilisateur> getTeamMembers(int teamId) throws SQLException {
+            String sql = """
+        SELECT u.* 
+        FROM utilisateur u
+        WHERE u.id IN (
+            SELECT u1.id FROM constructeur c
+            JOIN utilisateur u1 ON c.constructeur_id = u1.id
+            WHERE c.constructeur_id = (SELECT e.constructeur_id FROM equipe e WHERE e.id = ?)
+            
+            UNION
+            
+            SELECT u2.id FROM gestionnairestock gs
+            JOIN utilisateur u2 ON gs.gestionnairestock_id = u2.id
+            WHERE gs.gestionnairestock_id = (SELECT e.gestionnairestock_id FROM equipe e WHERE e.id = ?)
+            
+            UNION
+            
+            SELECT u3.id FROM equipe_artisan ea
+            JOIN artisan a ON ea.artisan_id = a.artisan_id
+            JOIN utilisateur u3 ON a.artisan_id = u3.id
+            WHERE ea.equipe_id = ?
+        )
+        """;
+
+            List<Utilisateur> members = new ArrayList<>();
+
+            try (Connection conn = connect();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setInt(1, teamId); // constructeur_id de l'équipe
+                stmt.setInt(2, teamId); // gestionnairestock_id de l'équipe
+                stmt.setInt(3, teamId); // artisans liés à l'équipe
+
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    Utilisateur user = new Utilisateur();
+                    user.setId(rs.getInt("id"));
+                    user.setNom(rs.getString("nom"));
+                    user.setPrenom(rs.getString("prenom"));
+                    user.setEmail(rs.getString("email"));
+                    // Ajouter les autres propriétés nécessaires
+                    members.add(user);
+                }
+            }
+            return members;
+        }
+
+        public List<Utilisateur> getUsersByRole(Utilisateur.Role role) {
+            List<Utilisateur> users = new ArrayList<>();
+            String sql = "SELECT * FROM Utilisateur WHERE role = ?";
+
+            try (Connection conn = connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, role.name());
+                ResultSet rs = pstmt.executeQuery();
+
+                while (rs.next()) {
+                    Utilisateur user = UtilisateurDAO.mapUtilisateur(rs);
+
+                    // Forcer le chargement des sous-entités si nécessaire
+                    switch(role) {
+                        case Artisan:
+                            user.setArtisan(UtilisateurDAO.getArtisanByUserId(user.getId()));
+                            break;
+                        case Constructeur:
+                            user.setConstructeur(UtilisateurDAO.getConstructeurByUserId(user.getId()));
+                            break;
+                    }
+
+                    users.add(user);
+                }
+            } catch (SQLException e) {
+                UtilisateurDAO.handleException("Erreur de récupération par rôle", e);
+            }
+            return users;
+        }
     }

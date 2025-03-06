@@ -1,0 +1,14 @@
+#videoContainer {
+    -fx-border-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.list-view {
+    -fx-font-family: 'Roboto';
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-cursor: hand;
+    -fx-border-radius: 3px;
+}

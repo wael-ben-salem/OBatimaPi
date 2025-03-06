@@ -1,25 +1,36 @@
 package io.ourbatima.controllers.Equipe;
 
+import io.ourbatima.controllers.MessagingService;
+import io.ourbatima.controllers.SessionManager;
+import io.ourbatima.core.Dao.Utilisateur.TeamRatingDAO;
 import io.ourbatima.core.interfaces.ActionView;
-import io.ourbatima.core.model.Utilisateur.Artisan;
-import io.ourbatima.core.model.Utilisateur.Constructeur;
-import io.ourbatima.core.model.Utilisateur.Equipe;
-import io.ourbatima.core.model.Utilisateur.GestionnaireDeStock;
+import io.ourbatima.core.model.Utilisateur.*;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EquipeDetailController extends ActionView {
+    private Equipe currentEquipe; // Nouveau champ
+
+    @FXML private HBox ratingContainer;
+    @FXML private Label averageRatingLabel;
+    @FXML private ComboBox<Integer> ratingComboBox;
+    @FXML private Button submitRatingButton;
 
     @FXML private ImageView teamLogo;
     @FXML private Label teamName;
@@ -32,21 +43,90 @@ public class EquipeDetailController extends ActionView {
 
     private final Map<Integer, Image> constructeurImageCache = new HashMap<>();
     private final Map<Integer, Image> gestionnaireImageCache = new HashMap<>();
-
     public void initData(Equipe equipe) {
-        // Initialisation des données de base
+        if (equipe == null) {
+            throw new IllegalArgumentException("L'équipe ne peut pas être null.");
+        }
+
+        this.currentEquipe = equipe; // Initialisez currentEquipe en premier
+
+        // Initialisez les autres données
         teamName.setText(equipe.getNom());
         constructeurLabel.setText(equipe.getConstructeur().getNom());
         gestionnaireLabel.setText(equipe.getGestionnaireStock().getNom());
         dateCreation.setText(equipe.getDateCreation().format(DateTimeFormatter.ISO_DATE));
 
-        // Chargement des images
+        // Chargez les images
         loadConstructeurImage(equipe.getConstructeur());
         loadGestionnaireImage(equipe.getGestionnaireStock());
         loadArtisansImages(equipe);
         loadTeamLogo(equipe.getId());
+
+        // Mettez à jour l'affichage de la note
+        updateRatingDisplay(); // Déplacez cet appel après l'initialisation de currentEquipe
+        setupRatingUI();
     }
 
+    private void updateRatingDisplay() {
+        double avg = currentEquipe.getAverageRating();
+        averageRatingLabel.setText(String.format("Note moyenne : %.1f/5", avg));
+    }
+
+    private void sendRatingNotifications(int rating) throws SQLException {
+        String message = String.format("Le client %s a noté l'équipe avec %d/5",
+                SessionManager.getUtilisateur().getNom(), rating);
+
+        MessagingService messagingService = new MessagingService();
+        for (Utilisateur membre : currentEquipe.getMembres()) {
+            messagingService.sendTeamNotification(currentEquipe, message);
+        }
+    }
+    private void setupRatingUI() {
+        Utilisateur user = SessionManager.getUtilisateur();
+        if (user != null && user.getRole() == Utilisateur.Role.Client) {
+            // Vérifiez si le client a déjà noté cette équipe
+            try {
+                boolean hasRated = new TeamRatingDAO().hasClientRated(user.getId(), currentEquipe.getId());
+                if (hasRated) {
+                    ratingComboBox.setDisable(true); // Désactivez la ComboBox
+                    submitRatingButton.setDisable(true); // Désactivez le bouton
+                    submitRatingButton.setText("Déjà noté");
+                } else {
+                    ratingComboBox.getItems().addAll(1, 2, 3, 4, 5);
+                    ratingComboBox.setVisible(true);
+                    submitRatingButton.setVisible(true);
+                }
+            } catch (SQLException e) {
+                showErrorAlert("Erreur", "Impossible de vérifier la notation.");
+            }
+        }
+    }
+    @FXML
+    private void handleRatingSubmission() {
+        Integer rating = ratingComboBox.getValue();
+        if (rating == null) {
+            showErrorAlert("Erreur", "Veuillez sélectionner une note");
+            return;
+        }
+
+        TeamRating teamRating = new TeamRating();
+        teamRating.setEquipe(currentEquipe);
+        teamRating.setClient(SessionManager.getUtilisateur());
+        teamRating.setRating(rating);
+
+        try {
+            new TeamRatingDAO().saveRating(teamRating);
+            sendRatingNotifications(rating);
+            updateRatingDisplay();
+
+            // Désactivez le bouton et la ComboBox après la notation
+            ratingComboBox.setDisable(true);
+            submitRatingButton.setDisable(true);
+            submitRatingButton.setText("Déjà noté");
+        } catch (SQLException e) {
+            showErrorAlert("Erreur", "Échec de l'enregistrement");
+        }
+    }
     private void loadConstructeurImage(Constructeur constructeur) {
         Image image = loadImage(
                 constructeur.getConstructeur_id(),
@@ -159,4 +239,27 @@ public class EquipeDetailController extends ActionView {
             teamLogo.setImage(null); // Désactive l'image si rien n'est trouvé
         }
     }
+
+
+
+
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private Image loadImage(String path) {
+        // Chemin corrigé avec vérification de null
+        InputStream is = getClass().getResourceAsStream(path);
+        if (is == null) {
+            System.err.println("Image introuvable : " + path);
+            return new Image(getClass().getResourceAsStream("/images/default.png")); // Image de secours
+        }
+        return new Image(is);
+    }
+
+
 }

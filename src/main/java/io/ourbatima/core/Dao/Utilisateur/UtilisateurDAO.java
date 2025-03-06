@@ -11,18 +11,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.util.Optional;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class UtilisateurDAO {
 
 
 
-    private Connection connect() throws SQLException {
+    private static Connection connect() throws SQLException {
         return DatabaseConnection.getConnection();
     }
 
@@ -47,7 +46,7 @@ public class UtilisateurDAO {
         return null;
     }
 
-        private Utilisateur mapUtilisateur(ResultSet rs) throws SQLException {
+        public static Utilisateur mapUtilisateur(ResultSet rs) throws SQLException {
             Utilisateur utilisateur = new Utilisateur(
                     rs.getInt("id"),
                     rs.getString("nom"),
@@ -58,10 +57,11 @@ public class UtilisateurDAO {
                     rs.getString("adresse"),
                     Utilisateur.Statut.valueOf(rs.getString("statut")), // Utiliser l'enum de la classe Utilisateur
                     rs.getBoolean("isConfirmed"),
-                    Utilisateur.Role.valueOf(rs.getString("role")) // Utiliser l'enum de la classe Utilisateur
+            Utilisateur.Role.valueOf(rs.getString("role")) // Utiliser l'enum de la classe Utilisateur
 
             );
             utilisateur.setFaceData(rs.getBytes("face_data"));
+
 
             // Chargement des sous-entités selon le rôle
             int userId = rs.getInt("id");
@@ -105,8 +105,8 @@ public class UtilisateurDAO {
             conn.setAutoCommit(false); // Start transaction
 
             // Insert into Utilisateur table
-            String sqlUtilisateur = "INSERT INTO Utilisateur (nom, prenom, email, telephone, role, adresse, mot_de_passe, statut, isConfirmed) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sqlUtilisateur = "INSERT INTO Utilisateur (nom, prenom, email, telephone, role, adresse, mot_de_passe, statut, isConfirmed, face_data) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
             pstmtUtilisateur = conn.prepareStatement(sqlUtilisateur, PreparedStatement.RETURN_GENERATED_KEYS);
             pstmtUtilisateur.setString(1, utilisateur.getNom());
@@ -118,6 +118,9 @@ public class UtilisateurDAO {
             pstmtUtilisateur.setString(7, utilisateur.getMotDePasse());
             pstmtUtilisateur.setString(8, utilisateur.getStatut().name());
             pstmtUtilisateur.setBoolean(9, utilisateur.isConfirmed());
+            pstmtUtilisateur.setBytes(10, utilisateur.getFaceData());
+
+
 
             int rowsAffected = pstmtUtilisateur.executeUpdate();
 
@@ -251,7 +254,7 @@ public class UtilisateurDAO {
 
     // Méthodes auxiliaires
     private void updateMainUserData(Utilisateur user, Connection conn) throws SQLException {
-        String sql = "UPDATE utilisateur SET nom=?, prenom=?, telephone=?, adresse=?, mot_de_passe=?, role=?, face_data=? WHERE id=?";        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "UPDATE utilisateur SET nom=?, prenom=?, telephone=?, adresse=?, mot_de_passe=?, role=?, face_data=?, WHERE id=?";        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getNom());
             pstmt.setString(2, user.getPrenom());
             pstmt.setString(3, user.getTelephone());
@@ -467,7 +470,7 @@ public class UtilisateurDAO {
         pstmt.setString(5, user.getMotDePasse());
     }
 
-    private static void handleException(String message, SQLException e) {
+    public static void handleException(String message, SQLException e) {
         System.err.println(message + " : " + e.getMessage());
         e.printStackTrace();
     }
@@ -501,7 +504,7 @@ public class UtilisateurDAO {
         }
         return users;
     }
-    public Artisan getArtisanByUserId(int userId) {
+    public static Artisan getArtisanByUserId(int userId) {
         String sql = "SELECT * FROM Artisan WHERE artisan_id = ?";
 
         try (Connection conn = connect();
@@ -531,7 +534,6 @@ public class UtilisateurDAO {
         return null;
     }
     public Constructeur getConstructeurId(int constructeurId) throws SQLException {
-        System.out.println("Recherche du constructeur avec ID: " + constructeurId);
 
         String sql = "SELECT u.*, c.specialite, c.salaire_heure "
                 + "FROM Utilisateur u "
@@ -545,27 +547,26 @@ public class UtilisateurDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                System.out.println("Constructeur trouvé : " + rs.getString("nom"));
                 // Création du Constructeur
                 return new Constructeur(
                         constructeurId,
                         new Utilisateur(
-                                rs.getInt("id"),
-                                rs.getString("nom"),
-                                rs.getString("prenom"),
-                                rs.getString("email"),
-                                rs.getString("mot_de_passe"),
-                                rs.getString("telephone"),
-                                rs.getString("adresse"),
-                                Utilisateur.Statut.valueOf(rs.getString("statut")),
-                                rs.getBoolean("isConfirmed"),
+                                                        rs.getInt("id"),
+                                                        rs.getString("nom"),
+                                                        rs.getString("prenom"),
+                                                        rs.getString("email"),
+                                                        rs.getString("mot_de_passe"),
+                                                        rs.getString("telephone"),
+                                                        rs.getString("adresse"),
+                                                        Utilisateur.Statut.valueOf(rs.getString("statut")),
+                                                        rs.getBoolean("isConfirmed"),
                                 Utilisateur.Role.Constructeur
-                        ),
+
+                                                ),
                         rs.getString("specialite"),
                         rs.getDouble("salaire_heure")
                 );
             } else {
-                System.out.println("Aucun constructeur trouvé pour ID: " + constructeurId);
                 throw new SQLException("Constructeur introuvable pour ID: " + constructeurId);
             }
         }
@@ -618,6 +619,8 @@ public class UtilisateurDAO {
                 gestionnaire.setGestionnairestock_id(rs.getInt("gestionnairestock_id")); // ✅ Initialise Constructeur.constructeur_id
                 gestionnaire.setNom(rs.getString("nom")); // Chargé depuis Utilisateur
                 gestionnaire.setPrenom(rs.getString("prenom"));
+
+
                 return gestionnaire;
             }
         } catch (SQLException e) {
@@ -625,7 +628,7 @@ public class UtilisateurDAO {
         }
         return null;
     }
-    Constructeur getConstructeurByUserId(int userId) {
+    public static Constructeur getConstructeurByUserId(int userId) {
         String sql = "SELECT * FROM Constructeur WHERE constructeur_id = ?";
 
         try (Connection conn = connect();
@@ -648,7 +651,7 @@ public class UtilisateurDAO {
         return null;
     }
 
-    private GestionnaireDeStock getGestionnaireStockByUserId(int userId) {
+    public static GestionnaireDeStock getGestionnaireStockByUserId(int userId) {
         String sql = "SELECT * FROM gestionnairestock WHERE gestionnairestock_id = ?";
 
         try (Connection conn = connect();
@@ -669,7 +672,7 @@ public class UtilisateurDAO {
         return null;
     }
 
-    private Client getClientByUserId(int userId) {
+    private static Client getClientByUserId(int userId) {
         String sql = "SELECT * FROM client WHERE client_id = ?";
 
         try (Connection conn = connect();
@@ -867,8 +870,98 @@ public class UtilisateurDAO {
 
 
 
+    public boolean userExists(int userId) throws SQLException {
+        String sql = "SELECT 1 FROM utilisateur WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            return stmt.executeQuery().next();
+        }
+    }
+    public boolean createPasswordResetToken(String email, String token, LocalDateTime expiry) {
+        String sql = "UPDATE Utilisateur SET reset_token = ?, reset_token_expiry = ? WHERE email = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+            pstmt.setString(1, token);
+            pstmt.setObject(2, expiry);
+            pstmt.setString(3, email);
 
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            handleException("Erreur lors de la création du token de réinitialisation", e);
+            return false;
+        }
+    }
+    public Utilisateur validatePasswordResetToken(String token) {
+        String sql = "SELECT * FROM Utilisateur WHERE reset_token = ? AND reset_token_expiry > NOW()";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+            pstmt.setString(1, token);
+            ResultSet rs = pstmt.executeQuery();
 
+            if (rs.next()) {
+                return mapUtilisateur(rs);
+            }
+        } catch (SQLException e) {
+            handleException("Erreur lors de la validation du token", e);
+        }
+        return null;
+    }
+
+    public boolean updatePassword(int userId, String newPassword) {
+        String sql = "UPDATE Utilisateur SET mot_de_passe = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+            pstmt.setString(1, hashedPassword);
+            pstmt.setInt(2, userId);
+
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            handleException("Erreur lors de la mise à jour du mot de passe", e);
+            return false;
+        }
+    }
+    public List<Utilisateur> findUsersByFace(byte[] liveFaceData) throws SQLException {
+        List<Utilisateur> matchingUsers = new ArrayList<>();
+
+        if (liveFaceData == null || liveFaceData.length == 0) {
+            System.err.println("Aucune donnée faciale fournie");
+            return matchingUsers; // Retourne une liste vide si les données faciales sont invalides
+        }
+
+        String sql = "SELECT * FROM Utilisateur WHERE face_data IS NOT NULL";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                byte[] storedEncrypted = rs.getBytes("face_data");
+                if (storedEncrypted == null) continue;
+
+                try {
+                    // Déchiffrer les données faciales stockées
+                    byte[] storedDecrypted = FaceEncryption.decrypt(storedEncrypted);
+
+                    // Comparer les données faciales
+                    if (FaceAuthenticator.compareFaces(storedDecrypted, liveFaceData)) {
+                        // Si les visages correspondent, ajouter l'utilisateur à la liste
+                        Utilisateur user = mapUtilisateur(rs);
+                        matchingUsers.add(user);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erreur de déchiffrement pour l'utilisateur " + rs.getInt("id") + ": " + e.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erreur lors de la recherche des utilisateurs par visage", e);
+        }
+
+        return matchingUsers;
+    }
 }

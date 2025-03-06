@@ -1,0 +1,327 @@
+/* Thème Clair */
+.root {
+    -color-background: #f8f9fa;
+    -color-text: #212529;
+    -color-primary: #007bff;
+    -color-danger: #dc3545;
+    -color-success: #28a745;
+}
+/* Style pour les champs invalides */
+.text-field:error {
+    -fx-border-color: #ff0000;
+    -fx-border-width: 2px;
+}
+
+.text-field:error:focused {
+    -fx-border-color: #ff4444;
+    -fx-effect: dropshadow(gaussian, rgba(255,68,68,0.25), 10, 0, 0, 0);
+}
+/* Thème Sombre */
+.root:dark {
+    -color-background: #2d2d2d;
+    -color-text: #e0e0e0;
+    -color-primary: #0d6efd;
+    -color-danger: #bb2d3b;
+    -color-success: #218838;
+}
+/* Animation d'entrée */
+.pop-in {
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+    -fx-opacity: 0;
+}
+
+.fade-in {
+    -fx-opacity: 0;
+}
+
+/* Effets hover */
+.pulse-hover:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.3, 0, 0);
+    -fx-translate-y: -2px;
+    -fx-cursor: hand;
+}
+
+.slide-hover:hover {
+    -fx-underline: true;
+    -fx-text-fill: #2c3e50;
+    -fx-cursor: hand;
+}
+
+/* Indicateur de chargement */
+.loading-spinner {
+    -fx-progress-color: #c5a814;
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
+}
+/* Dégradé commun */
+.btn-gradient {
+    -fx-background-color: linear-gradient(to right, #c5a814, #372a28);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12 30;
+    -fx-background-radius: 8;
+}
+
+.btn-gradient:hover {
+    -fx-effect: dropshadow(gaussian, rgba(197,168,20,0.4), 15, 0, 0, 3);
+    -fx-cursor: hand;
+}
+
+/* Style des champs de formulaire */
+GridPane {
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 15;
+    -fx-border-width: 1;
+}
+
+.input-modern {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 6;
+    -fx-padding: 12;
+}
+
+
+.btn-link {
+    -fx-border-color: transparent;
+    -fx-underline: false;
+    -fx-text-fill: #c5a814 !important;
+}
+/* Bouton social */
+.btn-social {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);
+}
+
+.btn-social:hover {
+    -fx-background-color: #f8f8f8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);
+}
+
+/* Dégradé doré */
+.btn-gradient {
+    -fx-background-color: linear-gradient(to right, #c5a814, #372a28);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12 40;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(197,168,20,0.3), 10, 0, 0, 3);
+}
+/* Effet de dégradé texte */
+.text-gradient {
+    -fx-text-fill: linear-gradient(to right, #c5a814, #372a28);
+    -fx-font-weight: 900;
+}
+
+/* Animation des éléments */
+.slide-in {
+    -fx-translate-y: 50;
+    -fx-opacity: 0;
+}
+
+.slide-up {
+    -fx-translate-y: 30;
+    -fx-opacity: 0;
+}
+
+.fade-in {
+    -fx-opacity: 0;
+}
+
+/* Barre de progression stylisée */
+.progress-bar .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10;
+}
+
+.progress-bar .bar {
+    -fx-background-radius: 10;
+    -fx-padding: 2;
+}
+
+/* Indicateur force mot de passe */
+#passwordStrength .rectangle {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+/* Bouton social */
+.btn-social {
+    -fx-background-radius: 50%;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
+    -fx-transition: all 0.3s;
+}
+
+.btn-social.google {
+    -fx-background-color: white;
+}
+
+.btn-social.linkedin {
+    -fx-background-color: #0077b5;
+}
+
+.btn-social:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+/* Badge d'information */
+.text-badge {
+    -fx-text-fill: #6c757d;
+    -fx-font-size: 12px;
+    -fx-padding: 5 15;
+    -fx-background-color: rgba(245,245,245,0.9);
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+/* Animation pulsation */
+.pulse {
+    -fx-animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { -fx-scale-x: 1; -fx-scale-y: 1; }
+    50% { -fx-scale-x: 1.05; -fx-scale-y: 1.05; }
+    100% { -fx-scale-x: 1; -fx-scale-y: 1; }
+}
+
+.btn-gradient:hover {
+    -fx-background-color: linear-gradient(to right, #d4b615, #463729);
+}
+
+.btn-link:hover {
+    -fx-underline: true;
+}
+
+/* Messages d'erreur */
+
+
+
+.content-box {
+    -fx-background-color: -color-background;
+    -fx-background-radius: 20;
+    -fx-padding: 40;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 25, 0, 0, 5);
+}
+
+.text-field, .password-field {
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-font-size: 14;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 8;
+}
+
+.text-field:invalid, .password-field:invalid {
+    -fx-border-color: -color-danger;
+    -fx-effect: dropshadow(gaussian, rgba(220,53,69,0.2), 10, 0, 0, 3);
+}
+
+.text-field:valid, .password-field:valid {
+    -fx-border-color: -color-success;
+}
+
+.social-btn {
+    -fx-background-radius: 50%;
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.social-btn.google {
+    -fx-background-image: url('images/google.png');
+}
+
+.social-btn.microsoft {
+    -fx-background-image: url('images/microsoft.png');
+}
+
+/* Animation erreur */
+@keyframes shake {
+    0%, 100% { -fx-translate-x: 0; }
+    25% { -fx-translate-x: 5; }
+    75% { -fx-translate-x: -5; }
+}
+
+.invalid {
+    -fx-border-color: -color-danger;
+    animation: shake 0.4s;
+}
+/* Ajoutez ces classes */
+.icon-btn {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+    -fx-cursor: hand;
+}
+
+.icon-btn:selected {
+    -fx-background-color: rgba(0,0,0,0.1);
+}
+
+.input-modern:invalid {
+    -fx-border-color: #dc3545 !important;
+    -fx-effect: dropshadow(gaussian, rgba(220,53,69,0.2), 10, 0, 0, 3);
+}
+
+.input-modern:valid {
+    -fx-border-color: #28a745 !important;
+}
+.invalid {
+    -fx-border-color: #dc3545 !important;
+    -fx-effect: dropshadow(gaussian, rgba(220,53,69,0.2), 10, 0, 0, 3);
+}
+
+.valid {
+    -fx-border-color: #28a745 !important;
+}
+
+.error-message {
+    -fx-text-fill: #dc3545;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 0 0 5px;
+    -fx-translate-y: -25px; /* Ajuste cette valeur pour monter le texte */
+}
+
+
+.warning-message {
+    -fx-text-fill: #ffc107;
+    -fx-font-size: 12px;
+}
+
+
+
+.btn-gradient:disabled {
+    -fx-opacity: 0.7;
+}
+/* Style pour le bouton */
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+.icon-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+.input-modern {
+    -fx-padding: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+}
+
+.icon-button:active {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Style pour le champ de texte visible */
+

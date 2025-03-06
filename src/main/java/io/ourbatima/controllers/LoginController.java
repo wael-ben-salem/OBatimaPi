@@ -22,13 +22,13 @@ import io.ourbatima.core.services.LoadViews;
 import io.ourbatima.core.view.View;
 import io.ourbatima.core.view.layout.ConstructionLoader;
 import io.ourbatima.core.view.layout.LoadCircle;
-import io.ourbatima.core.view.layout.TruckHelmetLoader;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,6 +39,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -48,16 +49,16 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
-import java.util.Base64;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -66,6 +67,9 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
 
     @FXML private Button btnFaceLogin;
 
+
+    @FXML
+    private Button btnResetPassword; // Référence au bouton de réinitialisation
     @FXML private WebView webView;
     private WebEngine webEngine;
 
@@ -74,6 +78,8 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         refreshMainNavigation();
 
     }
+
+
 
     private static class GoogleAuthConfig {
         static final String CLIENT_ID = "1056028895782-ibvotqkd1vg0pb4brccd4eq7tq4h5qrp.apps.googleusercontent.com";
@@ -401,6 +407,10 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
     @FXML private Button btn_createAccount;
     @FXML private CheckBox rememberMe;
     @FXML private Label forgotPassword;
+    @FXML private Label forgotPassword1;
+
+
+
 
     private int loginAttempts = 0;
     private Timeline lockTimer;
@@ -434,6 +444,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         setupFocusEffects();
         setupInputValidation();
         initializeWebView();
+        btnResetPassword.setDisable(true);
         setupValidation(); // Initialiser la validation ici
         if (emailField == null || passwordField == null) {
             throw new IllegalStateException("Champs FXML non injectés !");
@@ -801,16 +812,164 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
      */
     @FXML
     private void handleForgotPassword() {
-        System.out.println("Lien 'Mot de passe oublié' activé.");
-        // Ici vous pouvez afficher un dialogue ou rediriger vers une vue dédiée à la récupération
-        // Par exemple : context.routes().navigate("ForgotPasswordView");
-        // Pour cet exemple, on simule l'ouverture d'un dialogue simple :
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Récupération de mot de passe");
-        alert.setHeaderText(null);
-        alert.setContentText("Cette fonctionnalité permettra de récupérer votre mot de passe.");
-        alert.showAndWait();
+        TextInputDialog emailDialog = new TextInputDialog();
+        emailDialog.setTitle("Mot de passe oublié");
+        emailDialog.setHeaderText("Entrez votre email");
+        emailDialog.setContentText("Email:");
+
+        Optional<String> emailResult = emailDialog.showAndWait();
+        emailResult.ifPresent(email -> {
+            try {
+                Utilisateur user = utilisateurDAO.getUserByEmail(email);
+                if (user == null) {
+                    showError("Aucun compte associé à cet email.");
+                    return;
+                }
+
+                // Générer un code de vérification
+                String verificationCode = generateVerificationCode();
+                LocalDateTime expiry = LocalDateTime.now().plusMinutes(10); // Code valide 10 minutes
+
+                // Stocker le code dans la base de données
+                if (utilisateurDAO.createPasswordResetToken(email, verificationCode, expiry)) {
+                    // Envoyer le code par email
+                    String emailContent = "Votre code de vérification est : " + verificationCode
+                            + "\n\nCe code expirera dans 10 minutes.";
+                    EmailService.sendEmail(email, "Code de vérification", emailContent);
+
+                    // Demander à l'utilisateur de saisir le code
+                    TextInputDialog codeDialog = new TextInputDialog();
+                    codeDialog.setTitle("Vérification");
+                    codeDialog.setHeaderText("Un code a été envoyé à votre email");
+                    codeDialog.setContentText("Entrez le code :");
+
+                    Optional<String> codeResult = codeDialog.showAndWait();
+                    codeResult.ifPresent(code -> {
+                        if (code.equals(verificationCode)) {
+                            // Activer le bouton de réinitialisation
+                            Platform.runLater(() -> {
+                                btnResetPassword.setDisable(false);
+                                emailField.setText(email); // Pré-remplir l'email
+                            });
+                        } else {
+                            showError("Code incorrect. Veuillez réessayer.");
+                        }
+                    });
+                } else {
+                    showError("Erreur lors de la génération du code de vérification.");
+                }
+            } catch (Exception e) {
+                showError("Erreur : " + e.getMessage());
+            }
+        });
     }
+    @FXML
+    private void handleResetPassword() {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Réinitialisation du mot de passe");
+
+        // Configuration du formulaire
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        PasswordField newPassField = new PasswordField();
+        PasswordField confirmPassField = new PasswordField();
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red;");
+
+        // Validation en temps réel
+        Pattern passwordPattern = Pattern.compile("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+
+        newPassField.textProperty().addListener((obs, oldVal, newVal) -> {
+            boolean valid = passwordPattern.matcher(newVal).matches();
+            newPassField.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), !valid);
+        });
+
+        confirmPassField.textProperty().addListener((obs, oldVal, newVal) -> {
+            boolean match = newVal.equals(newPassField.getText());
+            confirmPassField.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), !match);
+        });
+
+        grid.addRow(0, new Label("Nouveau mot de passe:"), newPassField);
+        grid.addRow(1, new Label("Confirmation:"), confirmPassField);
+        grid.add(errorLabel, 0, 2, 2, 1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType confirmButton = new ButtonType("Confirmer", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == confirmButton) {
+                return new Pair<>(newPassField.getText(), confirmPassField.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        result.ifPresent(passwords -> {
+            if (!passwordPattern.matcher(passwords.getKey()).matches()) {
+                showError("Le mot de passe doit contenir :\n- 8 caractères minimum\n- 1 majuscule\n- 1 chiffre\n- 1 caractère spécial");
+                return;
+            }
+
+            if (!passwords.getKey().equals(passwords.getValue())) {
+                showError("Les mots de passe ne correspondent pas");
+                return;
+            }
+
+            // Mettre à jour le mot de passe dans la base de données
+            Utilisateur user = utilisateurDAO.getUserByEmail(emailField.getText());
+            if (user != null) {
+                utilisateurDAO.updatePassword(user.getId(), BCrypt.hashpw(passwords.getKey(), BCrypt.gensalt()));
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Mot de passe mis à jour !");
+                btnResetPassword.setDisable(true); // Désactiver à nouveau le bouton après la réinitialisation
+            } else {
+                showError("Utilisateur introuvable.");
+            }
+        });
+    }
+    private String generateResetToken() {
+        return UUID.randomUUID().toString().substring(0, 6);
+    }
+    private void showResetPasswordDialog(Utilisateur user) {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Nouveau mot de passe");
+
+        PasswordField newPassField = new PasswordField();
+        PasswordField confirmPassField = new PasswordField();
+        GridPane grid = new GridPane();
+        grid.addRow(0, new Label("Nouveau mot de passe:"), newPassField);
+        grid.addRow(1, new Label("Confirmez:"), confirmPassField);
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType confirmButton = new ButtonType("Confirmer", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == confirmButton) {
+                return new Pair<>(newPassField.getText(), confirmPassField.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        result.ifPresent(passwords -> {
+            if (passwords.getKey().equals(passwords.getValue())) {
+                user.setMotDePasse(BCrypt.hashpw(passwords.getKey(), BCrypt.gensalt()));
+                user.setResetToken(null);
+                user.setResetTokenExpiry(null);
+                utilisateurDAO.updateUser(user);
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Mot de passe mis à jour !");
+            } else {
+                showError("Les mots de passe ne correspondent pas.");
+            }
+        });
+    }
+
+
+
     @FXML
     private void handleLogin() {
         String email = emailField.getText();
@@ -899,8 +1058,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
             System.err.println("Erreur lors de la navigation vers la page d'inscription : " + e.getMessage());
             e.printStackTrace();
         }
-    }
-    @FXML
+    }@FXML
     private void handleFaceLogin() {
         Alert progressAlert = new Alert(Alert.AlertType.INFORMATION);
         progressAlert.setTitle("Authentification Faciale");
@@ -922,20 +1080,24 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
                 });
 
                 if (liveFace != null) {
-                    Utilisateur user = utilisateurDAO.authenticateByFace(liveFace);
+                    List<Utilisateur> matchingUsers = utilisateurDAO.findUsersByFace(liveFace);
 
                     Platform.runLater(() -> {
                         progressAlert.close();
-                        if (user != null) {
+                        if (matchingUsers.isEmpty()) {
+                            showAlert(Alert.AlertType.ERROR,
+                                    "Échec",
+                                    "Aucun utilisateur correspondant trouvé");
+                        } else if (matchingUsers.size() == 1) {
+                            Utilisateur user = matchingUsers.get(0);
                             SessionManager.getInstance().startSession(user);
                             navigateToDashboard();
                             showAlert(Alert.AlertType.INFORMATION,
                                     "Succès",
                                     "Authentification réussie ! Bienvenue " + user.getPrenom());
                         } else {
-                            showAlert(Alert.AlertType.ERROR,
-                                    "Échec",
-                                    "Aucun utilisateur correspondant trouvé");
+                            // Afficher une popup pour sélectionner le compte
+                            showAccountSelectionPopup(matchingUsers);
                         }
                     });
                 }
@@ -952,6 +1114,57 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         }).start();
     }
 
+    private void showAccountSelectionPopup(List<Utilisateur> matchingUsers) {
+        Dialog<Utilisateur> dialog = new Dialog<>();
+        dialog.setTitle("Sélection du compte");
+        dialog.setHeaderText("Plusieurs comptes trouvés. Veuillez en sélectionner un.");
+
+        ButtonType loginButtonType = new ButtonType("Se connecter", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        ComboBox<Utilisateur> userComboBox = new ComboBox<>();
+        userComboBox.getItems().addAll(matchingUsers);
+        userComboBox.setCellFactory(lv -> new ListCell<Utilisateur>() {
+            @Override
+            protected void updateItem(Utilisateur user, boolean empty) {
+                super.updateItem(user, empty);
+                setText(empty ? "" : user.getNom() + " " + user.getPrenom() + " (" + user.getEmail() + ")");
+            }
+        });
+        userComboBox.setButtonCell(new ListCell<Utilisateur>() {
+            @Override
+            protected void updateItem(Utilisateur user, boolean empty) {
+                super.updateItem(user, empty);
+                setText(empty ? "" : user.getNom() + " " + user.getPrenom() + " (" + user.getEmail() + ")");
+            }
+        });
+
+        grid.add(new Label("Comptes trouvés:"), 0, 0);
+        grid.add(userComboBox, 1, 0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return userComboBox.getValue();
+            }
+            return null;
+        });
+
+        Optional<Utilisateur> result = dialog.showAndWait();
+        result.ifPresent(user -> {
+            SessionManager.getInstance().startSession(user);
+            navigateToDashboard();
+            showAlert(Alert.AlertType.INFORMATION,
+                    "Succès",
+                    "Authentification réussie ! Bienvenue " + user.getPrenom());
+        });
+    }
     private void showAlert(Alert.AlertType type, String title, String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(type);
@@ -961,5 +1174,8 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
             alert.initOwner(btnFaceLogin.getScene().getWindow());
             alert.showAndWait();
         });
+    }
+    private String generateVerificationCode() {
+        return String.format("%06d", new Random().nextInt(999999)); // Génère un code à 6 chiffres
     }
 }

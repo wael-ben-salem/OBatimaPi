@@ -6,13 +6,16 @@ module io.ourbatima {
     requires transitive javafx.web;
     requires transitive javafx.media;
     exports io.ourbatima.controllers;
-
+    requires java.scripting;
     requires javafx.swing;
+    
     requires com.google.gson;
     requires google.api.client;
     requires org.yaml.snakeyaml;
     requires org.jetbrains.annotations;
     requires animatefx;
+    exports io.ourbatima.core.view.layout to javafx.fxml; // Ajout crucial
+
 //    requires io.ourbatima.gncarousel;
 
     requires GNAvatarView;
@@ -46,6 +49,7 @@ module io.ourbatima {
     requires spark.core;
 
 
+
     opens io.ourbatima to javafx.fxml;
     opens io.ourbatima.controllers to javafx.fxml;
     opens io.ourbatima.core.controls.icon to javafx.fxml;
@@ -70,7 +74,6 @@ module io.ourbatima {
     exports io.ourbatima.controllers.FinanceControllers; // Export your controller package
     opens io.ourbatima.controllers.FinanceControllers to javafx.fxml;
     opens io.ourbatima.core.model.financeModel to javafx.base, javafx.fxml;
-    exports io.agora.media;
     opens io.agora.media to javafx.fxml;
     exports io.ourbatima.core.model.financeModel;
 

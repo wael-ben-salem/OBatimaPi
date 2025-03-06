@@ -4,9 +4,30 @@
     import javafx.scene.image.Image;
 
     import java.io.ByteArrayInputStream;
+    import java.time.LocalDateTime;
 
     public class Utilisateur {
         private int id;
+
+        private String resetToken;
+        private LocalDateTime resetTokenExpiry;
+
+        public String getResetToken() {
+            return resetToken;
+        }
+
+        public void setResetToken(String resetToken) {
+            this.resetToken = resetToken;
+        }
+
+        public LocalDateTime getResetTokenExpiry() {
+            return resetTokenExpiry;
+        }
+
+        public void setResetTokenExpiry(LocalDateTime resetTokenExpiry) {
+            this.resetTokenExpiry = resetTokenExpiry;
+        }
+
         private String nom;
 
         public Utilisateur(String nom, String prenom, String email, String telephone, String adresse, String motDePasse ,Role role) {

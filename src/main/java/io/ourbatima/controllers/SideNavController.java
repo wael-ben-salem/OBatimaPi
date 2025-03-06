@@ -25,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -51,6 +52,8 @@ public class SideNavController extends ActionView {
     @FXML private StackPane root;
     @FXML private ToggleGroup group;
     @FXML private Button arrowButton;
+    @FXML
+    private Label RoleUser;
 
     @FXML
     private Text userNameText;
@@ -61,21 +64,13 @@ public class SideNavController extends ActionView {
 
     public void setBackgroundColorBasedOnRole(String role) {
         switch (role) {
-            case "Artisan":
-                root.setStyle("-fx-background-color: #FFD700;"); // Jaune
+            case "Artisan", "GestionnaireStock", "Client":
+                root.setStyle("-fx-background-color: #c5a814;"); // Jaune
                 break;
-            case "Constructeur":
-                root.setStyle("-fx-background-color: #808080;"); // Gris
+            case "Constructeur", "Admin":
+                root.setStyle("-fx-background-color: #000000;"); // Gris
                 break;
-            case "GestionnaireStock":
-                root.setStyle("-fx-background-color: #ADD8E6;"); // Bleu clair
-                break;
-            case "Client":
-                root.setStyle("-fx-background-color: #90EE90;"); // Vert clair
-                break;
-            case "Admin":
-                root.setStyle("-fx-background-color: #000000;"); // Noir
-                break;
+            // Noir
             default:
                 root.setStyle("-fx-background-color: white;"); // Par défaut, blanc
                 break;
@@ -419,8 +414,12 @@ public class SideNavController extends ActionView {
         if (userNameText != null && userEmailText != null) {
             userNameText.setText(currentUser.getNom() + " " + currentUser.getPrenom());
             userEmailText.setText(currentUser.getEmail());
+            RoleUser.setText(currentUser.getRole().toString());
+
         } else {
             System.err.println("Erreur: userNameText ou userEmailText non initialisé");
+            RoleUser.setText("Inconnu");
+
         }
 
         // Appliquer la couleur de fond en fonction du rôle
@@ -441,8 +440,7 @@ public class SideNavController extends ActionView {
     }
 
 
-    public void gototache(ActionEvent actionEvent) {
-    }
+
 
 
 
