@@ -1,0 +1,21 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.ourbatima.controllers.SavedPlans" spacing="15" alignment="CENTER"
+      style="-fx-padding: 20; -fx-background-color: #F5F5F5;">
+
+    <Label text="📌 Saved Plans"
+           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #6D4C41;"/>
+
+    <TilePane fx:id="tilePaneSavedPlans"
+              style="-fx-padding: 15; -fx-hgap: 15; -fx-vgap: 15; -fx-pref-width: 800;"/>
+
+    <Button fx:id="btnReload" text="🔄 Refresh" onAction="#onReloadClicked"
+            style="-fx-background-color: #6D4C41; -fx-text-fill: white;
+                   -fx-font-size: 14px; -fx-padding: 8 15;
+                   -fx-border-radius: 8; -fx-background-radius: 8;"/>
+
+</VBox>

@@ -127,6 +127,15 @@ public class AddTask extends ActionView {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        showSuccessPopup("Tache ajoutée avec succès ! ✅🏗️🚀");
+    }
+
+    private void showSuccessPopup(String s) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès ✅");
+        alert.setHeaderText("Tâche ajoutée 🏢🎉");
+        alert.setContentText(s);
+        alert.showAndWait();
     }
 
     public void seeAllTasks(ActionEvent actionEvent) {

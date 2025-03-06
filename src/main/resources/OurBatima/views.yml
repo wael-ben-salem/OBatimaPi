@@ -261,6 +261,12 @@
 
 
   }
+  - {
+    name: SavedPlans,
+    title: SavedPlans,
+    folder: pages,
+    fxml: SavedPlans.fxml
+  }
 
   - {
     name: ContatsClient,

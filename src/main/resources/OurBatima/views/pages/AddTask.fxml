@@ -1,50 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="500.0" prefWidth="600.0"
+            style="-fx-background-color: white; -fx-border-color: #6D4C41; -fx-border-radius: 12; -fx-padding: 15;"
             xmlns="http://javafx.com/javafx/18.0.2"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="io.ourbatima.controllers.AddTask">
     <children>
         <!-- Button for Artisans -->
-        <Button layoutX="30.0" layoutY="30.0" text="Show Artisans"
-                onAction="#showArtisans"/>
+        <Button layoutX="30.0" layoutY="30.0" text="👷 Artisans"
+                onAction="#showArtisans"
+                style="-fx-background-color: #6D4C41; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 8;"/>
 
         <!-- ComboBox for Artisans -->
-        <ComboBox layoutX="30.0" layoutY="70.0" prefWidth="200.0"
-                  fx:id="utilisateursArtisans" promptText="Sélectionnez un Artisan" visible="false"/>
+        <ComboBox layoutX="30.0" layoutY="70.0" prefWidth="250.0"
+                  fx:id="utilisateursArtisans" promptText="Sélectionnez un Artisan" visible="false"
+                  style="-fx-background-color: white; -fx-border-color: #6D4C41; -fx-border-radius: 8;"/>
 
         <!-- Button for Constructeurs -->
-        <Button layoutX="250.0" layoutY="30.0" text="Show Constructeurs"
-                onAction="#showConstructeurs"/>
+        <Button layoutX="310.0" layoutY="30.0" text="🏗️ Constructeurs"
+                onAction="#showConstructeurs"
+                style="-fx-background-color: #6D4C41; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 8;"/>
 
         <!-- ComboBox for Constructeurs -->
-        <ComboBox layoutX="250.0" layoutY="70.0" prefWidth="200.0"
-                  fx:id="utilisateursConstructeurs" promptText="Sélectionnez un Constructeur" visible="false"/>
+        <ComboBox layoutX="310.0" layoutY="70.0" prefWidth="250.0"
+                  fx:id="utilisateursConstructeurs" promptText="Sélectionnez un Constructeur" visible="false"
+                  style="-fx-background-color: white; -fx-border-color: #6D4C41; -fx-border-radius: 8;"/>
 
         <!-- TextField for Description -->
-        <TextField layoutX="30.0" layoutY="130.0" prefWidth="420.0"
-                   fx:id="descriptionField" promptText="Description de la tâche"/>
+        <TextField layoutX="30.0" layoutY="130.0" prefWidth="530.0"
+                   fx:id="descriptionField" promptText="📝 Description de la tâche"
+                   style="-fx-background-color: white; -fx-border-color: #6D4C41; -fx-border-radius: 8;"/>
 
         <!-- DatePicker for Date Debut -->
         <DatePicker layoutX="30.0" layoutY="180.0" fx:id="dateDebutPicker"
-                    promptText="Date de début"/>
+                    promptText="📅 Date de début"
+                    style="-fx-background-color: white; -fx-border-color: #6D4C41; -fx-border-radius: 8;"/>
 
         <!-- DatePicker for Date Fin -->
-        <DatePicker layoutX="250.0" layoutY="180.0" fx:id="dateFinPicker"
-                    promptText="Date de fin"/>
+        <DatePicker layoutX="310.0" layoutY="180.0" fx:id="dateFinPicker"
+                    promptText="📅 Date de fin"
+                    style="-fx-background-color: white; -fx-border-color: #6D4C41; -fx-border-radius: 8;"/>
 
         <!-- Button to Save Task -->
-        <Button layoutX="30.0" layoutY="280.0" text="Save Task"
-                onAction="#saveTask"/>
+        <Button layoutX="30.0" layoutY="280.0" text="💾 Enregistrer la tâche"
+                onAction="#saveTask"
+                style="-fx-background-color: #6D4C41; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 8;"/>
 
         <!-- Button to SEE ALL TASKS -->
-        <Button layoutX="30.0" layoutY="330.0" text="See All Tasks"
-                onAction="#seeAllTasks"/>
+        <Button layoutX="30.0" layoutY="330.0" text="📋 Voir toutes les tâches"
+                onAction="#seeAllTasks"
+                style="-fx-background-color: #4E342E; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 8;"/>
     </children>
 </AnchorPane>

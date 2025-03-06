@@ -54,7 +54,6 @@ public class AddPlan extends ActionView {
         statusComboBox.setItems(FXCollections.observableArrayList("Planifié", "En cours", "Terminé"));
     }
 
-
     @FXML
     public void onSeeTachesClicked() {
         List<Tache> taches = getTachesFromDatabase();
@@ -140,7 +139,41 @@ public class AddPlan extends ActionView {
         );
 
         plannificationDAO.ajouterPlannification(newPlan);
+
+        // Send emails to the users related to the task
+        sendEmailsToUsers(selectedTache.getIdTache());
+
         showSuccessPopup("Plannification ajoutée avec succès ! ✅🏗️🚀");
+    }
+
+    private void sendEmailsToUsers(int taskId) {
+        new Thread(() -> {
+            try (Connection conn = getConnection();
+                 PreparedStatement stmt = conn.prepareStatement("SELECT u.email, u.nom, u.role FROM Utilisateur u JOIN Tache t ON u.id = t.constructeur_id OR u.id = t.artisan_id WHERE t.id_tache = ?")) {
+
+                stmt.setInt(1, taskId);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    String email = rs.getString("email");
+                    String name = rs.getString("nom");
+                    String role = rs.getString("role");
+
+                    if (email != null && !email.isEmpty()) {
+                        String subject = "Nouvelle planification de tâche";
+                        String message = "Bonjour " + name + ",\n\n" +
+                                "Une nouvelle planification a été ajoutée pour une tâche associée à votre rôle (" + role + ").\n" +
+                                "Veuillez vérifier les détails dans votre espace personnel.\n\n" +
+                                "Cordialement,\n" +
+                                "OBATIMA";
+
+                        EmailService.sendEmail(email, subject, message);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private void showValidationError(String message) {
