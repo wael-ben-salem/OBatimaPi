@@ -1,8 +1,11 @@
 package io.ourbatima.controllers.FinanceControllers;
 
+import io.ourbatima.core.Context;
 import io.ourbatima.core.Dao.FinanceService.ContratServise;
 import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.model.financeModel.Contrat;
 import io.ourbatima.core.model.financeModel.ContratDTO;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,6 +39,10 @@ public class ListContrats extends ActionView {
     @FXML
     private TableColumn<ContratDTO, Void> actionsColumn;
 
+    @FXML private TextField searchField;
+
+    @FXML private ListView<String> suggestionsProjetList;
+
     private final ContratServise cs = new ContratServise();
 
     @FXML
@@ -48,16 +55,105 @@ public class ListContrats extends ActionView {
 
         // Set the cell factory for the Actions column
         actionsColumn.setCellFactory(createButtonCellFactory());
-
-        // Load and display contracts
         loadAndDisplayContrats();
     }
+
+    private void filterContractsByName(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            suggestionsProjetList.getItems().clear();
+            loadAndDisplayContrats();
+            return;
+        }
+
+        // Get the list of all contracts
+        List<ContratDTO> allContrats = cs.getAllContart().stream()
+                .map(contrat -> {
+                    try {
+                        int idProjet = contrat.getIdProjet();
+                        String nomClient = cs.getClientNOMEtidbyidcontrat(idProjet);
+                        String nomProjet = getNOMFromDatabase(idProjet);
+
+                        return new ContratDTO(
+                                contrat.getIdContrat(),
+                                contrat.getTypeContrat(),
+                                contrat.getDateSignature(),
+                                contrat.getDateDebut(),
+                                contrat.isSignatureElectronique(),
+                                contrat.getDateFin(),
+                                contrat.getMontantTotal(),
+                                contrat.getIdProjet(),
+                                nomClient,
+                                nomProjet
+                        );
+
+                    } catch (SQLException e) {
+                        System.err.println("Error fetching contract details: " + e.getMessage());
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        // Filter the contracts based on project name (nomProjet)
+        ObservableList<String> filteredSuggestions = FXCollections.observableArrayList(
+                allContrats.stream()
+                        .filter(contrat -> contrat.getNomProjet().toLowerCase().contains(query.toLowerCase()))
+                        .map(ContratDTO::getNomProjet)
+                        .distinct()
+                        .collect(Collectors.toList())
+        );
+
+
+        // Set the filtered list of suggestions in the ListView
+        Platform.runLater(() -> {
+            suggestionsProjetList.setItems(filteredSuggestions);
+        });    }
+
+    private void onSuggestionSelected(String selectedProjet) {
+        if (selectedProjet != null) {
+            List<ContratDTO> matchingContracts = cs.getAllContart().stream()
+                    .map(contrat -> {
+                        try {
+                            int idProjet = contrat.getIdProjet();
+                            String nomClient = cs.getClientNOMEtidbyidcontrat(idProjet);
+                            String nomProjet = getNOMFromDatabase(idProjet);
+
+                            return new ContratDTO(
+                                    contrat.getIdContrat(),
+                                    contrat.getTypeContrat(),
+                                    contrat.getDateSignature(),
+                                    contrat.getDateDebut(),
+                                    contrat.isSignatureElectronique(),
+                                    contrat.getDateFin(),
+                                    contrat.getMontantTotal(),
+                                    contrat.getIdProjet(),
+                                    nomClient,
+                                    nomProjet
+                            );
+
+                        } catch (SQLException e) {
+                            System.err.println("Error fetching contract details: " + e.getMessage());
+                        }
+                        return null;
+                    })
+                    .filter(Objects::nonNull)
+                    .filter(contrat -> contrat.getNomProjet().equalsIgnoreCase(selectedProjet))
+                    .collect(Collectors.toList());
+
+            // Update the table with matching contracts
+            ObservableList<ContratDTO> contractsToShow = FXCollections.observableArrayList(matchingContracts);
+            tableContrats.setItems(contractsToShow);
+        }
+    }
+
+
 
     private Callback<TableColumn<ContratDTO, Void>, TableCell<ContratDTO, Void>> createButtonCellFactory() {
         return param -> new TableCell<ContratDTO, Void>() {
             private final HBox container = new HBox(5); // HBox to hold buttons
             private final Button updateButton = new Button("Update");
             private final Button deleteButton = new Button("Delete");
+            private final  Button consulterbutton = new Button("Consulter");
 
             {
                 // Set button styles
@@ -74,8 +170,16 @@ public class ListContrats extends ActionView {
                     ContratDTO rowData = getTableView().getItems().get(getIndex());
                     handleDeleteAction(rowData);
                 });
+                consulterbutton.setOnAction(event -> {
+                    ContratDTO rowData= getTableView().getItems().get(getIndex());
+                    try {
+                        hndleaConsulter(rowData);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
-                container.getChildren().addAll(updateButton, deleteButton);
+                container.getChildren().addAll(updateButton, deleteButton,consulterbutton);
             }
 
             @Override
@@ -88,6 +192,25 @@ public class ListContrats extends ActionView {
                 }
             }
         };
+    }
+
+    private void hndleaConsulter(ContratDTO rowData) throws IOException {
+        Contrat con =new Contrat(rowData.getIdContrat(),rowData.getTypeContrat(),rowData.getDateSignature(),rowData.getDateDebut(),rowData.isSignatureElectronique(),rowData.getDateFin(),rowData.getMontantTotal(),rowData.getIdProjet());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/pages/Finance_vews/ConsulterContratAjouter.fxml"));
+        Parent root = loader.load();
+
+        // Get the controller instance created by the FXMLLoader
+        ConsulterContratAjouter controller = loader.getController();
+
+        // Set the Contrat object and load data
+        controller.setdataCOntrat(con);
+
+        // Show the new stage
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+
     }
 
     private void loadAndDisplayContrats() {
@@ -167,16 +290,25 @@ public class ListContrats extends ActionView {
         return name;
     }
 
-    public void alolao(ActionEvent event) {
-        System.out.println("Initializing ListContrats...");
-        if (tableContrats == null) {
-            System.err.println("Error: tableContrats is null!");
-            return;
-        }
+    @Override
+    public void onInit(Context context) {
+        super.onInit(context);
         loadAndDisplayContrats();
         actionsColumn.setCellFactory(createButtonCellFactory());
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterContractsByName(newValue);
+        });
+        suggestionsProjetList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                onSuggestionSelected(newValue);
+            }
+        });
+        suggestionsProjetList.setVisible(true);
+        suggestionsProjetList.setManaged(true);
 
     }
+
+
 
     private void handleUpdateAction(ContratDTO rowData) {
         // Handle update action

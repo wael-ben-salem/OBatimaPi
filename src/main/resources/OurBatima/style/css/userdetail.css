@@ -1,0 +1,103 @@
+/* Style des cartes */
+.user-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 15;
+    -fx-border-radius: 10;
+    -fx-border-color: #E0E0E0;
+}
+
+.user-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 0);
+    -fx-cursor: hand;
+}
+
+.card-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D2D2D;
+}
+
+.card-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+}
+
+/* Style de la popup */
+.details-container {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CCCCCC;
+    -fx-border-width: 1;
+}
+
+
+
+
+
+.section-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #444444;
+    -fx-underline: true;
+}
+
+
+/* Style des icônes */
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+}
+
+.icon-button:hover {
+    -fx-opacity: 0.8;
+}
+
+
+.detail-specialite, .detail-salaire {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+}
+
+/* Rend le VBox visible même vide */
+#specificDetails {
+    -fx-min-height: 80px;
+}
+/* Pour l'ensemble du pop-up */
+.region {
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-border-radius: 12px;
+}
+
+/* Pour le titre */
+.detail-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.detail-subtitle {
+    -fx-font-size: 16px;
+    -fx-text-fill: #777;
+}
+
+/* Pour chaque section (informations de contact) */
+.details-section {
+    -fx-padding: 15px;
+    -fx-background-color: #f7f7f7;
+    -fx-border-radius: 10px;
+}
+
+/* Pour le bouton */
+.close-button {
+    -fx-background-color: #FF5722;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.close-button:hover {
+    -fx-background-color: #E64A19;
+}

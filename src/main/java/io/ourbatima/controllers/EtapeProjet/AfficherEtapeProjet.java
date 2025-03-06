@@ -5,6 +5,7 @@ import io.ourbatima.core.Dao.EtapeProjet.EtapeProjetDAO;
 import io.ourbatima.core.Dao.Projet.ProjetDAO;
 import io.ourbatima.core.Dao.Rapport.RapportDAO;
 import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.interfaces.Initializable;
 import io.ourbatima.core.model.EtapeProjet;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Rapport;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AfficherEtapeProjet extends ActionView {
+public class AfficherEtapeProjet extends ActionView implements Initializable {
 
     private final EtapeProjetDAO etapeProjetDAO = new EtapeProjetDAO();
     private final ProjetDAO projetDAO = new ProjetDAO();
@@ -39,19 +40,47 @@ public class AfficherEtapeProjet extends ActionView {
     @FXML private TextArea etapeProjetDetails;
     @FXML private TextField searchField;
 
-    @FXML
+    @Override
     public void initialize() {
-        System.out.println("✅ AfficherEtapeProjet Controller Initialized");
-        System.out.println("🔍 listNomEtapes: " + listNomEtapes);
-        System.out.println("📝 etapeProjetDetails: " + etapeProjetDetails);
-        loadEtapeList();
-        setupClickListener();
-        setupSearchListener();
-        setupSuggestionClickListener();
-        searchField.setOnMouseClicked(event -> {
-            etapeProjetDetails.clear();
+        Platform.runLater(() -> {
+            System.out.println("✅ AfficherEtapeProjet Controller Initialized");
+            System.out.println("🔍 listNomEtapes: " + listNomEtapes);
+            System.out.println("📝 etapeProjetDetails: " + etapeProjetDetails);
+            listNomEtapes.getItems().clear();
+            loadEtapeList();
+            setupClickListener();
+            setupSearchListener();
+            setupSuggestionClickListener();
+            searchField.setOnMouseClicked(event -> {
+                etapeProjetDetails.clear();
+            });
+        });
+
+        listNomEtapes.setCellFactory(lv -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setStyle("-fx-font-family: 'Arial Rounded MT Bold'; -fx-font-size: 12px; -fx-font-weight: bold;");
+                }
+            }
         });
     }
+
+    @FXML
+    private void handleReload() {
+        System.out.println("🔄 Reload button clicked!");
+        Platform.runLater(() -> {
+            listNomEtapes.getItems().clear();
+            loadEtapeList();
+            initialize();
+        });
+    }
+
 
 
     private void loadEtapeList() {
@@ -88,7 +117,7 @@ public class AfficherEtapeProjet extends ActionView {
             return;
         }
 
-        // Get all projects and filter them based on the query
+
         List<Projet> projets = projetDAO.getAllProjets(); // Assuming you have a method to get all projects
         List<String> filteredProjets = projets.stream()
                 .filter(projet -> projet.getNomProjet().toLowerCase().contains(query.toLowerCase()))
@@ -233,15 +262,6 @@ public class AfficherEtapeProjet extends ActionView {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    @FXML
-    private void handleReload() {
-        System.out.println("🔄 Reload button clicked!");
-        Platform.runLater(() -> {
-            listNomEtapes.getItems().clear();
-            loadEtapeList();
-            initialize();
-        });
-    }
 
     @FXML
     private void handleUpdate() {
@@ -286,9 +306,23 @@ public class AfficherEtapeProjet extends ActionView {
 
             EtapeProjet etape = etapeProjetDAO.getEtapeProjetByNom(selectedEtape);
             if (etape != null) {
-                etapeProjetDAO.deleteEtapeProjet(etape.getId_etapeProjet());
-                loadEtapeList();
-                showAlert("Succès", "L'étape projet a été supprimée avec succès.");
+                // Afficher la boîte de dialogue de confirmation
+                Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmationAlert.setTitle("Confirmer la suppression");
+                confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette étape ?");
+                confirmationAlert.setContentText("Cette action est irréversible.");
+
+                // Attendre la réponse de l'utilisateur
+                Optional<ButtonType> result = confirmationAlert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    // Procéder à la suppression si confirmée
+                    etapeProjetDAO.deleteEtapeProjet(etape.getId_etapeProjet());
+                    loadEtapeList(); // Rafraîchir la liste
+                    showAlert("Succès", "L'étape projet a été supprimée avec succès.");
+                } else {
+                    // Si l'utilisateur annule, afficher le message d'annulation
+                    showAlert("Suppression annulée", "Aucune étape projet n'a été supprimée.");
+                }
             } else {
                 showAlert("Erreur de suppression", "Étape projet non trouvée pour la suppression.");
             }
@@ -296,7 +330,5 @@ public class AfficherEtapeProjet extends ActionView {
             showAlert("Erreur de sélection", "Aucune étape sélectionnée pour la suppression.");
         }
     }
-
-
 
 }

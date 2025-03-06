@@ -14,19 +14,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="591.0" prefWidth="1071.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.EtapeProjet.AfficherEtapeProjet">
+<AnchorPane prefHeight="700.0" prefWidth="1201.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.EtapeProjet.AfficherEtapeProjet">
    <children>
       <HBox layoutX="10.0" layoutY="10.0" spacing="10">
          <children>
-            <TextField fx:id="searchField" prefHeight="26.0" prefWidth="325.0" promptText="🔍 Vous cherchez les étapes d'un projet précis?">
+            <Button fx:id="reload" mnemonicParsing="false" onAction="#handleReload" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Reload" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="12.0" />
+               </font>
+            </Button>
+            <TextField fx:id="searchField" prefHeight="26.0" prefWidth="293.0" promptText="🔍 Vous cherchez les étapes d'un projet précis?">
                <HBox.margin>
-                  <Insets left="57.0" top="7.0" />
+                  <Insets left="55.0" top="15.0" />
                </HBox.margin>
             </TextField>
          </children>
       </HBox>
-      <ListView fx:id="suggestionsProjetList" layoutX="67.0" layoutY="45.0" prefHeight="200.0" prefWidth="270.0" visible="false" />
-      <VBox layoutX="182.0" layoutY="40.0" AnchorPane.leftAnchor="182.0" AnchorPane.topAnchor="50.0">
+      <ListView fx:id="suggestionsProjetList" layoutX="180.0" layoutY="51.0" prefHeight="194.0" prefWidth="294.0" visible="false" />
+      <VBox layoutX="247.0" layoutY="87.0" AnchorPane.leftAnchor="247.0" AnchorPane.topAnchor="87.0">
          <children>
             <GridPane prefHeight="74.0" prefWidth="706.0">
                <columnConstraints>
@@ -60,17 +65,13 @@
                </children>
             </HBox>
             <HBox alignment="CENTER" spacing="10"> <!-- HBox for buttons -->
-               <Button onAction="#handleUpdate" style="-fx-background-color: #4c3f0a;" text="Update" textFill="WHITE" />
-               <Button onAction="#handleDelete" style="-fx-background-color: #b39427;" text="Delete" textFill="#fffbfb" />
+               <Button onAction="#handleUpdate" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Update" textFill="WHITE" />
+               <Button onAction="#handleDelete" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Delete" textFill="#fffbfb" />
                <padding>
                   <Insets top="10.0" />
                </padding>
             </HBox>
          </children>
       </VBox>
-      <Button fx:id="reload" layoutX="14.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleReload" style="-fx-background-color: #4c3f0a;" text="Reload" textFill="WHITE">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="12.0" />
-         </font></Button>
    </children>
 </AnchorPane>

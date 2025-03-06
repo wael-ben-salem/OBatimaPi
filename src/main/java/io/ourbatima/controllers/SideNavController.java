@@ -6,8 +6,10 @@ import io.ourbatima.core.controls.icon.Icons;
 import io.ourbatima.core.exceptions.NavigationException;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
+import io.ourbatima.core.model.ViewUtils;
 import io.ourbatima.core.services.DrawerBehavior;
 import io.ourbatima.core.view.SimpleView;
+import io.ourbatima.core.view.View;
 import io.ourbatima.core.view.layout.DialogContainer;
 import io.ourbatima.core.view.layout.creators.TutorialCreator;
 import io.ourbatima.views.TutorialUnderstanding;
@@ -24,6 +26,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -33,14 +36,18 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
+import java.sql.SQLException;
 import java.util.Map;
-
+import java.io.File;
+import java.io.IOException;
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  02/04/2023
  */
 public class SideNavController extends ActionView {
 
+    public VBox faa;
+    public ToggleButton contra;
     @FXML private StackPane root;
     @FXML private ToggleGroup group;
     @FXML private Button arrowButton;
@@ -398,7 +405,10 @@ public class SideNavController extends ActionView {
     private DrawerBehavior behavior;
 
     @Override
-    public void onInit(Context context) {
+    public void onInit(Context context)  {
+        if (SessionManager.getUtilisateur().getRole()!=Utilisateur.Role.Admin){
+            faa.getChildren().remove(contra);
+        }
         Utilisateur currentUser = SessionManager.getUtilisateur();
         if (currentUser == null) {
             System.err.println("Aucun utilisateur connecté !");
@@ -480,8 +490,8 @@ public class SideNavController extends ActionView {
     }
 
     public void gotoAfficherProjet(ActionEvent actionEvent) {
-        context.routes().nav("afficherProjet");
-
+        View afficherProjetView = ViewUtils.loadView(context, "afficherProjet");
+        context.routes().putAndGo(afficherProjetView);
     }
 
     public void gotoAjouterEtapeProjet(ActionEvent actionEvent) {
@@ -490,15 +500,15 @@ public class SideNavController extends ActionView {
     }
 
     public void gotoAfficherEtapeProjet(ActionEvent actionEvent) {
-        context.routes().nav("afficherEtapeProjet");
-
+        View afficherEtapeProjetView = ViewUtils.loadView(context, "afficherEtapeProjet");
+        context.routes().putAndGo(afficherEtapeProjetView);
     }
 
 
 
     public void gotoAfficherTerrain(ActionEvent actionEvent) {
-        context.routes().nav("afficherTerrain");
-
+        View afficherTerrainView = ViewUtils.loadView(context, "afficherTerrain");
+        context.routes().putAndGo(afficherTerrainView);
     }
 
 
@@ -512,6 +522,7 @@ public class SideNavController extends ActionView {
         context.routes().nav("ListAbonnement");
     }
 
+
     public void gotoWeather(ActionEvent actionEvent) {
         context.routes().nav("Weather");
     }
@@ -522,5 +533,60 @@ public class SideNavController extends ActionView {
 
     public void gotochat(ActionEvent actionEvent) {
         context.routes().nav("Chatbot");
+    }
+
+    public void gotoContratclient(ActionEvent event) {
+        context.routes().nav("ContatsClient");
+    }
+    public void goListeStock(ActionEvent actionEvent) {
+        context.routes().nav("stock_table");
+    }
+
+    public void goAjouterStock(ActionEvent actionEvent) {
+        context.routes().nav("addstock");
+    }
+
+    public void goListeFournisseurs(ActionEvent actionEvent) {
+        context.routes().nav("fournisseur_table");
+    }
+
+    public void goAjouterFournisseur(ActionEvent actionEvent) {
+        context.routes().nav("Fournisseur");
+    }
+
+    public void goListeArticles(ActionEvent actionEvent) {
+        context.routes().nav("articlelist");
+    }
+
+    public void goAjouterArticle(ActionEvent actionEvent) {
+        context.routes().nav("Article");
+    }
+
+    public void BOT(ActionEvent actionEvent) {
+
+
+        String pythonExe = "python"; // or "python3" depending on your setup
+
+        // Path to the bot.py script
+        String scriptPath = "C:/last version/OBatimaPi/src/main/resources/bot.py"; // Adjust this path as needed
+
+        // Create a process builder
+        ProcessBuilder processBuilder = new ProcessBuilder(pythonExe, scriptPath);
+
+        // Optional: Set working directory if necessary
+        processBuilder.directory(new File("src/main/resources"));
+
+        try {
+            // Start the process
+            Process process = processBuilder.start();
+
+            // Optionally, you can handle the output and errors of the script
+            // InputStream inputStream = process.getInputStream();
+            // InputStream errorStream = process.getErrorStream();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

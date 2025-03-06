@@ -48,7 +48,6 @@ public class UpdateProjet {
             if (selectedEtat != null && !selectedEtat.isEmpty()) {
                 projet.setEtat(selectedEtat);
             } else {
-                // Retain the existing value
                 projet.setEtat(projet.getEtat());
             }
             ProjetDAO projetDAO = new ProjetDAO();

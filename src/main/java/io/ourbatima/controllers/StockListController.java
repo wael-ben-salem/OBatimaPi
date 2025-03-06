@@ -1,5 +1,6 @@
 package io.ourbatima.controllers;
 
+import io.ourbatima.core.Context;
 import io.ourbatima.core.Dao.Stock.StockDAO;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Stock;
@@ -7,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.List;
 
@@ -14,6 +17,12 @@ public class StockListController extends ActionView {
 
     @FXML private GridPane stockGrid;
     private final StockDAO stockDAO = new StockDAO();
+
+    @Override
+    public void onInit(Context context) {
+        super.onInit(context);
+        loadStocks(); // Automatically load stocks on initialization
+    }
 
     @FXML
     private void loadStocks() {
@@ -28,10 +37,6 @@ public class StockListController extends ActionView {
         // Add new data rows
         int rowIndex = 1;
         for (Stock stock : stocks) {
-            // ID (non-editable)
-            TextField idField = createTextField(String.valueOf(stock.getId()));
-            idField.setEditable(false); // ID should not be editable
-
             // Nom (editable)
             TextField nomField = createTextField(stock.getNom());
 
@@ -41,8 +46,8 @@ public class StockListController extends ActionView {
             // Date Creation (editable)
             TextField dateCreationField = createTextField(stock.getDateCreation());
 
-            // Save Button
-            Button saveButton = new Button("Save");
+            // Save Button with icon
+            Button saveButton = createIconButton("pencil.png", "Save");
             saveButton.setOnAction(event -> {
                 // Update the stock object
                 stock.setNom(nomField.getText());
@@ -58,9 +63,9 @@ public class StockListController extends ActionView {
                 }
             });
 
-            // Delete Button
-            Button deleteButton = new Button("Delete");
-            deleteButton.setStyle("-fx-background-color: #ff4444; -fx-text-fill: white;");
+            // Delete Button with icon
+            Button deleteButton = createIconButton("bin.png", "Delete");
+            deleteButton.setStyle("-fx-background-color: transparent;"); // Ensure icon is visible
             deleteButton.setOnAction(event -> {
                 // Delete the stock from the database
                 boolean success = stockDAO.deleteStock(stock.getId());
@@ -74,7 +79,7 @@ public class StockListController extends ActionView {
             });
 
             // Add components to the GridPane
-            stockGrid.addRow(rowIndex, idField, nomField, emplacementField, dateCreationField, saveButton, deleteButton);
+            stockGrid.addRow(rowIndex, nomField, emplacementField, dateCreationField, saveButton, deleteButton);
             rowIndex++;
         }
 
@@ -85,5 +90,20 @@ public class StockListController extends ActionView {
         TextField textField = new TextField(text);
         textField.setStyle("-fx-padding: 5; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
         return textField;
+    }
+
+    private Button createIconButton(String iconName, String tooltipText) {
+        Button button = new Button();
+        try {
+            ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/images/" + iconName)));
+            icon.setFitWidth(28);
+            icon.setFitHeight(28);
+            button.setGraphic(icon);
+            button.setStyle("-fx-background-color: transparent;");
+        } catch (Exception e) {
+            System.err.println("Failed to load image: " + iconName);
+            e.printStackTrace();
+        }
+        return button;
     }
 }

@@ -5,6 +5,7 @@ import io.ourbatima.core.impl.IContext;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -25,7 +26,7 @@ public abstract class ActionView implements Initializable {
 
     public void onExit() {};
 
-    public void onInit(Context context) {
+    public void onInit(Context context)  {
         this.context = context;
     };
 
