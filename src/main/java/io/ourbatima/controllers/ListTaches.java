@@ -103,8 +103,11 @@ public class ListTaches extends ActionView {
         Label lblDates = new Label("📅 " + dateDebut + " → " + dateFin);
         lblDates.setFont(Font.font("Arial", 12));
 
+        // Aligning Constructeur and Artisan in the same row
         Label lblConstructeur = new Label("👷 " + constructeur);
         Label lblArtisan = new Label("🔨 " + artisan);
+        HBox artisanConstructeurBox = new HBox(10, lblConstructeur, lblArtisan);
+        artisanConstructeurBox.setStyle("-fx-alignment: center-left;");
 
         // Vocal Icon
         ImageView vocalIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/speaker.png")));
@@ -120,18 +123,19 @@ public class ListTaches extends ActionView {
         buttonBox.setStyle("-fx-alignment: center;");
 
         Button updateButton = new Button("📝 Update");
-        updateButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white; -fx-min-width: 80px; -fx-max-width: 80px;");
+        updateButton.setStyle("-fx-background-color: #D2B48C; -fx-text-fill: white; -fx-min-width: 80px; -fx-max-width: 80px; -fx-background-radius: 5;");
         updateButton.setOnAction(e -> openUpdatePopup(id));
 
         Button deleteButton = new Button("❌ Delete");
-        deleteButton.setStyle("-fx-background-color: #FF0000; -fx-text-fill: white; -fx-min-width: 80px; -fx-max-width: 80px;");
+        deleteButton.setStyle("-fx-background-color: #8B4513; -fx-text-fill: white; -fx-min-width: 80px; -fx-max-width: 80px; -fx-background-radius: 5;");
         deleteButton.setOnAction(e -> deleteTask(id));
 
         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
-        card.getChildren().addAll(lblTitle, descriptionBox, lblEtat, lblDates, lblConstructeur, lblArtisan, buttonBox);
+        card.getChildren().addAll(lblTitle, descriptionBox, lblEtat, lblDates, artisanConstructeurBox, buttonBox);
         return card;
     }
+
 
     private void deleteTask(int idTache) {
         TacheDAO tacheDAO = new TacheDAO();

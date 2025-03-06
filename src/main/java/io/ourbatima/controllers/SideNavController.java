@@ -75,6 +75,8 @@ public class SideNavController extends ActionView {
         }
     }
 
+
+
     @FXML
     private void goDash() throws NavigationException {
         context.routes().nav("dash");
@@ -463,10 +465,14 @@ public class SideNavController extends ActionView {
     }
 
     public void gotoplan(ActionEvent actionEvent) {
-        context.routes().nav("AddPlan");
+        context.routes().nav("ListPlan");
+
     }
     public void gotoplanf(ActionEvent actionEvent) {
-        context.routes().nav("AddTask");
+        context.routes().nav("ListTaches");
+    }
+    public void gotoSavedPlans(ActionEvent actionEvent) {
+        context.routes().nav("SavedPlans");
     }
 
     public void gotoAjoutProjet(ActionEvent actionEvent) {
@@ -506,4 +512,15 @@ public class SideNavController extends ActionView {
         context.routes().nav("ListAbonnement");
     }
 
+    public void gotoWeather(ActionEvent actionEvent) {
+        context.routes().nav("Weather");
+    }
+
+    public void gotoDashboard(ActionEvent actionEvent) {
+        context.routes().nav("Dashboard");
+    }
+
+    public void gotochat(ActionEvent actionEvent) {
+        context.routes().nav("Chatbot");
+    }
 }

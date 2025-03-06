@@ -200,12 +200,25 @@
                   </Group>
                </graphic>
                <content>
-                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                  <VBox fx:id="drawerContentt" id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
                      <children>
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoplan" styleClass="drawer-item" text="Planification" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoplanf" styleClass="drawer-item" text="Tache" toggleGroup="$group3" />
+                        <Button text="📅 Planification" onAction="#gotoplan"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+
+                        <Button text="📝 Tâche" onAction="#gotoplanf"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+
+                        <Button text="📂 Saved Plans" onAction="#gotoSavedPlans"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                        <Button text="⛅ Météo" onAction="#gotoWeather"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                        <Button text="📊 Dashboard" onAction="#gotoDashboard"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                        <Button text="💬 Voir Chat" onAction="#gotochat"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
                      </children>
                   </VBox>
+
                </content>
             </TitledPane>
 
