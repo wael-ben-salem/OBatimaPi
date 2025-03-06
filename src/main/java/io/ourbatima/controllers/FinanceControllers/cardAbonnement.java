@@ -1,7 +1,9 @@
 package io.ourbatima.controllers.FinanceControllers;
 
+import io.ourbatima.controllers.SessionManager;
 import io.ourbatima.core.Context;
 import io.ourbatima.core.Dao.FinanceService.abonnementService;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import io.ourbatima.core.model.financeModel.abonnement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -22,6 +25,10 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class cardAbonnement implements Initializable {
+    public HBox raaaa;
+    public Button updateButton;
+    public Button deleteButton;
+    public Button sinscrire;
     @FXML private Label nameLabel;
     @FXML private Label Prix;
     @FXML private Label Duree;
@@ -30,12 +37,14 @@ public class cardAbonnement implements Initializable {
   private  ListAbonnement ListAbonnement;
     private abonnement abo;
     private Context context;
+    private Label statusLabel;
 private abonnementService as=new abonnementService();
+    private PaymentHandler paymentHandler = new PaymentHandler();
 
     public void setUserData(abonnement abo) {
         this.abo = abo;
         updateUI();
-        
+
     }
     @FXML
    public void onInit(Context context){
@@ -62,6 +71,14 @@ private abonnementService as=new abonnementService();
         nameLabel.setText(abo.getNomAbonnement() );
         Duree.setText(abo.getDuree());
         Prix.setText(String.valueOf(abo.getPrix()));
+        if (SessionManager.getUtilisateur().getRole()== Utilisateur.Role.Client){
+            raaaa.getChildren().remove(updateButton);
+            raaaa.getChildren().remove(deleteButton);
+
+        }
+        else {
+          raaaa.getChildren().remove(sinscrire);
+        }
 
 
     }
@@ -132,4 +149,12 @@ private abonnementService as=new abonnementService();
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
+    public void Sinscrire(ActionEvent event) {
+
+
+
+}
+
+
 }

@@ -41,8 +41,16 @@
         </VBox>
 
         <!-- Actions utilisateur à droite -->
-        <HBox spacing="10" alignment="CENTER_RIGHT">
-
+        <HBox fx:id="raaaa" spacing="10" alignment="CENTER_RIGHT">
+            <Button fx:id="sinscrire" styleClass="icon-button" onAction="#Sinscrire">
+                <graphic>
+                    <ImageView fitWidth="28" fitHeight="28">
+                        <image>
+                            <Image url="@../../../../images/phone.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
             <Button fx:id="updateButton" styleClass="icon-button" onAction="#updateUser">
                 <graphic>
                     <ImageView fitWidth="28" fitHeight="28">

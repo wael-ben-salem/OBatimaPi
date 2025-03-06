@@ -26,6 +26,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -35,6 +36,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +46,8 @@ import java.io.IOException;
  */
 public class SideNavController extends ActionView {
 
+    public VBox faa;
+    public ToggleButton contra;
     @FXML private StackPane root;
     @FXML private ToggleGroup group;
     @FXML private Button arrowButton;
@@ -399,7 +403,10 @@ public class SideNavController extends ActionView {
     private DrawerBehavior behavior;
 
     @Override
-    public void onInit(Context context) {
+    public void onInit(Context context)  {
+        if (SessionManager.getUtilisateur().getRole()!=Utilisateur.Role.Admin){
+            faa.getChildren().remove(contra);
+        }
         Utilisateur currentUser = SessionManager.getUtilisateur();
         if (currentUser == null) {
             System.err.println("Aucun utilisateur connecté !");
@@ -509,6 +516,9 @@ public class SideNavController extends ActionView {
         context.routes().nav("ListAbonnement");
     }
 
+
+    public void gotoContratclient(ActionEvent event) {
+        context.routes().nav("ContatsClient");
     public void goListeStock(ActionEvent actionEvent) {
         context.routes().nav("stock_table");
     }

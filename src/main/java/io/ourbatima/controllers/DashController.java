@@ -211,7 +211,9 @@ public final class DashController extends ActionView {
         GridPane.setConstraints(scheduleList, 0, 1, 1, 1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
         GridPane.setConstraints(curvedChart, 1, 1, 1, 1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
         loadNotifications();
+
 //        setupRealTimeUpdates();
+
 
     }
     private void loadNotifications() {
@@ -238,6 +240,9 @@ public final class DashController extends ActionView {
             alert.showAndWait();
         });
     }
+
+
+
 //    private void setupRealTimeUpdates() {
 //        Timeline timeline = new Timeline(
 //                new KeyFrame(Duration.seconds(5),
@@ -246,6 +251,7 @@ public final class DashController extends ActionView {
 //        timeline.setCycleCount(Animation.INDEFINITE);
 //        timeline.play();
 //    }
+
 
     private void updateNotificationBadge() {
         // Mettre à jour le badge de notifications

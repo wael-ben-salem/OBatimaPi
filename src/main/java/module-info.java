@@ -42,6 +42,8 @@ module io.ourbatima {
     requires com.fasterxml.jackson.databind;
     requires java.sql;
     requires org.apache.pdfbox;
+    requires okhttp3;
+    requires spark.core;
 
 
     opens io.ourbatima to javafx.fxml;

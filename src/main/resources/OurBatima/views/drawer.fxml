@@ -209,12 +209,13 @@
                   </Group>
                </graphic>
                <content>
-                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                     <children>
-
-
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats" toggleGroup="$group3" />
+                  <VBox id="drawer-content" fx:id="faa" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                     <children >
+                        <ToggleButton fx:id="contra" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats" toggleGroup="$group3" />
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoContratclient" styleClass="drawer-item" text="Contrats client" toggleGroup="$group3" />
+
+                  
 
                      </children>
                   </VBox>

@@ -262,6 +262,16 @@
 
   }
 
+  - {
+    name: ContatsClient,
+    title: ContatsClient,
+    folder: pages/Finance_vews,
+    fxml: ContatsClient.fxml
+
+
+  }
+
+
 
   - {
     name: addstock,
@@ -299,6 +309,7 @@
     folder: pages,
     fxml: Article.fxml
   }
+
 
 #  - {
 #    name: sales_left,

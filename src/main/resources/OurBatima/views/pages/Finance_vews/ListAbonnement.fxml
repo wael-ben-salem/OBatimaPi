@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
+
+
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
@@ -23,8 +25,9 @@
     </center>
 
     <!-- Top Bar avec titre dynamique -->
+
     <top>
-          <ToolBar prefHeight="88.0" prefWidth="588.0">
+          <ToolBar prefHeight="88.0" prefWidth="588.0" fx:id="top" >
               <Label fx:id="titleLabel" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
              <VBox prefHeight="78.0" prefWidth="233.0">
                  <children>
@@ -33,7 +36,7 @@
                  </children>
              </VBox>
               <Pane prefHeight="78.0" prefWidth="87.0" HBox.hgrow="ALWAYS" />  <!-- Pousse le bouton à droite -->
-              <Button onAction="#openCreateUserForm">
+              <Button fx:id="crreatebuton" onAction="#openCreateUserForm">
                   <graphic>
                       <ImageView fitHeight="20" fitWidth="20">
                           <image>

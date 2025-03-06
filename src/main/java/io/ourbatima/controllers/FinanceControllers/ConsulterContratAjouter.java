@@ -1,5 +1,6 @@
 package io.ourbatima.controllers.FinanceControllers;
 
+import io.ourbatima.controllers.SessionManager;
 import io.ourbatima.core.Dao.FinanceService.ContratServise;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
@@ -7,7 +8,10 @@ import io.ourbatima.core.model.financeModel.Contrat;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -17,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -30,9 +35,15 @@ import java.io.File;
 import java.io.IOException;
 
 import java.io.File;
-import java.sql.SQLException;
+import java.sql.*;
+
+import static io.ourbatima.core.Dao.DatabaseConnection.getConnection;
+import static io.ourbatima.core.model.Utilisateur.Utilisateur.Role.Client;
 
 public class ConsulterContratAjouter {
+    public ImageView image;
+    public Text datesinclt;
+    private String img;
     public Text delai;
     public Text nmclt;
     public ImageView images;
@@ -41,6 +52,8 @@ public class ConsulterContratAjouter {
     public Text adresse;
     public Text tell;
     public Text emailll;
+    public Button Signier;
+    public VBox rootd;
     private String imagepath;
     private Contrat cont;
     @FXML
@@ -58,7 +71,14 @@ public class ConsulterContratAjouter {
     public ConsulterContratAjouter() {
         this.cs = new ContratServise(); // Initialize the service
     }
+public void onInit(){
+        Utilisateur u = SessionManager.getUtilisateur();
+        if (u.getRole()!= Client){
+            this.rootd.getChildren().remove(Signier);
 
+        }
+
+}
     public void setdataCOntrat(Contrat ajouterContrats) {
         this.cont = ajouterContrats;
         loadData(); // Load data after setting the Contrat object
@@ -69,8 +89,25 @@ public class ConsulterContratAjouter {
             System.err.println("Contrat object is not set. Call setdataCOntrat() first.");
             return;
         }
+if (cont.getSignatureclient()!=null){
+    rootd.getChildren().remove(Signier);
+    if (cont.getSignatureclient() != null && !cont.getSignatureclient().isEmpty()) {
+        File imageFile = new File(cont.getSignatureclient());
+        if (imageFile.exists()) {
+            Image imagea = new Image(imageFile.toURI().toString());
+            image.setImage(imagea);
+        } else {
+            System.err.println("Image file not found: " + cont.getSignatureclient());
+        }
+    } else {
+        System.err.println("Image path is not set.");
+    }
 
+}
         try {
+
+
+
             String id_client = cs.getClientNOMEtidbyidcontrat(cont.getIdProjet()).split("-")[0];
             utilisateur = cs.getclientbyid(Integer.parseInt(id_client));
             projet = cs.getProjetbyid(cont.getIdProjet());
@@ -85,6 +122,9 @@ public class ConsulterContratAjouter {
                 "Le présent contrat a pour objet la réalisation des travaux de construction suivants : %s a un Type d'architecture %s et le projet de type %s.",
                 projet.getNomProjet(), projet.getStyleArch(), projet.getType()
         );
+        String sinclt=String.format("Date Signature :"+cont.getDatesignatureClient());
+
+
         String prixtra = String.format(
                 "Le montant total des travaux est fixé à %.2f DT, hors taxes.",
                 cont.getMontantTotal()
@@ -98,7 +138,7 @@ String telll=String.format("Téléphone : %s",utilisateur.getTelephone());
 String adr=String.format("Adresse : %s",utilisateur.getAdresse());
 String mall=String.format("Email : %s",utilisateur.getEmail());
 emailll.setText(mall);
-
+datesinclt.setText(sinclt);
 adresse.setText(adr);
 
 
@@ -139,6 +179,7 @@ tell.setText(telll);
     @FXML
     private void dowload(ActionEvent event) {
         root.getChildren().remove(saveButton);
+        root.getChildren().remove(Signier);
         // Step 1: Take a snapshot of the VBox
         WritableImage snapshot = root.snapshot(new SnapshotParameters(), null);
         root.getChildren().add(saveButton);
@@ -174,9 +215,39 @@ tell.setText(telll);
                 document.save(file);
                 System.out.println("PDF saved to: " + file.getAbsolutePath());
             }
-        } catch (IOException e) {
+            if (img !=null && SessionManager.getUtilisateur().getRole()==Client){
+                try (Connection conn = getConnection()){
+                    String sql = "UPDATE contrat SET signatureclient = ?, DatesignatureClient = ? WHERE id_contrat = ?";
+
+                    PreparedStatement pstmt = conn.prepareStatement(sql);
+
+
+                        // Set the parameters
+                        pstmt.setString(1, img); // Set the client signature
+                        pstmt.setDate(2, new java.sql.Date(System.currentTimeMillis())); // Set the date signature
+                        pstmt.setInt(3, cont.getIdContrat()); // Set the contrat ID
+                    int rs =pstmt.executeUpdate();
+
+
+
+
+
+                    } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+
+
+            } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        Stage stage = (Stage) root.getScene().getWindow();
+        stage.close();
+
+
     }
 
     // Helper method to convert BufferedImage to byte array
@@ -185,5 +256,56 @@ tell.setText(telll);
         ImageIO.write(image, format, baos);
         return baos.toByteArray();
     }
-}
+
+    public void signier(ActionEvent event) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/pages/Finance_vews/updatesignature.fxml"));
+            Parent root = loader.load();
+            updatesignature updatesignatur = loader.getController();
+            updatesignatur.setAjouterContratsController(this);
+
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            // Recharger la liste des utilisateurs après création
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+
+
+    }
+
+    public void setimagePath(String imagepath) {
+        this.img=imagepath ;
+        loadImg();    }
+
+
+
+    private void loadImg() {
+        if (img != null && !img.isEmpty()) {
+            File imageFile = new File(img);
+            if (imageFile.exists()) {
+                Image imagea = new Image(imageFile.toURI().toString());
+                image.setImage(imagea);
+            } else {
+                System.err.println("Image file not found: " + img);
+            }
+        } else {
+            System.err.println("Image path is not set.");
+        }
+    }
+
+
+
+
+
+    }
+
 
