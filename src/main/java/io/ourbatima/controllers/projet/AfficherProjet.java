@@ -115,7 +115,6 @@ public class AfficherProjet extends ActionView implements Initializable {
             return Optional.empty();
         }
 
-        // Check if the user is a client and has an email
         if (utilisateur.getRole() == Utilisateur.Role.Client) {
             String email = utilisateur.getEmail();
             if (email != null && !email.isEmpty()) {

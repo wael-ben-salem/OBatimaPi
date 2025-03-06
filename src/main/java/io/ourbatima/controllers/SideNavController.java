@@ -38,7 +38,8 @@ import javafx.scene.text.Text;
 
 import java.sql.SQLException;
 import java.util.Map;
-
+import java.io.File;
+import java.io.IOException;
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  02/04/2023
@@ -515,7 +516,57 @@ public class SideNavController extends ActionView {
         context.routes().nav("ListAbonnement");
     }
 
+
     public void gotoContratclient(ActionEvent event) {
         context.routes().nav("ContatsClient");
+    public void goListeStock(ActionEvent actionEvent) {
+        context.routes().nav("stock_table");
+    }
+
+    public void goAjouterStock(ActionEvent actionEvent) {
+        context.routes().nav("addstock");
+    }
+
+    public void goListeFournisseurs(ActionEvent actionEvent) {
+        context.routes().nav("fournisseur_table");
+    }
+
+    public void goAjouterFournisseur(ActionEvent actionEvent) {
+        context.routes().nav("Fournisseur");
+    }
+
+    public void goListeArticles(ActionEvent actionEvent) {
+        context.routes().nav("articlelist");
+    }
+
+    public void goAjouterArticle(ActionEvent actionEvent) {
+        context.routes().nav("Article");
+    }
+
+    public void BOT(ActionEvent actionEvent) {
+
+
+        String pythonExe = "python"; // or "python3" depending on your setup
+
+        // Path to the bot.py script
+        String scriptPath = "C:/last version/OBatimaPi/src/main/resources/bot.py"; // Adjust this path as needed
+
+        // Create a process builder
+        ProcessBuilder processBuilder = new ProcessBuilder(pythonExe, scriptPath);
+
+        // Optional: Set working directory if necessary
+        processBuilder.directory(new File("src/main/resources"));
+
+        try {
+            // Start the process
+            Process process = processBuilder.start();
+
+            // Optionally, you can handle the output and errors of the script
+            // InputStream inputStream = process.getInputStream();
+            // InputStream errorStream = process.getErrorStream();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

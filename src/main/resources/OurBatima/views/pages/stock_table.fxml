@@ -6,6 +6,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
 
 <StackPane xmlns="http://javafx.com/javafx/17"
            xmlns:fx="http://javafx.com/fxml/1"
@@ -13,12 +16,11 @@
 
     <VBox spacing="10" style="-fx-padding: 20;">
         <!-- Button to load stocks -->
-        <Button text="Load Stocks" onAction="#loadStocks" />
+        <Button text="Load Stocks" onAction="#loadStocks" prefHeight="45.0" prefWidth="135.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css"  textFill="WHITE" />
 
         <!-- GridPane to display the stocks -->
         <GridPane fx:id="stockGrid" style="-fx-padding: 5;">
             <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" minWidth="50" /> <!-- ID -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Nom -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Emplacement -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Date Creation -->
@@ -27,11 +29,10 @@
 
             <!-- Header Row -->
             <children>
-                <Label text="ID" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Nom" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Emplacement" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Date Creation" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Action" GridPane.columnIndex="4" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Emplacement" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Date Creation" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Action" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
             </children>
         </GridPane>
     </VBox>

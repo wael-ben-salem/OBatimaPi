@@ -32,6 +32,8 @@ public class cardAbonnement implements Initializable {
     @FXML private Label nameLabel;
     @FXML private Label Prix;
     @FXML private Label Duree;
+    @FXML private HBox root;
+
   private  ListAbonnement ListAbonnement;
     private abonnement abo;
     private Context context;
@@ -51,6 +53,20 @@ private abonnementService as=new abonnementService();
 
 
     }
+
+    public HBox getView() {
+        if (root == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/OurBatima/views/pages/Finance_vews/cardAbonnement.fxml"));
+                loader.setController(this);
+                root = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return root;
+    }
+
     private void updateUI() {
         nameLabel.setText(abo.getNomAbonnement() );
         Duree.setText(abo.getDuree());

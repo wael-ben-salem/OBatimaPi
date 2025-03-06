@@ -14,31 +14,30 @@
            fx:controller="io.ourbatima.controllers.ArticleListController">
 
     <VBox spacing="10" style="-fx-padding: 20;">
-        <Button text="Load Articles" onAction="#loadArticles" />
+        <Button text="Load Articles" onAction="#loadArticles" prefHeight="45.0" prefWidth="135.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css"  textFill="WHITE"/>
+        <Button text="PDF" onAction="#PDF" prefHeight="45.0" prefWidth="122.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css"  textFill="WHITE" />
 
         <GridPane fx:id="articleGrid" style="-fx-padding: 5;">
             <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" minWidth="50" /> <!-- ID -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Nom -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Description -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="100" /> <!-- Prix Unitaire -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Photo -->
-                <ColumnConstraints hgrow="ALWAYS" minWidth="100" /> <!-- Stock ID -->
-                <ColumnConstraints hgrow="ALWAYS" minWidth="100" /> <!-- Fournisseur ID -->
-                <ColumnConstraints hgrow="ALWAYS" minWidth="100" /> <!-- Etape Projet ID -->
+                <ColumnConstraints hgrow="ALWAYS" minWidth="100" /> <!-- Stock -->
+                <ColumnConstraints hgrow="ALWAYS" minWidth="100" /> <!-- Fournisseur -->
+                <ColumnConstraints hgrow="ALWAYS" minWidth="100" /> <!-- Etape Projet -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="200" /> <!-- Action (Save + Delete) -->
             </columnConstraints>
 
             <children>
-                <Label text="ID" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Nom" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Description" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Prix Unitaire" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Photo" GridPane.columnIndex="4" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Stock ID" GridPane.columnIndex="5" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Fournisseur ID" GridPane.columnIndex="6" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Etape Projet ID" GridPane.columnIndex="7" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Action" GridPane.columnIndex="8" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Description" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Prix Unitaire" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Photo" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Stock" GridPane.columnIndex="4" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Fournisseur" GridPane.columnIndex="5" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Etape Projet" GridPane.columnIndex="6" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Action" GridPane.columnIndex="7" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
             </children>
         </GridPane>
     </VBox>
