@@ -1,7 +1,5 @@
 package io.ourbatima.core.model.Utilisateur;
 
-import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
-
 public class Constructeur  extends  Utilisateur{
     int constructeur_id ;
     private  Utilisateur utilisateur;
@@ -46,6 +44,8 @@ public class Constructeur  extends  Utilisateur{
                 utilisateur.getStatut(),
                 utilisateur.isConfirmed(),
                 utilisateur.getRole());
+
+
 
         this.constructeur_id = constructeur_id;
         this.specialite = specialite;

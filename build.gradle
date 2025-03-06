@@ -108,10 +108,10 @@ dependencies {
 
     implementation 'org.openjfx:javafx-web:18.0.2'
     implementation 'com.sun.mail:javax.mail:1.6.2'
-    implementation 'io.agora:agora-rtm:2.2.2'
-    implementation 'io.agora.rtc:full-sdk:3.6.2' // SDK principal
     implementation fileTree(dir: 'src/main/resources/libs', include: ['*.jar'])
+    implementation("io.agora.rtc:full-sdk:4.5.0")
 
+    implementation("io.agora:agora-rtm:2.2.2")
 
 
 
@@ -227,12 +227,7 @@ jlinkZip {
 //    }
 //}
 
-task runWithExecJarExecutable(type: Exec) {
-    dependsOn jar
-    group = "io.ourbatima"
-    description = "Run the output executable jar with ExecTask"
-    commandLine "java", "-jar", jar.archiveFile.get()
-}
+
 task copyOpenCVLib(type: Copy) {
     from 'src/main/resources/libs'
     into "$buildDir/libs"

@@ -232,3 +232,31 @@ COLLATE = utf8mb4_unicode_ci;
 -- --------------------------------------------------------
 CREATE INDEX idx_notif_created ON notifications(created_at DESC);
 CREATE INDEX idx_messages_sent ON direct_messages(sent_at DESC);
+
+CREATE TABLE Conversation (
+id INT PRIMARY KEY AUTO_INCREMENT,
+equipe_id INT NOT NULL,
+nom VARCHAR(255) NOT NULL,
+date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (equipe_id) REFERENCES Equipe(id)
+);
+
+CREATE TABLE Conversation_Membre (
+conversation_id INT,
+utilisateur_id INT,
+PRIMARY KEY (conversation_id, utilisateur_id),
+FOREIGN KEY (conversation_id) REFERENCES Conversation(id),
+FOREIGN KEY (utilisateur_id) REFERENCES Utilisateur(id)
+);
+
+CREATE TABLE Message (
+id INT PRIMARY KEY AUTO_INCREMENT,
+conversation_id INT,
+expediteur_id INT,
+contenu TEXT,
+date_envoi DATETIME DEFAULT CURRENT_TIMESTAMP,
+lu BOOLEAN DEFAULT false,
+FOREIGN KEY (conversation_id) REFERENCES Conversation(id),
+FOREIGN KEY (expediteur_id) REFERENCES Utilisateur(id)
+);
+>pip install agora-token-builder

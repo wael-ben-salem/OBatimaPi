@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -23,7 +22,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.LoginController">
+<StackPane alignment="BASELINE_CENTER" styleClass="responsive" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.LoginController">
    <stylesheets>
       <URL value="@../../style/css/colors.css" />
       <URL value="@../../style/css/skeleton.css" />
@@ -31,7 +30,7 @@
       <URL value="@../../style/css/scroll.css" />
    </stylesheets>
    <children>
-      <HBox prefHeight="546" prefWidth="1134" spacing="0">
+      <HBox prefHeight="546.0" prefWidth="1134.0" spacing="0" StackPane.alignment="CENTER">
          <!-- Section gauche avec effet de métal brossé -->
          <StackPane prefWidth="358" style="-fx-background-color: linear-gradient(to bottom, #c5a814, #372a28);">
             <children>
@@ -52,7 +51,10 @@
             </children>
          </StackPane>
          <!-- Section droite avec fond blanc et formulaire -->
-         <StackPane fx:id="mainPane" style="-fx-background-color: #f8f9fa;" HBox.hgrow="ALWAYS" />
+         <StackPane fx:id="mainPane" alignment="CENTER" style="-fx-background-color: #f8f9fa;" HBox.hgrow="ALWAYS" />
+         <StackPane.margin>
+            <Insets right="350.0" />
+         </StackPane.margin>
       </HBox>
       <ScrollPane id="bodyLogin" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent;" vbarPolicy="AS_NEEDED">
          <content>
@@ -79,6 +81,8 @@
                      <RowConstraints prefHeight="60.0" />
                      <RowConstraints prefHeight="30.0" />
                      <RowConstraints prefHeight="40.0" />
+                     <RowConstraints prefHeight="60.0" />
+                     <RowConstraints prefHeight="60.0" />
                      <RowConstraints prefHeight="60.0" />
                   </rowConstraints>
 
@@ -107,14 +111,8 @@
 
                      <Label fx:id="passwordError" styleClass="error-message" GridPane.columnSpan="3" GridPane.rowIndex="4" />
 
-                     <!-- Options -->
-                     <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="3" GridPane.rowIndex="5">
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="forgotPassword" onMouseClicked="#handleForgotPassword" style="-fx-text-fill: #c5a814;" styleClass="link" text="Mot de passe oublié ?" />
-                     </HBox>
-
                      <!-- Bouton de connexion -->
-                     <Button fx:id="btn_enter" onAction="#handleLogin" styleClass="btn-gradient" text="Se connecter" GridPane.columnSpan="3" GridPane.rowIndex="6" />
+                     <Button fx:id="btn_enter" onAction="#handleLogin" styleClass="btn-gradient" text="Se connecter" GridPane.columnSpan="3" GridPane.rowIndex="5" />
                      <Label text="Email :">
                         <GridPane.margin>
                            <Insets />
@@ -125,6 +123,9 @@
                            <Insets top="30.0" />
                         </GridPane.margin>
                      </Label>
+                     <Label fx:id="forgotPassword" onMouseClicked="#handleForgotPassword" prefHeight="18.0" prefWidth="135.0" style="-fx-text-fill: #c5a814;" styleClass="link" text="Mot de passe oublié ?" GridPane.rowIndex="6" />
+                     <!-- Bouton Réinitialiser le mot de passe (désactivé par défaut) -->
+                     <Button fx:id="btnResetPassword" disable="true" onAction="#handleResetPassword" prefHeight="42.0" prefWidth="243.0" styleClass="btn-gradient" text="Réinitialiser le mot de passe" GridPane.rowIndex="7" />
                   </children>
                </GridPane>
 

@@ -87,6 +87,10 @@ public abstract class Launcher extends Application {
             e.printStackTrace();
         }
     }
+    public static HostServices getHostServicesInstance() {
+        return hostServices;
+    }
+
 
     private String clean(String c) {
         return context.getResource(c).toExternalForm();

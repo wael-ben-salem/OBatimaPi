@@ -1,13 +1,18 @@
 package io.ourbatima.controllers;
 
 import io.ourbatima.core.Context;
+import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
 import io.ourbatima.core.Dao.Utilisateur.NotificationDAO;
-import io.ourbatima.core.controls.*;
+import io.ourbatima.core.Launcher;
+import io.ourbatima.core.controls.CurvedChart;
+import io.ourbatima.core.controls.DonutChart;
+import io.ourbatima.core.controls.GNBadge;
+import io.ourbatima.core.controls.GNIconButton;
 import io.ourbatima.core.controls.icon.IconContainer;
 import io.ourbatima.core.controls.icon.Icons;
 import io.ourbatima.core.interfaces.ActionView;
-import io.ourbatima.core.model.NotificationCell;
 import io.ourbatima.core.model.SearchViewBox;
+import io.ourbatima.core.model.Utilisateur.Equipe;
 import io.ourbatima.core.model.Utilisateur.Notification;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import io.ourbatima.core.view.layout.Bar;
@@ -15,12 +20,12 @@ import io.ourbatima.core.view.layout.BoxUser;
 import io.ourbatima.core.view.layout.DialogContainer;
 import io.ourbatima.core.view.layout.creators.ScheduleListCreator;
 import io.ourbatima.core.view.layout.creators.ScheduleListItem;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.*;
 import javafx.scene.Node;
@@ -28,20 +33,24 @@ import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -56,6 +65,20 @@ public final class DashController extends ActionView {
     private Label lblUserName;
     @FXML
     private StackPane root;
+
+    @FXML
+    private Button videoCallButton;
+    @FXML
+    private StackPane localVideo;
+    @FXML
+    private StackPane remoteVideo;
+    @FXML
+    private ListView<String> messageList;
+    @FXML
+    private TextField messageInput;
+
+
+    private GNBadge sms; // Badge pour les messages
     private GNBadge notification; // Déclaration comme variable de classe
 
     private ObservableList<Notification> notifications = FXCollections.observableArrayList();
@@ -65,17 +88,19 @@ public final class DashController extends ActionView {
     @FXML
     private GridPane footer;
     @FXML
+    private Button sendButton;
+
+    @FXML
     private StackedAreaChart<Number, Number> graphic;
 
 
-    private Utilisateur currentUser;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         //Creating the Area chart
         graphic.setTitle("Sales by Region");
         Utilisateur currentUser = SessionManager.getUtilisateur();
-        if(currentUser == null) {
+        if (currentUser == null) {
             System.err.println("Aucun utilisateur connecté !");
             return;
         }
@@ -158,7 +183,7 @@ public final class DashController extends ActionView {
 
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setCategories(FXCollections.observableArrayList(
-                Arrays.asList("10", "20", "30", "40", "50", "60", "70" )));
+                Arrays.asList("10", "20", "30", "40", "50", "60", "70")));
 
         NumberAxis yAxis = new NumberAxis(0, 1000, 100);
         yAxis.setLabel("Population in Millions");
@@ -211,22 +236,36 @@ public final class DashController extends ActionView {
         GridPane.setConstraints(barChart, 1, 0, 1, 1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
         GridPane.setConstraints(scheduleList, 0, 1, 1, 1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
         GridPane.setConstraints(curvedChart, 1, 1, 1, 1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-        loadNotifications();
-        setupRealTimeUpdates();
+
+        currentUser = SessionManager.getUtilisateur();
+        if (currentUser != null) {
+            loadNotifications();
+            setupRealTimeUpdates();
+            updateSmsBadge();
+
+        }
 
     }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
     private void loadNotifications() {
         try {
-            if(SessionManager.getUtilisateur() != null) {
+            if (SessionManager.getUtilisateur() != null) {
                 List<Notification> latestNotifications =
                         new MessagingService().getUserNotifications(
                                 SessionManager.getUtilisateur().getId()
                         );
                 notifications.setAll(latestNotifications);
+                updateNotificationBadge(); // Mettre à jour le badge
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            // Gérer l'erreur (log + notification utilisateur)
             showErrorAlert("Erreur de chargement des notifications");
         }
     }
@@ -239,14 +278,7 @@ public final class DashController extends ActionView {
             alert.showAndWait();
         });
     }
-    private void setupRealTimeUpdates() {
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(5),
-                        e -> updateNotifications())
-        );
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
-    }
+
 
     private void updateNotifications() {
         try {
@@ -260,19 +292,34 @@ public final class DashController extends ActionView {
             ex.printStackTrace();
         }
     }
+
     private void updateNotificationBadge() {
-        // Mettre à jour le badge de notifications
-        int unreadCount = (int) notifications.stream()
-                .filter(n -> !n.isRead())
-                .count();
-        notification.setNumberOfNotifications(unreadCount);
+        try {
+            int unreadCount = new NotificationDAO().getUnreadCount(SessionManager.getUtilisateur().getId());
+            System.out.println("andke manndek" + unreadCount);
+            Platform.runLater(() -> {
+                notification.setNumberOfNotifications(unreadCount);
+
+                // Animation du badge
+                if (unreadCount > 0) {
+                    RotateTransition rt = new RotateTransition(Duration.millis(200), notification);
+                    rt.setByAngle(20);
+                    rt.setCycleCount(2);
+                    rt.setAutoReverse(true);
+                    rt.play();
+                }
+            });
+        } catch (SQLException e) {
+            showErrorAlert("Erreur de mise à jour des notifications");
+        }
     }
 
     @Override
     public void onInit(Context context) {
 
 
-
+        String css = getClass().getResource("/styles/notif.css").toExternalForm();
+        root.getStylesheets().add(css);
         super.onInit(context);
         Bar bar = new Bar();
         context.layout().setBar(bar);
@@ -283,9 +330,9 @@ public final class DashController extends ActionView {
         }
         Utilisateur currentUser = SessionManager.getUtilisateur();
         String userRole = String.valueOf(currentUser.getRole());
-        System.out.println("je suis dans dash "+currentUser.getRole());
+        System.out.println("je suis dans dash " + currentUser.getRole());
 // Ajouter après l'initialisation de currentUser dans onInit()
-        if(currentUser != null) {
+        if (currentUser != null) {
 
             setBackgroundColorBasedOnRole(userRole, bar);
         } else {
@@ -305,7 +352,7 @@ public final class DashController extends ActionView {
         shadow.setOffsetY(3);
         shadow.setColor(Color.GRAY);
         title.setEffect(shadow);
-        title.setPadding(new Insets(0,0,0,5));
+        title.setPadding(new Insets(0, 0, 0, 5));
         title.setTextFill(Color.web("#FFD700")); // Doré
         StackPane root = new StackPane(title);
         root.setStyle("-fx-background-color: linear-gradient(to bottom, #2c3e50, #34495e);"); // Fond dégradé bleu foncé
@@ -340,37 +387,44 @@ public final class DashController extends ActionView {
         });
 
 
-
 //        textSearch.setIcon(Icons.SEARCH);
 //        HBox.setMargin(textSearch, new Insets(2,10, 2, 10));
 //        new SearchViewBox(context, textSearch, context.searchItems());
 
-        context.layout().bar().addInLeft( title );
-        HBox.setMargin(title, new Insets(0,0,0,5));
+        context.layout().bar().addInLeft(title);
+        HBox.setMargin(title, new Insets(0, 0, 0, 5));
 
         notification = new GNBadge(Icons.NOTIFICATIONS);
         notification.getStyleClass().add("bd-danger");
 //            notification.setColorCircle(Color.web(Colors.AQUA.toString()));
-        GNBadge sms = new GNBadge(Icons.SMS);
+        sms = new GNBadge(Icons.SMS);
         sms.setNumberOfNotifications(39);
         sms.getStyleClass().add("bd-info");
 //            sms.setColorCircle(Color.web(Colors.GRAPEFRUIT.toString()));
 
-        BoxUser boxUser = new BoxUser(
-                currentUser.getNom() + " " + currentUser.getPrenom(),
+        BoxUser boxUser;
+        try {
+            String imagePath = context.getResource("/images/default.png").toExternalForm();
+            boxUser = new BoxUser(currentUser.getNom() + " " + currentUser.getPrenom(), imagePath);
+        } catch (Exception e) {
+            // Fallback si l'image n'est pas trouvée
+            String defaultImage = getClass().getResource("/images/default.png").toExternalForm();
+            boxUser = new BoxUser(currentUser.getNom() + " " + currentUser.getPrenom(), defaultImage);
 
-                context.getResource("style/img/me_avatar.jpeg").toExternalForm());
+            // Log d'avertissement
+            System.out.println("Image par défaut utilisée : " + defaultImage);
+        }
 
 //        boxUser.setPadding(new Insets(0,2,10,2));
-        Separator separator =  new Separator(Orientation.VERTICAL);
-        HBox.setMargin(boxUser, new Insets(0,0,0,10));
+        Separator separator = new Separator(Orientation.VERTICAL);
+        HBox.setMargin(boxUser, new Insets(0, 0, 0, 10));
 
         context.layout().bar().addInRight(rightBar);
 
 
         rightBar.getChildren().addAll(btnSearch, sms, notification);
 
-        HBox.setMargin(notification, new Insets(0, 15, 0,5));
+        HBox.setMargin(notification, new Insets(0, 15, 0, 5));
 
         VBox b = createDialogNotification();
 
@@ -397,7 +451,7 @@ public final class DashController extends ActionView {
                     } else if (newValue.doubleValue() < 810) {
                         Grid.change(gridTiles, 2);
                         Grid.change(footer, 1);
-                    } else if (newValue.doubleValue() < 1400){
+                    } else if (newValue.doubleValue() < 1400) {
                         Grid.inLine(gridTiles);
                         Grid.change(footer, 2);
                     } else {
@@ -405,7 +459,12 @@ public final class DashController extends ActionView {
                         Grid.inLine(footer);
                     }
                 });
+        sms.setOnMouseClicked(event -> handleVideoCall());
+        notification.setOnMouseClicked(event -> showNotifications());
+
     }
+
+
     private void setBackgroundColorBasedOnRole(String role, Region region) {
         if (region == null || role == null) return;
 
@@ -430,26 +489,32 @@ public final class DashController extends ActionView {
                 break;
         }
     }
+
     private VBox createDialogNotification() {
         VBox root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
+        root.setPrefSize(400, 400); // Taille fixe
 
         Text title = new Text("Notifications");
         title.getStyleClass().addAll("h5", "text-bold");
         Hyperlink btn = new Hyperlink("Mark as read");
         btn.setGraphic(new IconContainer(Icons.DONE_ALL));
         btn.setPadding(new Insets(10));
-        btn.getStyleClass().addAll("text-bold","transparent", "text-info", "no-border");
+        btn.getStyleClass().addAll("text-bold", "transparent", "text-info", "no-border");
 
-        // Action pour "Mark as read"
         btn.setOnAction(event -> {
             try {
+                Utilisateur currentUser = SessionManager.getUtilisateur();
                 new NotificationDAO().markAllAsRead(currentUser.getId());
                 loadNotifications(); // Recharger les notifications
                 updateNotificationBadge(); // Mettre à jour le badge
+
                 // Rafraîchir l'affichage
                 VBox updatedNotifications = createNotifications(notifications.toArray(new Notification[0]));
-                root.getChildren().set(1, updatedNotifications);
+                ScrollPane scrollPane = (ScrollPane) root.lookup("#notificationScrollPane");
+                if (scrollPane != null) {
+                    scrollPane.setContent(updatedNotifications);
+                }
             } catch (SQLException e) {
                 showErrorAlert("Erreur lors de la mise à jour des notifications");
             }
@@ -457,72 +522,47 @@ public final class DashController extends ActionView {
 
         GridPane header = new GridPane();
         header.getChildren().addAll(title, btn);
-        GridPane.setConstraints(title, 0,0,1,1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-        GridPane.setConstraints(btn, 1,0,1,1, HPos.RIGHT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+        GridPane.setConstraints(title, 0, 0, 1, 1, HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+        GridPane.setConstraints(btn, 1, 0, 1, 1, HPos.RIGHT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
 
         VBox vBox = createNotifications(notifications.toArray(new Notification[0]));
+        ScrollPane scrollPane = new ScrollPane(vBox);
+        scrollPane.setId("notificationScrollPane"); // Ajouter un ID pour le retrouver plus tard
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPrefHeight(250); // Hauteur fixe
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
         Hyperlink btnAll = new Hyperlink("View All Notifications");
         btnAll.setPadding(new Insets(10));
         btnAll.getStyleClass().addAll("text-bold", "transparent", "no-border", "text-info");
 
-        // Action pour "View All Notifications"
         btnAll.setOnAction(event -> showAllNotificationsDialog());
 
-        root.getChildren().setAll(header, vBox, btnAll);
+        root.getChildren().setAll(header, scrollPane, btnAll);
         return root;
     }
-
     private void showAllNotificationsDialog() {
-        ListView<Notification> listView = new ListView<>(notifications);
-        listView.setCellFactory(param -> new ListCell<Notification>() {
-            @Override
-            protected void updateItem(Notification notification, boolean empty) {
-                super.updateItem(notification, empty);
-                if (empty || notification == null) {
-                    setGraphic(null);
-                } else {
-                    ToggleButton toggleButton = new ToggleButton();
-                    toggleButton.setMaxWidth(Double.MAX_VALUE);
-                    toggleButton.getStyleClass().addAll("btn-flat", "transparent");
-
-                    Text text = new Text(notification.getMessage());
-                    TextFlow textFlow = new TextFlow(text);
-                    text.getStyleClass().addAll("text-12", "text-bold");
-                    String pattern = "dd MMM yyyy HH:mm:ss";
-                    Text time = new Text(notification.getCreatedAt().format(DateTimeFormatter.ofPattern(pattern, Locale.US)));
-
-                    Circle circle = new Circle(5);
-                    circle.setStyle(notification.isRead() ? "-fx-fill : -info;" : "-fx-fill : white;");
-
-                    GridPane grid = new GridPane();
-                    grid.add(circle, 0, 0, 1, 2);
-                    grid.add(textFlow, 1, 0);
-                    grid.add(time, 1, 1);
-                    grid.setHgap(10);
-
-                    toggleButton.setGraphic(grid);
-
-                    // Action pour marquer comme lu
-                    toggleButton.setOnAction(event -> {
-                        try {
-                            notification.markAsRead();
-                            new NotificationDAO().markAsRead(notification.getId());
-                            updateNotifications(); // Rafraîchir la liste
-                        } catch (SQLException e) {
-                            showErrorAlert("Erreur lors du marquage comme lu");
-                        }
-                    });
-
-                    setGraphic(toggleButton);
-                }
-            }
-        });
+        VBox notificationsContent = createNotifications(notifications.toArray(new Notification[0]));
+        ScrollPane scrollPane = new ScrollPane(notificationsContent);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPrefHeight(400);
 
         Dialog<Void> dialog = new Dialog<>();
-        dialog.getDialogPane().setContent(listView);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-        dialog.setTitle("Toutes les notifications");
+        dialog.getDialogPane().setContent(scrollPane);
+        dialog.getDialogPane().setPrefSize(500, 450);
+        dialog.setTitle("Historique des Notifications");
+        dialog.getDialogPane().getStyleClass().add("notification-dialog");
+
+        // Ajouter un style CSS personnalisé
+        dialog.getDialogPane().getStylesheets().add(
+                getClass().getResource("/styles/notif.css").toExternalForm()
+        );
+
+        // Bouton de fermeture
+        ButtonType closeButton = new ButtonType("Fermer", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().add(closeButton);
+
         dialog.showAndWait();
     }
 
@@ -543,44 +583,428 @@ public final class DashController extends ActionView {
         donutChart.setData(data);
         return donutChart;
     }
-
     private VBox createNotifications(Notification... notifications) {
-        VBox box = new VBox();
+        VBox box = new VBox(5);
+        box.setPadding(new Insets(10));
+        box.setStyle("-fx-background-color: #f8f9fa;");
+
         for (Notification notification : notifications) {
-            ToggleButton toggleButton = new ToggleButton();
-            toggleButton.setMaxWidth(Double.MAX_VALUE);
-            toggleButton.getStyleClass().addAll("btn-flat", "transparent");
+            HBox item = new HBox(10);
+            item.setAlignment(Pos.CENTER_LEFT);
+            item.setPadding(new Insets(10));
+            item.setStyle("-fx-background-color: white; -fx-background-radius: 5;");
+            item.setEffect(new DropShadow(3, Color.gray(0.3)));
 
-            Text text = new Text(notification.getMessage());
-            TextFlow textFlow = new TextFlow(text);
-            text.getStyleClass().addAll("text-12", "text-bold");
-            String pattern = "dd MMM yyyy HH:mm:ss";
-            Text time = new Text(notification.getCreatedAt().format(DateTimeFormatter.ofPattern(pattern, Locale.US)));
+            // Indicateur visuel
+            Circle indicator = new Circle(5);
+            indicator.setFill(notification.isRead() ? Color.GRAY : Color.web("#4CAF50"));
 
-            Circle circle = new Circle(5);
-            circle.setStyle(notification.isRead() ? "-fx-fill : -info;" : "-fx-fill : white;");
+            VBox content = new VBox(3);
+            Label message = new Label(notification.getMessage());
+            message.setStyle("-fx-font-weight: " + (notification.isRead() ? "normal" : "bold") + ";");
+            message.setWrapText(true);
 
-            GridPane grid = new GridPane();
-            grid.add(circle, 0, 0, 1, 2);
-            grid.add(textFlow, 1, 0);
-            grid.add(time, 1, 1);
-            grid.setHgap(10);
+            Label time = new Label(notification.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMM HH:mm")));
+            time.setStyle("-fx-text-fill: #666; -fx-font-size: 0.9em;");
 
-            toggleButton.setGraphic(grid);
+            content.getChildren().addAll(message, time);
 
-            // Action pour marquer comme lu
-            toggleButton.setOnAction(event -> {
-                try {
-                    notification.markAsRead();
-                    new NotificationDAO().markAsRead(notification.getId());
-                    updateNotifications(); // Rafraîchir la liste
-                } catch (SQLException e) {
-                    showErrorAlert("Erreur lors du marquage comme lu");
+            // Bouton d'action
+            if ("CONVERSATION".equals(notification.getType())) {
+                Button actionBtn = new Button("Rejoindre");
+                actionBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+                item.getChildren().addAll(indicator, content, actionBtn);
+            } else if ("MEETING".equals(notification.getType())) {
+                // Ajouter un bouton ou un texte spécifique pour les notifications de type "MEETING"
+                Button joinBtn = new Button("Rejoindre la réunion");
+                joinBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+                item.getChildren().addAll(indicator, content, joinBtn);
+            } else {
+                item.getChildren().addAll(indicator, content);
+            }
+
+            // Animation pour nouvelles notifications
+            if (!notification.isRead()) {
+                ScaleTransition st = new ScaleTransition(Duration.millis(300), indicator);
+                st.setFromX(1);
+                st.setFromY(1);
+                st.setToX(1.5);
+                st.setToY(1.5);
+                st.setAutoReverse(true);
+                st.setCycleCount(2);
+                st.play();
+            }
+
+            box.getChildren().add(item);
+
+            item.setOnMouseEntered(e -> item.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 10;"));
+            item.setOnMouseExited(e -> item.setStyle("-fx-background-color: white; -fx-background-radius: 10;"));
+        }
+
+        return box;
+    }
+    private HBox createNotificationItem(Notification notification) {
+        HBox item = new HBox(10);
+        item.setAlignment(Pos.CENTER_LEFT);
+
+        Circle indicator = new Circle(5,
+                notification.isRead() ? Color.GRAY : Color.GREEN);
+
+        Label message = new Label(notification.getMessage());
+        message.setWrapText(true);
+
+        if ("CONVERSATION".equals(notification.getType())) {
+            Button openBtn = new Button("Ouvrir");
+            item.getChildren().addAll(indicator, message, openBtn);
+        } else {
+            item.getChildren().addAll(indicator, message);
+        }
+
+        return item;
+    }
+
+    private void showNotifications() {
+        VBox notificationsPanel = createDialogNotification();
+
+        context.flow()
+                .content(new DialogContainer(notificationsPanel).size(400, 280)) // Configuration du contenu
+                .show(Pos.BOTTOM_CENTER, notification); // Appel de show() sur le flux
+    }
+
+
+    private void startJitsiMeeting(Equipe team) {
+        String roomName = URLEncoder.encode(team.getNom(), StandardCharsets.UTF_8);
+        String jitsiUrl = "https://meet.jit.si/" + roomName;
+
+        try {
+            HostServices hostServices = Launcher.getHostServicesInstance();
+            hostServices.showDocument(jitsiUrl);
+        } catch (Exception e) {
+            showErrorAlert("Erreur de lancement de la réunion");
+        }
+    }
+    private void notifyTeamMembers(Equipe team, Utilisateur currentUser) {
+        try {
+            List<Utilisateur> members = new EquipeDAO().getTeamMembers(team.getId());
+            String message = currentUser.getNom() + " a rejoint la réunion de l'équipe " + team.getNom();
+
+            MessagingService messagingService = new MessagingService();
+            for (Utilisateur member : members) {
+                if (member.getId() != currentUser.getId()) {
+                    // Créer une notification
+                    Notification notification = new Notification(
+                            member.getId(), // recipientId
+                            "Nouveau participant au meet", // title
+                            message, // message
+                            "MEETING", // type
+                            false, // isRead
+                            LocalDateTime.now() // createdAt
+                    );
+
+                    // Envoyer la notification via le service de messagerie
+                    messagingService.sendUserNotification(
+                            member.getId(),
+                            "Nouveau participant au meet",
+                            message
+                    );
+
+
+                    // Ajouter la notification à la liste
+                    notifications.add(notification);
+
+                    // Afficher une alerte immédiate
+                    showNewNotificationAlert(notification);
+                    System.out.println("Notification créée : " + notification.getMessage());
+
+                }
+            }
+
+            // Mettre à jour l'interface utilisateur
+            Platform.runLater(() -> {
+                VBox updatedNotifications = createNotifications(notifications.toArray(new Notification[0]));
+                ScrollPane scrollPane = (ScrollPane) root.lookup("#notificationScrollPane"); // Assurez-vous d'avoir un ID sur le ScrollPane
+                if (scrollPane != null) {
+                    scrollPane.setContent(updatedNotifications);
                 }
             });
 
-            box.getChildren().addAll(toggleButton, new Separator());
+        } catch (SQLException e) {
+            showErrorAlert("Erreur de notification des membres");
+            e.printStackTrace();
         }
-        return box;
     }
+
+    private void setupRealTimeUpdates() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(3), e -> {
+                    try {
+                        checkNewRatings();
+
+                        List<Notification> newNotifications = new MessagingService()
+                                .getUserNotifications(SessionManager.getUtilisateur().getId());
+
+                        // Détecter les nouvelles notifications non lues
+                        newNotifications.stream()
+                                .filter(n -> n.getCreatedAt().isAfter(LocalDateTime.now().minusSeconds(5)))
+                                .forEach(this::showNewNotificationAlert);
+
+                        notifications.setAll(newNotifications);
+                        updateNotificationBadge();
+                        updateSmsBadge(); // Nouvelle méthode pour SMS
+
+                    } catch (SQLException ex) {
+                        showErrorAlert("Erreur de mise à jour");
+                    }
+                }
+                ));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private void checkNewRatings() {
+        try {
+            List<Notification> ratingNotifications = new NotificationDAO()
+                    .getUnreadNotificationsByType(SessionManager.getUtilisateur().getId(), "RATING");
+
+            ratingNotifications.forEach(notification -> {
+                showNewNotificationAlert(notification);
+                try {
+                    new NotificationDAO().markAsRead(notification.getId());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+        } catch (SQLException e) {
+            System.err.println("Erreur de vérification des évaluations: " + e.getMessage());
+        }
+    }
+
+    private void updateSmsBadge() {
+        try {
+            int conversationCount = new EquipeDAO()
+                    .getTeamsByUserId(SessionManager.getUtilisateur().getId())
+                    .size();
+
+            Platform.runLater(() -> {
+                sms.setNumberOfNotifications(conversationCount);
+                // Animation
+                ScaleTransition st = new ScaleTransition(Duration.millis(200), sms);
+                st.setFromX(1);
+                st.setFromY(1);
+                st.setToX(1.2);
+                st.setToY(1.2);
+                st.setAutoReverse(true);
+                st.setCycleCount(2);
+                st.play();
+            });
+        } catch (SQLException e) {
+            showErrorAlert("Erreur de chargement des conversations");
+        }
+    }
+
+
+    private void handleVideoCall() {
+        try {
+            Utilisateur currentUser = SessionManager.getUtilisateur();
+            List<Equipe> teams = new EquipeDAO().getTeamsByUserId(currentUser.getId());
+
+            Dialog<Void> dialog = new Dialog<>();
+            dialog.setTitle("Rejoindre une réunion");
+            dialog.getDialogPane().setPrefSize(400, 300);
+
+            ListView<Equipe> listView = new ListView<>(FXCollections.observableArrayList(teams));
+            listView.setCellFactory(param -> new ListCell<Equipe>() {
+                @Override
+                protected void updateItem(Equipe team, boolean empty) {
+                    super.updateItem(team, empty);
+
+                    if (empty || team == null) {
+                        setGraphic(null);
+                        setText(null);
+                        return;
+                    }
+
+                    try {
+                        HBox box = new HBox(10);
+                        box.setAlignment(Pos.CENTER_LEFT);
+                        box.setPadding(new Insets(10));
+
+                        // Gestion sécurisée de l'image
+                        ImageView icon = new ImageView();
+                        try {
+                            String imagePath = context.getResource("images/meet.png").toExternalForm();
+                            icon.setImage(new Image(imagePath));
+                        } catch (Exception e) {
+                            // Fallback si l'image n'est pas trouvée
+                            String defaultImage = getClass().getResource("/images/default-meet.png").toExternalForm();
+                            icon.setImage(new Image(defaultImage));
+                            System.out.println("Image de secours utilisée pour : " + team.getNom());
+                        }
+                        icon.setFitWidth(32);
+                        icon.setFitHeight(32);
+
+                        VBox textBox = new VBox(5);
+                        Label name = new Label(team.getNom());
+                        name.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+                        Label members = new Label(team.getMembres().size() + " membres");
+                        members.setStyle("-fx-text-fill: #666;");
+
+                        textBox.getChildren().addAll(name, members);
+                        box.getChildren().addAll(icon, textBox);
+                        setGraphic(box);
+
+                    } catch (Exception e) {
+                        // Fallback minimaliste en cas d'erreur
+                        setText(team.getNom() + " (" + team.getMembres().size() + " membres)");
+                        System.err.println("Erreur de rendu de l'équipe : " + team.getNom());
+                        e.printStackTrace();
+                    }
+                }
+            });
+            listView.setOnMouseClicked(event -> {
+                Equipe selected = listView.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    startJitsiMeeting(selected);
+
+                    // Envoyer une notification aux membres de l'équipe
+                    String notificationMessage = currentUser.getNom() + " a rejoint la conversation de l'équipe " + selected.getNom() + ". Il vous attend pour communiquer.";
+                    MessagingService messagingService = new MessagingService();
+                    try {
+                        messagingService.sendTeamNotification(selected, notificationMessage);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    // Ajouter la notification à la liste des notifications
+                    Notification notification = new Notification(
+                            currentUser.getId(), // recipientId (ici, l'utilisateur courant)
+                            "Nouveau participant au meet", // title
+                            notificationMessage, // message
+                            "MEETING", // type
+                            false, // isRead
+                            LocalDateTime.now() // createdAt
+                    );
+                    notifications.add(notification);
+
+                    // Mettre à jour l'interface utilisateur
+                    Platform.runLater(() -> {
+                        VBox updatedNotifications = createNotifications(notifications.toArray(new Notification[0]));
+                        ScrollPane scrollPane = (ScrollPane) root.lookup("#notificationScrollPane");
+                        if (scrollPane != null) {
+                            scrollPane.setContent(updatedNotifications);
+                        }
+                    });
+
+                    dialog.close();
+                }
+            });
+
+            VBox content = new VBox(10);
+            content.setPadding(new Insets(10));
+            content.getChildren().add(new Label("Sélectionnez une équipe :"));
+            content.getChildren().add(listView);
+
+            dialog.getDialogPane().setContent(content);
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+            dialog.showAndWait();
+        } catch (SQLException e) {
+            showErrorAlert("Erreur de chargement des équipes");
+        }
+    }
+    // Modifier la méthode existante pour le bouton FXML
+    @FXML
+    private void handleVideoCallButton(ActionEvent event) {
+        handleVideoCall();
+    }
+
+    private void showNewNotificationAlert(Notification notification) {
+        Platform.runLater(() -> {
+            try {
+                // Création du conteneur principal
+                HBox alertBox = new HBox(10);
+                alertBox.setAlignment(Pos.CENTER_LEFT);
+                alertBox.setPadding(new Insets(15, 20, 15, 15));
+                alertBox.setStyle("-fx-background-color: #4CAF50; "
+                        + "-fx-background-radius: 15px; "
+                        + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.5, 0, 1);");
+
+                // Icône de notification
+                ImageView icon = new ImageView();
+                try {
+                    Image notifyIcon = new Image(getClass().getResourceAsStream("/images/notification-bell.png"));
+                    icon.setImage(notifyIcon);
+                } catch (Exception e) {
+                    // Fallback si l'image n'est pas trouvée
+                    icon.setImage(new Image(getClass().getResourceAsStream("/images/default-notification.png")));
+                    System.err.println("Icône de notification non trouvée, utilisation du fallback");
+                }
+                icon.setFitWidth(24);
+                icon.setFitHeight(24);
+
+                // Contenu textuel
+                VBox textContainer = new VBox(3);
+                Label titleLabel = new Label("Nouvelle notification");
+                titleLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 14px;");
+
+                Label contentLabel = new Label(notification.getMessage());
+                contentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 13px;");
+                contentLabel.setWrapText(true);
+                contentLabel.setMaxWidth(300);
+
+                textContainer.getChildren().addAll(titleLabel, contentLabel);
+
+                // Bouton de fermeture
+                Button closeButton = new Button("×");
+                closeButton.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: transparent;");
+                closeButton.setOnAction(e -> ((StackPane) alertBox.getParent()).getChildren().remove(alertBox));
+
+                alertBox.getChildren().addAll(icon, textContainer, closeButton);
+
+                // Conteneur de positionnement
+                StackPane container = new StackPane(alertBox);
+                container.setAlignment(Pos.TOP_CENTER);
+                container.setPadding(new Insets(20));
+                container.setPickOnBounds(false); // Permet les clics à travers
+
+                // Animation d'entrée
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(300), container);
+                fadeIn.setFromValue(0);
+                fadeIn.setToValue(1);
+
+                // Animation de sortie
+                FadeTransition fadeOut = new FadeTransition(Duration.millis(300), container);
+                fadeOut.setFromValue(1);
+                fadeOut.setToValue(0);
+
+                // Temporisation automatique
+                PauseTransition delay = new PauseTransition(Duration.seconds(5));
+                delay.setOnFinished(e -> fadeOut.play());
+
+                // Gestion de la hiérarchie
+                root.getChildren().add(container);
+
+                // Démarrage des animations
+                fadeIn.play();
+                delay.play();
+
+                // Suppression après animation
+                fadeOut.setOnFinished(e -> root.getChildren().remove(container));
+
+            } catch (Exception e) {
+                System.err.println("Erreur d'affichage de la notification : " + e.getMessage());
+                // Fallback basique
+                Label errorLabel = new Label("Nouvelle notification : " + notification.getMessage());
+                errorLabel.setStyle("-fx-text-fill: white; -fx-background-color: #4CAF50; -fx-padding: 10px;");
+                StackPane.setAlignment(errorLabel, Pos.TOP_CENTER);
+                StackPane.setMargin(errorLabel, new Insets(20));
+
+                root.getChildren().add(errorLabel);
+
+                new Timeline(new KeyFrame(Duration.seconds(5),
+                        ef -> root.getChildren().remove(errorLabel))).play();
+            }
+        });
+    }
+
 }

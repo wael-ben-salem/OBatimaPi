@@ -4,25 +4,36 @@ import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Worker;
-import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.collections.FXCollections;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import org.mindrot.jbcrypt.BCrypt;
-import java.util.Optional;
+
+import java.io.ByteArrayInputStream;
 
 public class RegisterController extends ActionView {
     // Champs existants
     @FXML private TextField nomField;
     @FXML private TextField prenomField;
+    private byte[] capturedFaceData;
+
+    @FXML
+    private ImageView facePreview;
+    @FXML
+    private Button btnEnrollFace;
     @FXML private TextField emailField;
+    private Utilisateur utilisateur;
+
     @FXML private TextField telephoneField;
     @FXML private TextField adresseField;
     @FXML private PasswordField motDePasseField;
@@ -91,18 +102,46 @@ public class RegisterController extends ActionView {
             showAlert("Erreur", "Cet email est déjà utilisé.");
             return;
         }
+        if (capturedFaceData == null) { // <-- Ajouter cette vérification
+            System.out.println("Veuillez capturer un visage avant de sauvegarder");
+            return;
+        }
 
         String motDePasseHache = BCrypt.hashpw(motDePasse, BCrypt.gensalt());
         Utilisateur utilisateur = new Utilisateur(0, nom, prenom, email, motDePasseHache,
                 telephone, adresse, Utilisateur.Statut.en_attente, false, Utilisateur.Role.Client);
-
+        utilisateur.setFaceData(capturedFaceData);
         if (utilisateurDAO.saveUser(utilisateur)) {
+            sendWelcomeEmail();
             showAlert("Succès", "Compte créé avec succès !");
             goToLogin(event);
         } else {
             showAlert("Erreur", "Échec de la création du compte.");
         }
     }
+
+    private void sendWelcomeEmail() {
+        new Thread(() -> {
+            try {
+                String message = "Bienvenue sur ourbatima!\n\nVos identifiants:\nEmail: "
+                        + utilisateur.getEmail();
+
+                System.out.println("Tentative d'envoi à " + utilisateur.getEmail()); // Debug
+                EmailService.sendEmail(
+                        utilisateur.getEmail(),
+                        "Confirmation de compte",
+                        message
+                );
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    showAlert(String.valueOf(AlertType.ERROR),
+                            "Erreur technique: " + e.getCause().getMessage());
+                });
+            }
+        }).start();
+    }
+
 
     private boolean validateForm() {
         boolean isValid = true;
@@ -232,6 +271,61 @@ public class RegisterController extends ActionView {
         });
     }
 
+
+    @FXML
+    private void handleFaceEnrollment() {
+        // Créer une alerte de progression
+        Alert progressAlert = new Alert(Alert.AlertType.INFORMATION);
+        progressAlert.setTitle("Capture faciale");
+        progressAlert.setHeaderText("Capture en cours...");
+        progressAlert.setContentText("Veuillez positionner votre visage face à la caméra");
+        progressAlert.initOwner(btnEnrollFace.getScene().getWindow());
+
+        // Ajouter un indicateur de progression
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        progressAlert.setGraphic(progressIndicator);
+        progressAlert.show();
+
+        btnEnrollFace.setDisable(true);
+
+        new Thread(() -> {
+            try {
+                byte[] rawData = FaceAuthenticator.captureFace();
+                if (rawData == null) {
+                    Platform.runLater(() -> {
+                        progressAlert.close();
+                        showAlertplus(Alert.AlertType.WARNING,
+                                "Aucun visage détecté",
+                                "Veuillez vous positionner correctement devant la caméra");
+                    });
+                    return;
+                }
+
+                byte[] encryptedData = FaceEncryption.encrypt(rawData);
+                byte[] decryptedData = FaceEncryption.decrypt(encryptedData);
+
+                Platform.runLater(() -> {
+                    progressAlert.close();
+                    facePreview.setImage(new Image(new ByteArrayInputStream(decryptedData)));
+                    capturedFaceData = encryptedData;
+                    showAlertplus(Alert.AlertType.INFORMATION,
+                            "Succès",
+                            "Capture faciale terminée avec succès !");
+                });
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    progressAlert.close();
+                    showAlertplus(Alert.AlertType.ERROR,
+                            "Erreur",
+                            "Échec de la capture : " + e.getMessage());
+                });
+            } finally {
+                Platform.runLater(() -> btnEnrollFace.setDisable(false));
+            }
+        }).start();
+    }
+
     // Bridge pour la communication entre Java et JavaScript
     public class JSBridge {
         private final RegisterController controller;
@@ -246,6 +340,16 @@ public class RegisterController extends ActionView {
         }
     }
 
+    private void showAlertplus(Alert.AlertType type, String title, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(type);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.initOwner(btnEnrollFace.getScene().getWindow());
+            alert.showAndWait();
+        });
+    }
 
     private void resetErrors() {
         nomError.setText("");

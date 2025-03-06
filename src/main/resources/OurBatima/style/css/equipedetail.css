@@ -41,4 +41,12 @@
 .artisan-card:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
     -fx-translate-y: -2;
-}
+}/* equipedetail.css */
+ .member-image {
+     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+ }
+
+ .rating-container {
+     -fx-alignment: center-right;
+     -fx-padding: 15px;
+ }

@@ -6,7 +6,16 @@
     -color-danger: #dc3545;
     -color-success: #28a745;
 }
+/* Style pour les champs invalides */
+.text-field:error {
+    -fx-border-color: #ff0000;
+    -fx-border-width: 2px;
+}
 
+.text-field:error:focused {
+    -fx-border-color: #ff4444;
+    -fx-effect: dropshadow(gaussian, rgba(255,68,68,0.25), 10, 0, 0, 0);
+}
 /* Thème Sombre */
 .root:dark {
     -color-background: #2d2d2d;

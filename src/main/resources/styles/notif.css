@@ -1,0 +1,80 @@
+/* styles.css */
+.notification-button {
+    -fx-background-color: transparent;
+    -fx-padding: 8px;
+    -fx-border-radius: 5px;
+    -fx-border-color: transparent;
+    -fx-alignment: LEFT;
+}
+
+.notification-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+}
+
+.unread-circle {
+    -fx-fill: #FF4444; /* Rouge pour les notifications non lues */
+}
+
+.read-circle {
+    -fx-fill: #66FFFF; /* Bleu pour les notifications lues */
+}
+
+.text-muted {
+    -fx-fill: #888888;
+}
+.notification-button {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8px;
+}
+
+.notification-button:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.unread-circle {
+    -fx-fill: #4CAF50;
+}
+
+.read-circle {
+    -fx-fill: #9E9E9E;
+}
+
+.scroll-pane {
+    -fx-background: #FFFFFF;
+    -fx-border-color: transparent;
+}
+.notification-alert {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+    -fx-padding: 15;
+    -fx-spacing: 10;
+}
+
+.unread-notification {
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}
+
+.notification-badge {
+    -fx-background-color: #ff4444;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-min-width: 20;
+    -fx-min-height: 20;
+}
+.notification-dialog {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 5px;
+    -fx-padding: 15px;
+}
+
+.notification-dialog .scroll-pane {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+
+.notification-dialog .button-bar {
+    -fx-padding: 10px 0 0 0;
+}

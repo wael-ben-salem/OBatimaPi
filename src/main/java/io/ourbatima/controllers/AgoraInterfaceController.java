@@ -1,2 +1,5 @@
-package io.ourbatima.controllers;public class AgoraInterfaceController {
+package io.ourbatima.controllers;
+
+public class AgoraInterfaceController {
+
 }
