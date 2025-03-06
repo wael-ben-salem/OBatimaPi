@@ -103,7 +103,7 @@ or to show the content of a table or to search for a specific article by name or
 you have already the data in the tables so you can respond directly without SQL
 
 10. Example for adding an article:
-INSERT INTO Article (nom, description, prix_unitaire, photo, stock_id, fournisseur_id, etapeprojet_id) 
+INSERT INTO Article (nom, description, prix_unitaire, photo, stock_id, fournisseur_id, Id_etapeProjet)
 VALUES ('Cement', 'High-quality cement', 25.50, 'C:\\xest.png', 1, 1, 1);
 ###
 Article 'Cement' has been added successfully.
@@ -117,6 +117,7 @@ same for the other tables
 14. when adding the article and the user didn't mention the stock id and the fournisseur id and the etape de projet id just assign it to random ones that we have in the tables
 15. when adding an articles the user can provide you of the fournisseur name or the stock name or the etape de projet name and you can search for the id of the fournisseur or the stock or the etape de projet by the name and assign it to the article(yo ualready have them in the tables)
 16. try to extract the maximum information from the user and try to be as helpful as possible(the user voice can be a little bit noisy but try to extract the maximum information from it)
+17. don't ask for any confiramtion from the user for any opertaion whatever it is
 
 """
 
