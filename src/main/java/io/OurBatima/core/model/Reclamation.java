@@ -3,71 +3,84 @@ package io.OurBatima.core.model;
 import java.time.LocalDateTime;
 
 public class Reclamation {
-    int id;
-    String Description,statut;
-    LocalDateTime date;
+    private int id;
+    private String description;
+    private String statut;
+    private LocalDateTime date;
+    private int utilisateurId;
 
+    // Constructeur par défaut
+    public Reclamation() {}
 
-
-//constructeur sans commentaire 
-    public Reclamation(){}
-
-// constructeur avec paramétres 
-    public Reclamation(int id,String Description,String
-        statut,LocalDateTime date) {
-            this.id = id;
-            this.Description = Description;
-            this.statut = statut;;
-            this.date = date;
-        }
-// constructeur sans ID
-    public Reclamation( String Description, String statut, LocalDateTime date) {
-
-            this.Description = Description;
+    // Constructeur avec tous les champs
+    public Reclamation(int id, String description, String statut, LocalDateTime date, int utilisateurId) {
+        this.id = id;
+        this.description = description;
         this.statut = statut;
-            this.date = date;
-        }
-        @Override
-        public String toString() {
-            return "Reclamation{" +
-                    "id=" + id +
-                    ", description=" + Description +
-                    ", statut='" + statut + '\'' +
-                    ", date='" + date + '\'' +
-                    '}';
-        }
+        this.date = date;
+        this.utilisateurId = utilisateurId;
+    }
 
-        public int getId() {
-            return id;
-        }
+    public Reclamation( String description, String statut, LocalDateTime date, int utilisateurId) {
 
-        public void setId(int id) {
-            this.id = id;
-        }
+        this.description = description;
+        this.statut = statut;
+        this.date = date;
+        this.utilisateurId = utilisateurId;
+    }
 
-        public String getDescription() {
-            return Description;
-        }
 
-        public void setDescription(String Description) {
-            this.Description = Description;
-        }
+    // Getters
+    public int getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public int getUtilisateurId() {
+        return utilisateurId;
+    }
+
+    // Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
     }
 
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-        public void setStatut(String Statut) {
-                this.statut = statut;
-        }
-    public String getStatut() {
-        return statut;
+    public void setUtilisateurId(int utilisateurId) {
+        this.utilisateurId = utilisateurId;
     }
 
-
-
+    // Méthode toString pour affichage
+    @Override
+    public String toString() {
+        return "Reclamation{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", statut='" + statut + '\'' +
+                ", date=" + date +
+                ", utilisateurId=" + utilisateurId +
+                '}';
     }
-
+}

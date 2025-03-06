@@ -39,6 +39,8 @@ module io.OurBatima {
     requires org.eclipse.jetty.server;
     requires java.mail;
     requires com.fasterxml.jackson.core;
+    requires oauth2.oidc.sdk;
+    requires org.apache.pdfbox;
 
     opens io.OurBatima to javafx.fxml;
 
@@ -52,5 +54,9 @@ module io.OurBatima {
     opens io.OurBatima.core.model to javafx.fxml;
     opens io.OurBatima.core.controls.skin to javafx.fxml;
     opens io.OurBatima.core.picture_selector to javafx.fxml;
+    exports io.OurBatima.controllers.Reclamation;
+    opens io.OurBatima.controllers.Reclamation to javafx.fxml;
+    exports io.OurBatima.controllers.Reponse;
+    opens io.OurBatima.controllers.Reponse to javafx.fxml;
 
 }

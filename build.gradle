@@ -76,6 +76,20 @@ dependencies {
 
     implementation 'org.openjfx:javafx-web:18.0.2'
     implementation 'com.sun.mail:javax.mail:1.6.2'
+    implementation 'org.apache.pdfbox:pdfbox:2.0.30' // Ajout de PDFBox
+
+    implementation 'org.yaml:snakeyaml:1.33'
+    implementation 'org.jetbrains:annotations:24.0.1'
+    implementation files('vendor/animatefx-1.2.0.jar')
+    implementation 'org.mindrot:jbcrypt:0.4'
+    implementation 'mysql:mysql-connector-java:8.0.26'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    // Pour les fonctionnalités de base d'Apache POI
+
+    // Pour la prise en charge des fichiers Excel au format .xlsx (XSSF)
+
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
 
     // Dépendance corrigée pour LocalServerReceiver
@@ -102,7 +116,7 @@ dependencies {
 
     implementation files('vendor/GNAvatarView-1.0.5.jar')
 
-
+    implementation 'org.apache.pdfbox:pdfbox:2.0.27'
 
 //    implementation 'org.commonmark:commonmark:0.20.0'
 //    implementation files('vendor/GNControls-1.2.5.jar')

@@ -1,33 +1,33 @@
 
-!!io.OurBatima.core.view.ViewMap
-  views:
+!!io.ourbatima.core.view.ViewMap
+views:
   - {
     name: data_table,
     title: Data Table,
     fxml: dataTable.fxml
   }
   - {
-      name: drawer,
-      title: Drawer,
-      fxml: drawer.fxml
+    name: drawer,
+    title: Drawer,
+    fxml: drawer.fxml
   }
   - {
-      name: login,
-      title: Login,
-      folder: pages,
-      fxml: login.fxml
+    name: login,
+    title: Login,
+    folder: pages,
+    fxml: login.fxml
   }
   - {
-    name: profile_completion,  # ← lowercase pour rester cohérent
+    name: profile_completion,
     title: "Complete Profile",
     folder: pages,
     fxml: ProfileCompletion.fxml
   }
   - {
-      name: register,
-      title: Register,
-      folder: pages,
-      fxml: register.fxml
+    name: register,
+    title: Register,
+    folder: pages,
+    fxml: register.fxml
   }
   - {
     name: about,
@@ -65,42 +65,35 @@
     fxml: dash.fxml
   }
   - {
-      name: hero,
-      title: Hero,
-      folder: pages,
-      fxml: hero.fxml
+    name: hero,
+    title: Hero,
+    folder: pages,
+    fxml: hero.fxml
   }
   - {
-      name: pricing,
-      title: Pricing,
-      folder: pages,
-      fxml: pricing.fxml
+    name: pricing,
+    title: Pricing,
+    folder: pages,
+    fxml: pricing.fxml
   }
   - {
-      name: frequently,
-      title: Frequently,
-      folder: pages,
-      fxml: frequently.fxml
+    name: frequently,
+    title: Frequently,
+    folder: pages,
+    fxml: frequently.fxml
   }
   - {
-      name: footer,
-      title: Footer,
-      folder: pages,
-      fxml: footer.fxml
+    name: footer,
+    title: Footer,
+    folder: pages,
+    fxml: footer.fxml
   }
-
   - {
     name: testimonials,
     title: Testimonials,
     folder: pages,
     fxml: testimonial.fxml
   }
-  -  {
-         name: reponse,
-         title: reponse,
-         folder: pages,
-         fxml: reponse.fxml
-            }
 
 #  - {
 #    name: sales_left,
