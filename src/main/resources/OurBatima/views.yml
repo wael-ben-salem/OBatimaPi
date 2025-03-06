@@ -252,8 +252,6 @@
     title: ListContrats,
     folder: pages/Finance_vews,
     fxml: ListContrats.fxml
-
-
   }
   - {
     name: ListAbonnement,
