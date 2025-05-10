@@ -29,6 +29,8 @@
             <Label fx:id="teamNameLabel" styleClass="card-title" text="Nom de l'équipe"/>
             <Label fx:id="constructeurLabel" styleClass="card-subtitle"/>
             <Label fx:id="gestionnaireLabel" styleClass="card-subtitle"/>
+            <HBox fx:id="ratingStars" spacing="2"/>
+
 
             <FlowPane fx:id="artisansFlowPane" hgap="5" vgap="5" prefWrapLength="200">
                 <padding>

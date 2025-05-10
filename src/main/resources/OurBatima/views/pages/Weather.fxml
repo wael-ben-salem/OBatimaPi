@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
 <?import java.net.URL?>
+
 <VBox fx:id="mainContainer" spacing="20" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="io.ourbatima.controllers.Weather">
+      fx:controller="io.ourbatima.controllers.Weather"
+      style="-fx-background-color: linear-gradient(to bottom, #FAF3E0, #FAF3E0); -fx-padding: 20px; -fx-border-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 3, 3);">
+
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@style1.css" />
     </stylesheets>
 
-    <HBox spacing="20" alignment="CENTER_LEFT">
-        <TextField fx:id="locationField" promptText="Enter city" styleClass="location-field" />
-        <Button text="Get Weather" onAction="#fetchWeather" styleClass="fetch-button" />
+    <!-- Search Bar -->
+    <HBox spacing="15" alignment="CENTER" style="-fx-padding: 10px;">
+        <TextField fx:id="locationField" promptText="Enter city name..." styleClass="location-field" />
+        <Button text="🔍 Get Weather" onAction="#fetchWeather" styleClass="fetch-button" />
     </HBox>
 
     <!-- Current Weather Card -->
-    <VBox styleClass="weather-card">
-        <Label text="Current Weather" styleClass="header-label" />
-        <HBox spacing="30" alignment="CENTER_LEFT">
+    <VBox alignment="CENTER" styleClass="weather-card">
+        <Label text="🌤 Current Weather" styleClass="header-label" />
+        <HBox spacing="20" alignment="CENTER">
             <VBox spacing="10">
                 <Label fx:id="currentTemp" styleClass="temp-label" />
                 <Label fx:id="conditionText" styleClass="condition-label" />
@@ -34,9 +36,9 @@
         </HBox>
     </VBox>
 
-    <!-- Forecast Container -->
+    <!-- 3-Day Forecast -->
     <VBox spacing="10">
-        <Label text="3-Day Forecast" styleClass="header-label" />
-        <HBox fx:id="forecastContainer" spacing="15" />
+        <Label text="📅 3-Day Forecast" styleClass="header-label" />
+        <HBox fx:id="forecastContainer" spacing="15" alignment="CENTER" />
     </VBox>
 </VBox>

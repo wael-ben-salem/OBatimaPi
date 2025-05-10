@@ -18,6 +18,15 @@
             <Label fx:id="teamName" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2d3436;"/>
             <Label fx:id="dateCreation" style="-fx-text-fill: #636e72; -fx-font-size: 14px;"/>
         </VBox>
+        <VBox spacing="15">
+            <Label text="Évaluation" styleClass="section-title"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="averageRatingLabel" style="-fx-font-size: 16px;"/>
+                <ComboBox fx:id="ratingComboBox" visible="false" style="-fx-pref-width: 100;"/>
+                <Button fx:id="submitRatingButton" text="Noter" visible="false"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+            </HBox>
+        </VBox>
     </HBox>
 
     <!-- Leadership Section -->

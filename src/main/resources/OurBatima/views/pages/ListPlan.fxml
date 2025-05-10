@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 
-<?import javafx.scene.layout.HBox?>
-<AnchorPane prefHeight="500.0" prefWidth="600.0"
+<AnchorPane prefHeight="600.0" prefWidth="600.0"
+            style="-fx-background-color: white;"
             xmlns="http://javafx.com/javafx/18.0.2"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="io.ourbatima.controllers.ListPlan">
     <children>
-        <ScrollPane layoutX="30.0" layoutY="50.0" prefHeight="400.0" prefWidth="540.0">
+
+        <!-- Scroll Pane for Plan List -->
+        <ScrollPane layoutX="30.0" layoutY="50.0"
+                    prefHeight="450.0" prefWidth="540.0"
+                    style="-fx-background-color: white; -fx-border-color: transparent;">
             <content>
                 <TilePane fx:id="tilePanePlans"
-                          prefTileWidth="250"
-                          prefTileHeight="120"
-                          hgap="10"
-                          vgap="10"
-                          maxWidth="1.7976931348623157E308"/>
+                          prefTileWidth="250" prefTileHeight="120"
+                          hgap="15" vgap="15"
+                          maxWidth="1.7976931348623157E308"
+                          style="-fx-padding: 20px;"/>
             </content>
         </ScrollPane>
 
-        <HBox layoutX="30.0" layoutY="460.0" spacing="20">
+        <!-- Button Bar -->
+        <HBox layoutX="30.0" layoutY="510.0" spacing="15" alignment="CENTER">
             <children>
-                <Button text="Refresh List" onAction="#refreshList"/>
-                <Button text="Add a Plannification" onAction="#gotoplanifs"/>
-                <Button text="SEE chat" onAction="#gotochat"/>
-                <Button onAction="#gotoDashboard" text="Dashboard"/>
-                <Button onAction="#gotoWeather" text="Weather"/>
+                <Button text="🔄 Rafraîchir" onAction="#refreshList"
+                        style="-fx-background-color: #4B2E2E; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 10px;"/>
+
+                <Button text="➕ Ajouter un Plan" onAction="#gotoplanifs"
+                        style="-fx-background-color: #4B2E2E; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 10px;"/>
+
             </children>
         </HBox>
+
     </children>
 </AnchorPane>

@@ -12,6 +12,8 @@ public class Contrat {
     private Date dateFin;
     private double montantTotal;
     private int idProjet;
+    private String signatureclient;
+    private Date DatesignatureClient;
 
     // Constructeur
     public Contrat(int idContrat, String typeContrat, Date dateSignature, Date dateDebut, String signatureElectronique,
@@ -26,7 +28,7 @@ public class Contrat {
         this.idProjet = idProjet;
     }
     public Contrat( String typeContrat, Date dateSignature, Date dateDebut, String signatureElectronique,
-                   Date dateFin, double montantTotal,  int idProjet) {
+                    Date dateFin, double montantTotal,  int idProjet) {
         this.typeContrat = typeContrat;
         this.dateSignature = dateSignature;
         this.dateDebut = dateDebut;
@@ -34,12 +36,27 @@ public class Contrat {
         this.dateFin = dateFin;
         this.montantTotal = montantTotal;
         this.idProjet = idProjet;
+
+
     }
 
 
 
     public Contrat() {
 
+    }
+
+    public Contrat(int anInt, String string, Date date, Date date1, String string1, Date date2, double aDouble, int anInt1, String string2,Date string3) {
+        this.idContrat = anInt;
+        this.typeContrat = string;
+        this.dateSignature = date;
+        this.dateDebut = date1;
+        this.signatureElectronique = string1;
+        this.dateFin = date2;
+        this.montantTotal = aDouble;
+        this.idProjet = anInt1;
+        this.signatureclient=     string2;
+        this.DatesignatureClient=string3;
     }
 
     // Getters et Setters
@@ -126,5 +143,21 @@ public class Contrat {
                 ", idProjet=" + idProjet +
                 '}';
     }
-}
 
+
+    public String getSignatureclient() {
+        return signatureclient;
+    }
+
+    public void setSignatureclient(String signatureclient) {
+        this.signatureclient = signatureclient;
+    }
+
+    public Date getDatesignatureClient() {
+        return DatesignatureClient;
+    }
+
+    public void setDatesignatureClient(Date datesignatureClient) {
+        DatesignatureClient = datesignatureClient;
+    }
+}

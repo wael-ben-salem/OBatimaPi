@@ -6,6 +6,8 @@ public class Notification implements Comparable<Notification> {
     private int id;
     private int userId;
     private String message;
+    private String type; // 'TEAM' ou 'CONVERSATION'
+    private int referenceId;
     private boolean read;
     private LocalDateTime createdAt;
     private LocalDateTime readAt;
@@ -17,12 +19,35 @@ public class Notification implements Comparable<Notification> {
         this.read = false;
         this.createdAt = LocalDateTime.now();
     }
+    public Notification(int userId, String message, String type, int referenceId) {
+        this.userId = userId;
+        this.message = message;
+        this.type = type;
+        this.referenceId = referenceId;
+        this.read = false;
+        this.createdAt = LocalDateTime.now();
+    }
 
     public Notification(int id, int userId, String message, boolean read,
                         LocalDateTime createdAt, LocalDateTime readAt) {
         this.id = id;
         this.userId = userId;
         this.message = message;
+        this.read = read;
+        this.createdAt = createdAt;
+        this.readAt = readAt;
+    }
+
+    public Notification(int id, String nouveauParticipantAuMeet, String message, String meeting, boolean b, LocalDateTime now) {
+
+    }
+
+    public Notification(int id, int userId, String message, String type, int referenceId, boolean read, LocalDateTime createdAt, LocalDateTime readAt) {
+        this.id = id;
+        this.userId = userId;
+        this.message = message;
+        this.type = type;
+        this.referenceId = referenceId;
         this.read = read;
         this.createdAt = createdAt;
         this.readAt = readAt;
@@ -87,6 +112,11 @@ public class Notification implements Comparable<Notification> {
             this.readAt = LocalDateTime.now();
         }
     }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+
+    public int getReferenceId() { return referenceId; }
+    public void setReferenceId(int referenceId) { this.referenceId = referenceId; }
 
     @Override
     public String toString() {

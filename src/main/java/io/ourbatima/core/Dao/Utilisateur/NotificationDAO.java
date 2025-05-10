@@ -94,4 +94,39 @@ public class NotificationDAO {
             pstmt.executeUpdate();
         }
     }
+    public void createNotifications(Notification notification) throws SQLException {
+        String sql = "INSERT INTO Notifications (user_id, message, type, reference_id, is_read, created_at) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, notification.getUserId());
+            pstmt.setString(2, notification.getMessage());
+            pstmt.setString(3, notification.getType());
+            pstmt.setInt(4, notification.getReferenceId());
+            pstmt.setBoolean(5, notification.isRead());
+            pstmt.setTimestamp(6, Timestamp.valueOf(notification.getCreatedAt()));
+
+            pstmt.executeUpdate();
+        }
+    }
+    public List<Notification> getUnreadNotificationsByType(int userId, String type) throws SQLException {
+        List<Notification> notifications = new ArrayList<>();
+        String sql = "SELECT * FROM notifications WHERE user_id = ? AND is_read = false AND type = ? ORDER BY created_at DESC";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, type);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    notifications.add(mapNotification(rs));
+                }
+            }
+        }
+        return notifications;
+    }
 }

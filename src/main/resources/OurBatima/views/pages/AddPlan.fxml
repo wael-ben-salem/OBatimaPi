@@ -1,61 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<AnchorPane prefHeight="500.0" prefWidth="600.0"
+
+<AnchorPane prefHeight="550.0" prefWidth="650.0"
+            style="-fx-background-color: white;"
             xmlns="http://javafx.com/javafx/18.0.2"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="io.ourbatima.controllers.AddPlan">
+
     <children>
-        <!-- Button to load tasks -->
-        <Button layoutX="250.0" layoutY="50.0" text="Tâches"
-                fx:id="seeTachesButton" onAction="#onSeeTachesClicked"/>
+        <VBox layoutX="50" layoutY="30" spacing="15" alignment="CENTER"
+              prefWidth="550" prefHeight="500">
 
-        <!-- Task selection ComboBox -->
-        <ComboBox fx:id="tacheDescriptions" layoutX="200.0" layoutY="100.0"
-                  prefWidth="200.0" promptText="Sélectionnez une tâche"/>
+            <!-- Title -->
+            <Label text="Ajouter un Plan"
+                   style="-fx-font-size: 20px; -fx-text-fill: #4B2E2E; -fx-font-weight: bold;"/>
 
-        <!-- Button to edit the selected task -->
-        <Button fx:id="editTaskButton" layoutX="410.0" layoutY="100.0" text="✏️"
-                onAction="#onEditTaskClicked"/>
+            <!-- Task Selection -->
+            <HBox spacing="10">
+                <ComboBox fx:id="tacheDescriptions" promptText="Sélectionnez une tâche"
+                          prefWidth="250"
+                          style="-fx-background-color: white; -fx-border-color: #4B2E2E; -fx-border-radius: 5px;"/>
+                <Button fx:id="seeTachesButton" text="🔍 Tâches"
+                        onAction="#onSeeTachesClicked"
+                        style="-fx-background-color: #4B2E2E; -fx-text-fill: white; -fx-border-radius: 5px;"/>
+                <Button fx:id="editTaskButton" text="✏️"
+                        onAction="#onEditTaskClicked"
+                        style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-font-size: 14px;"/>
+            </HBox>
 
-        <!-- Date Planifiée -->
-        <Label layoutX="50.0" layoutY="150.0" text="Date Planifiée:"/>
-        <DatePicker fx:id="datePicker" layoutX="150.0" layoutY="150.0"/>
+            <!-- Date Selection -->
+            <HBox spacing="10">
+                <Label text="📅 Date Planifiée:" style="-fx-text-fill: #4B2E2E;"/>
+                <DatePicker fx:id="datePicker" prefWidth="200"
+                            style="-fx-background-color: white; -fx-border-color: #4B2E2E; -fx-border-radius: 5px;"/>
+            </HBox>
 
-        <!-- Heure Début -->
-        <Label layoutX="50.0" layoutY="200.0" text="Heure Début:"/>
-        <TextField fx:id="heureDebutField" layoutX="150.0" layoutY="200.0" promptText="HH:mm:ss"/>
+            <!-- Time Fields -->
+            <HBox spacing="10">
+                <Label text="⏰ Heure Début:" style="-fx-text-fill: #4B2E2E;"/>
+                <TextField fx:id="heureDebutField" promptText="HH:mm:ss"
+                           prefWidth="120"
+                           style="-fx-background-color: white; -fx-border-color: #4B2E2E; -fx-border-radius: 5px;"/>
+                <Label text="⏳ Heure Fin:" style="-fx-text-fill: #4B2E2E;"/>
+                <TextField fx:id="heureFinField" promptText="HH:mm:ss"
+                           prefWidth="120"
+                           style="-fx-background-color: white; -fx-border-color: #4B2E2E; -fx-border-radius: 5px;"/>
+            </HBox>
 
-        <!-- Heure Fin -->
-        <Label layoutX="50.0" layoutY="250.0" text="Heure Fin:"/>
-        <TextField fx:id="heureFinField" layoutX="150.0" layoutY="250.0" promptText="HH:mm:ss"/>
+            <!-- Remarks Section -->
+            <VBox spacing="5">
+                <Label text="📝 Remarques:" style="-fx-text-fill: #4B2E2E;"/>
+                <TextArea fx:id="remarquesArea" prefWidth="350" prefHeight="60"
+                          style="-fx-background-color: white; -fx-border-color: #4B2E2E; -fx-border-radius: 5px;"/>
+            </VBox>
 
-        <!-- Remarques -->
-        <Label layoutX="50.0" layoutY="300.0" text="Remarques:"/>
-        <TextArea fx:id="remarquesArea" layoutX="150.0" layoutY="300.0" prefWidth="300.0" prefHeight="50.0"/>
+            <!-- Status ComboBox -->
+            <HBox spacing="10">
+                <Label text="📌 Statut:" style="-fx-text-fill: #4B2E2E;"/>
+                <ComboBox fx:id="statusComboBox" promptText="Sélectionnez un statut"
+                          prefWidth="200"
+                          style="-fx-background-color: white; -fx-border-color: #4B2E2E; -fx-border-radius: 5px;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Planifié"/>
+                            <String fx:value="En cours"/>
+                            <String fx:value="Terminé"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </HBox>
 
-        <!-- Status Selection -->
-        <ComboBox fx:id="statusComboBox" layoutX="150.0" layoutY="370.0" prefWidth="200.0" promptText="Sélectionnez un statut">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Planifié"/>
-                    <String fx:value="En cours"/>
-                    <String fx:value="Terminé"/>
-                </FXCollections>
-            </items>
-        </ComboBox>
+            <!-- Buttons -->
+            <HBox spacing="15" alignment="CENTER">
+                <Button fx:id="saveButton" text="💾 Sauvegarder"
+                        onAction="#onSaveClicked"
+                        style="-fx-background-color: #4B2E2E; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 10px;"/>
+                <Button text="📋 Voir tous les plans"
+                        onAction="#onSeeAllPlansClicked"
+                        style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-font-size: 14px; -fx-underline: true;"/>
+            </HBox>
 
-
-        <!-- Save Button -->
-        <Button fx:id="saveButton" layoutX="250.0" layoutY="420.0" text="Sauvegarder"
-                onAction="#onSaveClicked"/>
-
-        <!-- Button to SEE ALL PLANS -->
-        <Button layoutX="30.0" layoutY="460.0" text="Voir tous les plans"
-                onAction="#onSeeAllPlansClicked"/>
+        </VBox>
     </children>
 </AnchorPane>

@@ -3,14 +3,26 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
 <VBox spacing="10" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="io.ourbatima.controllers.Chatbot">
+      fx:controller="io.ourbatima.controllers.Chatbot" style="-fx-background-color: white;">
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
-    <TextArea fx:id="chatArea" editable="false" wrapText="true" prefHeight="300"/>
+    <TextArea fx:id="chatArea" editable="false" wrapText="true" prefHeight="300"
+              style="-fx-background-color: #F7E6D5; -fx-border-color: #8B5E3C;
+                     -fx-border-radius: 10; -fx-background-radius: 10;
+                     -fx-font-family: 'Arial'; -fx-font-size: 14px;"/>
+
     <HBox spacing="10">
-        <TextField fx:id="userInput" promptText="Posez votre question..." HBox.hgrow="ALWAYS"/>
-        <Button text="Envoyer" onAction="#handleSend"/>
+        <TextField fx:id="userInput" promptText="Posez votre question..." HBox.hgrow="ALWAYS"
+                   style="-fx-background-color: #FDF6E3; -fx-border-color: #8B5E3C;
+                          -fx-border-radius: 10; -fx-background-radius: 10;
+                          -fx-font-size: 14px;"/>
+        <Button text="Envoyer" onAction="#handleSend"
+                style="-fx-background-color: #8B5E3C; -fx-text-fill: white;
+                       -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-border-radius: 10; -fx-background-radius: 10;"/>
     </HBox>
 </VBox>

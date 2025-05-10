@@ -1,11 +1,15 @@
 package io.ourbatima.controllers;
 
+import io.ourbatima.core.Context;
 import io.ourbatima.core.Dao.Stock.FournisseurDAO;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Fournisseur;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
@@ -14,6 +18,12 @@ public class FournisseurListController extends ActionView {
 
     @FXML private GridPane fournisseurGrid;
     private final FournisseurDAO fournisseurDAO = new FournisseurDAO();
+
+    @Override
+    public void onInit(Context context) {
+        super.onInit(context);
+        loadFournisseurs(); // Automatically load fournisseurs on initialization
+    }
 
     @FXML
     private void loadFournisseurs() {
@@ -28,10 +38,6 @@ public class FournisseurListController extends ActionView {
         // Add new data rows
         int rowIndex = 1;
         for (Fournisseur fournisseur : fournisseurs) {
-            // ID (non-editable)
-            TextField idField = createTextField(String.valueOf(fournisseur.getId()));
-            idField.setEditable(false); // ID should not be editable
-
             // Nom (editable)
             TextField nomField = createTextField(fournisseur.getNom());
 
@@ -47,8 +53,8 @@ public class FournisseurListController extends ActionView {
             // Adresse (editable)
             TextField adresseField = createTextField(fournisseur.getAdresse());
 
-            // Save Button
-            Button saveButton = new Button("Save");
+            // Save Button with icon
+            Button saveButton = createIconButton("pencil.png", "Save");
             saveButton.setOnAction(event -> {
                 // Update the fournisseur object
                 fournisseur.setNom(nomField.getText());
@@ -66,9 +72,9 @@ public class FournisseurListController extends ActionView {
                 }
             });
 
-            // Delete Button
-            Button deleteButton = new Button("Delete");
-            deleteButton.setStyle("-fx-background-color: #ff4444; -fx-text-fill: white;");
+            // Delete Button with icon
+            Button deleteButton = createIconButton("bin.png", "Delete");
+            deleteButton.setStyle("-fx-background-color: transparent;"); // Ensure icon is visible
             deleteButton.setOnAction(event -> {
                 // Delete the fournisseur from the database
                 boolean success = fournisseurDAO.deleteFournisseur(fournisseur.getId());
@@ -82,7 +88,7 @@ public class FournisseurListController extends ActionView {
             });
 
             // Add components to the GridPane
-            fournisseurGrid.addRow(rowIndex, idField, nomField, prenomField, emailField, numeroDeTelephoneField, adresseField, saveButton, deleteButton);
+            fournisseurGrid.addRow(rowIndex, nomField, prenomField, emailField, numeroDeTelephoneField, adresseField, saveButton, deleteButton);
             rowIndex++;
         }
 
@@ -93,5 +99,21 @@ public class FournisseurListController extends ActionView {
         TextField textField = new TextField(text);
         textField.setStyle("-fx-padding: 5; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
         return textField;
+    }
+
+    private Button createIconButton(String iconName, String tooltipText) {
+        Button button = new Button();
+        try {
+            ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/images/" + iconName)));
+            icon.setFitWidth(28);
+            icon.setFitHeight(28);
+            button.setGraphic(icon);
+            button.setStyle("-fx-background-color: transparent;");
+            button.setTooltip(new Tooltip(tooltipText)); // Set tooltip for the button
+        } catch (Exception e) {
+            System.err.println("Failed to load image: " + iconName);
+            e.printStackTrace();
+        }
+        return button;
     }
 }

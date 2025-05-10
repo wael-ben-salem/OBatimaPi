@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.ourbatima.controllers.FinanceControllers.ContatsClient">
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <FlowPane fx:id="ContratContainer" hgap="20" vgap="20"/>
+        </ScrollPane>
+    </center>
+
+    <!-- Top Bar avec titre dynamique -->
+
+    <bottom>
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10px; -fx-alignment: center;">
+            <Button fx:id="previousPageButton" text="⬅ Précédent" onAction="#previousPage"/>
+            <Label fx:id="pageIndicator" text="Page 1"/>
+            <Button fx:id="nextPageButton" text="Suivant ➡" onAction="#nextPage"/>
+        </HBox>
+    </bottom>
+    <!-- Pagination placée en bas -->
+
+</BorderPane>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.FinanceControllers.ConsulterContratAjouter">
+    <stylesheets>
+        <URL value="@../../../style/css/contratstyle.css" />
+        <URL value="@../../../style/css/colors.css" />
+        <URL value="@../../../style/css/skeleton.css" />
+        <URL value="@../../../style/css/typographic.css" />
+        <URL value="@../../../style/css/scroll.css" />
+    </stylesheets>
+    <StackPane prefHeight="1791.0" prefWidth="638.0">
+        <VBox fx:id="root" alignment="TOP_CENTER" prefHeight="1785.0" prefWidth="634.0" spacing="10" styleClass="contract-container">
+            <!-- Titre du contrat -->
+            <Label styleClass="title" text="CONTRAT DE CONSTRUCTION" />
+
+            <!-- Section Client -->
+            <Label styleClass="section-title" text="Entre les soussignés :" />
+            <Label styleClass="subtitle" text="Le Client :" />
+            <Text fx:id="nmclt1" styleClass="text" text="Nom : [Nom du Client]" />
+            <Text fx:id="adresse" styleClass="text" text="Adresse : [Adresse du Client]" />
+            <Text fx:id="tell" styleClass="text" text="Téléphone : [Téléphone du Client]" />
+            <Text fx:id="emailll" styleClass="text" text="Email : [Email du Client]" />
+
+            <Separator />
+
+            <!-- Section Entreprise -->
+            <Label styleClass="subtitle" text="La Société de Bâtiment :" />
+            <Text styleClass="text" text="Nom de l'entreprise : OBatima" />
+            <Text styleClass="text" text="Adresse : Ariana soghra rue Bachir" />
+            <Text styleClass="text" text="Numéro SIRET : 789456" />
+            <Text styleClass="text" text="Téléphone : 52799552" />
+            <Text styleClass="text" text="Email : obatima@batima.com" />
+            <Text styleClass="text" text="Représentée par : Wael ben Salem, en qualité de chef de projet" />
+
+            <Separator />
+
+            <!-- Article 1 : Objet du contrat -->
+            <Label styleClass="section-title" text="Article 1 : Objet du contrat" />
+            <Text fx:id="descriptionproj" styleClass="text" text="Le présent contrat a pour objet la réalisation des travaux de construction suivants : [Description détaillée des travaux]." wrappingWidth="600" />
+
+            <!-- Article 2 : Prix des travaux -->
+            <Label styleClass="section-title" text="Article 2 : Prix des travaux" />
+            <Text fx:id="prixDeTravaux" styleClass="text" text="Le montant total des travaux est fixé à [Montant en chiffres et en lettres] euros (€), hors taxes." wrappingWidth="600" />
+
+            <!-- Article 3 : Délai d'exécution -->
+            <Label styleClass="section-title" text="Article 3 : Délai d'exécution" />
+            <Text fx:id="delai" styleClass="text" text="Les travaux débuteront le [Date de début prévue] et devront être achevés au plus tard le [Date de fin prévue]." wrappingWidth="600" />
+
+            <!-- Article 4 : Modalités de paiement -->
+            <Label styleClass="section-title" text="Article 4 : Modalités de paiement" />
+            <Text styleClass="text" text="Le paiement s'effectuera selon les modalités suivantes : Virement bancaire." wrappingWidth="600" />
+
+            <!-- Article 5 : Assurance et garanties -->
+            <Label styleClass="section-title" text="Article 5 : Assurance et garanties" />
+            <Text styleClass="text" text="L'Entreprise déclare être couverte par une assurance responsabilité civile professionnelle et une garantie décennale conformément à la législation en vigueur." wrappingWidth="600" />
+
+            <!-- Article 6 : Réception des travaux -->
+            <Label styleClass="section-title" text="Article 6 : Réception des travaux" />
+            <Text styleClass="text" text="À l'achèvement des travaux, une visite de réception sera organisée en présence des deux parties." wrappingWidth="600" />
+
+            <!-- Article 7 : Résiliation -->
+            <Label styleClass="section-title" text="Article 7 : Résiliation" />
+            <Text styleClass="text" text="En cas de manquement grave de l'une des parties à ses obligations, le présent contrat pourra être résilié après mise en demeure restée sans effet pendant un délai de 20 jours." wrappingWidth="600" />
+
+            <!-- Article 8 : Litiges -->
+            <Label styleClass="section-title" text="Article 8 : Litiges" />
+            <Text styleClass="text" text="En cas de litige, les parties s'engagent à rechercher une solution amiable. À défaut, les tribunaux compétents seront ceux du lieu du siège social de l'Entreprise." wrappingWidth="600" />
+
+            <!-- Article 9 : Divers -->
+            <Label styleClass="section-title" text="Article 9 : Divers" />
+            <Text styleClass="text" text="Toute modification au présent contrat devra faire l'objet d'un avenant signé par les deux parties. Le présent contrat est régi par le droit tunisienne." wrappingWidth="600" />
+
+            <!-- Signature -->
+            <Label styleClass="text" text="Fait à Tunisie, en deux exemplaires originaux." />
+            <VBox fx:id="rootd" spacing="10">
+                <Label styleClass="signature-label" text="Le Client" />
+                <Text styleClass="text" text="Signature : " wrappingWidth="203.255859375" />
+                <ImageView fx:id="image" fitHeight="150.0" fitWidth="263.0" pickOnBounds="true" preserveRatio="true">
+                    <VBox.margin>
+                        <Insets left="20.0" />
+                    </VBox.margin>
+                </ImageView>
+                <Text fx:id="nmclt" styleClass="text" />
+                <Button fx:id="Signier" minHeight="0.0" mnemonicParsing="false" onAction="#signier" prefHeight="35.0" prefWidth="95.0" text="Signier">
+                    <VBox.margin>
+                        <Insets left="500.0" />
+                    </VBox.margin>
+                </Button>
+                <Text fx:id="datesinclt"  styleClass="text" text="Date : " />
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+            </VBox>
+            <VBox spacing="10">
+                <Label styleClass="signature-label" text="L'Entreprise" />
+                <Text styleClass="text" text="Signature :" />
+                <ImageView fx:id="images" fitHeight="123.0" fitWidth="220.0">
+                    <VBox.margin>
+                        <Insets left="20.0" />
+                    </VBox.margin>
+                </ImageView>
+                <Text styleClass="text" text="Nom : Waelbensalem" />
+                <Text fx:id="dates" styleClass="text" text="Date : [Date]" />
+            </VBox>
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#dowload" prefHeight="28.0" prefWidth="70.0" text="save">
+                <VBox.margin>
+                    <Insets left="500.0" />
+                </VBox.margin>
+            </Button>
+            <StackPane.margin>
+                <Insets />
+            </StackPane.margin>
+        </VBox>
+    </StackPane>
+</ScrollPane>

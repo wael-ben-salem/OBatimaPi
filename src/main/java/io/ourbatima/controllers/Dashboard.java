@@ -2,10 +2,13 @@ package io.ourbatima.controllers;
 
 import io.ourbatima.core.Dao.DatabaseConnection;
 import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
-
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,96 +19,93 @@ public class Dashboard extends ActionView {
 
     @FXML
     private LineChart<String, Number> plannificationChart;
+    @FXML
+    private ComboBox<Utilisateur> artisanComboBox;
+    @FXML
+    private NumberAxis yAxis;
+    @FXML
+    private Button artisanButton;
 
-    // Colors assigned to artisans
-    private final String[] colors = {
-            "#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF", "#33FFF5",
-            "#F5A623", "#8B4513", "#FFD700", "#32CD32"
-    };
+    private final String[] colors = {"#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF"};
 
     public void initialize() {
-        loadChartData();
+        yAxis.setTickUnit(1); // Correction de l'axe Y pour afficher des entiers
     }
 
     @FXML
-    private void onReloadClicked() {
-        loadChartData(); // Reload chart when button is clicked
+    public void showArtisans() {
+        List<Utilisateur> artisans = getUsersFromDatabase("Artisan");
+        artisanComboBox.setItems(FXCollections.observableArrayList(artisans));
+        artisanComboBox.setVisible(true);
     }
 
-    private void loadChartData() {
-        Map<String, Map<String, Integer>> data = getCompletedPlannificationsByArtisan();
+    private List<Utilisateur> getUsersFromDatabase(String role) {
+        List<Utilisateur> users = new ArrayList<>();
+        String query = "SELECT id, nom FROM Utilisateur WHERE role = ?";
 
-        plannificationChart.getData().clear(); // Clear previous data
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-        int colorIndex = 0; // Track Artisan color
-        Map<String, Integer> offsets = new HashMap<>(); // To handle overlapping values
+            stmt.setString(1, role);
+            ResultSet rs = stmt.executeQuery();
 
-        for (Map.Entry<String, Map<String, Integer>> artisanEntry : data.entrySet()) {
-            String artisanName = artisanEntry.getKey();
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            series.setName(artisanName);
-
-            Map<String, Integer> dateCounts = artisanEntry.getValue();
-            for (Map.Entry<String, Integer> entry : dateCounts.entrySet()) {
-                String date = entry.getKey();
-                int count = entry.getValue();
-
-                // If multiple artisans have the same value on the same date, add a small offset
-                int offset = offsets.getOrDefault(date, 0);
-                offsets.put(date, offset + 1);
-
-                XYChart.Data<String, Number> dataPoint = new XYChart.Data<>(date, count + (offset * 0.1)); // Add slight offset
-                series.getData().add(dataPoint);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("nom");
+                users.add(new Utilisateur(id, name));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
 
-            plannificationChart.getData().add(series);
-
-            // Apply color after UI updates
-            int finalColorIndex = colorIndex;
-            Platform.runLater(() -> {
-                if (series.getNode() != null) {
-                    series.getNode().setStyle("-fx-stroke: " + colors[finalColorIndex % colors.length] + ";");
-                }
-                for (XYChart.Data<String, Number> dataPoint : series.getData()) {
-                    if (dataPoint.getNode() != null) {
-                        dataPoint.getNode().setStyle("-fx-background-color: " + colors[finalColorIndex % colors.length] + ", white;");
-                    }
-                }
-            });
-
-            colorIndex++; // Move to next color
+    @FXML
+    private void onGetCourbeClicked() {
+        Utilisateur selectedArtisan = artisanComboBox.getValue();
+        if (selectedArtisan != null) {
+            loadChartData(selectedArtisan.getNom());
         }
     }
 
-    private Map<String, Map<String, Integer>> getCompletedPlannificationsByArtisan() {
-        Map<String, Map<String, Integer>> result = new HashMap<>();
+    private void loadChartData(String artisanName) {
+        plannificationChart.getData().clear(); // Effacer l'ancien graphique
 
         String query = """
-                SELECT u.nom AS artisan, p.date_planifiee AS date, COUNT(*) AS count
+                SELECT p.date_planifiee AS date, COUNT(*) AS count
                 FROM Plannification p
                 JOIN Tache t ON p.id_tache = t.id_tache
                 JOIN Utilisateur u ON t.artisan_id = u.id
-                WHERE p.statut = 'Terminé' AND u.role = 'Artisan'
-                GROUP BY u.nom, p.date_planifiee
+                WHERE p.statut = 'Terminé' AND u.nom = ?
+                GROUP BY p.date_planifiee
                 ORDER BY p.date_planifiee;
                 """;
 
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(artisanName);
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, artisanName);
+            ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String artisan = rs.getString("artisan");
                 String date = rs.getString("date");
                 int count = rs.getInt("count");
-
-                result.putIfAbsent(artisan, new LinkedHashMap<>()); // Preserve order
-                result.get(artisan).put(date, count);
+                series.getData().add(new XYChart.Data<>(date, count));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+
+        plannificationChart.getData().add(series);
+
+        // Appliquer la couleur à la courbe
+        Platform.runLater(() -> {
+            if (series.getNode() != null) {
+                series.getNode().setStyle("-fx-stroke: " + colors[new Random().nextInt(colors.length)] + ";");
+            }
+        });
     }
 }

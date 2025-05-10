@@ -43,6 +43,9 @@ module io.ourbatima {
     requires java.net.http;
     requires com.fasterxml.jackson.databind;
     requires java.sql;
+    requires org.apache.pdfbox;
+    requires spark.core;
+    requires okhttp3;
 
 
     opens io.ourbatima to javafx.fxml;
@@ -69,8 +72,6 @@ module io.ourbatima {
     exports io.ourbatima.controllers.FinanceControllers; // Export your controller package
     opens io.ourbatima.controllers.FinanceControllers to javafx.fxml;
     opens io.ourbatima.core.model.financeModel to javafx.base, javafx.fxml;
-    exports io.agora.media;
-    opens io.agora.media to javafx.fxml;
 
 
 }

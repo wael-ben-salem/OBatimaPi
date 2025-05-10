@@ -119,4 +119,17 @@ public class PlannificationDAO {
         return null;
     }
 
+    public void savePlannification(int id) {
+        String sql = "INSERT INTO SavedPlannification (user_id, plannification_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE user_id=user_id";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, 1);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

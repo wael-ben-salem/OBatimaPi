@@ -72,7 +72,7 @@ public abstract class Launcher extends Application {
         }
         return hostServices;
     }
-        private void addLoggerHandler() {
+    private void addLoggerHandler() {
         try {
 
             // This block configure the logger with handler and formatter
@@ -87,6 +87,10 @@ public abstract class Launcher extends Application {
             e.printStackTrace();
         }
     }
+    public static HostServices getHostServicesInstance() {
+        return hostServices;
+    }
+
 
     private String clean(String c) {
         return context.getResource(c).toExternalForm();

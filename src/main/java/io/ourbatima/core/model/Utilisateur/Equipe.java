@@ -1,15 +1,21 @@
 package io.ourbatima.core.model.Utilisateur;
 
+import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
+import io.ourbatima.core.Dao.Utilisateur.TeamRatingDAO;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Equipe {
     private int id;
     private String nom;
+    private transient EquipeDAO equipeDAO = new EquipeDAO(); // Transient to prevent serialization issues
+
     private Constructeur constructeur;
     private GestionnaireDeStock gestionnaireStock;
-    private String agoraChannel;
-    private String agoraChannelToken;
     private LocalDate dateCreation;
     private List<Artisan> artisans;
 
@@ -95,8 +101,37 @@ public class Equipe {
     public void setArtisans(List<Artisan> artisans) {
         this.artisans = artisans;
     }
-    public String getAgoraChannel() { return agoraChannel; }
-    public void setAgoraChannel(String agoraChannel) { this.agoraChannel = agoraChannel; }
-    public String getAgoraChannelToken() { return agoraChannelToken; }
-    public void setAgoraChannelToken(String agoraChannelToken) { this.agoraChannelToken = agoraChannelToken; }
+    public List<Utilisateur> getMembres() {
+        List<Utilisateur> membres = new ArrayList<>();
+
+        if (constructeur != null) {
+            membres.add(constructeur);
+        }
+        if (gestionnaireStock != null) {
+            membres.add(gestionnaireStock);
+        }
+        if (artisans != null) {
+            membres.addAll(artisans);
+        }
+
+        return membres;
+    }
+    public double getAverageRating() {
+        try {
+            return new TeamRatingDAO().getAverageRating(this.id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public List<Utilisateur> getMembre() {
+        try {
+            return equipeDAO.getTeamMembers(this.id); // Use the DAO's proper query
+        } catch (SQLException e) {
+            System.err.println("Error fetching team members: " + e.getMessage());
+            return Collections.emptyList();
+        }
+
+    }
 }

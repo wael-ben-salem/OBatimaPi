@@ -46,7 +46,7 @@
             <padding>
                <Insets top="10.0" />
             </padding>
-            <ToggleButton alignment="CENTER_LEFT" layoutX="10.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDash" selected="true" styleClass="drawer-item" text="Dashboard">
+            <ToggleButton fx:id="goDash"  alignment="CENTER_LEFT" layoutX="10.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDash" selected="true" styleClass="drawer-item" text="Dashboard">
                <graphic>
                   <SVGPath content="M19 5v2h-4V5h4M9 5v6H5V5h4m10 8v6h-4v-6h4M9 17v2H5v-2h4M21 3h-8v6h8V3zM11 3H3v10h8V3zm10 8h-8v10h8V11zm-10 4H3v6h8v-6z" />
                </graphic>
@@ -54,6 +54,7 @@
                   <ToggleGroup fx:id="group" />
                </toggleGroup>
             </ToggleButton>
+
             <ToggleButton alignment="CENTER_LEFT" disable="true" layoutX="10.0" layoutY="20.0" maxWidth="1.7976931348623157E308" minHeight="0.0" mnemonicParsing="false" onAction="#goNewsletter" prefWidth="485.0" styleClass="drawer-item" text="Newsletter" toggleGroup="$group">
                <graphic>
                   <SVGPath content="M5 21q-.825 0-1.413-.587Q3 19.825 3 19V5q0-.825.587-1.413Q4.175 3 5 3h11l5 5v11q0 .825-.587 1.413Q19.825 21 19 21Zm0-2h14V9h-4V5H5v14Zm2-2h10v-2H7Zm0-8h5V7H7Zm0 4h10v-2H7ZM5 5v4-4 14V5Z" />
@@ -141,7 +142,7 @@
                   <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDataTable" styleClass="drawer-item" text="Data Table" toggleGroup="$group" />
                </VBox>
             </TitledPane>
-            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Utilisateur" textAlignment="JUSTIFY">
+            <TitledPane fx:id="goUser" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Utilisateur" textAlignment="JUSTIFY">
                <graphic>
                   <Group>
                      <children>
@@ -168,7 +169,7 @@
                   </VBox>
                </content>
             </TitledPane>
-            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Projet" textAlignment="JUSTIFY">
+            <TitledPane  fx:id="goProjet" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Projet" textAlignment="JUSTIFY">
                <graphic>
                   <Group>
                      <children>
@@ -179,11 +180,11 @@
                   <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
                      <children>
 
-                     <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Projet" toggleGroup="$group3" />
-                     <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjoutProjet" styleClass="drawer-item" text="Ajouter Projet" toggleGroup="$group3" />
-                     <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherEtapeProjet" styleClass="drawer-item" text="Étape projet" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Projet" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjoutProjet" styleClass="drawer-item" text="Ajouter Projet" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherEtapeProjet" styleClass="drawer-item" text="Étape projet" toggleGroup="$group3" />
 
-                     <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" toggleGroup="$group3" />
                         <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherTerrain" styleClass="drawer-item" text="Terrain" toggleGroup="$group3" />
 
 
@@ -192,7 +193,7 @@
                   </VBox>
                </content>
             </TitledPane>
-            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Plannifiacation et Tache" textAlignment="JUSTIFY">
+            <TitledPane fx:id="goTachetPlan"  alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Plannifiacation et Tache" textAlignment="JUSTIFY">
                <graphic>
                   <Group>
                      <children>
@@ -202,14 +203,46 @@
                <content>
                   <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
                      <children>
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoplan" styleClass="drawer-item" text="Planification" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoplanf" styleClass="drawer-item" text="Tache" toggleGroup="$group3" />
+                        <Button text="📅 Planification" onAction="#gotoplan"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+
+                        <Button text="📝 Tâche" onAction="#gotoplanf"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+
+                        <Button text="📂 Saved Plans" onAction="#gotoSavedPlans"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                        <Button text="⛅ Météo" onAction="#gotoWeather"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                        <Button text="📊 Dashboard" onAction="#gotoDashboard"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                        <Button text="💬 Voir Chat" onAction="#gotochat"
+                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="gotofinance"  alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Contrat et abonnement" textAlignment="JUSTIFY">
+               <graphic>
+                  <Group>
+                     <children>
+                     </children>
+                  </Group>
+               </graphic>
+               <content>
+                  <VBox id="drawerContentt" fx:id="faa" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                     <children >
+                        <ToggleButton fx:id="contra" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants" toggleGroup="$group3" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoContratclient" styleClass="drawer-item" text="Contrats client" toggleGroup="$group3" />
+
+
+
                      </children>
                   </VBox>
                </content>
             </TitledPane>
 
-            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Equipe" textAlignment="JUSTIFY" onMouseClicked="#goEquipe">
+            <TitledPane fx:id="goEquipe" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Equipe" textAlignment="JUSTIFY" onMouseClicked="#goEquipe">
                <graphic>
                   <Group>
                      <children>
@@ -300,15 +333,15 @@
          </VBox>
       </ScrollPane>
       <GridPane alignment="CENTER" minHeight="-Infinity" prefHeight="37.0" prefWidth="229.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="38.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.0" minWidth="10.0" prefWidth="156.0" />
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="38.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.0" minWidth="10.0" prefWidth="156.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.0" minWidth="10.0" prefWidth="37.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
             <GNAvatarStatus prefHeight="25.0" prefWidth="30.0" radius="15.0">
                <image>

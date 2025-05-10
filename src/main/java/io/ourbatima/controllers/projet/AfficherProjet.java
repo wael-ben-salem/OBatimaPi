@@ -6,8 +6,6 @@ import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.interfaces.Initializable;
 import io.ourbatima.core.model.EtapeProjet;
 import io.ourbatima.core.model.Projet;
-import io.ourbatima.core.model.Terrain;
-import io.ourbatima.core.model.Utilisateur.Client;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,16 +18,16 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
-
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -115,7 +113,6 @@ public class AfficherProjet extends ActionView implements Initializable {
             return Optional.empty();
         }
 
-        // Check if the user is a client and has an email
         if (utilisateur.getRole() == Utilisateur.Role.Client) {
             String email = utilisateur.getEmail();
             if (email != null && !email.isEmpty()) {
@@ -320,6 +317,4 @@ public class AfficherProjet extends ActionView implements Initializable {
         loadProjets();
         initialize();
     }
-
-
 }

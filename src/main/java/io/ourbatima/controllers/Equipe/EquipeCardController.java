@@ -1,9 +1,7 @@
 package io.ourbatima.controllers.Equipe;
 
-import io.ourbatima.core.Dao.Utilisateur.ArtisanDAO;
 import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
 import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
-import io.ourbatima.core.controls.GNAvatar;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.model.Utilisateur.Artisan;
 import io.ourbatima.core.model.Utilisateur.Constructeur;
@@ -28,11 +26,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class EquipeCardController extends ActionView implements Initializable {
@@ -40,6 +36,8 @@ public class EquipeCardController extends ActionView implements Initializable {
     // Ajouter ces nouvelles références FXML
     @FXML private FlowPane artisansFlowPane;
     @FXML private Label constructeurLabel;
+
+    @FXML private HBox ratingStars; // Ajoutez cette référence FXML
 
     @FXML private Button updateButton;
     @FXML private Button addButton;
@@ -60,6 +58,50 @@ public class EquipeCardController extends ActionView implements Initializable {
 
         updateArtisansDisplay();
         loadLogo(equipe);
+
+        updateRatingStars();
+
+
+    }
+
+    private void updateRatingStars() {
+        ratingStars.getChildren().clear(); // Effacez les étoiles existantes
+
+        double avgRating = equipe.getAverageRating();
+        int fullStars = (int) avgRating; // Nombre d'étoiles pleines
+        boolean hasHalfStar = (avgRating - fullStars) >= 0.5; // Vérifiez s'il y a une demi-étoile
+
+        // Ajoutez les étoiles pleines
+        for (int i = 0; i < fullStars; i++) {
+            ratingStars.getChildren().add(createStarImageView("/images/star_filled.png"));
+        }
+
+        // Ajoutez une demi-étoile si nécessaire
+        if (hasHalfStar) {
+            ratingStars.getChildren().add(createStarImageView("/images/star_half.png"));
+        }
+
+        // Ajoutez les étoiles vides
+        int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+        for (int i = 0; i < remainingStars; i++) {
+            ratingStars.getChildren().add(createStarImageView("/images/star_empty.png"));
+        }
+    }
+    private ImageView createStarImageView(String imagePath) {
+        ImageView star = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
+        star.setFitWidth(16); // Taille des étoiles
+        star.setFitHeight(16);
+        return star;
+    }
+
+
+    private Image loadImage(String path) {
+        try {
+            return new Image(getClass().getResourceAsStream(path));
+        } catch (Exception e) {
+            System.err.println("Image non trouvée: " + path);
+            return new Image(getClass().getResourceAsStream("/images/default.png"));
+        }
     }
 
 

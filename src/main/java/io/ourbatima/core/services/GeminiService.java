@@ -48,18 +48,48 @@ public class GeminiService {
         return output.toString();
     }
 
+    /**
+     * Fetches planned tasks and their associated users.
+     */
+    private String getPlannedTasksWithUsers() throws SQLException {
+        StringBuilder output = new StringBuilder();
+        String query = "SELECT DISTINCT " +
+                "ua.id AS artisan_id, ua.nom AS artisan_nom, ua.prenom AS artisan_prenom, " +
+                "uc.id AS constructeur_id, uc.nom AS constructeur_nom, uc.prenom AS constructeur_prenom " +
+                "FROM Plannification p " +
+                "JOIN Tache t ON p.id_tache = t.id_tache " +
+                "LEFT JOIN Utilisateur ua ON t.artisan_id = ua.id AND ua.role = 'Artisan' " +
+                "LEFT JOIN Utilisateur uc ON t.constructeur_id = uc.id AND uc.role = 'Constructeur' " +
+                "WHERE p.statut = 'Planifié';";
+
+
+        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            output.append("Planned Tasks with Users:\n");
+            output.append("Artisan | Constructeur\n");
+
+            while (rs.next()) {
+                String artisan = rs.getString("artisan_nom") + " " + rs.getString("artisan_prenom");
+                String constructeur = rs.getString("constructeur_nom") + " " + rs.getString("constructeur_prenom");
+                output.append(artisan).append(" | ").append(constructeur).append("\n");
+            }
+        }
+        return output.toString();
+    }
+
     public String getAnswer(String question) {
         try {
             // Get actual table data
             String dataTache = getTableData("tache");
-
             String dataPlannification = getTableData("plannification");
+            String plannedTasks = getPlannedTasksWithUsers();
 
             // Updated prompt with real data
-            String prompt = "Here are two database tables with their structures and data:\n"
+            String prompt = "Here are database tables with their structures and data:\n"
                     + dataTache + "\n"
                     + dataPlannification + "\n"
-                    + "Based on this, answer the following user question directly:\n"
+                    + "Here are artisans and constructeurs with planned tasks:\n"
+                    + plannedTasks + "\n"
+                    + "Based on all this analyse it all,and answer the following user question directly:\n"
                     + question;
 
             // Send request to Gemini API

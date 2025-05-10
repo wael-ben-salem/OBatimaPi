@@ -13,12 +13,11 @@
 
     <VBox spacing="10" style="-fx-padding: 20;">
         <!-- Button to load fournisseurs -->
-        <Button text="Load Fournisseurs" onAction="#loadFournisseurs" />
+        <Button text="Load Fournisseurs" onAction="#loadFournisseurs" prefHeight="45.0" prefWidth="122.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css"  textFill="WHITE" />
 
         <!-- GridPane to display the fournisseurs -->
         <GridPane fx:id="fournisseurGrid" style="-fx-padding: 5;">
             <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" minWidth="50" /> <!-- ID -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Nom -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Prenom -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Email -->
@@ -29,13 +28,12 @@
 
             <!-- Header Row -->
             <children>
-                <Label text="ID" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Nom" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Prenom" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Email" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Numero de Telephone" GridPane.columnIndex="4" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Adresse" GridPane.columnIndex="5" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
-                <Label text="Action" GridPane.columnIndex="6" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Prenom" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Email" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Numero de Telephone" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Adresse" GridPane.columnIndex="4" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
+                <Label text="Action" GridPane.columnIndex="5" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-padding: 5;"/>
             </children>
         </GridPane>
     </VBox>

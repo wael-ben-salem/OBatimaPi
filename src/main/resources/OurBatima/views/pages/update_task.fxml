@@ -14,18 +14,19 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="io.ourbatima.controllers.UpdateTask">
     <children>
-        <Label layoutX="20.0" layoutY="20.0" text="Update Task"/>
+        <Label layoutX="20.0" layoutY="10.0" text="Update Task"
+               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 
-        <TextField fx:id="descriptionField" layoutX="20.0" layoutY="50.0" prefWidth="360.0"
+        <TextField fx:id="descriptionField" layoutX="20.0" layoutY="40.0" prefWidth="360.0"
                    promptText="Task Description"/>
 
-        <DatePicker fx:id="dateDebutPicker" layoutX="20.0" layoutY="90.0"
+        <DatePicker fx:id="dateDebutPicker" layoutX="20.0" layoutY="80.0"
                     promptText="Start Date"/>
 
-        <DatePicker fx:id="dateFinPicker" layoutX="200.0" layoutY="90.0"
+        <DatePicker fx:id="dateFinPicker" layoutX="200.0" layoutY="80.0"
                     promptText="End Date"/>
 
-        <ComboBox fx:id="etatComboBox" layoutX="20.0" layoutY="130.0" prefWidth="360.0">
+        <ComboBox fx:id="etatComboBox" layoutX="20.0" layoutY="120.0" prefWidth="360.0">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="En cours"/>
@@ -35,12 +36,17 @@
             </items>
         </ComboBox>
 
-        <!-- ADD MISSING COMBOBOXES -->
-        <ComboBox fx:id="utilisateursArtisans" layoutX="20.0" layoutY="160.0" prefWidth="360.0"/>
-        <ComboBox fx:id="utilisateursConstructeurs" layoutX="20.0" layoutY="200.0" prefWidth="360.0"/>
+        <!-- Artisan and Constructeur ComboBoxes -->
+        <ComboBox fx:id="utilisateursArtisans" layoutX="20.0" layoutY="160.0" prefWidth="360.0"
+                  promptText="Select Artisan"/>
+        <ComboBox fx:id="utilisateursConstructeurs" layoutX="20.0" layoutY="200.0" prefWidth="360.0"
+                  promptText="Select Constructeur"/>
 
-        <!-- MOVE BUTTONS DOWN -->
-        <Button layoutX="20.0" layoutY="250.0" text="Update Task" onAction="#updateTask"/>
-        <Button layoutX="200.0" layoutY="250.0" text="Cancel" onAction="#closePopup"/>
+        <!-- Buttons Styled with Cacao Theme -->
+        <Button layoutX="20.0" layoutY="260.0" text="Update Task" onAction="#updateTask"
+                style="-fx-background-color: #D2B48C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-min-width: 150px;"/>
+
+        <Button layoutX="200.0" layoutY="260.0" text="Cancel" onAction="#closePopup"
+                style="-fx-background-color: #8B4513; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-min-width: 150px;"/>
     </children>
 </AnchorPane>

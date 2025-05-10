@@ -22,10 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -33,8 +30,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-
-import java.util.Map;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -47,13 +42,18 @@ public class SideNavController extends ActionView {
     @FXML private Button arrowButton;
     @FXML
     private Label RoleUser;
-
+    public VBox faa;
+    public ToggleButton contra;
     @FXML
     private Text userNameText;
     @FXML
     private Text userEmailText;
     private Utilisateur currentUser;
 
+    @FXML private ToggleButton goConstructeurButton;
+    @FXML private ToggleButton goGestionnaireStockButton;
+    @FXML private ToggleButton goArtisanButton;
+    @FXML private ToggleButton goClientButton;
 
     public void setBackgroundColorBasedOnRole(String role) {
         switch (role) {
@@ -279,7 +279,6 @@ public class SideNavController extends ActionView {
         context.routes().nav("blog");
     }
 
-
     private final VBox boxUserDialog = new VBox();
 
     private Button createBtn(String text, EventHandler<ActionEvent> event) {
@@ -392,11 +391,15 @@ public class SideNavController extends ActionView {
 
     @Override
     public void onInit(Context context) {
+        if (SessionManager.getUtilisateur().getRole()!=Utilisateur.Role.Admin){
+            faa.getChildren().remove(contra);}
         Utilisateur currentUser = SessionManager.getUtilisateur();
         if (currentUser == null) {
             System.err.println("Aucun utilisateur connecté !");
             return; // Arrêter l'exécution si l'utilisateur n'est pas connecté
         }
+        String userRole = String.valueOf(currentUser.getRole());
+        setBackgroundColorBasedOnRole(userRole);
 
         // Vérifiez que les champs texte sont initialisés
         if (userNameText != null && userEmailText != null) {
@@ -411,7 +414,6 @@ public class SideNavController extends ActionView {
         }
 
         // Appliquer la couleur de fond en fonction du rôle
-        String userRole = String.valueOf(currentUser.getRole());
         setBackgroundColorBasedOnRole(userRole);
 
         // Initialiser le comportement du drawer
@@ -426,12 +428,6 @@ public class SideNavController extends ActionView {
     }
     public void setUser(Utilisateur utilisateur) {
     }
-
-
-
-
-
-
 
     public void goAddStock(ActionEvent actionEvent) {
         context.routes().nav("addstock");
@@ -461,14 +457,28 @@ public class SideNavController extends ActionView {
     }
 
     public void gotoplan(ActionEvent actionEvent) {
-        context.routes().nav("AddPlan");
+        context.routes().nav("ListPlan");
     }
     public void gotoplanf(ActionEvent actionEvent) {
-        context.routes().nav("AddTask");
+        context.routes().nav("ListTaches");
+    }
+    public void gotoSavedPlans(ActionEvent actionEvent) {
+        context.routes().nav("SavedPlans");
     }
 
     public void gotoAjoutProjet(ActionEvent actionEvent) {
         context.routes().nav("ajoutProjet");
+    }
+    public void gotoWeather(ActionEvent actionEvent) {
+        context.routes().nav("Weather");
+    }
+
+    public void gotoDashboard(ActionEvent actionEvent) {
+        context.routes().nav("Dashboard");
+    }
+
+    public void gotochat(ActionEvent actionEvent) {
+        context.routes().nav("Chatbot");
     }
 
     public void gotoAfficherProjet(ActionEvent actionEvent) {
@@ -486,13 +496,10 @@ public class SideNavController extends ActionView {
 
     }
 
-
-
     public void gotoAfficherTerrain(ActionEvent actionEvent) {
         context.routes().nav("afficherTerrain");
 
     }
-
 
     public void gotoAfficherContrats(ActionEvent event) {
 
@@ -504,4 +511,7 @@ public class SideNavController extends ActionView {
         context.routes().nav("ListAbonnement");
     }
 
+    public void gotoContratclient(ActionEvent event) {
+        context.routes().nav("ContatsClient");
+    }
 }

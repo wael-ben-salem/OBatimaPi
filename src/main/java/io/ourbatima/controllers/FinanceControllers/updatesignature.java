@@ -1,5 +1,7 @@
 package io.ourbatima.controllers.FinanceControllers;
 
+import io.ourbatima.controllers.SessionManager;
+import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,8 +17,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class updatesignature {
-
-  private  UpdateContratController updateContratController;
+    private ConsulterContratAjouter consulterContratAjouter;
+    private  UpdateContratController updateContratController;
     @FXML
     private Canvas canvas;
     private GraphicsContext gc;
@@ -24,6 +26,11 @@ public class updatesignature {
         this.updateContratController=updateContratController;
 
     }
+    public void setAjouterContratsController(ConsulterContratAjouter updateContratController) {
+        this.consulterContratAjouter=updateContratController;
+
+    }
+
 
 
     @FXML
@@ -100,10 +107,15 @@ public class updatesignature {
 
 
     public void onSaveButtonClicked(ActionEvent event) {
-        String imagepath = saveSignature();
-        updateContratController.setimagePath(imagepath);
-        ((Stage) canvas.getScene().getWindow()).close();
-
+        if(SessionManager.getUtilisateur().getRole()!= Utilisateur.Role.Client){
+            String imagepath = saveSignature();
+            updateContratController.setimagePath(imagepath);
+            ((Stage) canvas.getScene().getWindow()).close();}
+        else{
+            String imagepath = saveSignature();
+            consulterContratAjouter.setimagePath(imagepath);
+            ((Stage) canvas.getScene().getWindow()).close();
+        }
     }
 
     public void cancel(ActionEvent event) {

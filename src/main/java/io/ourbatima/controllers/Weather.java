@@ -1,6 +1,5 @@
 package io.ourbatima.controllers;
 
-
 import com.google.gson.*;
 import io.ourbatima.core.interfaces.ActionView;
 import javafx.fxml.FXML;
@@ -105,43 +104,25 @@ public class Weather extends ActionView {
         });
     }
 
-    // Public data classes with exact API response structure
     public class WeatherData {
         public Location location;
         public Current current;
         public Forecast forecast;
     }
 
-    public class Location {
-        public String name;
-        public String country;
-    }
+    public class Location { public String name, country; }
 
     public class Current {
-        public double temp_c;
-        public double feelslike_c;
+        public double temp_c, feelslike_c, wind_kph, uv;
         public int humidity;
-        public double wind_kph;
-        public double uv;
         public Condition condition;
     }
 
-    public class Forecast {
-        public ForecastDay[] forecastday;
-    }
+    public class Forecast { public ForecastDay[] forecastday; }
 
-    public class ForecastDay {
-        public String date;
-        public Day day;
-    }
+    public class ForecastDay { public String date; public Day day; }
 
-    public class Day {
-        public double maxtemp_c;
-        public double mintemp_c;
-        public Condition condition;
-    }
+    public class Day { public double maxtemp_c, mintemp_c; public Condition condition; }
 
-    public class Condition {
-        public String text;
-    }
+    public class Condition { public String text; }
 }

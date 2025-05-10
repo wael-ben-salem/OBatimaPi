@@ -53,54 +53,54 @@ public class abonnementService {
         }}
 
 
-        public void upadteAbonnement (abonnement abb){
-            try (Connection conn = getConnection()) {
-                String sql = "UPDATE abonnement SET nom_abonnement = ?, duree = ?, prix = ? WHERE id_abonnement = ?";
-                PreparedStatement stmt = conn.prepareStatement(sql);
+    public void upadteAbonnement (abonnement abb){
+        try (Connection conn = getConnection()) {
+            String sql = "UPDATE abonnement SET nom_abonnement = ?, duree = ?, prix = ? WHERE id_abonnement = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
 
-                stmt.setString(1, abb.getNomAbonnement());
-                stmt.setString(2, abb.getDuree());
-                stmt.setDouble(3, abb.getPrix());
-                stmt.setInt(4, abb.getIdAbonnement());
-
-
-                int rowsUpdated = stmt.executeUpdate();
-                if (rowsUpdated > 0) {
-                    System.out.println("Abonnement mis à jour avec succès !");
-                } else {
-                    System.out.println("Échec de la mise à jour : Aucun abonnement trouvé avec cet ID.");
-                }
+            stmt.setString(1, abb.getNomAbonnement());
+            stmt.setString(2, abb.getDuree());
+            stmt.setDouble(3, abb.getPrix());
+            stmt.setInt(4, abb.getIdAbonnement());
 
 
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Abonnement mis à jour avec succès !");
+            } else {
+                System.out.println("Échec de la mise à jour : Aucun abonnement trouvé avec cet ID.");
             }
 
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
 
-public void DeliteAbonnement(int abb) {
-
-    try (Connection conn = getConnection()) {
-
-        String sql = "DELETE FROM abonnement WHERE id_abonnement = ?";
-
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, abb);
-        int rowsDeleted = stmt.executeUpdate();
-
-
-
-        if (rowsDeleted > 0) {
-            System.out.println("Abonnement supprimé avec succès !");
-        } else {
-            System.out.println("Aucun abonnement trouvé avec cet ID.");
-        }
-
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
     }
 
-}
+
+    public void DeliteAbonnement(int abb) {
+
+        try (Connection conn = getConnection()) {
+
+            String sql = "DELETE FROM abonnement WHERE id_abonnement = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, abb);
+            int rowsDeleted = stmt.executeUpdate();
+
+
+
+            if (rowsDeleted > 0) {
+                System.out.println("Abonnement supprimé avec succès !");
+            } else {
+                System.out.println("Aucun abonnement trouvé avec cet ID.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

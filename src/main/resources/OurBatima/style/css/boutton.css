@@ -1,0 +1,7 @@
+.btn-gradient {
+    -fx-background-color: linear-gradient(to right, #c5a814, #372a28);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12 30;
+    -fx-background-radius: 8;
+}
