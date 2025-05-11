@@ -12,6 +12,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.Integer?>
+<?import java.lang.String?>
+<?import java.time.LocalDate?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.Reclamation.AddReclamationController">
     <!-- Set padding for the whole pane -->
 
@@ -20,8 +22,18 @@
 
     <!-- Label for Statut -->
     <Label text="Statut:" layoutX="20" layoutY="220"/>
-    <TextField fx:id="statutTextField" layoutX="20" layoutY="250" prefWidth="360"/>
+    <ComboBox fx:id="statutComboBox" layoutX="20" layoutY="250" prefWidth="360">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="NEW"/>
+                <String fx:value="Waiting for Response"/>
+                <String fx:value="In Progress"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
 
+    <!-- Label for Utilisateur ID -->
+    <Label text="Utilisateur ID:" layoutX="20" layoutY="290"/>
     <ComboBox fx:id="utilisateurIdComboBox" layoutX="20" layoutY="320" prefWidth="360">
         <items>
             <FXCollections fx:factory="observableArrayList">
@@ -36,7 +48,11 @@
 
     <!-- Label for Date -->
     <Label text="Date:" layoutX="20" layoutY="360"/>
-    <DatePicker fx:id="dateField" layoutX="20" layoutY="390" prefWidth="360"/>
+    <DatePicker fx:id="dateField" layoutX="20" layoutY="390" prefWidth="360">
+        <value>
+            <LocalDate fx:factory="now"/>
+        </value>
+    </DatePicker>
     <!-- Add Button -->
     <Button fx:id="ajouterButton" text="Ajouter Réclamation" layoutX="20" layoutY="480" prefWidth="360" onAction="#handleAddReclamation"/>
 </AnchorPane>

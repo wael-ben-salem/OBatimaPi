@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.lang.String?>
+<?import java.time.LocalDate?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
@@ -16,15 +18,27 @@
             prefHeight="400.0" prefWidth="600.0">
     <children>
         <Label text="Description:" layoutX="20" layoutY="20"/>
-        <TextArea fx:id="descriptionAreaField" layoutX="20" layoutY="50" prefHeight="150" prefWidth="360"/>
+        <TextArea fx:id="descriptionField" layoutX="20" layoutY="50" prefHeight="150" prefWidth="360"/>
 
         <!-- Label for Statut -->
         <Label text="Statut:" layoutX="20" layoutY="200"/>
-        <TextField fx:id="statutTextField" layoutX="20" layoutY="220" prefWidth="360"/>
+        <ComboBox fx:id="statutComboBox" layoutX="20" layoutY="220" prefWidth="360">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="NEW"/>
+                    <String fx:value="Waiting for Response"/>
+                    <String fx:value="In Progress"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
 
         <!-- Label for Date -->
         <Label text="Date:" layoutX="20" layoutY="250"/>
-        <DatePicker fx:id="dateField" layoutX="20" layoutY="270" prefWidth="360"/>
+        <DatePicker fx:id="datePicker" layoutX="20" layoutY="270" prefWidth="360">
+            <value>
+                <LocalDate fx:factory="now"/>
+            </value>
+        </DatePicker>
 
         <Label text="utilisateurId:" layoutX="20" layoutY="290"/>
         <ComboBox fx:id="utilisateurIdComboBox" layoutX="20" layoutY="310" prefWidth="360">
@@ -39,9 +53,9 @@
             </items>
         </ComboBox>
 
-        <Button fx:id="updateButton" layoutX="20.0" layoutY="360.0" text="✅ Mettre à Jour" onAction="#updateReclamation"
+        <Button fx:id="updateButton" layoutX="20.0" layoutY="360.0" text=" Mettre à Jour" onAction="#updateReclamation"
                 style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
-        <Button fx:id="cancelButton" layoutX="220.0" layoutY="360.0" text="❌ Annuler" onAction="#closePopup"
+        <Button fx:id="cancelButton" layoutX="220.0" layoutY="360.0" text=" Annuler" onAction="#closePopup"
                 style="-fx-background-color: #FF0000; -fx-text-fill: white;"/>
 
 

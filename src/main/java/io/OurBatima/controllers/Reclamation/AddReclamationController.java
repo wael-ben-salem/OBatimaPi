@@ -115,7 +115,7 @@ public class AddReclamationController extends ActionView {
     @FXML
     private TextArea descriptionAreaField;
     @FXML
-    private TextField statutTextField;
+    private ComboBox<String> statutComboBox;
     @FXML
     private ComboBox<Integer> utilisateurIdComboBox; // Changed to ComboBox
     @FXML
@@ -132,6 +132,12 @@ public class AddReclamationController extends ActionView {
         ajouterButton.setOnAction(event -> handleAddReclamation());
         loadUtilisateurs(); // Load utilisateurs into the ComboBox
         addInputListeners();
+
+        // Set default date to current date
+        dateField.setValue(LocalDate.now());
+
+        // Set default status to "NEW"
+        statutComboBox.setValue("NEW");
     }
 
     private void loadUtilisateurs() {
@@ -144,16 +150,16 @@ public class AddReclamationController extends ActionView {
 
     private void addInputListeners() {
         descriptionAreaField.textProperty().addListener((observable, oldValue, newValue) -> validateInput());
-        statutTextField.textProperty().addListener((observable, oldValue, newValue) -> validateInput());
+        statutComboBox.valueProperty().addListener((observable, oldValue, newValue) -> validateInput());
         utilisateurIdComboBox.valueProperty().addListener((observable, oldValue, newValue) -> validateInput()); // Listen for ComboBox changes
         dateField.valueProperty().addListener((observable, oldValue, newValue) -> validateInput());
     }
 
     private void validateInput() {
         boolean isValid = !descriptionAreaField.getText().trim().isEmpty() &&
-                !statutTextField.getText().trim().isEmpty() &&
-                 // Ensure a user is selected
-                dateField.getValue() != null || utilisateurIdComboBox.getValue() != null ; // Ensure a date is selected
+                statutComboBox.getValue() != null &&
+                utilisateurIdComboBox.getValue() != null && // Ensure a user is selected
+                dateField.getValue() != null; // Ensure a date is selected
 
         ajouterButton.setDisable(!isValid);
     }
@@ -161,16 +167,16 @@ public class AddReclamationController extends ActionView {
     @FXML
     private void handleAddReclamation() {
         String description = descriptionAreaField.getText().trim();
-        String statut = statutTextField.getText().trim();
+        String statut = statutComboBox.getValue();
         LocalDateTime date = dateField.getValue().atStartOfDay();
-       Integer utilisateurId = utilisateurIdComboBox.getValue(); // Get selected user ID from ComboBox
+        Integer utilisateurId = utilisateurIdComboBox.getValue(); // Get selected user ID from ComboBox
 
         if (description.isEmpty()) {
             showError("Description de la réclamation est requise");
             return;
         }
 
-        if (statut.isEmpty()) {
+        if (statut == null) {
             showError("Statut de la réclamation est requis");
             return;
         }
@@ -202,9 +208,9 @@ public class AddReclamationController extends ActionView {
 
     private void resetFields() {
         descriptionAreaField.clear();
-        statutTextField.clear();
+        statutComboBox.setValue("NEW"); // Reset to default status
         utilisateurIdComboBox.setValue(null); // Reset the ComboBox
-        dateField.setValue(null); // Reset the date picker
+        dateField.setValue(LocalDate.now()); // Reset to current date
     }
 
     private void showError(String message) {

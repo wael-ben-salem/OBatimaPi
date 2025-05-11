@@ -10,7 +10,6 @@ import io.OurBatima.core.interfaces.ActionView;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

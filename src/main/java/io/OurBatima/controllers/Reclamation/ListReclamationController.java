@@ -204,6 +204,12 @@ public class ListReclamationController extends ActionView {
     @FXML private GridPane reclamationGrid;
     private final ReclamationDAO reclamationDAO = new ReclamationDAO();
 
+    @FXML
+    public void initialize() {
+        System.out.println("ListReclamationController Initialized");
+        loadReclamations();
+    }
+
 
     @FXML
     private void loadReclamations() {
@@ -268,14 +274,20 @@ public class ListReclamationController extends ActionView {
             Parent root = loader.load();
 
             UpdateReclamationController updateReclamationController = loader.getController();
-           // updateReclamationController.setId(int id);
+            updateReclamationController.setReclamationId(id); // Pass the reclamation ID to the controller
+
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Modifier le Reclamation");
             stage.setScene(new Scene(root));
+
+            // Add a listener to refresh the list when the popup is closed
+            stage.setOnHidden(event -> loadReclamations());
+
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Error opening update popup: " + e.getMessage());
         }
     }
 
