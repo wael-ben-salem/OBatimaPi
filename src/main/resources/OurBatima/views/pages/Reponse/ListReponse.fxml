@@ -21,7 +21,10 @@
         <!-- Label pour afficher le résultat -->
         <Label fx:id="resultLabel" wrapText="true" text="Résultat de la recherche ici"
                prefWidth="250" />
-        <Button onAction="#loadReponses" text="Load Reponses" />
+        <HBox spacing="10">
+            <Button onAction="#loadReponses" text="Load Reponses" />
+            <Button text="Ajouter une réponse" onAction="#openAddReponseView" style="-fx-padding: 8; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4;" />
+        </HBox>
 
         <!-- GridPane to display the reclamations -->
         <GridPane fx:id="reponseGrid" style="-fx-padding: 5;">
@@ -57,6 +60,18 @@
                 <RowConstraints />
             </rowConstraints>
         </GridPane>
+
+        <!-- Pagination Controls -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button fx:id="prevPageButton" text="Previous" onAction="#goToPreviousPage" style="-fx-padding: 5;" />
+            <HBox fx:id="paginationButtonsBox" spacing="5" alignment="CENTER" />
+            <Button fx:id="nextPageButton" text="Next" onAction="#goToNextPage" style="-fx-padding: 5;" />
+        </HBox>
+
+        <!-- Page Information -->
+        <HBox alignment="CENTER">
+            <Label fx:id="pageInfoLabel" text="Page 1 of 1" />
+        </HBox>
     </VBox>
 </AnchorPane>
 

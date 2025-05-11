@@ -33,8 +33,11 @@ public class AddReponseController extends ActionView {
     private void initialize() {
         System.out.println("AddReponse Controller Initialized");
         ajouterButton.setOnAction(event -> handleAddReponse());
-       loadReclamations();
+        loadReclamations();
         addInputListeners();
+
+        // Set default date to current date
+        dateField.setValue(java.time.LocalDate.now());
     }
 
     private void loadReclamations() {
@@ -105,7 +108,7 @@ public class AddReponseController extends ActionView {
         descriptionAreaField.clear();
         statutTextField.clear();
         reclamationIdComboBox.setValue(null);
-        dateField.setValue(null);
+        dateField.setValue(java.time.LocalDate.now()); // Reset to current date
     }
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

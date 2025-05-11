@@ -20,9 +20,12 @@
 <AnchorPane prefHeight="685.0" prefWidth="1262.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.Reclamation.ListReclamationController">
 
     <VBox spacing="10" style="-fx-padding: 20;">
-        <!-- Button to load reclamations -->
-        <Button onAction="#loadReclamations" text="Load Reclamations" />
-        <Button text="Exporter en PDF" onAction="#exportToPdf" style="-fx-padding: 5; -fx-background-color: #4CAF50; -fx-text-fill: white;" />
+        <!-- Buttons for actions -->
+        <HBox spacing="10">
+            <Button onAction="#loadReclamations" text="Load Reclamations" />
+            <Button text="Ajouter une réclamation" onAction="#openAddReclamationView" style="-fx-padding: 8; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4;" />
+            <Button text="Exporter en PDF" onAction="#exportToPdf" style="-fx-padding: 8; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4;" />
+        </HBox>
         <!-- GridPane to display the reclamations -->
         <GridPane fx:id="reclamationGrid" style="-fx-padding: 5;">
             <columnConstraints>
@@ -59,6 +62,18 @@
                 <RowConstraints />
             </rowConstraints>
         </GridPane>
+
+        <!-- Pagination Controls -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button fx:id="prevPageButton" text="Previous" onAction="#goToPreviousPage" style="-fx-padding: 5;" />
+            <HBox fx:id="paginationButtonsBox" spacing="5" alignment="CENTER" />
+            <Button fx:id="nextPageButton" text="Next" onAction="#goToNextPage" style="-fx-padding: 5;" />
+        </HBox>
+
+        <!-- Page Information -->
+        <HBox alignment="CENTER">
+            <Label fx:id="pageInfoLabel" text="Page 1 of 1" />
+        </HBox>
     </VBox>
 
 

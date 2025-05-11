@@ -119,7 +119,7 @@ public class ReponseDAO {
     // 🔹 Récupérer les réponses d'une réclamation spécifique
     public List<Reponse> getReponsesByReclamationId(int reclamationId) {
         List<Reponse> reponses = new ArrayList<>();
-        String sql = "SELECT * FROM Reponse WHERE idReclamation = ?";
+        String sql = "SELECT * FROM Reponse WHERE id_reclamation = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -131,7 +131,7 @@ public class ReponseDAO {
                             rs.getString("description"),
                             rs.getString("statut"),
                             rs.getTimestamp("date").toLocalDateTime(),
-                            rs.getInt("idReclamation")
+                            rs.getInt("id_reclamation")
                     ));
                 }
             }

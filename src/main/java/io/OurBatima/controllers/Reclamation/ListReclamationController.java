@@ -192,17 +192,34 @@ import javafx.scene.layout.GridPane;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
+import javafx.event.ActionEvent;
 
 import static java.awt.SystemColor.text;
+import io.OurBatima.core.Dao.Reclamation.ReponseDAO;
+import io.OurBatima.core.model.Reponse;
 
 public class ListReclamationController extends ActionView {
 
     @FXML private GridPane reclamationGrid;
+    @FXML private HBox paginationButtonsBox;
+    @FXML private Button prevPageButton;
+    @FXML private Button nextPageButton;
+    @FXML private Label pageInfoLabel;
+
     private final ReclamationDAO reclamationDAO = new ReclamationDAO();
+    private final ReponseDAO reponseDAO = new ReponseDAO();
+
+    // Pagination variables
+    private int currentPage = 1;
+    private int itemsPerPage = 5;
+    private int totalPages = 1;
+    private List<Reclamation> allReclamations;
 
     @FXML
     public void initialize() {
@@ -213,17 +230,44 @@ public class ListReclamationController extends ActionView {
 
     @FXML
     private void loadReclamations() {
-        List<Reclamation> reclamations = reclamationDAO.getAllReclamations();
+        // Get all reclamations
+        allReclamations = reclamationDAO.getAllReclamations();
 
+        // Calculate total pages
+        totalPages = (int) Math.ceil((double) allReclamations.size() / itemsPerPage);
+        if (totalPages == 0) totalPages = 1; // At least one page even if empty
+
+        // Ensure current page is valid
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+
+        // Update pagination controls
+        updatePaginationControls();
+
+        // Display current page
+        displayCurrentPage();
+    }
+
+    private void displayCurrentPage() {
         // Clear existing data rows (keep header row 0)
         reclamationGrid.getChildren().removeIf(node -> {
             Integer rowIndex = GridPane.getRowIndex(node);
             return rowIndex != null && rowIndex >= 1;
         });
 
+        // Calculate start and end indices for the current page
+        int startIndex = (currentPage - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, allReclamations.size());
+
+        // Get reclamations for the current page
+        List<Reclamation> currentPageReclamations =
+            (allReclamations.isEmpty()) ? new ArrayList<>() :
+            allReclamations.subList(startIndex, endIndex);
+
         // Add new data rows
         int rowIndex = 1;
-        for (Reclamation reclamation : reclamations) {
+        for (Reclamation reclamation : currentPageReclamations) {
             // ID (non-editable)
             TextField idField = createTextField(String.valueOf(reclamation.getId()));
             idField.setEditable(false);
@@ -257,9 +301,7 @@ public class ListReclamationController extends ActionView {
             Button deleteButton = new Button("Delete");
             deleteButton.setStyle("-fx-background-color: #ff4444; -fx-text-fill: white;");
             deleteButton.setOnAction(event -> {
-                reclamationDAO.deleteReclamation(reclamation.getId());
-                System.out.println("Reclamation deleted successfully: " + reclamation.getId());
-                loadReclamations();
+                handleDeleteReclamation(reclamation.getId());
             });
 
             // Add components to the GridPane
@@ -296,110 +338,431 @@ public class ListReclamationController extends ActionView {
     private void exportToPdf() {
         List<Reclamation> reclamations = reclamationDAO.getAllReclamations();
         if (reclamations.isEmpty()) {
-            System.out.println("Aucune réclamation à exporter.");
+            showAlert(Alert.AlertType.INFORMATION, "Information", "Aucune réclamation à exporter.");
             return;
         }
 
         // Ouvrir une boîte de dialogue pour choisir l'emplacement du fichier
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Enregistrer le PDF");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.xlsx"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
         File file = fileChooser.showSaveDialog(null);
 
         if (file == null) {
-            System.out.println("Aucun fichier sélectionné.");
-            return;
+            return; // L'utilisateur a annulé
         }
 
+        // S'assurer que le fichier a l'extension .pdf
         String filePath = file.getAbsolutePath();
+        if (!filePath.toLowerCase().endsWith(".pdf")) {
+            filePath += ".pdf";
+            file = new File(filePath);
+        }
 
         try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage();
+            // Créer la première page
+            PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
 
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            // Obtenir les dimensions de la page
+            float pageWidth = page.getMediaBox().getWidth();
+            float pageHeight = page.getMediaBox().getHeight();
 
-            // Position initiale pour écrire le texte
+            // Marges
             float margin = 50;
-            float yPosition = 700; // Commence en haut de la page
+            float yStart = pageHeight - margin;
+            float tableWidth = pageWidth - 2 * margin;
+            float yPosition = yStart;
 
-            // Titre du document
+            // Largeurs des colonnes
+            float[] columnWidths = {40, tableWidth * 0.4f, tableWidth * 0.2f, tableWidth * 0.25f, tableWidth * 0.15f};
+            float rowHeight = 20f;
+
+            // Nombre de pages
+            int pageNumber = 1;
+
+            // Créer le contenu
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            // Ajouter un en-tête avec logo ou titre
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
             contentStream.beginText();
             contentStream.newLineAtOffset(margin, yPosition);
             contentStream.showText("Liste des Réclamations");
             contentStream.endText();
-            yPosition -= 20;
+            yPosition -= 25;
+
+            // Ajouter la date d'exportation
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(margin, yPosition);
+            contentStream.showText("Exporté le: " + java.time.LocalDate.now().toString());
+            contentStream.endText();
+            yPosition -= 30;
+
+            // Dessiner l'en-tête du tableau
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+
+            // Fond de l'en-tête
+            contentStream.setNonStrokingColor(0.8f, 0.8f, 0.8f); // Gris clair
+            contentStream.addRect(margin, yPosition - rowHeight, tableWidth, rowHeight);
+            contentStream.fill();
+            contentStream.setNonStrokingColor(0, 0, 0); // Retour au noir
+
+            // Bordure de l'en-tête
+            contentStream.setLineWidth(0.5f);
+            contentStream.addRect(margin, yPosition - rowHeight, tableWidth, rowHeight);
+            contentStream.stroke();
+
+            // Texte de l'en-tête
+            String[] headers = {"ID", "Description", "Statut", "Date", "Utilisateur"};
+            float xPosition = margin;
+
+            for (int i = 0; i < headers.length; i++) {
+                contentStream.beginText();
+                contentStream.newLineAtOffset(xPosition + 5, yPosition - 15);
+                contentStream.showText(headers[i]);
+                contentStream.endText();
+
+                // Dessiner les lignes verticales des colonnes
+                contentStream.moveTo(xPosition, yPosition);
+                contentStream.lineTo(xPosition, yPosition - rowHeight);
+                contentStream.stroke();
+
+                xPosition += columnWidths[i];
+            }
+
+            // Dernière ligne verticale
+            contentStream.moveTo(xPosition, yPosition);
+            contentStream.lineTo(xPosition, yPosition - rowHeight);
+            contentStream.stroke();
+
+            yPosition -= rowHeight;
+            contentStream.setFont(PDType1Font.HELVETICA, 10);
 
             // Parcourir la liste des réclamations
             for (Reclamation reclamation : reclamations) {
-                // Ajouter l'ID de la réclamation
-                contentStream.beginText();
-                contentStream.newLineAtOffset(margin, yPosition);
-                contentStream.showText("ID: " + reclamation.getId());
-                contentStream.endText();
-                yPosition -= 15;
+                // Vérifier s'il faut créer une nouvelle page
+                if (yPosition < margin + rowHeight) {
+                    // Ajouter le numéro de page
+                    contentStream.setFont(PDType1Font.HELVETICA, 10);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(pageWidth / 2, margin / 2);
+                    contentStream.showText("Page " + pageNumber);
+                    contentStream.endText();
 
-                // Ajouter la description
-                contentStream.beginText();
-                contentStream.newLineAtOffset(margin, yPosition);
-                contentStream.showText("Description: " + reclamation.getDescription());
-                contentStream.endText();
-                yPosition -= 15;
+                    // Fermer le contentStream actuel
+                    contentStream.close();
 
-                // Ajouter le statut
-                contentStream.beginText();
-                contentStream.newLineAtOffset(margin, yPosition);
-                contentStream.showText("Statut: " + reclamation.getStatut());
-                contentStream.endText();
-                yPosition -= 15;
+                    // Créer une nouvelle page
+                    pageNumber++;
+                    page = new PDPage(PDRectangle.A4);
+                    document.addPage(page);
+                    contentStream = new PDPageContentStream(document, page);
+                    yPosition = yStart;
 
-                // Ajouter la date
-                contentStream.beginText();
-                contentStream.newLineAtOffset(margin, yPosition);
-                contentStream.showText("Date: " + reclamation.getDate().toString());
-                contentStream.endText();
-                yPosition -= 20; // Espacement entre les réclamations
-
-                // Vérifier si on dépasse la page
-                if (yPosition < margin) {
-                    contentStream.close(); // Fermer le contentStream actuel
-                    page = new PDPage(); // Créer une nouvelle page
-                    document.addPage(page); // Ajouter la nouvelle page au document
-                    contentStream = new PDPageContentStream(document, page); // Créer un nouveau contentStream
-                    yPosition = 700; // Réinitialiser la position Y
-
-                    // Réécrire le titre sur la nouvelle page
+                    // Réécrire l'en-tête sur la nouvelle page
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
                     contentStream.beginText();
                     contentStream.newLineAtOffset(margin, yPosition);
                     contentStream.showText("Liste des Réclamations (suite)");
                     contentStream.endText();
-                    yPosition -= 20;
+                    yPosition -= 25;
+
+                    // Ajouter la date d'exportation
+                    contentStream.setFont(PDType1Font.HELVETICA, 12);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(margin, yPosition);
+                    contentStream.showText("Exporté le: " + java.time.LocalDate.now().toString());
+                    contentStream.endText();
+                    yPosition -= 30;
+
+                    // Redessiner l'en-tête du tableau
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+
+                    // Fond de l'en-tête
+                    contentStream.setNonStrokingColor(0.8f, 0.8f, 0.8f);
+                    contentStream.addRect(margin, yPosition - rowHeight, tableWidth, rowHeight);
+                    contentStream.fill();
+                    contentStream.setNonStrokingColor(0, 0, 0);
+
+                    // Bordure de l'en-tête
+                    contentStream.setLineWidth(0.5f);
+                    contentStream.addRect(margin, yPosition - rowHeight, tableWidth, rowHeight);
+                    contentStream.stroke();
+
+                    // Texte de l'en-tête
+                    xPosition = margin;
+                    for (int i = 0; i < headers.length; i++) {
+                        contentStream.beginText();
+                        contentStream.newLineAtOffset(xPosition + 5, yPosition - 15);
+                        contentStream.showText(headers[i]);
+                        contentStream.endText();
+
+                        contentStream.moveTo(xPosition, yPosition);
+                        contentStream.lineTo(xPosition, yPosition - rowHeight);
+                        contentStream.stroke();
+
+                        xPosition += columnWidths[i];
+                    }
+
+                    // Dernière ligne verticale
+                    contentStream.moveTo(xPosition, yPosition);
+                    contentStream.lineTo(xPosition, yPosition - rowHeight);
+                    contentStream.stroke();
+
+                    yPosition -= rowHeight;
+                    contentStream.setFont(PDType1Font.HELVETICA, 10);
                 }
+
+                // Dessiner la ligne du tableau pour cette réclamation
+                contentStream.setLineWidth(0.5f);
+                contentStream.addRect(margin, yPosition - rowHeight, tableWidth, rowHeight);
+                contentStream.stroke();
+
+                // Ajouter les données de la réclamation
+                xPosition = margin;
+
+                // ID
+                contentStream.beginText();
+                contentStream.newLineAtOffset(xPosition + 5, yPosition - 15);
+                contentStream.showText(String.valueOf(reclamation.getId()));
+                contentStream.endText();
+                contentStream.moveTo(xPosition, yPosition);
+                contentStream.lineTo(xPosition, yPosition - rowHeight);
+                contentStream.stroke();
+                xPosition += columnWidths[0];
+
+                // Description (tronquée si trop longue)
+                String description = reclamation.getDescription();
+                if (description.length() > 50) {
+                    description = description.substring(0, 47) + "...";
+                }
+                contentStream.beginText();
+                contentStream.newLineAtOffset(xPosition + 5, yPosition - 15);
+                contentStream.showText(description);
+                contentStream.endText();
+                contentStream.moveTo(xPosition, yPosition);
+                contentStream.lineTo(xPosition, yPosition - rowHeight);
+                contentStream.stroke();
+                xPosition += columnWidths[1];
+
+                // Statut
+                contentStream.beginText();
+                contentStream.newLineAtOffset(xPosition + 5, yPosition - 15);
+                contentStream.showText(reclamation.getStatut());
+                contentStream.endText();
+                contentStream.moveTo(xPosition, yPosition);
+                contentStream.lineTo(xPosition, yPosition - rowHeight);
+                contentStream.stroke();
+                xPosition += columnWidths[2];
+
+                // Date (formatée)
+                String formattedDate = reclamation.getDate().toLocalDate().toString();
+                contentStream.beginText();
+                contentStream.newLineAtOffset(xPosition + 5, yPosition - 15);
+                contentStream.showText(formattedDate);
+                contentStream.endText();
+                contentStream.moveTo(xPosition, yPosition);
+                contentStream.lineTo(xPosition, yPosition - rowHeight);
+                contentStream.stroke();
+                xPosition += columnWidths[3];
+
+                // Utilisateur ID
+                contentStream.beginText();
+                contentStream.newLineAtOffset(xPosition + 5, yPosition - 15);
+                contentStream.showText(String.valueOf(reclamation.getUtilisateurId()));
+                contentStream.endText();
+                contentStream.moveTo(xPosition, yPosition);
+                contentStream.lineTo(xPosition, yPosition - rowHeight);
+                contentStream.stroke();
+                xPosition += columnWidths[4];
+
+                // Dernière ligne verticale
+                contentStream.moveTo(xPosition, yPosition);
+                contentStream.lineTo(xPosition, yPosition - rowHeight);
+                contentStream.stroke();
+
+                yPosition -= rowHeight;
             }
+
+            // Ajouter le numéro de page sur la dernière page
+            contentStream.setFont(PDType1Font.HELVETICA, 10);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(pageWidth / 2, margin / 2);
+            contentStream.showText("Page " + pageNumber);
+            contentStream.endText();
 
             // Fermer le dernier contentStream
             contentStream.close();
 
             // Sauvegarder le document
             document.save(file);
-            System.out.println("PDF créé avec succès : " + file.getAbsolutePath());
 
-            // Vérifier si le fichier existe
-            if (file.exists()) {
-                System.out.println("Le fichier a été créé avec succès : " + file.getAbsolutePath());
-            } else {
-                System.out.println("Le fichier n'a pas été créé.");
-            }
+            // Afficher un message de succès
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Le PDF a été créé avec succès.\n" +
+                      "Emplacement: " + file.getAbsolutePath());
+
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Erreur lors de la création du PDF : " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la création du PDF: " + e.getMessage());
         }
     }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     private TextField createTextField(String text) {
         TextField textField = new TextField(text);
         textField.setStyle("-fx-padding: 5; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
         return textField;
     }
 
+    /**
+     * Updates the pagination controls based on the current state
+     */
+    private void updatePaginationControls() {
+        // Update page info label
+        pageInfoLabel.setText("Page " + currentPage + " of " + totalPages);
+
+        // Enable/disable previous and next buttons
+        prevPageButton.setDisable(currentPage <= 1);
+        nextPageButton.setDisable(currentPage >= totalPages);
+
+        // Clear existing page number buttons
+        paginationButtonsBox.getChildren().clear();
+
+        // Add page number buttons
+        int startPage = Math.max(1, currentPage - 2);
+        int endPage = Math.min(totalPages, startPage + 4);
+
+        // Adjust start page if we're near the end
+        if (endPage - startPage < 4 && startPage > 1) {
+            startPage = Math.max(1, endPage - 4);
+        }
+
+        for (int i = startPage; i <= endPage; i++) {
+            Button pageButton = new Button(String.valueOf(i));
+            final int pageNum = i;
+
+            // Style the current page button differently
+            if (i == currentPage) {
+                pageButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;");
+            }
+
+            pageButton.setOnAction(event -> {
+                currentPage = pageNum;
+                displayCurrentPage();
+                updatePaginationControls();
+            });
+
+            paginationButtonsBox.getChildren().add(pageButton);
+        }
+    }
+
+    /**
+     * Go to the previous page
+     */
+    @FXML
+    private void goToPreviousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            displayCurrentPage();
+            updatePaginationControls();
+        }
+    }
+
+    /**
+     * Go to the next page
+     */
+    @FXML
+    private void goToNextPage() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayCurrentPage();
+            updatePaginationControls();
+        }
+    }
+
+    /**
+     * Opens the AddReclamation view when the "Ajouter une réclamation" button is clicked
+     */
+    @FXML
+    private void openAddReclamationView(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/OurBatima/views/pages/Reclamation/AddReclamation.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Ajouter une réclamation");
+            stage.setScene(new Scene(root));
+
+            // Add a listener to refresh the list when the popup is closed
+            stage.setOnHidden(e -> loadReclamations());
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error opening AddReclamation view: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Handles the deletion of a reclamation with proper confirmation and error handling
+     * @param reclamationId The ID of the reclamation to delete
+     */
+    private void handleDeleteReclamation(int reclamationId) {
+        try {
+            // Check if there are any responses associated with this reclamation
+            List<Reponse> responses = reponseDAO.getReponsesByReclamationId(reclamationId);
+
+            // Create confirmation dialog
+            Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDialog.setTitle("Confirmation de suppression");
+            confirmDialog.setHeaderText(null);
+
+            if (!responses.isEmpty()) {
+                // Warn about associated responses
+                confirmDialog.setContentText("Cette réclamation a " + responses.size() + " réponse(s) associée(s). \n" +
+                                           "La suppression de cette réclamation supprimera également toutes les réponses associées. \n\n" +
+                                           "Voulez-vous vraiment supprimer cette réclamation ?");
+            } else {
+                confirmDialog.setContentText("Voulez-vous vraiment supprimer cette réclamation ?");
+            }
+
+            // Show dialog and wait for user response
+            Optional<ButtonType> result = confirmDialog.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // User confirmed deletion
+                try {
+                    // First delete associated responses if any
+                    for (Reponse response : responses) {
+                        reponseDAO.deleteReponse(response.getId());
+                    }
+
+                    // Then delete the reclamation
+                    reclamationDAO.deleteReclamation(reclamationId);
+
+                    // Show success message
+                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Réclamation supprimée avec succès.");
+
+                    // Refresh the list
+                    loadReclamations();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la suppression: " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la vérification des réponses associées: " + e.getMessage());
+        }
+    }
 }
