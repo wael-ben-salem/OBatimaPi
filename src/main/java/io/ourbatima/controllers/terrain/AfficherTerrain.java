@@ -1,11 +1,13 @@
 package io.ourbatima.controllers.terrain;
-
+import io.ourbatima.core.Dao.Projet.ProjetDAO;
 import io.ourbatima.core.Dao.Terrain.TerrainDAO;
 import io.ourbatima.core.Dao.Visite.VisiteDAO;
 import io.ourbatima.core.interfaces.ActionView;
 import io.ourbatima.core.interfaces.Initializable;
 import io.ourbatima.core.interfaces.Refreshable;
+import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Terrain;
+import io.ourbatima.core.model.Visite;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,12 +15,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

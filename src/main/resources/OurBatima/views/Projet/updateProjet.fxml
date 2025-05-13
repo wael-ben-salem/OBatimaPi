@@ -50,7 +50,7 @@
             <Font name="Arial Rounded MT Bold" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="ajouterButton" alignment="CENTER" contentDisplay="CENTER" layoutX="242.0" layoutY="451.0" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="23.0" prefWidth="122.0" style="-fx-background-color: #4c3f0a;" text="Sauvegarder" textFill="WHITE">
+      <Button fx:id="ajouterButton" alignment="CENTER" contentDisplay="CENTER" layoutX="224.0" layoutY="451.0" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="39.0" prefWidth="143.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Sauvegarder" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="12.0" />
          </font>

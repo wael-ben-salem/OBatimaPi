@@ -23,8 +23,8 @@ public class Terrain {
         this.emplacement = emplacement;
     }
 
-    public Terrain(int id_terrain, String detailsGeo, String caracteristiques, BigDecimal superficie, String emplacement) {
-        Id_terrain = id_terrain;
+    public Terrain(int Id_terrain, String detailsGeo, String caracteristiques, BigDecimal superficie, String emplacement) {
+        Id_terrain = Id_terrain;
         this.detailsGeo = detailsGeo;
         this.superficie = superficie;
         this.caracteristiques = caracteristiques;
@@ -43,6 +43,13 @@ public class Terrain {
         this.caracteristiques = caracteristiques;
         this.emplacement = emplacement;
         this.observations = (observations != null) ? observations : new ArrayList<>();
+    }
+
+
+
+    public Terrain(String emplacement, BigDecimal superficie) {
+        this.superficie = superficie;
+        this.emplacement=emplacement;
     }
 
     public List<String> getObservations() {

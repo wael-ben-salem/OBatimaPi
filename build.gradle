@@ -5,6 +5,7 @@ plugins {
     id 'org.beryx.jlink' version '2.25.0' // here // 2.24.1
 }
 
+
 group 'io.ourbatima'
 version '1.0.4'
 
@@ -33,9 +34,9 @@ ext {
 application {
     mainModule = 'io.ourbatima'
     mainClass = 'io.ourbatima.Starter'
-    applicationDefaultJvmArgs = ["-Djava.library.path=${projectDir}/src/main/resources/libs"]
-
+    applicationDefaultJvmArgs = ["-Djava.library.path=" + projectDir.toString() + "/src/main/resources/libs"]
 }
+
 
 javafx {
     version = '18.0.2' // here 18
