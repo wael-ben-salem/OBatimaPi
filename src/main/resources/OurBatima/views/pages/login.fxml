@@ -7,20 +7,20 @@
 <?import javafx.scene.layout.*?>
 
 <?import java.net.URL?>
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.Reclamation.ListReclamationController"
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.Reponse.ListReponseController"
             style="-fx-background-color: #f5f5f5;">
 
     <VBox spacing="15" style="-fx-padding: 20;">
         <!-- Header with title -->
         <HBox alignment="CENTER" style="-fx-background-color: #3498db; -fx-padding: 15; -fx-background-radius: 5;">
-            <Label text="Liste des Réclamations"
+            <Label text="Liste des Réponses"
                    style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
         </HBox>
         <!-- Search section with styled components -->
         <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
             <TextField fx:id="searchField" promptText="Rechercher par ID ou description"
                        prefWidth="350" style="-fx-padding: 8; -fx-background-radius: 20;"/>
-            <Button text="🔍 Rechercher" onAction="#searchReclamation"
+            <Button text="🔍 Rechercher" onAction="#searchReponse"
                     style="-fx-padding: 8; -fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"/>
         </HBox>
 
@@ -31,29 +31,27 @@
 
         <!-- Action buttons with icons -->
         <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
-            <Button onAction="#loadReclamations" text="🔄 Actualiser"
+            <Button onAction="#loadReponses" text="🔄 Actualiser"
                     style="-fx-padding: 10 15; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-graphic-text-gap: 8;" />
-            <Button text="➕ Ajouter une réclamation" onAction="#openAddReclamationView"
+            <Button text="➕ Ajouter une réponse" onAction="#openAddReponseView"
                     style="-fx-padding: 10 15; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-graphic-text-gap: 8;" />
-            <Button text="📝 Exporter en PDF" onAction="#exportToPdf"
-                    style="-fx-padding: 10 15; -fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-graphic-text-gap: 8;" />
         </HBox>
 
-        <!-- GridPane to display the reclamations with styling -->
-        <GridPane fx:id="reclamationGrid" style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+        <!-- GridPane to display the responses with styling -->
+        <GridPane fx:id="reponseGrid" style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="50" prefWidth="60" />  <!-- ID -->
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="150" prefWidth="200" /> <!-- Description -->
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="120" /> <!-- Statut -->
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="150" prefWidth="150" /> <!-- Date -->
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="120" /> <!-- UtilisateurId -->
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="120" /> <!-- ReclamationId -->
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="150" prefWidth="150" /> <!-- Action (Update + Delete) -->
             </columnConstraints>
 
             <children>
                 <!-- Header row with styled labels -->
                 <HBox alignment="CENTER" style="-fx-background-color: #3498db; -fx-padding: 10; -fx-background-radius: 5 5 0 0;" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="6">
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;" text="Tableau des Réclamations" />
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;" text="Tableau des Réponses" />
                 </HBox>
 
                 <!-- Column headers with icons -->
@@ -61,7 +59,7 @@
                 <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="📝 Description" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="📊 Statut" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                 <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="📅 Date" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="👤 Utilisateur" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="🔗 Réclamation" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                 <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="⚙️ Actions" GridPane.columnIndex="5" GridPane.rowIndex="1" />
             </children>
             <rowConstraints>

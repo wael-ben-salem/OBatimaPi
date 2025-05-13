@@ -6,6 +6,7 @@ import io.OurBatima.core.Dao.Reclamation.ReponseDAO;
 import io.OurBatima.core.interfaces.ActionView;
 import io.OurBatima.core.model.Reclamation;
 import io.OurBatima.core.model.Reponse;
+import io.OurBatima.core.ui.SimpleTranslationDialog;
 
 
 
@@ -25,8 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
@@ -200,7 +203,21 @@ public class ListReponseController extends ActionView {
         descriptionArea.setWrapText(true);
         descriptionArea.setPrefWidth(400);
         descriptionArea.setPrefHeight(100);
-        grid.add(descriptionArea, 1, 1);
+
+        // Add translation button
+        Button translateButton = new Button("🌎 Traduire");
+        translateButton.setStyle("-fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-weight: bold;");
+        translateButton.setOnAction(event -> {
+            SimpleTranslationDialog translationDialog = new SimpleTranslationDialog(reponse.getDescription());
+            translationDialog.showAndWait();
+        });
+
+        // Create an HBox to hold the description and translate button
+        HBox descriptionBox = new HBox(10);
+        descriptionBox.setAlignment(Pos.CENTER_LEFT);
+        descriptionBox.getChildren().addAll(descriptionArea, translateButton);
+
+        grid.add(descriptionBox, 1, 1);
 
         grid.add(new Label("Statut:"), 0, 2);
         grid.add(new Label(reponse.getStatut()), 1, 2);
