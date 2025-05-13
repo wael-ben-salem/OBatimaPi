@@ -64,7 +64,7 @@ public class ReponseDAO {
 
     // Update a Reponse
     public void updateReponse(Reponse reponse) {
-        String sql = "UPDATE Reponse SET description = ?, statut = ?, date = ?,id_Reclamation = ? WHERE id = ?";
+        String sql = "UPDATE reponse SET description = ?, statut = ?, date = ?, id_reclamation = ? WHERE id = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, reponse.getDescription());
@@ -72,9 +72,27 @@ public class ReponseDAO {
             pstmt.setTimestamp(3, Timestamp.valueOf(reponse.getDate()));
             pstmt.setInt(4, reponse.getIdReclamation());
             pstmt.setInt(5, reponse.getId());
-            pstmt.executeUpdate();
+
+            // Debug output
+            System.out.println("Executing SQL: " + sql);
+            System.out.println("Parameters: " +
+                    "description=" + reponse.getDescription() + ", " +
+                    "statut=" + reponse.getStatut() + ", " +
+                    "date=" + reponse.getDate() + ", " +
+                    "id_reclamation=" + reponse.getIdReclamation() + ", " +
+                    "id=" + reponse.getId());
+
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);
+
+            if (rowsAffected > 0) {
+                System.out.println("✅ Réponse mise à jour avec succès dans la base de données!");
+            } else {
+                System.out.println("⚠️ Aucune ligne mise à jour. Vérifiez l'ID de la réponse.");
+            }
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la mise à jour de la reponse : " + e.getMessage());
+            System.out.println("❌ Erreur lors de la mise à jour de la réponse : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

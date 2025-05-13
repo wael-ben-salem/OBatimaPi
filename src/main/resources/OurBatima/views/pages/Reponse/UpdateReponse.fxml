@@ -39,6 +39,15 @@
         <Label text="ID Réclamation:" layoutX="20" layoutY="290"/>
         <ComboBox fx:id="reclamationIdComboBox" layoutX="20" layoutY="310" prefWidth="360"
                   promptText="Choisissez la réclamation">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <Integer fx:value="1"/>
+                    <Integer fx:value="2"/>
+                    <Integer fx:value="3"/>
+                    <Integer fx:value="4"/>
+                    <Integer fx:value="5"/>
+                </FXCollections>
+            </items>
             <!-- Items will be populated dynamically in the controller -->
         </ComboBox>
 

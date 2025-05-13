@@ -24,7 +24,7 @@ public class AddReponseController extends ActionView {
     @FXML
     private ComboBox<String> statutComboBox;
     @FXML
-    private ComboBox<Reclamation> reclamationIdComboBox;
+    private ComboBox<Integer> reclamationIdComboBox;
     @FXML
     private DatePicker dateField;
     @FXML
@@ -56,93 +56,59 @@ public class AddReponseController extends ActionView {
     }
 
     /**
-     * Adds manual reclamation items to the ComboBox if database loading fails
+     * Adds manual reclamation IDs to the ComboBox if database loading fails
      */
     private void addManualReclamations() {
-        System.out.println("Adding manual reclamation items...");
+        System.out.println("Adding manual reclamation IDs...");
 
-        // Create some dummy reclamations
-        List<Reclamation> manualReclamations = new ArrayList<>();
-        manualReclamations.add(new Reclamation(1, "Reclamation 1", "NEW", java.time.LocalDateTime.now(), 1));
-        manualReclamations.add(new Reclamation(2, "Reclamation 2", "In Progress", java.time.LocalDateTime.now(), 1));
-        manualReclamations.add(new Reclamation(3, "Reclamation 3", "Resolved", java.time.LocalDateTime.now(), 1));
+        // Create a list of simple integer IDs (1-5)
+        List<Integer> reclamationIds = new ArrayList<>();
+        reclamationIds.add(1);
+        reclamationIds.add(2);
+        reclamationIds.add(3);
+        reclamationIds.add(4);
+        reclamationIds.add(5);
 
         // Add them to the ComboBox
-        reclamationIdComboBox.setItems(FXCollections.observableArrayList(manualReclamations));
+        reclamationIdComboBox.setItems(FXCollections.observableArrayList(reclamationIds));
 
-        System.out.println("Added " + manualReclamations.size() + " manual reclamation items");
+        System.out.println("Added " + reclamationIds.size() + " manual reclamation IDs");
     }
 
     private void loadReclamations() {
         try {
-            System.out.println("Starting to load reclamations...");
+            System.out.println("Starting to load reclamation IDs...");
 
             // Get all reclamations from the database
             List<Reclamation> reclamations = reclamationDAO.getAllReclamations();
 
             // Check if we have any reclamations
-            if (reclamations == null) {
-                System.out.println("ERROR: reclamations list is null");
+            if (reclamations == null || reclamations.isEmpty()) {
+                System.out.println("No reclamations found in database, using manual IDs");
+                addManualReclamations();
                 return;
-            }
-
-            if (reclamations.isEmpty()) {
-                System.out.println("No reclamations found in the database");
-
-                // Add a dummy reclamation for testing
-                Reclamation dummyReclamation = new Reclamation(1, "Test Reclamation", "NEW",
-                        java.time.LocalDateTime.now(), 1);
-                reclamations.add(dummyReclamation);
-                System.out.println("Added a dummy reclamation for testing");
             }
 
             // Clear existing items
             reclamationIdComboBox.getItems().clear();
 
-            // Create an observable list
-            javafx.collections.ObservableList<Reclamation> reclamationList =
-                FXCollections.observableArrayList(reclamations);
+            // Extract just the IDs from the reclamations
+            List<Integer> reclamationIds = new ArrayList<>();
+            for (Reclamation r : reclamations) {
+                reclamationIds.add(r.getId());
+                System.out.println("Added ID: " + r.getId());
+            }
 
-            // Add reclamations to the ComboBox
-            reclamationIdComboBox.setItems(reclamationList);
+            // Add IDs to the ComboBox
+            reclamationIdComboBox.setItems(FXCollections.observableArrayList(reclamationIds));
 
             // Debug output
-            System.out.println("Loaded " + reclamations.size() + " reclamations");
-            for (Reclamation r : reclamations) {
-                System.out.println("Reclamation ID: " + r.getId() + ", Description: " + r.getDescription());
-            }
+            System.out.println("Loaded " + reclamationIds.size() + " reclamation IDs");
         } catch (Exception e) {
             System.out.println("ERROR loading reclamations: " + e.getMessage());
             e.printStackTrace();
+            addManualReclamations();
         }
-
-        // Alternative approach: Use a cell factory to customize how items appear in the dropdown
-        reclamationIdComboBox.setCellFactory(param -> new ListCell<Reclamation>() {
-            @Override
-            protected void updateItem(Reclamation reclamation, boolean empty) {
-                super.updateItem(reclamation, empty);
-
-                if (empty || reclamation == null) {
-                    setText(null);
-                } else {
-                    setText("Reclamation #" + reclamation.getId());
-                }
-            }
-        });
-
-        // Also set a button cell to display the selected item in the ComboBox button
-        reclamationIdComboBox.setButtonCell(new ListCell<Reclamation>() {
-            @Override
-            protected void updateItem(Reclamation reclamation, boolean empty) {
-                super.updateItem(reclamation, empty);
-
-                if (empty || reclamation == null) {
-                    setText(null);
-                } else {
-                    setText("Reclamation #" + reclamation.getId());
-                }
-            }
-        });
     }
 
     // Helper method to truncate long descriptions
@@ -190,17 +156,9 @@ public class AddReponseController extends ActionView {
                 return;
             }
 
-            // Get the reclamation ID
-            Integer reclamationId;
-            try {
-                reclamationId = reclamationIdComboBox.getValue().getId();
-                System.out.println("Reclamation ID: " + reclamationId);
-            } catch (Exception e) {
-                System.out.println("Error getting reclamation ID: " + e.getMessage());
-                e.printStackTrace();
-                showError("Erreur lors de la récupération de l'ID de réclamation");
-                return;
-            }
+            // Get the reclamation ID directly from the ComboBox
+            Integer reclamationId = reclamationIdComboBox.getValue();
+            System.out.println("Reclamation ID: " + reclamationId);
 
             if (description.isEmpty()) {
                 showError("La description est requise");
