@@ -4,6 +4,8 @@ package io.OurBatima.controllers.Reclamation;
 import io.OurBatima.core.Dao.Reclamation.ReclamationDAO;
 import io.OurBatima.core.interfaces.ActionView;
 import io.OurBatima.core.model.Reclamation;
+import io.OurBatima.core.services.SimpleGrammarChecker;
+import io.OurBatima.core.ui.SimpleGrammarCheckDialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -199,12 +201,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.event.ActionEvent;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.util.Map;
 
 import static java.awt.SystemColor.text;
 import io.OurBatima.core.Dao.Reclamation.ReponseDAO;
@@ -366,7 +375,17 @@ public class ListReclamationController extends ActionView {
         descriptionArea.setWrapText(true);
         descriptionArea.setPrefWidth(400);
         descriptionArea.setPrefHeight(100);
-        grid.add(descriptionArea, 1, 1);
+
+        // Add a grammar check button next to the description
+        Button grammarCheckButton = new Button("📐 Vérifier la grammaire");
+        grammarCheckButton.setStyle("-fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-weight: bold;");
+        grammarCheckButton.setOnAction(event -> {
+            checkGrammar(reclamation.getDescription(), descriptionArea, reclamation.getId());
+        });
+
+        HBox descriptionBox = new HBox(10);
+        descriptionBox.getChildren().addAll(descriptionArea, grammarCheckButton);
+        grid.add(descriptionBox, 1, 1);
 
         grid.add(new Label("Statut:"), 0, 2);
         grid.add(new Label(reclamation.getStatut()), 1, 2);
@@ -409,6 +428,72 @@ public class ListReclamationController extends ActionView {
 
         // Show the dialog
         dialog.showAndWait();
+    }
+
+    /**
+     * Check grammar for the given text using our simple offline grammar checker
+     * @param text The text to check
+     * @param descriptionArea The TextArea to update with corrected text
+     * @param reclamationId The ID of the reclamation to update
+     */
+    private void checkGrammar(String text, TextArea descriptionArea, int reclamationId) {
+        // Perform the grammar check directly (no API call)
+        Map<String, Object> results = SimpleGrammarChecker.checkGrammar(text);
+
+        // Show the simple grammar check dialog
+        SimpleGrammarCheckDialog resultDialog = new SimpleGrammarCheckDialog(results);
+
+        // Get the corrected text if the user applies changes
+        resultDialog.showAndWait().ifPresent(correctedText -> {
+            // Update the description field in the reclamation
+            if (descriptionArea != null) {
+                descriptionArea.setText(correctedText);
+
+                // Show a confirmation message
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Correction appliquée");
+                alert.setHeaderText(null);
+                alert.setContentText("Les corrections grammaticales ont été appliquées au texte.");
+                alert.showAndWait();
+
+                // Update the reclamation in the database
+                updateReclamationDescription(reclamationId, correctedText);
+            }
+        });
+    }
+
+    /**
+     * Update the description of a reclamation in the database
+     * @param reclamationId The ID of the reclamation to update
+     * @param newDescription The new description text
+     */
+    private void updateReclamationDescription(int reclamationId, String newDescription) {
+        try {
+            // Get the reclamation from the database
+            Reclamation reclamation = reclamationDAO.getReclamationById(reclamationId);
+
+            if (reclamation != null) {
+                // Update the description
+                reclamation.setDescription(newDescription);
+
+                // Save the updated reclamation
+                try {
+                    reclamationDAO.updateReclamation(reclamation);
+                    System.out.println("Reclamation description updated successfully");
+
+                    // Refresh the list to show the updated description
+                    loadReclamations();
+                } catch (Exception ex) {
+                    System.out.println("Failed to update reclamation description: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            } else {
+                System.out.println("Reclamation not found with ID: " + reclamationId);
+            }
+        } catch (Exception e) {
+            System.out.println("Error updating reclamation description: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void openUpdatePopup(int id) {
