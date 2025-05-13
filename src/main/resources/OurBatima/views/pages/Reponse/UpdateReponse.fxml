@@ -5,6 +5,7 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import java.time.LocalDate?>
 
 <?import javafx.collections.FXCollections?>
 <AnchorPane xmlns="http://javafx.com/javafx"
@@ -17,27 +18,36 @@
 
         <!-- Label for Statut -->
         <Label text="Statut:" layoutX="20" layoutY="200"/>
-        <TextField fx:id="statutTextField" layoutX="20" layoutY="220" prefWidth="360"/>
-
-        <!-- Label for Date -->
-        <Label text="Date:" layoutX="20" layoutY="250"/>
-        <DatePicker fx:id="dateField" layoutX="20" layoutY="270" prefWidth="360"/>
-
-        <Label text="utilisateurId:" layoutX="20" layoutY="290"/>
-        <ComboBox fx:id="reclamationIdComboBox" layoutX="20" layoutY="310" prefWidth="360">
+        <ComboBox fx:id="statutComboBox" layoutX="20" layoutY="220" prefWidth="360">
             <items>
                 <FXCollections fx:factory="observableArrayList">
-                    <Integer fx:value="1"/>
-                    <Integer fx:value="2"/>
-                    <Integer fx:value="3"/>
-                    <Integer fx:value="4"/>
-                    <Integer fx:value="5"/>
+                    <String fx:value="Pending"/>
+                    <String fx:value="Resolved"/>
+                    <String fx:value="In Progress"/>
                 </FXCollections>
             </items>
         </ComboBox>
 
-        <Button fx:id="updateButton" layoutX="20.0" layoutY="360.0" text="✅ Mettre à Jour" onAction="#updateReponse"
-                style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+        <!-- Label for Date -->
+        <Label text="Date:" layoutX="20" layoutY="250"/>
+        <DatePicker fx:id="dateField" layoutX="20" layoutY="270" prefWidth="360">
+            <value>
+                <LocalDate fx:factory="now"/>
+            </value>
+        </DatePicker>
+
+        <Label text="ID Réclamation:" layoutX="20" layoutY="290"/>
+        <ComboBox fx:id="reclamationIdComboBox" layoutX="20" layoutY="310" prefWidth="360"
+                  promptText="Choisissez la réclamation">
+            <!-- Items will be populated dynamically in the controller -->
+        </ComboBox>
+
+        <HBox spacing="10" layoutX="20.0" layoutY="360.0">
+            <Button fx:id="updateButton" text="✅ Mettre à Jour" onAction="#updateReponse"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+            <Button fx:id="cancelButton" text="❌ Annuler" onAction="#closePopup"
+                    style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+        </HBox>
 
 
     </children>

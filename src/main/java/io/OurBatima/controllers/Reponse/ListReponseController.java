@@ -137,15 +137,29 @@ public class ListReponseController extends ActionView {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/OurBatima/views/pages/Reponse/UpdateReponse.fxml"));
             Parent root = loader.load();
 
-            UpdateReponseController UpdateReponseController = loader.getController();
-             //updateReclamationController.setId(int id);
+            UpdateReponseController updateReponseController = loader.getController();
+
+            // Get the reponse by ID and pass it to the controller
+            Reponse reponse = reponseDAO.getReponseById(id);
+            if (reponse != null) {
+                updateReponseController.setReponseToUpdate(reponse);
+            } else {
+                System.out.println("Error: Could not find reponse with ID " + id);
+                return;
+            }
+
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Modifier le Reclamation");
+            stage.setTitle("Modifier la Réponse");
             stage.setScene(new Scene(root));
+
+            // Add a listener to refresh the list when the popup is closed
+            stage.setOnHidden(event -> loadReponses());
+
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Error opening update popup: " + e.getMessage());
         }
     }
 

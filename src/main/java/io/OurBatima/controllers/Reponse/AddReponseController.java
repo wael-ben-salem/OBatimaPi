@@ -6,6 +6,8 @@ import io.OurBatima.core.model.Reclamation;
 import io.OurBatima.core.model.Reponse;
 import io.OurBatima.core.Dao.Reclamation.ReponseDAO;
 import io.OurBatima.core.interfaces.ActionView;
+import javafx.collections.FXCollections;
+import javafx.util.StringConverter;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -18,9 +20,9 @@ public class AddReponseController extends ActionView {
     @FXML
     private TextArea descriptionAreaField;
     @FXML
-    private TextField statutTextField;
+    private ComboBox<String> statutComboBox;
     @FXML
-    private ComboBox<Integer> reclamationIdComboBox;
+    private ComboBox<Reclamation> reclamationIdComboBox;
     @FXML
     private DatePicker dateField;
     @FXML
@@ -38,27 +40,54 @@ public class AddReponseController extends ActionView {
 
         // Set default date to current date
         dateField.setValue(java.time.LocalDate.now());
+
+        // Set default status
+        statutComboBox.setValue("Pending");
     }
 
     private void loadReclamations() {
         List<Reclamation> reclamations = reclamationDAO.getAllReclamations();
-        for (Reclamation reclamation : reclamations) {
-            reclamationIdComboBox.getItems().add(reclamation.getId());
+        reclamationIdComboBox.setItems(FXCollections.observableArrayList(reclamations));
+
+        // Set up a custom cell factory to display reclamation details
+        reclamationIdComboBox.setConverter(new StringConverter<Reclamation>() {
+            @Override
+            public String toString(Reclamation reclamation) {
+                if (reclamation == null) {
+                    return "";
+                }
+                return "ID: " + reclamation.getId() + " - " +
+                       truncateText(reclamation.getDescription(), 30) + " - " +
+                       reclamation.getStatut();
+            }
+
+            @Override
+            public Reclamation fromString(String string) {
+                return null; // Not needed for this use case
+            }
+        });
+    }
+
+    // Helper method to truncate long descriptions
+    private String truncateText(String text, int maxLength) {
+        if (text.length() <= maxLength) {
+            return text;
         }
+        return text.substring(0, maxLength) + "...";
     }
 
     private void addInputListeners() {
         descriptionAreaField.textProperty().addListener((observable, oldValue, newValue) -> validateInput());
-        statutTextField.textProperty().addListener((observable, oldValue, newValue) -> validateInput());
+        statutComboBox.valueProperty().addListener((observable, oldValue, newValue) -> validateInput());
         reclamationIdComboBox.valueProperty().addListener((observable, oldValue, newValue) -> validateInput());
         dateField.valueProperty().addListener((observable, oldValue, newValue) -> validateInput());
     }
 
     private void validateInput() {
         boolean isValid = !descriptionAreaField.getText().trim().isEmpty() &&
-                !statutTextField.getText().trim().isEmpty() &&dateField.getValue() != null ||
-                reclamationIdComboBox.getValue() != null
-                ;
+                statutComboBox.getValue() != null &&
+                dateField.getValue() != null &&
+                reclamationIdComboBox.getValue() != null;
         ajouterButton.setDisable(!isValid);
     }
 
@@ -67,9 +96,14 @@ public class AddReponseController extends ActionView {
     private void handleAddReponse() {
         try {
             String description = descriptionAreaField.getText().trim();
-            String statut = statutTextField.getText().trim();
+            String statut = statutComboBox.getValue();
             LocalDateTime date = dateField.getValue().atStartOfDay();
-            Integer reclamationId = reclamationIdComboBox.getValue();
+            // Make sure we have a valid reclamation selected
+            if (reclamationIdComboBox.getValue() == null) {
+                showError("Veuillez sélectionner une réclamation");
+                return;
+            }
+            Integer reclamationId = reclamationIdComboBox.getValue().getId();
 
             if (description.isEmpty()) {
                 showError("La description est requise");
@@ -106,7 +140,7 @@ public class AddReponseController extends ActionView {
 
     private void resetFields() {
         descriptionAreaField.clear();
-        statutTextField.clear();
+        statutComboBox.setValue("Pending"); // Set default status
         reclamationIdComboBox.setValue(null);
         dateField.setValue(java.time.LocalDate.now()); // Reset to current date
     }

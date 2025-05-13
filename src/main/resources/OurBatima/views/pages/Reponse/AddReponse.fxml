@@ -15,6 +15,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.Integer?>
+<?import java.lang.String?>
 <?import java.time.LocalDate?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.Reponse.AddReponseController"
@@ -27,23 +28,22 @@
 
     <!-- Label for Statut -->
     <Label text="Statut:" layoutX="20" layoutY="220"/>
-    <TextField fx:id="statutTextField" layoutX="20" layoutY="250" prefWidth="360"
-               promptText="Entrez le statut"/>
+    <ComboBox fx:id="statutComboBox" layoutX="20" layoutY="250" prefWidth="360"
+              promptText="Sélectionnez un statut">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Pending"/>
+                <String fx:value="Resolved"/>
+                <String fx:value="In Progress"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
 
     <!-- Label for Reclamation ID -->
     <Label text="ID Réclamation:" layoutX="20" layoutY="290"/>
     <ComboBox fx:id="reclamationIdComboBox" layoutX="20" layoutY="320" prefWidth="360"
-              promptText="Sélectionnez une réclamation">
-        <!-- Placeholder items; will be populated dynamically in controller -->
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <Integer fx:value="1"/>
-                <Integer fx:value="2"/>
-                <Integer fx:value="3"/>
-                <Integer fx:value="4"/>
-                <Integer fx:value="5"/>
-            </FXCollections>
-        </items>
+              promptText="Choisissez la réclamation">
+        <!-- Items will be populated dynamically in the controller -->
     </ComboBox>
 
     <!-- Label for Date -->
