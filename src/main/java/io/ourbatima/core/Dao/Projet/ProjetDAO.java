@@ -3,18 +3,22 @@ package io.ourbatima.core.Dao.Projet;
 import io.ourbatima.core.Dao.DatabaseConnection;
 import io.ourbatima.core.Dao.EtapeProjet.EtapeProjetDAO;
 import io.ourbatima.core.Dao.Terrain.TerrainDAO;
+import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
 import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.model.EtapeProjet;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Terrain;
 import io.ourbatima.core.model.Utilisateur.Client;
+import io.ourbatima.core.model.Utilisateur.Equipe;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
 
-import java.math.BigDecimal;
 import java.sql.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static io.ourbatima.core.Dao.DatabaseConnection.getConnection;
 
 public class ProjetDAO {
     private Connection connect() throws SQLException {

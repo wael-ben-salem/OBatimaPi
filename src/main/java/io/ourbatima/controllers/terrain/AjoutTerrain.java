@@ -72,9 +72,8 @@ public class AjoutTerrain extends ActionView {
         webEngine.getLoadWorker().stateProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == Worker.State.SUCCEEDED) {
                 JSObject window = (JSObject) webEngine.executeScript("window");
-                window.setMember("javaApp", new JSBridge(this)); // Permet à JS d'appeler Java
+                window.setMember("javaApp", new JSBridge(this));
 
-                // Demande l'autorisation via une alerte JavaFX
                 requestLocationPermission(webEngine);
 
                 System.out.println("✅ Bridge JS-Java initialisé");
@@ -88,6 +87,9 @@ public class AjoutTerrain extends ActionView {
         mapStage.setScene(new Scene(webView));
         mapStage.setTitle("Sélection de position");
         mapStage.show();
+    }
+    public String getSuperficie() {
+        return superficieField.getText().trim();
     }
 
     public void receiveCoordinates(double latitude, double longitude) {

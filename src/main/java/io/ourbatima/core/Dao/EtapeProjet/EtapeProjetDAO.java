@@ -170,10 +170,10 @@ public class EtapeProjetDAO {
                         rs.getObject("Id_rapport") != null ? rs.getInt("Id_rapport") : null
                 );
             } else {
-                System.out.println("❌ No EtapeProjet found with name: " + nomEtape);
+                System.out.println("No EtapeProjet found with name: " + nomEtape);
             }
         } catch (SQLException e) {
-            System.out.println("❌ Error fetching EtapeProjet: " + e.getMessage());
+            System.out.println("Error fetching EtapeProjet: " + e.getMessage());
         }
         return etapeProjet;
     }

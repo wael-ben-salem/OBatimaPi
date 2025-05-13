@@ -6,15 +6,14 @@ import io.ourbatima.core.Dao.Terrain.TerrainDAO;
 import io.ourbatima.core.Dao.Utilisateur.EquipeDAO;
 import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.interfaces.ActionView;
+import io.ourbatima.core.services.GeminiAPI;
 import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import io.ourbatima.core.model.Utilisateur.Client;
 import io.ourbatima.core.model.Utilisateur.Equipe;
 import io.ourbatima.core.model.Terrain;
@@ -24,6 +23,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 public class AjoutProjet extends ActionView {
@@ -46,11 +46,17 @@ public class AjoutProjet extends ActionView {
     private Button ajouterButton;
     @FXML
     private Button openAjoutTerrainButton;
+    @FXML
+
 
     private UtilisateurDAO clientDAO = new UtilisateurDAO();
     private EquipeDAO equipeDAO = new EquipeDAO();
     private TerrainDAO terrainDAO = new TerrainDAO();
     private ProjetDAO projetDAO = new ProjetDAO();
+    private String superficie;
+    private String styleArch;
+    private String emplacement;
+    private String type;
 
     @FXML
     private void initialize() {
@@ -58,6 +64,44 @@ public class AjoutProjet extends ActionView {
         ajouterButton.setOnAction(event -> handleAddProjet());
         addInputListeners();
     }
+
+
+    private void loadLastData() {
+        Terrain lastTerrain = terrainDAO.getLastInsertedTerrain();
+        if (lastTerrain != null) {
+            this.emplacement = lastTerrain.getEmplacement(); // Store emplacement
+            this.superficie = lastTerrain.getSuperficie() != null ? lastTerrain.getSuperficie().toString() : null; // Store superficie
+        }
+
+        Projet lastProjet = projetDAO.getLastInsertedProjet();
+        if (lastProjet != null) {
+            this.type = lastProjet.getType();
+            this.styleArch = lastProjet.getStyleArch();
+        }
+    }
+
+    private void handleGeminiAPIEstimation() {
+        loadLastData();
+
+        GeminiAPI geminiAPI = new GeminiAPI();
+        String estimation = geminiAPI.getEstimation(
+                this.styleArch,
+                this.superficie,
+                this.emplacement,
+                this.type
+        );
+
+        System.out.println("Sending to GeminiAPI:");
+        System.out.println("Style Architecture: " + this.styleArch);
+        System.out.println("Superficie: " + this.superficie);
+        System.out.println("Emplacement: " + this.emplacement);
+        System.out.println("Type: " + this.type);
+
+        System.out.println("Estimation: " + estimation);
+        showEstimationWindow(estimation);
+    }
+
+
 
     @FXML
     private void openAjoutTerrain() {
@@ -73,12 +117,16 @@ public class AjoutProjet extends ActionView {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            if (ajoutTerrainController.getSuperficie() != null) {
+                this.superficie = ajoutTerrainController.getSuperficie();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void setTerrainTextField(String emplacement) {
+        System.out.println("Setting terrainTextField: " + emplacement);
         terrainTextField.setText(emplacement);
     }
 
@@ -107,6 +155,10 @@ public class AjoutProjet extends ActionView {
         }
 
         ajouterButton.setDisable(!isValid);
+    }
+
+    public void setSuperficie(String superficie) {
+        this.superficie = superficie;
     }
 
     @FXML
@@ -178,6 +230,37 @@ public class AjoutProjet extends ActionView {
         }
     }
 
+    private void showEstimationWindow(String estimation) {
+        try {
+            System.out.println("Loading EstimationWindow.fxml...");
+
+            // Load the FXML file for the estimation window
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/Projet/estimationWindow.fxml"));
+            Parent root = loader.load();
+
+            System.out.println("FXML loaded successfully.");
+
+            // Get the controller and pass the estimation data
+            EstimationWindowController controller = loader.getController();
+            controller.setEstimation(estimation);
+
+            System.out.println("Estimation set in controller: " + estimation);
+
+            Stage stage = new Stage();
+            stage.setTitle("Estimation du Projet");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            System.out.println("Estimation window shown.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading EstimationWindow.fxml: " + e.getMessage());
+        } finally {
+            isEstimationWindowOpen = false;
+        }
+    }
+
     private int getClientIdByEmail(String email) {
         return clientDAO.getClientByEmail(email);
     }
@@ -209,12 +292,24 @@ public class AjoutProjet extends ActionView {
         alert.showAndWait();
     }
 
+    private boolean isEstimationWindowOpen = false;
+
     private void showSuccess(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+        ButtonType viewEstimationButton = new ButtonType("Estimation du projet");
+        alert.getButtonTypes().setAll(ButtonType.OK, viewEstimationButton);
+
+        // Handle button clicks
+        alert.showAndWait().ifPresent(response -> {
+            if (response == viewEstimationButton && !isEstimationWindowOpen) {
+                isEstimationWindowOpen = true;
+                handleGeminiAPIEstimation();
+            }
+        });
     }
 
     private void resetFields() {
