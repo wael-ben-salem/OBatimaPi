@@ -199,6 +199,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.VBox;
 
 import static java.awt.SystemColor.text;
 import io.OurBatima.core.Dao.Reclamation.ReponseDAO;
@@ -211,6 +217,8 @@ public class ListReclamationController extends ActionView {
     @FXML private Button prevPageButton;
     @FXML private Button nextPageButton;
     @FXML private Label pageInfoLabel;
+    @FXML private TextField searchField;
+    @FXML private Label resultLabel;
 
     private final ReclamationDAO reclamationDAO = new ReclamationDAO();
     private final ReponseDAO reponseDAO = new ReponseDAO();
@@ -250,10 +258,10 @@ public class ListReclamationController extends ActionView {
     }
 
     private void displayCurrentPage() {
-        // Clear existing data rows (keep header row 0)
+        // Clear existing data rows (keep header rows 0 and 1)
         reclamationGrid.getChildren().removeIf(node -> {
             Integer rowIndex = GridPane.getRowIndex(node);
-            return rowIndex != null && rowIndex >= 1;
+            return rowIndex != null && rowIndex >= 2; // Keep rows 0 and 1 (header and column titles)
         });
 
         // Calculate start and end indices for the current page
@@ -266,7 +274,7 @@ public class ListReclamationController extends ActionView {
             allReclamations.subList(startIndex, endIndex);
 
         // Add new data rows
-        int rowIndex = 1;
+        int rowIndex = 2; // Start from row 2 (after header and column titles)
         for (Reclamation reclamation : currentPageReclamations) {
             // ID (non-editable)
             TextField idField = createTextField(String.valueOf(reclamation.getId()));
@@ -291,23 +299,116 @@ public class ListReclamationController extends ActionView {
             dateField.setEditable(false);
 
 
-            // Save Button
-            Button saveButton = new Button("update");
-            saveButton.setOnAction(e -> openUpdatePopup(reclamation.getId()));
+            // Update Button with icon
+            Button updateButton = new Button("✏️ Modifier");
+            updateButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 4; -fx-font-size: 13px;");
+            updateButton.setMinWidth(100);
+            updateButton.setOnAction(e -> {
+                System.out.println("Update button clicked for reclamation ID: " + reclamation.getId());
+                openUpdatePopup(reclamation.getId());
+            });
 
 
 
-            // Delete Button
-            Button deleteButton = new Button("Delete");
-            deleteButton.setStyle("-fx-background-color: #ff4444; -fx-text-fill: white;");
+            // Show Button with icon
+            Button showButton = new Button("👁️ Voir");
+            showButton.setStyle("-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 4; -fx-font-size: 13px;");
+            showButton.setMinWidth(100);
+            showButton.setOnAction(event -> {
+                System.out.println("Show button clicked for reclamation ID: " + reclamation.getId());
+                showReclamationDetails(reclamation);
+            });
+
+            // Delete Button with icon
+            Button deleteButton = new Button("🗑️ Supprimer");
+            deleteButton.setStyle("-fx-background-color: #ff4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 4; -fx-font-size: 13px;");
+            deleteButton.setMinWidth(100);
             deleteButton.setOnAction(event -> {
+                System.out.println("Delete button clicked for reclamation ID: " + reclamation.getId());
                 handleDeleteReclamation(reclamation.getId());
             });
 
+            // Create an HBox to hold the action buttons
+            HBox actionButtons = new HBox(10); // 10 is the spacing between buttons
+            actionButtons.setAlignment(javafx.geometry.Pos.CENTER);
+            actionButtons.setPadding(new Insets(5));
+            actionButtons.getChildren().addAll(showButton, updateButton, deleteButton);
+
             // Add components to the GridPane
-            reclamationGrid.addRow(rowIndex, idField, descriptionField, statutField, dateField,UtilisateurIdField , saveButton, deleteButton);
+            reclamationGrid.addRow(rowIndex, idField, descriptionField, statutField, dateField, UtilisateurIdField, actionButtons);
             rowIndex++;
         }
+    }
+
+    /**
+     * Shows the details of a reclamation in a dialog
+     * @param reclamation The reclamation to show details for
+     */
+    private void showReclamationDetails(Reclamation reclamation) {
+        // Create a dialog
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Détails de la Réclamation");
+        dialog.setHeaderText("Réclamation #" + reclamation.getId());
+
+        // Create a grid for the dialog content
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        // Add details to the grid
+        grid.add(new Label("ID:"), 0, 0);
+        grid.add(new Label(String.valueOf(reclamation.getId())), 1, 0);
+
+        grid.add(new Label("Description:"), 0, 1);
+        TextArea descriptionArea = new TextArea(reclamation.getDescription());
+        descriptionArea.setEditable(false);
+        descriptionArea.setWrapText(true);
+        descriptionArea.setPrefWidth(400);
+        descriptionArea.setPrefHeight(100);
+        grid.add(descriptionArea, 1, 1);
+
+        grid.add(new Label("Statut:"), 0, 2);
+        grid.add(new Label(reclamation.getStatut()), 1, 2);
+
+        grid.add(new Label("Date:"), 0, 3);
+        grid.add(new Label(reclamation.getDate().toString()), 1, 3);
+
+        grid.add(new Label("ID Utilisateur:"), 0, 4);
+        grid.add(new Label(String.valueOf(reclamation.getUtilisateurId())), 1, 4);
+
+        // Add a section for associated responses
+        grid.add(new Label("Réponses associées:"), 0, 5);
+
+        List<Reponse> responses = reponseDAO.getReponsesByReclamationId(reclamation.getId());
+        if (responses.isEmpty()) {
+            grid.add(new Label("Aucune réponse associée à cette réclamation."), 1, 5);
+        } else {
+            VBox responsesBox = new VBox(10);
+            for (Reponse response : responses) {
+                TitledPane responsePane = new TitledPane();
+                responsePane.setText("Réponse #" + response.getId() + " - " + response.getStatut());
+
+                VBox responseContent = new VBox(5);
+                responseContent.getChildren().addAll(
+                    new Label("Date: " + response.getDate()),
+                    new Label("Description: " + response.getDescription())
+                );
+
+                responsePane.setContent(responseContent);
+                responsesBox.getChildren().add(responsePane);
+            }
+            grid.add(responsesBox, 1, 5);
+        }
+
+        // Set the dialog content
+        dialog.getDialogPane().setContent(grid);
+
+        // Add OK button
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+
+        // Show the dialog
+        dialog.showAndWait();
     }
 
     private void openUpdatePopup(int id) {
@@ -619,7 +720,7 @@ public class ListReclamationController extends ActionView {
 
     private TextField createTextField(String text) {
         TextField textField = new TextField(text);
-        textField.setStyle("-fx-padding: 5; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
+        textField.setStyle("-fx-padding: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-size: 12px;");
         return textField;
     }
 
@@ -652,7 +753,9 @@ public class ListReclamationController extends ActionView {
 
             // Style the current page button differently
             if (i == currentPage) {
-                pageButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;");
+                pageButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10; -fx-background-radius: 50%;");
+            } else {
+                pageButton.setStyle("-fx-background-color: #f8f9fa; -fx-text-fill: #495057; -fx-border-color: #dee2e6; -fx-border-radius: 50%; -fx-background-radius: 50%; -fx-padding: 5 10;");
             }
 
             pageButton.setOnAction(event -> {
@@ -686,6 +789,65 @@ public class ListReclamationController extends ActionView {
             currentPage++;
             displayCurrentPage();
             updatePaginationControls();
+        }
+    }
+
+    /**
+     * Search for reclamations based on ID or description
+     */
+    @FXML
+    private void searchReclamation() {
+        String searchInput = searchField.getText().trim();
+
+        if (searchInput.isEmpty()) {
+            resultLabel.setText("Veuillez entrer un critère de recherche.");
+            return;
+        }
+
+        try {
+            // Try to parse as integer for ID search
+            int id = Integer.parseInt(searchInput);
+            Reclamation reclamation = reclamationDAO.getReclamationById(id);
+
+            if (reclamation != null) {
+                // Display details in the label
+                String result = String.format("ID: %d\nDescription: %s\nStatut: %s\nDate: %s\nUtilisateur ID: %d",
+                        reclamation.getId(),
+                        reclamation.getDescription(),
+                        reclamation.getStatut(),
+                        reclamation.getDate().toString(),
+                        reclamation.getUtilisateurId());
+                resultLabel.setText(result);
+
+                // Update the list to show only this result
+                allReclamations = new ArrayList<>();
+                allReclamations.add(reclamation);
+                currentPage = 1;
+                totalPages = 1;
+                updatePaginationControls();
+                displayCurrentPage();
+            } else {
+                resultLabel.setText("Aucune réclamation trouvée avec l'ID " + id);
+            }
+        } catch (NumberFormatException e) {
+            // If not an ID, search by description
+            List<Reclamation> filteredReclamations = reclamationDAO.getAllReclamations().stream()
+                    .filter(r -> r.getDescription().toLowerCase().contains(searchInput.toLowerCase()))
+                    .collect(Collectors.toList());
+
+            if (!filteredReclamations.isEmpty()) {
+                // Show number of results found
+                resultLabel.setText(filteredReclamations.size() + " réclamation(s) trouvée(s) contenant '" + searchInput + "'.");
+
+                // Update the list to show search results with pagination
+                allReclamations = filteredReclamations;
+                currentPage = 1;
+                totalPages = (int) Math.ceil((double) allReclamations.size() / itemsPerPage);
+                updatePaginationControls();
+                displayCurrentPage();
+            } else {
+                resultLabel.setText("Aucune réclamation trouvée contenant '" + searchInput + "'.");
+            }
         }
     }
 

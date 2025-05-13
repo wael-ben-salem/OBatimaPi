@@ -1,8 +1,10 @@
 package io.OurBatima.controllers.Reponse;
 
 import io.OurBatima.controllers.Reclamation.UpdateReclamationController;
+import io.OurBatima.core.Dao.Reclamation.ReclamationDAO;
 import io.OurBatima.core.Dao.Reclamation.ReponseDAO;
 import io.OurBatima.core.interfaces.ActionView;
+import io.OurBatima.core.model.Reclamation;
 import io.OurBatima.core.model.Reponse;
 
 
@@ -21,8 +23,17 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.VBox;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 public class ListReponseController extends ActionView {
 
@@ -33,6 +44,7 @@ public class ListReponseController extends ActionView {
     @FXML private Label pageInfoLabel;
 
     private final ReponseDAO reponseDAO = new ReponseDAO();
+    private final ReclamationDAO reclamationDAO = new ReclamationDAO();
 
     // Pagination variables
     private int currentPage = 1;
@@ -68,10 +80,10 @@ public class ListReponseController extends ActionView {
     }
 
     private void displayCurrentPage() {
-        // Clear existing data rows (keep header row 0)
+        // Clear existing data rows (keep header rows 0 and 1)
         reponseGrid.getChildren().removeIf(node -> {
             Integer rowIndex = GridPane.getRowIndex(node);
-            return rowIndex != null && rowIndex >= 1;
+            return rowIndex != null && rowIndex >= 2; // Keep rows 0 and 1 (header and column titles)
         });
 
         // Calculate start and end indices for the current page
@@ -84,7 +96,7 @@ public class ListReponseController extends ActionView {
             allReponses.subList(startIndex, endIndex);
 
         // Add new data rows
-        int rowIndex = 1;
+        int rowIndex = 2; // Start from row 2 (after header and column titles)
         for (Reponse reponse : currentPageReponses) {
             // ID (non-editable)
             TextField idField = createTextField(String.valueOf(reponse.getId()));
@@ -104,25 +116,51 @@ public class ListReponseController extends ActionView {
             ReponseIdField.setEditable(false);
 
 
-            // Update Button
-            Button updateButton = new Button("Update");
-            updateButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold;");
+            // Update Button with icon
+            Button updateButton = new Button("✏️ Modifier");
+            updateButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 4; -fx-font-size: 13px;");
+            updateButton.setMinWidth(100);
             updateButton.setOnAction(e -> {
                 System.out.println("Update button clicked for reponse ID: " + reponse.getId());
                 openUpdatePopup(reponse.getId());
             });
 
-            // Delete Button
-            Button deleteButton = new Button("Delete");
-            deleteButton.setStyle("-fx-background-color: #ff4444; -fx-text-fill: white;");
+            // Delete Button with icon
+            Button deleteButton = new Button("🗑️ Supprimer");
+            deleteButton.setStyle("-fx-background-color: #ff4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 4; -fx-font-size: 13px;");
+            deleteButton.setMinWidth(100);
             deleteButton.setOnAction(event -> {
-                reponseDAO.deleteReponse(reponse.getId());
-                System.out.println("Reponse deleted successfully: " + reponse.getId());
-                loadReponses();
+                // Show confirmation dialog
+                Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmDialog.setTitle("Confirmation de suppression");
+                confirmDialog.setHeaderText(null);
+                confirmDialog.setContentText("Voulez-vous vraiment supprimer cette réponse ?");
+
+                Optional<ButtonType> result = confirmDialog.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    reponseDAO.deleteReponse(reponse.getId());
+                    System.out.println("Reponse deleted successfully: " + reponse.getId());
+                    loadReponses();
+                }
             });
 
+            // Show Button with icon
+            Button showButton = new Button("👁️ Voir");
+            showButton.setStyle("-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 4; -fx-font-size: 13px;");
+            showButton.setMinWidth(100);
+            showButton.setOnAction(event -> {
+                System.out.println("Show button clicked for reponse ID: " + reponse.getId());
+                showReponseDetails(reponse);
+            });
+
+            // Create an HBox to hold the action buttons
+            HBox actionButtons = new HBox(10); // 10 is the spacing between buttons
+            actionButtons.setAlignment(Pos.CENTER);
+            actionButtons.setPadding(new Insets(5));
+            actionButtons.getChildren().addAll(showButton, updateButton, deleteButton);
+
             // Add components to the GridPane
-            reponseGrid.addRow(rowIndex, idField, descriptionField, statutField, dateField,ReponseIdField, updateButton, deleteButton);
+            reponseGrid.addRow(rowIndex, idField, descriptionField, statutField, dateField, ReponseIdField, actionButtons);
             rowIndex++;
         }
 
@@ -133,9 +171,74 @@ public class ListReponseController extends ActionView {
 
     private TextField createTextField(String text) {
         TextField textField = new TextField(text);
-        textField.setStyle("-fx-padding: 5; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
+        textField.setStyle("-fx-padding: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-size: 12px;");
         return textField;
     }
+    /**
+     * Shows the details of a reponse in a dialog
+     * @param reponse The reponse to show details for
+     */
+    private void showReponseDetails(Reponse reponse) {
+        // Create a dialog
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Détails de la Réponse");
+        dialog.setHeaderText("Réponse #" + reponse.getId());
+
+        // Create a grid for the dialog content
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        // Add details to the grid
+        grid.add(new Label("ID:"), 0, 0);
+        grid.add(new Label(String.valueOf(reponse.getId())), 1, 0);
+
+        grid.add(new Label("Description:"), 0, 1);
+        TextArea descriptionArea = new TextArea(reponse.getDescription());
+        descriptionArea.setEditable(false);
+        descriptionArea.setWrapText(true);
+        descriptionArea.setPrefWidth(400);
+        descriptionArea.setPrefHeight(100);
+        grid.add(descriptionArea, 1, 1);
+
+        grid.add(new Label("Statut:"), 0, 2);
+        grid.add(new Label(reponse.getStatut()), 1, 2);
+
+        grid.add(new Label("Date:"), 0, 3);
+        grid.add(new Label(reponse.getDate().toString()), 1, 3);
+
+        grid.add(new Label("ID Réclamation:"), 0, 4);
+        grid.add(new Label(String.valueOf(reponse.getIdReclamation())), 1, 4);
+
+        // Try to get the associated reclamation
+        Reclamation reclamation = reclamationDAO.getReclamationById(reponse.getIdReclamation());
+        if (reclamation != null) {
+            grid.add(new Label("Détails de la réclamation:"), 0, 5);
+
+            TitledPane reclamationPane = new TitledPane();
+            reclamationPane.setText("Réclamation #" + reclamation.getId() + " - " + reclamation.getStatut());
+
+            VBox reclamationContent = new VBox(5);
+            reclamationContent.getChildren().addAll(
+                new Label("Date: " + reclamation.getDate()),
+                new Label("Description: " + reclamation.getDescription())
+            );
+
+            reclamationPane.setContent(reclamationContent);
+            grid.add(reclamationPane, 1, 5);
+        }
+
+        // Set the dialog content
+        dialog.getDialogPane().setContent(grid);
+
+        // Add OK button
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+
+        // Show the dialog
+        dialog.showAndWait();
+    }
+
     private void openUpdatePopup(int id) {
         try {
             System.out.println("Opening update popup for reponse ID: " + id);
@@ -265,7 +368,9 @@ public class ListReponseController extends ActionView {
 
             // Style the current page button differently
             if (i == currentPage) {
-                pageButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;");
+                pageButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10; -fx-background-radius: 50%;");
+            } else {
+                pageButton.setStyle("-fx-background-color: #f8f9fa; -fx-text-fill: #495057; -fx-border-color: #dee2e6; -fx-border-radius: 50%; -fx-background-radius: 50%; -fx-padding: 5 10;");
             }
 
             pageButton.setOnAction(event -> {

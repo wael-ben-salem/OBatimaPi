@@ -7,70 +7,83 @@
 <?import javafx.scene.layout.*?>
 
 <?import java.net.URL?>
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.Reponse.ListReponseController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.OurBatima.controllers.Reclamation.ListReclamationController"
+          style="-fx-background-color: #f5f5f5;">
 
-    <VBox spacing="10" style="-fx-padding: 20;">
-        <!-- Button to load reclamations -->
-        <!-- Champ de saisie pour la recherche -->
-        <TextField fx:id="searchField" promptText="Entrez l'ID ou une description"
-                   prefWidth="25" />
-
-        <!-- Bouton pour lancer la recherche -->
-        <Button text="Rechercher" onAction="#searchReponse" />
-
-        <!-- Label pour afficher le résultat -->
-        <Label fx:id="resultLabel" wrapText="true" text="Résultat de la recherche ici"
-               prefWidth="250" />
-        <HBox spacing="10">
-            <Button onAction="#loadReponses" text="Load Reponses" />
-            <Button text="Ajouter une réponse" onAction="#openAddReponseView" style="-fx-padding: 8; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4;" />
+    <VBox spacing="15" style="-fx-padding: 20;">
+        <!-- Header with title -->
+        <HBox alignment="CENTER" style="-fx-background-color: #3498db; -fx-padding: 15; -fx-background-radius: 5;">
+            <Label text="Liste des Réclamations"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        </HBox>
+        <!-- Search section with styled components -->
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+            <TextField fx:id="searchField" promptText="Rechercher par ID ou description"
+                       prefWidth="350" style="-fx-padding: 8; -fx-background-radius: 20;"/>
+            <Button text="🔍 Rechercher" onAction="#searchReclamation"
+                    style="-fx-padding: 8; -fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"/>
         </HBox>
 
-        <!-- GridPane to display the reclamations -->
-        <GridPane fx:id="reponseGrid" style="-fx-padding: 5;">
+        <!-- Result label with styling -->
+        <Label fx:id="resultLabel" wrapText="true" text="Résultat de la recherche ici"
+               style="-fx-padding: 10; -fx-background-color: #f8f9fa; -fx-background-radius: 5; -fx-border-color: #dee2e6; -fx-border-radius: 5;"
+               prefWidth="700" />
+
+        <!-- Action buttons with icons -->
+        <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+            <Button onAction="#loadReclamations" text="🔄 Actualiser"
+                    style="-fx-padding: 10 15; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-graphic-text-gap: 8;" />
+            <Button text="➕ Ajouter une réclamation" onAction="#openAddReclamationView"
+                    style="-fx-padding: 10 15; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-graphic-text-gap: 8;" />
+            <Button text="📝 Exporter en PDF" onAction="#exportToPdf"
+                    style="-fx-padding: 10 15; -fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-graphic-text-gap: 8;" />
+        </HBox>
+
+        <!-- GridPane to display the reclamations with styling -->
+        <GridPane fx:id="reclamationGrid" style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
             <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" minWidth="50" />  <!-- ID -->
-                <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Description -->
-                <ColumnConstraints hgrow="ALWAYS" minWidth="100" /> <!-- Statut -->
-                <ColumnConstraints hgrow="ALWAYS" minWidth="150" /> <!-- Date -->
-                <ColumnConstraints hgrow="ALWAYS" minWidth="150" />
-                <ColumnConstraints hgrow="ALWAYS" minWidth="200" /> <!-- Action (Save + Delete) -->
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="50" prefWidth="60" />  <!-- ID -->
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="150" prefWidth="200" /> <!-- Description -->
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="120" /> <!-- Statut -->
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="150" prefWidth="150" /> <!-- Date -->
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="120" /> <!-- UtilisateurId -->
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="150" prefWidth="150" /> <!-- Action (Update + Delete) -->
             </columnConstraints>
 
-
-
             <children>
-                <Label style="-fx-font-weight: bold; -fx-padding: 5;" text="ID" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <Label style="-fx-font-weight: bold; -fx-padding: 5;" text="Description" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <Label style="-fx-font-weight: bold; -fx-padding: 5;" text="Statut" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                <Label style="-fx-font-weight: bold; -fx-padding: 5;" text="Date" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                <Label style="-fx-font-weight: bold; -fx-padding: 5;" text="ReclamationId" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                <Label style="-fx-font-weight: bold; -fx-padding: 5;" text="Action" GridPane.columnIndex="8" GridPane.rowIndex="0" />
-                <!-- Save and Delete Buttons under Action -->
-                <HBox spacing="10" GridPane.columnIndex="5" GridPane.rowIndex="1" style="-fx-padding: 5; -fx-alignment: center;">
-                    <children>
-                        <Button fx:id="saveButton" text="Update" style="-fx-padding: 5;" />
-                        <Button fx:id="deleteButton" text="Delete" style="-fx-padding: 5; -fx-background-color: #ff4444; -fx-text-fill: white;" />
-                    </children>
+                <!-- Header row with styled labels -->
+                <HBox alignment="CENTER" style="-fx-background-color: #3498db; -fx-padding: 10; -fx-background-radius: 5 5 0 0;" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="6">
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;" text="Tableau des Réclamations" />
                 </HBox>
+
+                <!-- Column headers with icons -->
+                <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="🆔 ID" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="📝 Description" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="📊 Statut" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="📅 Date" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="👤 Utilisateur" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <Label style="-fx-font-weight: bold; -fx-padding: 10; -fx-background-color: #f2f2f2;" text="⚙️ Actions" GridPane.columnIndex="5" GridPane.rowIndex="1" />
             </children>
             <rowConstraints>
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints />
+                <RowConstraints vgrow="SOMETIMES" minHeight="40" /> <!-- Header row -->
+                <RowConstraints vgrow="SOMETIMES" minHeight="40" /> <!-- Column titles row -->
+                <RowConstraints vgrow="SOMETIMES" minHeight="40" /> <!-- Data rows will be added dynamically -->
             </rowConstraints>
         </GridPane>
 
-        <!-- Pagination Controls -->
-        <HBox spacing="10" alignment="CENTER">
-            <Button fx:id="prevPageButton" text="Previous" onAction="#goToPreviousPage" style="-fx-padding: 5;" />
-            <HBox fx:id="paginationButtonsBox" spacing="5" alignment="CENTER" />
-            <Button fx:id="nextPageButton" text="Next" onAction="#goToNextPage" style="-fx-padding: 5;" />
+        <!-- Pagination Controls with styling -->
+        <HBox spacing="15" alignment="CENTER" style="-fx-padding: 15; -fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-margin-top: 15;">
+            <Button fx:id="prevPageButton" text="◀ Précédent" onAction="#goToPreviousPage"
+                    style="-fx-padding: 8 15; -fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" />
+            <HBox fx:id="paginationButtonsBox" spacing="8" alignment="CENTER" />
+            <Button fx:id="nextPageButton" text="Suivant ▶" onAction="#goToNextPage"
+                    style="-fx-padding: 8 15; -fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" />
         </HBox>
 
-        <!-- Page Information -->
-        <HBox alignment="CENTER">
-            <Label fx:id="pageInfoLabel" text="Page 1 of 1" />
+        <!-- Page Information with styling -->
+        <HBox alignment="CENTER" style="-fx-padding: 10;">
+            <Label fx:id="pageInfoLabel" text="Page 1 of 1"
+                   style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #495057;" />
         </HBox>
     </VBox>
 </AnchorPane>
