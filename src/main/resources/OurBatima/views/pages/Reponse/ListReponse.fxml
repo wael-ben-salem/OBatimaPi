@@ -22,8 +22,10 @@
         <Label fx:id="resultLabel" wrapText="true" text="Résultat de la recherche ici"
                prefWidth="250" />
         <HBox spacing="10">
-            <Button onAction="#loadReponses" text="Load Reponses" />
-            <Button text="Ajouter une réponse" onAction="#openAddReponseView" style="-fx-padding: 8; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4;" />
+            <Button onAction="#loadReponses" text="Actualiser"
+                    style="-fx-padding: 8; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4;" />
+            <Button text="Ajouter une réponse" onAction="#openAddReponseView"
+                    style="-fx-padding: 8; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4;" />
         </HBox>
 
         <!-- GridPane to display the reclamations -->

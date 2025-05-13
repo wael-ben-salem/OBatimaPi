@@ -104,9 +104,13 @@ public class ListReponseController extends ActionView {
             ReponseIdField.setEditable(false);
 
 
-            // Save Button
-            Button saveButton = new Button("Update");
-            saveButton.setOnAction(e -> openUpdatePopup(reponse.getId()));
+            // Update Button
+            Button updateButton = new Button("Update");
+            updateButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold;");
+            updateButton.setOnAction(e -> {
+                System.out.println("Update button clicked for reponse ID: " + reponse.getId());
+                openUpdatePopup(reponse.getId());
+            });
 
             // Delete Button
             Button deleteButton = new Button("Delete");
@@ -118,7 +122,7 @@ public class ListReponseController extends ActionView {
             });
 
             // Add components to the GridPane
-            reponseGrid.addRow(rowIndex, idField, descriptionField, statutField, dateField,ReponseIdField, saveButton, deleteButton);
+            reponseGrid.addRow(rowIndex, idField, descriptionField, statutField, dateField,ReponseIdField, updateButton, deleteButton);
             rowIndex++;
         }
 
@@ -134,6 +138,8 @@ public class ListReponseController extends ActionView {
     }
     private void openUpdatePopup(int id) {
         try {
+            System.out.println("Opening update popup for reponse ID: " + id);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/OurBatima/views/pages/Reponse/UpdateReponse.fxml"));
             Parent root = loader.load();
 
@@ -142,6 +148,7 @@ public class ListReponseController extends ActionView {
             // Get the reponse by ID and pass it to the controller
             Reponse reponse = reponseDAO.getReponseById(id);
             if (reponse != null) {
+                System.out.println("Found reponse: " + reponse.getId() + " - " + reponse.getDescription());
                 updateReponseController.setReponseToUpdate(reponse);
             } else {
                 System.out.println("Error: Could not find reponse with ID " + id);
@@ -154,8 +161,12 @@ public class ListReponseController extends ActionView {
             stage.setScene(new Scene(root));
 
             // Add a listener to refresh the list when the popup is closed
-            stage.setOnHidden(event -> loadReponses());
+            stage.setOnHidden(event -> {
+                System.out.println("Update popup closed, refreshing list");
+                loadReponses();
+            });
 
+            System.out.println("Showing update popup");
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -297,6 +308,8 @@ public class ListReponseController extends ActionView {
     @FXML
     private void openAddReponseView(ActionEvent event) {
         try {
+            System.out.println("Opening AddReponse view");
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/OurBatima/views/pages/Reponse/AddReponse.fxml"));
             Parent root = loader.load();
 
@@ -306,8 +319,12 @@ public class ListReponseController extends ActionView {
             stage.setScene(new Scene(root));
 
             // Add a listener to refresh the list when the popup is closed
-            stage.setOnHidden(e -> loadReponses());
+            stage.setOnHidden(e -> {
+                System.out.println("AddReponse view closed, refreshing list");
+                loadReponses();
+            });
 
+            System.out.println("Showing AddReponse view");
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
