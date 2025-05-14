@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="718.0" prefWidth="1262.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.projet.AfficherProjet">
    <children>
@@ -34,12 +32,7 @@
             <TableColumn fx:id="colActions" prefWidth="155.60009765625" text="Actions" />
          </columns>
       </TableView>
-      <Button fx:id="Reload" layoutX="21.0" layoutY="669.0" mnemonicParsing="false" onAction="#handleReload" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Reload" textFill="#f7f5f5" />
-      <Label layoutX="578.0" layoutY="52.0" text="Projets" textFill="#4c3f0a">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="30.0" />
-         </font>
-      </Label>
+      <Button fx:id="Reload" layoutX="21.0" layoutY="669.0" mnemonicParsing="false" onAction="#handleReload" prefHeight="42.0" prefWidth="126.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Actualiser" textFill="#f7f5f5" />
       <Button fx:id="AjoutProjet" layoutX="1019.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleAjoutProjet" prefHeight="39.0" prefWidth="216.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Créer un nouveau projet" textFill="#f7f5f5" />
    </children>
 </AnchorPane>
