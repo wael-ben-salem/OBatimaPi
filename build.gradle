@@ -3,8 +3,8 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13' // here // 0.0.10
     id 'org.beryx.jlink' version '2.25.0' // here // 2.24.1
-}
 
+}
 
 group 'io.ourbatima'
 version '1.0.4'

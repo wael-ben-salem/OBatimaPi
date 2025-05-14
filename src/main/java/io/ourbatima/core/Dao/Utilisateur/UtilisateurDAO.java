@@ -7,10 +7,7 @@ import io.ourbatima.core.Dao.DatabaseConnection;
 import io.ourbatima.core.model.Utilisateur.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
