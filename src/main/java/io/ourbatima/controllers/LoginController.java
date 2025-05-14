@@ -922,7 +922,7 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
             // Mettre à jour le mot de passe dans la base de données
             Utilisateur user = utilisateurDAO.getUserByEmail(emailField.getText());
             if (user != null) {
-                utilisateurDAO.updatePassword(user.getId(), BCrypt.hashpw(passwords.getKey(), BCrypt.gensalt()));
+                utilisateurDAO.updatePassword(user.getId(), hashPasswordForStorage(passwords.getKey()));
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Mot de passe mis à jour !");
                 btnResetPassword.setDisable(true); // Désactiver à nouveau le bouton après la réinitialisation
             } else {
@@ -957,7 +957,9 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
         Optional<Pair<String, String>> result = dialog.showAndWait();
         result.ifPresent(passwords -> {
             if (passwords.getKey().equals(passwords.getValue())) {
-                user.setMotDePasse(BCrypt.hashpw(passwords.getKey(), BCrypt.gensalt()));
+                user.setMotDePasse(hashPasswordForStorage(passwords.getKey()));
+
+
                 user.setResetToken(null);
                 user.setResetTokenExpiry(null);
                 utilisateurDAO.updateUser(user);
@@ -1177,5 +1179,16 @@ public class LoginController extends ActionView  implements ProfileCompletionCon
     }
     private String generateVerificationCode() {
         return String.format("%06d", new Random().nextInt(999999)); // Génère un code à 6 chiffres
+    }
+    private String hashPasswordWithSymfonyFormat(String plainPassword) {
+        // Génère un sel avec le format $2y$ au lieu de $2a$
+        String salt = BCrypt.gensalt();
+        // Remplace le préfixe $2a$ par $2y$
+        salt = salt.replaceFirst("\\$2a\\$", "\\$2y\\$");
+        return BCrypt.hashpw(plainPassword, salt);
+    }
+    private String hashPasswordForStorage(String plainPassword) {
+        // Génère un hash avec le format $2a$ (compatible avec jBCrypt)
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
     }
 }

@@ -964,4 +964,26 @@ public class UtilisateurDAO {
 
         return matchingUsers;
     }
+    
+    public List<Utilisateur> getAllUsers() {
+        List<Utilisateur> users = new ArrayList<>();
+        String sql = "SELECT * FROM utilisateur";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Utilisateur user = new Utilisateur();
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                user.setMotDePasse(rs.getString("mot_de_passe"));
+                // Ajoutez les autres champs...
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
 }

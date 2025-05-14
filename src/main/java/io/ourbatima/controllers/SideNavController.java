@@ -56,21 +56,104 @@ public class SideNavController extends ActionView {
     @FXML private ToggleButton goGestionnaireStockButton;
     @FXML private ToggleButton goArtisanButton;
     @FXML private ToggleButton goClientButton;
+    
 
-    public void setBackgroundColorBasedOnRole(String role) {
+    // Références aux éléments du menu
+    @FXML private TitledPane goUser;
+    @FXML private TitledPane goStock;
+    @FXML private TitledPane goProjet;
+    @FXML private TitledPane goTachetPlan;
+    @FXML private TitledPane goEquipe;
+    @FXML private TitledPane gotofinance;
+
+     public void setBackgroundColorBasedOnRole(String role) {
         switch (role) {
-            case "Artisan", "GestionnaireStock", "Client":
-                root.setStyle("-fx-background-color: #c5a814;"); // Jaune
+            case "Client":
+                root.setStyle("-fx-background-color: #ffffff;"); // Blanc
                 break;
-            case "Constructeur", "Admin":
-                root.setStyle("-fx-background-color: #000000;"); // Gris
-                break;
-            // Noir
+            case "Artisan":
+            case "GestionnaireStock":
+            case "Admin":
+            case "Constructeur":
             default:
-                root.setStyle("-fx-background-color: white;"); // Par défaut, blanc
+                root.setStyle("-fx-background-color: #000000;"); // Noir
                 break;
         }
     }
+    
+    // Méthodes utilitaires pour gérer la visibilité
+    private void hideMenu(Node menu) {
+        menu.setManaged(false);
+        menu.setVisible(false);
+    }
+
+    private void showMenu(Node menu) {
+        menu.setManaged(true);
+        menu.setVisible(true);
+    }
+
+    private void setupMenuBasedOnRole(String role) {
+        // Masquer tous les menus par défaut
+        hideMenu(goUser);
+        hideMenu(goStock);
+        hideMenu(goProjet);
+        hideMenu(goTachetPlan);
+        hideMenu(goEquipe);
+        hideMenu(gotofinance);
+
+        // Masquer tous les boutons utilisateur par défaut
+        hideMenu(goArtisanButton);
+        hideMenu(goClientButton);
+        hideMenu(goConstructeurButton);
+        hideMenu(goGestionnaireStockButton);
+
+        // Configurer selon le rôle
+        switch (role) {
+            case "Admin":
+                showMenu(goUser);
+                showMenu(goStock);
+                showMenu(goProjet);
+                showMenu(goTachetPlan);
+                showMenu(goEquipe);
+                showMenu(gotofinance);
+
+                // Afficher tous les boutons utilisateur
+                showMenu(goArtisanButton);
+                showMenu(goClientButton);
+                showMenu(goConstructeurButton);
+                showMenu(goGestionnaireStockButton);
+                break;
+
+            case "Constructeur":
+                showMenu(goUser);
+                showMenu(goProjet);
+                showMenu(goTachetPlan);
+                showMenu(goEquipe);
+                showMenu(gotofinance);
+                break;
+
+            case "GestionnaireStock":
+                showMenu(goUser);
+                showMenu(goStock);
+                showMenu(goProjet);
+                showMenu(goEquipe);
+                break;
+
+            case "Artisan":
+                showMenu(goUser);
+                showMenu(goProjet);
+                showMenu(goTachetPlan);
+                showMenu(goEquipe);
+                break;
+
+            case "Client":
+                // Seulement les menus spécifiques aux clients
+                showMenu(goProjet);
+                showMenu(gotofinance);
+                break;
+        }
+    }
+
 
     @FXML
     private void goDash() throws NavigationException {
