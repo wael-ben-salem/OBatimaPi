@@ -41,6 +41,8 @@ public class AfficherTerrain extends ActionView implements Refreshable, Initiali
     @FXML private WebView mapView;
     @FXML private TextField searchField;
     @FXML private ListView<String> suggestionsTerrainList;
+    @FXML private Button Search;
+
 
 
     public AfficherTerrain() {}
@@ -50,6 +52,7 @@ public class AfficherTerrain extends ActionView implements Refreshable, Initiali
         System.out.println("✅ AfficherTerrain Controller Initialized");
         System.out.println("🔍 listNomEtapes: " + listViewEmplacement);
         System.out.println("📝 etapeProjetDetails: " + terrainDetails);
+        Search.setOnAction(event -> handleSearch());
 
         // Set up custom cell factory for listViewEmplacement
         listViewEmplacement.setCellFactory(lv -> new ListCell<String>() {
@@ -72,6 +75,32 @@ public class AfficherTerrain extends ActionView implements Refreshable, Initiali
             loadEmplacementList();
         });
         setupSearchField();
+    }
+    @FXML
+    private void handleSearch() {
+        String searchText = searchField.getText().trim().toLowerCase();
+        if (searchText.isEmpty()) {
+            loadEmplacementList(); // Load all if search is empty
+        } else {
+            List<Terrain> filteredTerrains = terrainDAO.getAllTerrain().stream()
+                    .filter(terrain -> terrain.getEmplacement().toLowerCase().contains(searchText))
+                    .collect(Collectors.toList());
+
+            updateListView(filteredTerrains);
+            if (!filteredTerrains.isEmpty()) {
+                showTerrainDetails(filteredTerrains.get(0));
+            }
+        }
+    }
+    private void updateListView(List<Terrain> terrains) {
+        List<String> emplacementNames = terrains.stream()
+                .map(Terrain::getEmplacement)
+                .collect(Collectors.toList());
+
+        Platform.runLater(() -> {
+            listViewEmplacement.getItems().clear();
+            listViewEmplacement.getItems().setAll(emplacementNames);
+        });
     }
 
     private void setupSearchField() {

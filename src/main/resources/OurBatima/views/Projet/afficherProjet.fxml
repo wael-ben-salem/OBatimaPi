@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="718.0" prefWidth="1262.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.projet.AfficherProjet">
    <children>
-      <HBox spacing="10">
-         <TextField fx:id="searchField" prefHeight="26.0" prefWidth="206.0" promptText="🔍 Vous cherchez un projet précis?">
-            <HBox.margin>
-               <Insets left="57.0" top="7.0" />
-            </HBox.margin>
-         </TextField>
-         <Button onAction="#handleSearch" style="-fx-background-color: #3E4C0AFF;" text="Search" textFill="#f7f5f5">
-            <HBox.margin>
-               <Insets left="3.0" top="8.0" />
-            </HBox.margin></Button>
-
-      </HBox>
-      <ListView fx:id="suggestionsList" layoutX="57.0" layoutY="35.0" prefHeight="200.0" prefWidth="206.0" visible="false" />
-      <TableView fx:id="projetTable" layoutX="63.4" layoutY="106.0" prefHeight="558.0" prefWidth="1091.0" style="-fx-border-color: #4c3f0a;" AnchorPane.leftAnchor="63.4" AnchorPane.rightAnchor="7.7999999999999545">
+      <Button layoutX="377.0" layoutY="19.0" onAction="#handleSearch" prefHeight="42.0" prefWidth="114.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Chercher" textFill="#f7f5f5" />
+      <VBox layoutX="63.0" layoutY="20.0" prefHeight="90.0" prefWidth="314.0">
+         <children>
+            <TextField fx:id="searchField" prefHeight="50.0" prefWidth="314.0" promptText="🔍 Vous cherchez un projet précis?" />
+            <ListView fx:id="suggestionsList" prefHeight="46.0" prefWidth="314.0" visible="false" />
+         </children>
+      </VBox>
+      <TableView fx:id="projetTable" layoutX="63.2" layoutY="120.0" prefHeight="544.0" prefWidth="1191.0" style="-fx-border-color: #4c3f0a;" AnchorPane.leftAnchor="63.0" AnchorPane.rightAnchor="8.0">
          <columns>
             <TableColumn fx:id="colProjet" prefWidth="138.4000313282013" text="Projets" />
             <TableColumn fx:id="colClient" prefWidth="118.39993286132812" text="Client" />
@@ -41,15 +32,7 @@
             <TableColumn fx:id="colActions" prefWidth="155.60009765625" text="Actions" />
          </columns>
       </TableView>
-      <Button fx:id="Reload" layoutX="21.0" layoutY="669.0" mnemonicParsing="false" onAction="#handleReload" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Reload" textFill="WHITE">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="12.0" />
-         </font>
-      </Button>
-      <Label layoutX="487.0" layoutY="39.0" text="Tableau des projets" textFill="#4c3f0a">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="30.0" />
-         </font>
-      </Label>
+      <Button fx:id="Reload" layoutX="21.0" layoutY="669.0" mnemonicParsing="false" onAction="#handleReload" prefHeight="42.0" prefWidth="126.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Actualiser" textFill="#f7f5f5" />
+      <Button fx:id="AjoutProjet" layoutX="1019.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleAjoutProjet" prefHeight="39.0" prefWidth="216.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Créer un nouveau projet" textFill="#f7f5f5" />
    </children>
 </AnchorPane>

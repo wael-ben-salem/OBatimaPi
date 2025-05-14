@@ -22,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -35,25 +36,39 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-
 public class AfficherProjet extends ActionView implements Initializable {
 
     private final ProjetDAO projetDAO = new ProjetDAO();
-    @FXML private TableView<Projet> projetTable;
-    @FXML private TableColumn<Projet, String> colProjet;
-    @FXML private TableColumn<Projet, String> colClient;
-    @FXML private TableColumn<Projet, String> colEquipe;
-    @FXML private TableColumn<Projet, BigDecimal> colBudget;
-    @FXML private TableColumn<Projet, String> colType;
-    @FXML private TableColumn<Projet, String> colStyleArch;
-    @FXML private TableColumn<Projet, String> colEmplacement;
-    @FXML private TableColumn<Projet, String> colEtapes;
-    @FXML private TableColumn<Projet, String> colEtat;
-    @FXML private TableColumn<Projet, Timestamp> colDateCreation;
-    @FXML private TableColumn<Projet, String> colActions;
-    @FXML private TextField searchField;
-    @FXML private ListView<String> suggestionsList;
-
+    @FXML
+    private TableView<Projet> projetTable;
+    @FXML
+    private TableColumn<Projet, String> colProjet;
+    @FXML
+    private TableColumn<Projet, String> colClient;
+    @FXML
+    private TableColumn<Projet, String> colEquipe;
+    @FXML
+    private TableColumn<Projet, BigDecimal> colBudget;
+    @FXML
+    private TableColumn<Projet, String> colType;
+    @FXML
+    private TableColumn<Projet, String> colStyleArch;
+    @FXML
+    private TableColumn<Projet, String> colEmplacement;
+    @FXML
+    private TableColumn<Projet, String> colEtapes;
+    @FXML
+    private TableColumn<Projet, String> colEtat;
+    @FXML
+    private TableColumn<Projet, Timestamp> colDateCreation;
+    @FXML
+    private TableColumn<Projet, String> colActions;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private ListView<String> suggestionsList;
+    @FXML
+    private Button AjoutProjet;
 
     private ObservableList<Projet> projetData = FXCollections.observableArrayList();
 
@@ -62,6 +77,7 @@ public class AfficherProjet extends ActionView implements Initializable {
         System.out.println("AfficherProjet Controller Initialized");
         setupTable();
         loadProjets();
+        AjoutProjet.setOnAction(event -> handleAjoutProjet());
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             handleSearchInput();
@@ -194,6 +210,7 @@ public class AfficherProjet extends ActionView implements Initializable {
                 return new TableCell<Projet, String>() {
                     private final Button updateButton = new Button();
                     private final Button deleteButton = new Button();
+
                     {
                         ImageView pencilIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/pencil.png")));
                         pencilIcon.setFitWidth(16);
@@ -207,7 +224,8 @@ public class AfficherProjet extends ActionView implements Initializable {
                         binIcon.setFitWidth(20);
                         binIcon.setFitHeight(20);
                         deleteButton.setGraphic(binIcon);
-                        deleteButton.setStyle("-fx-background-color: transparent;");                    }
+                        deleteButton.setStyle("-fx-background-color: transparent;");
+                    }
 
                     @Override
                     protected void updateItem(String item, boolean empty) {
@@ -235,6 +253,27 @@ public class AfficherProjet extends ActionView implements Initializable {
                 };
             }
         });
+    }
+
+    @FXML
+    private void handleAjoutProjet() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/Projet/ajoutProjet.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Ajouter un nouveau projet");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Refresh the table after the new project window closes
+            loadProjets();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Impossible d'ouvrir la fenêtre d'ajout de projet.");
+            alert.showAndWait();
+        }
     }
 
     private void openUpdateProjetWindow(Projet projet) {
