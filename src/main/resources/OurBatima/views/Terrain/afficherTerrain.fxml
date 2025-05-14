@@ -16,23 +16,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="805.0" prefWidth="1201.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.terrain.AfficherTerrain">
+<AnchorPane prefHeight="718.0" prefWidth="1262.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.terrain.AfficherTerrain">
     <children>
-        <HBox layoutX="20.0" layoutY="20.0">
-            <children>
-                <Button fx:id="Reload" mnemonicParsing="false" onAction="#handleReload" prefHeight="39.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Reload" textFill="WHITE">
-
-                    <font>
-                        <Font name="Arial Rounded MT Bold" size="12.0" />
-                    </font>
-                </Button>
-                <TextField fx:id="searchField" prefHeight="26.0" prefWidth="293.0" promptText="🔍 Vous cherchez un térrain précis?">
-                    <HBox.margin>
-                        <Insets left="55.0" top="15.0" />
-                    </HBox.margin>
-                </TextField>
-            </children>
-        </HBox>
+      <VBox layoutX="55.0" layoutY="19.0" prefHeight="90.0" prefWidth="314.0">
+         <children>
+                <TextField fx:id="searchField" prefHeight="50.0" prefWidth="314.0" promptText="🔍 Vous cherchez un térrain précis?" />
+              <ListView fx:id="suggestionsTerrainList" prefHeight="46.0" prefWidth="314.0" visible="false" />
+         </children>
+      </VBox>
         <VBox layoutX="151.0" layoutY="101.0" prefHeight="646.0" prefWidth="898.0" AnchorPane.leftAnchor="151.0" AnchorPane.topAnchor="101.0">
             <children>
                 <GridPane prefHeight="82.0" prefWidth="846.0">
@@ -44,7 +35,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="277.0" text="Emplacements" textFill="#4c3f0a">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="277.0" text="Terrains" textFill="#4c3f0a">
                             <font>
                                 <Font name="Arial Rounded MT Bold" size="25.0" />
                             </font>
@@ -74,16 +65,8 @@
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="110.0" prefWidth="898.0" spacing="10.0">
                     <children>
-                        <Button fx:id="updateButton" onAction="#handleUpdate" prefHeight="135.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Update">
-                            <font>
-                                <Font name="Arial Rounded MT Bold" size="12.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="deleteButton" onAction="#handleDelete" prefHeight="135.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Delete">
-                            <font>
-                                <Font name="Arial Rounded MT Bold" size="12.0" />
-                            </font>
-                        </Button>
+                        <Button fx:id="updateButton" onAction="#handleUpdate" prefHeight="135.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Update" />
+                        <Button fx:id="deleteButton" onAction="#handleDelete" prefHeight="135.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Delete" />
                     </children>
                     <padding>
                         <Insets top="30.0" />
@@ -91,6 +74,7 @@
                 </HBox>
             </children>
         </VBox>
-        <ListView fx:id="suggestionsTerrainList" layoutX="182.0" layoutY="61.0" prefHeight="194.0" prefWidth="294.0" visible="false" />
+          <Button fx:id="Reload" layoutX="20.0" layoutY="707.0" mnemonicParsing="false" onAction="#handleReload" prefHeight="39.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Reload" textFill="WHITE" />
+      <Button fx:id="Search" layoutX="370.0" layoutY="19.0" onAction="#handleSearch" prefHeight="42.0" prefWidth="114.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Chercher" textFill="#f7f5f5" />
     </children>
 </AnchorPane>
