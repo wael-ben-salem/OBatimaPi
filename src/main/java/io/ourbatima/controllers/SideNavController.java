@@ -391,8 +391,7 @@ public class SideNavController extends ActionView {
 
     @Override
     public void onInit(Context context) {
-        if (SessionManager.getUtilisateur().getRole()!=Utilisateur.Role.Admin){
-            faa.getChildren().remove(contra);}
+
         Utilisateur currentUser = SessionManager.getUtilisateur();
         if (currentUser == null) {
             System.err.println("Aucun utilisateur connecté !");
@@ -510,7 +509,6 @@ public class SideNavController extends ActionView {
     public void gotoAfficherAbonnemant(ActionEvent event) {
         context.routes().nav("ListAbonnement");
     }
-
     public void gotoContratclient(ActionEvent event) {
         context.routes().nav("ContatsClient");
     }

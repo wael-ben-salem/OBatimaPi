@@ -58,10 +58,7 @@ public class ListAbonnement extends ActionView {
 
     public void onInit(Context context) {
         this.context = context;
-        if (SessionManager.getUtilisateur().getRole()== Utilisateur.Role.Client){
-            ala.getChildren().remove(crreatebuton);
-            System.out.println("aaaaaaaaa^saepzl;d");
-        }
+
         loadUsers();
         loadAbonnements();
         setupSearchListener();

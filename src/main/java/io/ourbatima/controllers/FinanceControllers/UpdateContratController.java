@@ -102,9 +102,9 @@ datedd=contratData.getDateSignature();
 
     }}
 
-    public void Save(ActionEvent event) {
+    public void Save(ActionEvent event) throws SQLException {
         System.out.println("this is project id "+projetid);
-        Contrat con=new Contrat(contratData.getIdContrat(),typeContratField.getValue(),datedd,Date.valueOf(dateDebutField.getValue()),imagePath,Date.valueOf(dateFinField.getValue()),Double.parseDouble(montantTotalField.getText()),projetid);
+        Contrat con=new Contrat(contratData.getIdContrat(),typeContratField.getValue(),datedd,Date.valueOf(dateDebutField.getValue()),imagePath,Date.valueOf(dateFinField.getValue()),Double.parseDouble(montantTotalField.getText()),1);
         cs.update(con);
 
         Stage stage = (Stage) typeContratField.getScene().getWindow();

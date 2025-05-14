@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.FinanceControllers.ListAbonnement">
+<BorderPane fx:id="ala" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ourbatima.controllers.FinanceControllers.ListAbonnement">
 
     <center>
         <ScrollPane fitToWidth="true" prefHeight="146.0" prefWidth="494.0">
@@ -35,7 +35,7 @@
                     <ListView fx:id="suggestionsAbonnementList" prefHeight="66.0" prefWidth="173.0" />
                 </children>
             </VBox>
-            <Pane prefHeight="78.0" prefWidth="87.0" HBox.hgrow="ALWAYS" />  <!-- Pousse le bouton à droite -->
+            <Pane  prefHeight="78.0" prefWidth="87.0" HBox.hgrow="ALWAYS" />  <!-- Pousse le bouton à droite -->
             <Button fx:id="crreatebuton" onAction="#openCreateUserForm">
                 <graphic>
                     <ImageView fitHeight="20" fitWidth="20">

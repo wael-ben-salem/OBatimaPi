@@ -232,8 +232,10 @@ public void onInit(){
         Contrat con = new Contrat(contractType.getValue().toString(), new java.sql.Date(utilDate.getTime()), dateeee, imagePath, localDate, Double.parseDouble(montantTotaleField.getText()), projetid);
 
         cs.insertContrat(con);
+        System.out.println(cs.getClientNOMEtidbyidcontrat(projetid));
        String sss= cs.getClientNOMEtidbyidcontrat(projetid).split("-")[0];
        String name= cs.getClientNOMEtidbyidcontrat(projetid).split("-")[1];
+
 
 // Convert to integer
         int clientId = Integer.parseInt(sss);

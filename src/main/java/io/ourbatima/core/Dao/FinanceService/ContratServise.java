@@ -96,7 +96,7 @@ public class ContratServise {
     public void update(Contrat contrat) {
 
         try (Connection conn = getConnection()) {
-
+            System.out.println(contrat.toString());
             String sql = "UPDATE contrat SET type_contrat = ?, date_signature = ?, date_debut = ?, signature_electronique = ?, date_fin = ?, montant_total = ?,  Id_projet = ? WHERE id_contrat = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
