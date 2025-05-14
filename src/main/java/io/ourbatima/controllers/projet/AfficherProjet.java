@@ -1,5 +1,6 @@
 package io.ourbatima.controllers.projet;
 
+import io.ourbatima.core.Dao.DatabaseConnection;
 import io.ourbatima.core.Dao.Projet.ProjetDAO;
 import io.ourbatima.core.Dao.Utilisateur.UtilisateurDAO;
 import io.ourbatima.core.interfaces.ActionView;
@@ -9,6 +10,7 @@ import io.ourbatima.core.model.Projet;
 import io.ourbatima.core.model.Terrain;
 import io.ourbatima.core.model.Utilisateur.Client;
 import io.ourbatima.core.model.Utilisateur.Utilisateur;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,11 +24,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import java.math.BigDecimal;
@@ -35,25 +39,39 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-
 public class AfficherProjet extends ActionView implements Initializable {
 
     private final ProjetDAO projetDAO = new ProjetDAO();
-    @FXML private TableView<Projet> projetTable;
-    @FXML private TableColumn<Projet, String> colProjet;
-    @FXML private TableColumn<Projet, String> colClient;
-    @FXML private TableColumn<Projet, String> colEquipe;
-    @FXML private TableColumn<Projet, BigDecimal> colBudget;
-    @FXML private TableColumn<Projet, String> colType;
-    @FXML private TableColumn<Projet, String> colStyleArch;
-    @FXML private TableColumn<Projet, String> colEmplacement;
-    @FXML private TableColumn<Projet, String> colEtapes;
-    @FXML private TableColumn<Projet, String> colEtat;
-    @FXML private TableColumn<Projet, Timestamp> colDateCreation;
-    @FXML private TableColumn<Projet, String> colActions;
-    @FXML private TextField searchField;
-    @FXML private ListView<String> suggestionsList;
-
+    @FXML
+    private TableView<Projet> projetTable;
+    @FXML
+    private TableColumn<Projet, String> colProjet;
+    @FXML
+    private TableColumn<Projet, String> colClient;
+    @FXML
+    private TableColumn<Projet, String> colEquipe;
+    @FXML
+    private TableColumn<Projet, BigDecimal> colBudget;
+    @FXML
+    private TableColumn<Projet, String> colType;
+    @FXML
+    private TableColumn<Projet, String> colStyleArch;
+    @FXML
+    private TableColumn<Projet, String> colEmplacement;
+    @FXML
+    private TableColumn<Projet, String> colEtapes;
+    @FXML
+    private TableColumn<Projet, String> colEtat;
+    @FXML
+    private TableColumn<Projet, Timestamp> colDateCreation;
+    @FXML
+    private TableColumn<Projet, String> colActions;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private ListView<String> suggestionsList;
+    @FXML
+    private Button AjoutProjet;
 
     private ObservableList<Projet> projetData = FXCollections.observableArrayList();
 
@@ -62,6 +80,7 @@ public class AfficherProjet extends ActionView implements Initializable {
         System.out.println("AfficherProjet Controller Initialized");
         setupTable();
         loadProjets();
+        AjoutProjet.setOnAction(event -> handleAjoutProjet());
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             handleSearchInput();
@@ -133,108 +152,193 @@ public class AfficherProjet extends ActionView implements Initializable {
     private void setupTable() {
         colProjet.setCellValueFactory(new PropertyValueFactory<>("nomProjet"));
 
+        // Improved client email retrieval with better error handling and logging
         colClient.setCellValueFactory(cellData -> {
             Projet projet = cellData.getValue();
             int idClient = projet.getId_client();
-            System.out.println("Fetching email for client ID: " + idClient);
+            System.out.println("[DEBUG] Fetching email for client ID: " + idClient);
 
-            Connection connection = null;
-            try {
-                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ourbatimapi", "root", "");
-                Optional<String> email = getEmailClientById(idClient, connection);
-                if (email.isPresent()) {
-                    System.out.println("Client email found: " + email.get());
-                    return new SimpleStringProperty(email.get());
-                } else {
-                    System.out.println("No client found for ID: " + idClient);
-                    return new SimpleStringProperty("Aucun client attribué.");
+            try (Connection conn = DatabaseConnection.getConnection()) {
+                // First verify the client exists
+                String clientCheckSql = "SELECT 1 FROM client WHERE client_id = ?";
+                try (PreparedStatement clientCheckStmt = conn.prepareStatement(clientCheckSql)) {
+                    clientCheckStmt.setInt(1, idClient);
+                    try (ResultSet rs = clientCheckStmt.executeQuery()) {
+                        if (!rs.next()) {
+                            System.out.println("[WARNING] No client found with ID: " + idClient);
+                            return new SimpleStringProperty("Client non trouvé");
+                        }
+                    }
+                }
+
+                // Then get the email
+                String emailSql = "SELECT email FROM utilisateur WHERE id = ?";
+                try (PreparedStatement emailStmt = conn.prepareStatement(emailSql)) {
+                    emailStmt.setInt(1, idClient);
+                    try (ResultSet rs = emailStmt.executeQuery()) {
+                        if (rs.next()) {
+                            String email = rs.getString("email");
+                            System.out.println("[DEBUG] Found email for client " + idClient + ": " + email);
+                            return new SimpleStringProperty(email);
+                        } else {
+                            System.out.println("[WARNING] No email found for client ID: " + idClient);
+                            return new SimpleStringProperty("Email non trouvé");
+                        }
+                    }
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
-                return new SimpleStringProperty("Database connection error");
-            } finally {
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                System.err.println("[ERROR] Database error fetching client email: " + e.getMessage());
+                return new SimpleStringProperty("Erreur base de données");
+            }
+        });
+
+        // Team name column
+        colEquipe.setCellValueFactory(cellData -> {
+            Projet projet = cellData.getValue();
+            String teamName = (projet.getNomEquipe() != null) ? projet.getNomEquipe() : "Aucune équipe";
+            return new SimpleStringProperty(teamName);
+        });
+
+        // Budget column (formatted as currency)
+        colBudget.setCellValueFactory(cellData -> {
+            Projet projet = cellData.getValue();
+            return new SimpleObjectProperty<>(projet.getBudget());
+        });
+        colBudget.setCellFactory(tc -> new TableCell<Projet, BigDecimal>() {
+            @Override
+            protected void updateItem(BigDecimal item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%,.2f TND", item));
                 }
             }
         });
 
-        colEquipe.setCellValueFactory(cellData -> {
-            Projet projet = cellData.getValue();
-            return new SimpleStringProperty(projet.getNomEquipe());
-        });
-
-        colBudget.setCellValueFactory(new PropertyValueFactory<>("budget"));
+        // Project type column
         colType.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+        // Architectural style column
         colStyleArch.setCellValueFactory(new PropertyValueFactory<>("styleArch"));
 
+        // Location column
         colEmplacement.setCellValueFactory(cellData -> {
             Projet projet = cellData.getValue();
-            return new SimpleStringProperty(projet.getEmplacement());
+            String location = (projet.getEmplacement() != null) ? projet.getEmplacement() : "Non spécifié";
+            return new SimpleStringProperty(location);
         });
 
+        // Status column
         colEtat.setCellValueFactory(new PropertyValueFactory<>("etat"));
-        colDateCreation.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
 
+        // Creation date column (formatted)
+        colDateCreation.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
+        colDateCreation.setCellFactory(tc -> new TableCell<Projet, Timestamp>() {
+            private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toLocalDateTime().format(formatter));
+                }
+            }
+        });
+
+        // Project steps column
         colEtapes.setCellValueFactory(cellData -> {
             List<EtapeProjet> etapes = cellData.getValue().getEtapes();
-            String etapesString = (etapes != null) ?
-                    etapes.stream().map(EtapeProjet::getNomEtape).collect(Collectors.joining("\n"))
-                    : "No Steps";
+            String etapesString = (etapes != null && !etapes.isEmpty()) ?
+                    etapes.stream()
+                            .map(EtapeProjet::getNomEtape)
+                            .collect(Collectors.joining(", "))
+                    : "Aucune étape";
             return new SimpleStringProperty(etapesString);
         });
 
+        // Actions column (Edit/Delete buttons)
         colActions.setCellFactory(new Callback<TableColumn<Projet, String>, TableCell<Projet, String>>() {
             @Override
             public TableCell<Projet, String> call(TableColumn<Projet, String> param) {
                 return new TableCell<Projet, String>() {
                     private final Button updateButton = new Button();
                     private final Button deleteButton = new Button();
+                    private final HBox buttonBox = new HBox(5, updateButton, deleteButton);
+
                     {
-                        ImageView pencilIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/pencil.png")));
+                        // Edit button setup
+                        ImageView pencilIcon = new ImageView(
+                                new Image(getClass().getResourceAsStream("/images/pencil.png")));
                         pencilIcon.setFitWidth(16);
                         pencilIcon.setFitHeight(16);
-
-                        // Set the image as the button's graphic
                         updateButton.setGraphic(pencilIcon);
                         updateButton.setStyle("-fx-background-color: transparent;");
+                        updateButton.setTooltip(new Tooltip("Modifier le projet"));
 
-                        ImageView binIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/bin.png")));
-                        binIcon.setFitWidth(20);
-                        binIcon.setFitHeight(20);
+                        // Delete button setup
+                        ImageView binIcon = new ImageView(
+                                new Image(getClass().getResourceAsStream("/images/bin.png")));
+                        binIcon.setFitWidth(16);
+                        binIcon.setFitHeight(16);
                         deleteButton.setGraphic(binIcon);
-                        deleteButton.setStyle("-fx-background-color: transparent;");                    }
+                        deleteButton.setStyle("-fx-background-color: transparent;");
+                        deleteButton.setTooltip(new Tooltip("Supprimer le projet"));
+
+                        // Button actions
+                        updateButton.setOnAction(event -> {
+                            Projet projet = getTableView().getItems().get(getIndex());
+                            openUpdateProjetWindow(projet);
+                        });
+
+                        deleteButton.setOnAction(event -> {
+                            Projet projet = getTableView().getItems().get(getIndex());
+                            deleteProjet(projet.getId_projet());
+                        });
+                    }
 
                     @Override
                     protected void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
-                            setText(null);
                         } else {
-
-                            updateButton.setOnAction(event -> {
-                                Projet projet = getTableView().getItems().get(getIndex());
-                                openUpdateProjetWindow(projet);
-                            });
-
-                            deleteButton.setOnAction(event -> {
-                                Projet projet = getTableView().getItems().get(getIndex());
-                                deleteProjet(projet.getId_projet());
-                            });
-
-                            HBox hBox = new HBox(5, updateButton, deleteButton);
-                            setGraphic(hBox);
-                            setText(null);
+                            setGraphic(buttonBox);
                         }
                     }
                 };
             }
         });
+
+        // Add context menu for the table
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem refreshItem = new MenuItem("Actualiser");
+        refreshItem.setOnAction(e -> handleReload());
+        contextMenu.getItems().add(refreshItem);
+        projetTable.setContextMenu(contextMenu);
+    }
+
+    @FXML
+    private void handleAjoutProjet() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/Projet/ajoutProjet.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Ajouter un nouveau projet");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Refresh the table after the new project window closes
+            loadProjets();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Impossible d'ouvrir la fenêtre d'ajout de projet.");
+            alert.showAndWait();
+        }
     }
 
     private void openUpdateProjetWindow(Projet projet) {

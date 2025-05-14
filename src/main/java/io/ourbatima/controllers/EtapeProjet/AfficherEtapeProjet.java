@@ -39,6 +39,9 @@ public class AfficherEtapeProjet extends ActionView implements Initializable {
     @FXML private ListView<String> suggestionsProjetList;
     @FXML private TextArea etapeProjetDetails;
     @FXML private TextField searchField;
+    @FXML private Button AjoutEtapeProjet;
+    @FXML private Button search;
+
 
     @Override
     public void initialize() {
@@ -46,6 +49,8 @@ public class AfficherEtapeProjet extends ActionView implements Initializable {
             System.out.println("✅ AfficherEtapeProjet Controller Initialized");
             System.out.println("🔍 listNomEtapes: " + listNomEtapes);
             System.out.println("📝 etapeProjetDetails: " + etapeProjetDetails);
+            AjoutEtapeProjet.setOnAction(event -> handleAjoutEtapeProjet());
+            search.setOnAction(event -> handleSearch());  // Initialize search button
             listNomEtapes.getItems().clear();
             loadEtapeList();
             setupClickListener();
@@ -69,6 +74,77 @@ public class AfficherEtapeProjet extends ActionView implements Initializable {
                 }
             }
         });
+    }
+
+    @FXML
+    private void handleSearch() {
+        String searchText = searchField.getText().trim().toLowerCase();
+        System.out.println("🔍 Launching search for: " + searchText);
+
+        if (searchText.isEmpty()) {
+            System.out.println("🔄 Search empty - loading all steps");
+            loadEtapeList();
+        } else {
+            System.out.println("⚙️ Filtering steps...");
+            List<EtapeProjet> filteredEtapes = etapeProjetDAO.getAllEtapeProjets().stream()
+                    .filter(etape -> {
+                        // Search in both step name and project name
+                        boolean matchesStep = etape.getNomEtape().toLowerCase().contains(searchText);
+
+                        Projet projet = projetDAO.getProjetById(etape.getId_projet());
+                        boolean matchesProject = projet != null &&
+                                projet.getNomProjet().toLowerCase().contains(searchText);
+
+                        return matchesStep || matchesProject;
+                    })
+                    .collect(Collectors.toList());
+
+            System.out.println("✅ Found " + filteredEtapes.size() + " matching steps");
+            updateListView(filteredEtapes);
+
+            if (!filteredEtapes.isEmpty()) {
+                showEtapeDetails(filteredEtapes.get(0));
+            } else {
+                System.out.println("⚠️ No matching steps found");
+                etapeProjetDetails.setText("❌ Aucune étape trouvée pour: " + searchText);
+            }
+        }
+    }
+    private void updateListView(List<EtapeProjet> etapes) {
+        System.out.println("🔄 Updating list view with " + etapes.size() + " steps");
+
+        List<String> etapeNames = etapes.stream()
+                .map(EtapeProjet::getNomEtape)
+                .collect(Collectors.toList());
+
+        Platform.runLater(() -> {
+            listNomEtapes.getItems().clear();
+            listNomEtapes.getItems().setAll(etapeNames);
+
+            if (etapes.isEmpty()) {
+                System.out.println("ℹ️ List view cleared - no steps to display");
+            }
+        });
+    }
+
+    @FXML
+    private void handleAjoutEtapeProjet() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ourbatima/views/EtapeProjet/ajoutEtapeProjet.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Ajouter une nouvelle étape de projet");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Refresh the list after adding a new étape
+            handleReload();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Échec du chargement de la fenêtre d'ajout.");
+        }
     }
 
     @FXML
@@ -146,6 +222,8 @@ public class AfficherEtapeProjet extends ActionView implements Initializable {
 
 
     private void filterEtapeList(String query) {
+        System.out.println("🔍 Filtering steps for query: " + query);
+
         List<EtapeProjet> etapes = etapeProjetDAO.getAllEtapeProjets();
         List<String> filteredEtapes = etapes.stream()
                 .filter(etape -> {
@@ -155,36 +233,11 @@ public class AfficherEtapeProjet extends ActionView implements Initializable {
                 .map(EtapeProjet::getNomEtape)
                 .collect(Collectors.toList());
 
+        System.out.println("✅ Found " + filteredEtapes.size() + " filtered steps");
+
         Platform.runLater(() -> {
             listNomEtapes.getItems().clear();
             listNomEtapes.getItems().setAll(filteredEtapes);
-        });
-    }
-
-    @FXML
-    private void handleSearch() {
-        String searchText = searchField.getText().trim().toLowerCase();
-        if (searchText.isEmpty()) {
-            loadEtapeList();
-        } else {
-            List<EtapeProjet> filteredEtapes = etapeProjetDAO.getAllEtapeProjets().stream()
-                    .filter(etape -> etape.getNomEtape().toLowerCase().contains(searchText))
-                    .collect(Collectors.toList());
-            updateListView(filteredEtapes);
-            if (!filteredEtapes.isEmpty()) {
-                showEtapeDetails(filteredEtapes.get(0));
-            }
-        }
-    }
-
-    private void updateListView(List<EtapeProjet> etapes) {
-        List<String> etapeNames = etapes.stream()
-                .map(EtapeProjet::getNomEtape)
-                .collect(Collectors.toList());
-
-        Platform.runLater(() -> {
-            listNomEtapes.getItems().clear();
-            listNomEtapes.getItems().setAll(etapeNames);
         });
     }
 
