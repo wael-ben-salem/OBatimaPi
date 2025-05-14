@@ -1,15 +1,15 @@
 package io.ourbatima.core.model;
 
 public class Fournisseur {
-    private int id;
+    private int fournisseur_id;
     private String nom;
     private String prenom;
     private String email;
     private String numeroDeTelephone;
     private String adresse;
 
-    public Fournisseur(int id, String nom, String prenom, String email, String numeroDeTelephone, String adresse) {
-        this.id = id;
+    public Fournisseur(int fournisseur_id, String nom, String prenom, String email, String numeroDeTelephone, String adresse) {
+        this.fournisseur_id = fournisseur_id;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -23,11 +23,11 @@ public class Fournisseur {
 
     // Getters and setters
     public int getId() {
-        return id;
+        return fournisseur_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int fournisseur_id) {
+        this.fournisseur_id = fournisseur_id;
     }
 
     public String getNom() {
@@ -73,8 +73,8 @@ public class Fournisseur {
 
     public String toString() {
         return String.format(
-                "id=%d, nom='%s', prenom='%s', email='%s', numeroDeTelephone='%s', adresse='%s'",
-                id, nom, prenom, email, numeroDeTelephone, adresse
+                "fournisseur_id=%d, nom='%s', prenom='%s', email='%s', numeroDeTelephone='%s', adresse='%s'",
+                fournisseur_id, nom, prenom, email, numeroDeTelephone, adresse
         );
     }
 

@@ -244,4 +244,13 @@ task copyOpenCVLib(type: Copy) {
     from 'src/main/resources/libs'
     into "$buildDir/libs"
 }
+task migratePasswords(type: JavaExec) {
+    group = 'application'
+    description = 'Execute password migration script'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'io.ourbatima.utils.PasswordMigrator'
+
+    // Optionnel : Paramètres JVM si nécessaire
+    jvmArgs = ["-Djava.library.path=${projectDir}/src/main/resources/libs"]
+}
 processResources.dependsOn copyOpenCVLib

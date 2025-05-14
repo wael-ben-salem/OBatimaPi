@@ -46,7 +46,7 @@
             <padding>
                <Insets top="10.0" />
             </padding>
-            <ToggleButton fx:id="goDash"  alignment="CENTER_LEFT" layoutX="10.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDash" selected="true" styleClass="drawer-item" text="Dashboard">
+            <ToggleButton fx:id="goDash" alignment="CENTER_LEFT" layoutX="10.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDash" selected="true" styleClass="drawer-item" text="Dashboard">
                <graphic>
                   <SVGPath content="M19 5v2h-4V5h4M9 5v6H5V5h4m10 8v6h-4v-6h4M9 17v2H5v-2h4M21 3h-8v6h8V3zM11 3H3v10h8V3zm10 8h-8v10h8V11zm-10 4H3v6h8v-6z" />
                </graphic>
@@ -55,19 +55,6 @@
                </toggleGroup>
             </ToggleButton>
 
-            <ToggleButton alignment="CENTER_LEFT" disable="true" layoutX="10.0" layoutY="20.0" maxWidth="1.7976931348623157E308" minHeight="0.0" mnemonicParsing="false" onAction="#goNewsletter" prefWidth="485.0" styleClass="drawer-item" text="Newsletter" toggleGroup="$group">
-               <graphic>
-                  <SVGPath content="M5 21q-.825 0-1.413-.587Q3 19.825 3 19V5q0-.825.587-1.413Q4.175 3 5 3h11l5 5v11q0 .825-.587 1.413Q19.825 21 19 21Zm0-2h14V9h-4V5H5v14Zm2-2h10v-2H7Zm0-8h5V7H7Zm0 4h10v-2H7ZM5 5v4-4 14V5Z" />
-               </graphic>
-            </ToggleButton>
-            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Tutorials" textAlignment="JUSTIFY">
-               <graphic>
-                  <SVGPath content="m12 21-7-3.8v-6L1 9l11-6 11 6v8h-2v-6.9l-2 1.1v6Zm0-8.3L18.85 9 12 5.3 5.15 9Zm0 6.025 5-2.7V12.25L12 15l-5-2.75v3.775Zm0-6.025Zm0 2.25Zm0 0Z" nodeOrientation="LEFT_TO_RIGHT" />
-               </graphic>
-               <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goUnderstanding" styleClass="drawer-item" text="Understanding" toggleGroup="$group" />
-               </VBox>
-            </TitledPane>
             <Separator prefWidth="200.0">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" />
@@ -78,70 +65,8 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-weight: normal;" styleClass="drawer-menu" text="Controls" textAlignment="JUSTIFY">
-               <graphic>
-                  <SVGPath content="M12 11q-1.65 0-2.825-1.175Q8 8.65 8 7q0-1.65 1.175-2.825Q10.35 3 12 3q1.65 0 2.825 1.175Q16 5.35 16 7q0 1.65-1.175 2.825Q13.65 11 12 11Zm0-2q.825 0 1.413-.588Q14 7.825 14 7t-.587-1.412Q12.825 5 12 5q-.825 0-1.412.588Q10 6.175 10 7t.588 1.412Q11.175 9 12 9ZM7 21q-1.65 0-2.825-1.175Q3 18.65 3 17q0-1.65 1.175-2.825Q5.35 13 7 13q1.65 0 2.825 1.175Q11 15.35 11 17q0 1.65-1.175 2.825Q8.65 21 7 21Zm0-2q.825 0 1.412-.587Q9 17.825 9 17q0-.825-.588-1.412Q7.825 15 7 15t-1.412.588Q5 16.175 5 17t.588 1.413Q6.175 19 7 19Zm10 2q-1.65 0-2.825-1.175Q13 18.65 13 17q0-1.65 1.175-2.825Q15.35 13 17 13q1.65 0 2.825 1.175Q21 15.35 21 17q0 1.65-1.175 2.825Q18.65 21 17 21Zm0-2q.825 0 1.413-.587Q19 17.825 19 17q0-.825-.587-1.412Q17.825 15 17 15q-.825 0-1.412.588Q15 16.175 15 17t.588 1.413Q16.175 19 17 19ZM12 7ZM7 17Zm10 0Z" nodeOrientation="LEFT_TO_RIGHT" />
-               </graphic>
-               <VBox nodeOrientation="LEFT_TO_RIGHT">
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="67.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goButton" styleClass="drawer-item" text="Button" toggleGroup="$group" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="55.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goCarousel" styleClass="drawer-item" text="Carousel" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="10.0" layoutY="245.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goCheckBox" styleClass="drawer-item" text="CheckBox" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="615.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goChoiceBox" styleClass="drawer-item" text="ChoiceBox" />
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goColorPicker" styleClass="drawer-item" text="ColorPicker" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="55.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goComboBox" styleClass="drawer-item" text="ComboBox" />
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDatePicker" styleClass="drawer-item" text="DatePicker" />
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goHtmlEditor" styleClass="drawer-item" text="HTMLEditor" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goHyperlink" styleClass="drawer-item" text="Hyperlink" toggleGroup="$group" />
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goLabels" styleClass="drawer-item" text="Label" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="90.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goListView" styleClass="drawer-item" text="ListView" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="230.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goMediaView" styleClass="drawer-item" text="MediaView" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goMenuBar" styleClass="drawer-item" text="MenuBar">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group2" />
-                     </toggleGroup>
-                  </ToggleButton>
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goMenuButton" styleClass="drawer-item" text="MenuButton" toggleGroup="$group" />
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goPagination" styleClass="drawer-item" text="Pagination" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="615.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goProgressbar" styleClass="drawer-item" text="Progressbar" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goRadioButton" styleClass="drawer-item" text="RadioButton">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group21" />
-                     </toggleGroup>
-                  </ToggleButton>
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="650.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goSpinner" styleClass="drawer-item" text="Spinner" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="160.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goPassword" styleClass="drawer-item" text="PasswordField" />
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" onAction="#goRating" styleClass="drawer-item" text="Rating" />
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" onAction="#goSlider" styleClass="drawer-item" text="Slider" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="230.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goTableView" styleClass="drawer-item" text="TableView" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="125.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goTextField" styleClass="drawer-item" text="TextField" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goSwitch" styleClass="drawer-item" text="ToggleButton">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group1" />
-                     </toggleGroup>
-                  </ToggleButton>
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goTreeTableView" styleClass="drawer-item" text="TreeTableView" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="265.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goTreeView" styleClass="drawer-item" text="TreeView" />
-               </VBox>
-            </TitledPane>
-            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Containers" textAlignment="JUSTIFY">
-               <graphic>
-                  <SVGPath content="M5 21q-.825 0-1.413-.587Q3 19.825 3 19V5q0-.825.587-1.413Q4.175 3 5 3h14q.825 0 1.413.587Q21 4.175 21 5v14q0 .825-.587 1.413Q19.825 21 19 21Zm0-2h6V5H5v14Zm8 0h6v-7h-6Zm0-9h6V5h-6Z" nodeOrientation="LEFT_TO_RIGHT" />
-               </graphic>
-               <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goTabPane" styleClass="drawer-item" text="TabPane" toggleGroup="$group" />
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goTitledPane" styleClass="drawer-item" text="TitledPane">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group4" />
-                     </toggleGroup>
-                  </ToggleButton>
-                  <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAccordion" styleClass="drawer-item" text="Accordion">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group41" />
-                     </toggleGroup>
-                  </ToggleButton>
-                  <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goDataTable" styleClass="drawer-item" text="Data Table" toggleGroup="$group" />
-               </VBox>
-            </TitledPane>
+         <VBox fx:id="menuContainer">
+
             <TitledPane fx:id="goUser" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Utilisateur" textAlignment="JUSTIFY">
                <graphic>
                   <Group>
@@ -153,50 +78,41 @@
                <content>
                   <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
                      <children>
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goArtisan" styleClass="drawer-item" text="Artisans">
-
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goClient" styleClass="drawer-item" text="Clients">
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goConstructeur" styleClass="drawer-item" text="Constructeurs">
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goGestionnaireStock" styleClass="drawer-item" text="Gestionnaire De Stock">
-                        </ToggleButton>
-
-
-
+                        <ToggleButton fx:id="goArtisanButton" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goArtisan" styleClass="drawer-item" text="Artisans" />
+                        <ToggleButton fx:id="goClientButton" alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goClient" styleClass="drawer-item" text="Clients" />
+                        <ToggleButton fx:id="goConstructeurButton" alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goConstructeur" styleClass="drawer-item" text="Constructeurs" />
+                        <ToggleButton fx:id="goGestionnaireStockButton" alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goGestionnaireStock" styleClass="drawer-item" text="Gestionnaire De Stock" />
                      </children>
                   </VBox>
                </content>
             </TitledPane>
-            <TitledPane  fx:id="goProjet" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Projet" textAlignment="JUSTIFY">
+
+            <TitledPane fx:id="goProjet" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Projet" textAlignment="JUSTIFY">
                <graphic>
                   <Group>
                      <children>
+                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
                      </children>
                   </Group>
                </graphic>
                <content>
                   <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
                      <children>
-
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Projet" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjoutProjet" styleClass="drawer-item" text="Ajouter Projet" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherEtapeProjet" styleClass="drawer-item" text="Étape projet" toggleGroup="$group3" />
-
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherTerrain" styleClass="drawer-item" text="Terrain" toggleGroup="$group3" />
-
-
-
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Projet"  />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjoutProjet" styleClass="drawer-item" text="Ajouter Projet"  />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherEtapeProjet" styleClass="drawer-item" text="Étape projet" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherTerrain" styleClass="drawer-item" text="Terrain"  />
                      </children>
                   </VBox>
                </content>
             </TitledPane>
-            <TitledPane fx:id="goTachetPlan"  alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Plannifiacation et Tache" textAlignment="JUSTIFY">
+
+            <TitledPane fx:id="goTachetPlan" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Plannifiacation et Tache" textAlignment="JUSTIFY">
                <graphic>
                   <Group>
                      <children>
+                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
                      </children>
                   </Group>
                </graphic>
@@ -205,10 +121,8 @@
                      <children>
                         <Button text="📅 Planification" onAction="#gotoplan"
                                 style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
-
                         <Button text="📝 Tâche" onAction="#gotoplanf"
                                 style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
-
                         <Button text="📂 Saved Plans" onAction="#gotoSavedPlans"
                                 style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
                         <Button text="⛅ Météo" onAction="#gotoWeather"
@@ -221,22 +135,44 @@
                   </VBox>
                </content>
             </TitledPane>
-            <TitledPane fx:id="gotofinance"  alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Contrat et abonnement" textAlignment="JUSTIFY">
+
+            <TitledPane fx:id="goStock" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Stocks" textAlignment="JUSTIFY">
                <graphic>
                   <Group>
                      <children>
+                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                     </children>
+                  </Group>
+               </graphic>
+               <content>
+                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                     <children>
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAddArticle" styleClass="drawer-item" text="Ajouter Article" />
+                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goviewArticle" styleClass="drawer-item" text="Article" />
+                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#launchbot" styleClass="drawer-item" text="Bot" />
+                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goviewfournisseur" styleClass="drawer-item" text="Fournisseur" />
+                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAddfournisseur" styleClass="drawer-item" text="Ajouter Fournisseur" />
+                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goviewstock" styleClass="drawer-item" text="Stock" />
+                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAddStock" styleClass="drawer-item" text="Ajouter Stock" />
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+
+            <TitledPane fx:id="gotofinance" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Contrat et abonnement" textAlignment="JUSTIFY">
+               <graphic>
+                  <Group>
+                     <children>
+                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
                      </children>
                   </Group>
                </graphic>
                <content>
                   <VBox id="drawerContentt" fx:id="faa" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                     <children >
-                        <ToggleButton fx:id="contra" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoContratclient" styleClass="drawer-item" text="Contrats client" toggleGroup="$group3" />
-
-
-
+                     <children>
+                        <ToggleButton fx:id="contra" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats"  />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants"  />
+                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoContratclient" styleClass="drawer-item" text="Contrats client"  />
                      </children>
                   </VBox>
                </content>
@@ -250,72 +186,11 @@
                      </children>
                   </Group>
                </graphic>
-
             </TitledPane>
-
-            <TitledPane alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Pages" textAlignment="JUSTIFY">
-               <graphic>
-                  <Group>
-                     <children>
-                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
-                     </children>
-                  </Group>
-               </graphic>
-               <content>
-                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                     <children>
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goLogin" styleClass="drawer-item" text="Login">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="group3" />
-                           </toggleGroup>
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goHero" styleClass="drawer-item" text="Hero Section">
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goErrorPage" styleClass="drawer-item" text="Error View">
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goPricing" styleClass="drawer-item" text="Pricing">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="group312" />
-                           </toggleGroup>
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="140.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goFrequently" styleClass="drawer-item" text="Frequently ask">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="group3121" />
-                           </toggleGroup>
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="180.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goFooter" styleClass="drawer-item" text="Footer">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="group31211" />
-                           </toggleGroup>
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="220.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goTestimonials" styleClass="drawer-item" text="Testimonials">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="group312111" />
-                           </toggleGroup>
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAbout" styleClass="drawer-item" text="About">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="group32" />
-                           </toggleGroup>
-                        </ToggleButton>
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjoutProjet" styleClass="drawer-item" text="Ajouter Projet" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Afficher Projet" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAjouterEtapeProjet" styleClass="drawer-item" text="Ajouter Étape projet" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherEtapeProjet" styleClass="drawer-item" text="Afficher Étape projet" toggleGroup="$group3" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherTerrain" styleClass="drawer-item" text="Afficher Terrain" toggleGroup="$group3" />
+         </VBox>
 
 
-
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="300.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goBlog" styleClass="drawer-item" text="Blog">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="group321" />
-                           </toggleGroup>
-                        </ToggleButton>
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-            <Separator prefWidth="200.0">
+         <Separator prefWidth="200.0">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>
@@ -350,8 +225,8 @@
             </GNAvatarStatus>
             <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-bold" text="Jhon Doe" />
-                  <Text layoutX="10.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="jhondoe@gmail.com" />
+                  <Text fx:id="userNameText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-bold" />
+                  <Text fx:id="userEmailText" layoutX="10.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                </children>
             </VBox>
             <Button fx:id="arrowButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#openUserPreferences" styleClass="btn-flat" text="Button" GridPane.columnIndex="2">

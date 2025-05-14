@@ -475,29 +475,21 @@ public final class DashController extends ActionView {
 
 
     private void setBackgroundColorBasedOnRole(String role, Region region) {
-        if (region == null || role == null) return;
+    if (region == null || role == null) return;
 
-        switch (role) {
-            case "Artisan":
-                region.setStyle("-fx-background-color: #FFD700;"); // Jaune
-                break;
-            case "Constructeur":
-                region.setStyle("-fx-background-color: #808080;"); // Gris
-                break;
-            case "GestionnaireStock":
-                region.setStyle("-fx-background-color: #ADD8E6;"); // Bleu clair
-                break;
-            case "Client":
-                region.setStyle("-fx-background-color: #90EE90;"); // Vert clair
-                break;
-            case "Admin":
-                region.setStyle("-fx-background-color: #000000;"); // Noir
-                break;
-            default:
-                region.setStyle("-fx-background-color: white;"); // Par défaut
-                break;
-        }
+    switch (role) {
+        case "Client":
+            region.setStyle("-fx-background-color: #ffffff;"); // Blanc
+            break;
+        case "Artisan":
+        case "Constructeur":
+        case "GestionnaireStock":
+        case "Admin":
+        default:
+            region.setStyle("-fx-background-color: #000000;"); // Noir
+            break;
     }
+}
 
     private VBox createDialogNotification() {
         VBox root = new VBox();

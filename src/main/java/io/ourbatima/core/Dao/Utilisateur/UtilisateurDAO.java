@@ -7,10 +7,7 @@ import io.ourbatima.core.Dao.DatabaseConnection;
 import io.ourbatima.core.model.Utilisateur.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,6 @@ public class UtilisateurDAO {
     private static Connection connect() throws SQLException {
         return DatabaseConnection.getConnection();
     }
-
     public Utilisateur verifierIdentifiants(String email, String motDePasse) {
         String sql = "SELECT * FROM Utilisateur WHERE email = ?";
 
@@ -36,7 +32,14 @@ public class UtilisateurDAO {
 
             if (rs.next()) {
                 String motDePasseEnBase = rs.getString("mot_de_passe");
-                if (BCrypt.checkpw(motDePasse, motDePasseEnBase)) {
+
+                // Normaliser le format du hash pour jBCrypt
+                String normalizedHash = motDePasseEnBase;
+                if (motDePasseEnBase != null && motDePasseEnBase.startsWith("$2y$")) {
+                    normalizedHash = "$2a$" + motDePasseEnBase.substring(4);
+                }
+
+                if (BCrypt.checkpw(motDePasse, normalizedHash)) {
                     return mapUtilisateur(rs);
                 }
             }
@@ -45,7 +48,6 @@ public class UtilisateurDAO {
         }
         return null;
     }
-
     public static Utilisateur mapUtilisateur(ResultSet rs) throws SQLException {
         Utilisateur utilisateur = new Utilisateur(
                 rs.getInt("id"),
@@ -964,4 +966,43 @@ public class UtilisateurDAO {
 
         return matchingUsers;
     }
+    public boolean updateUserPassword(String email, String hashedPassword) {
+        String sql = "UPDATE utilisateur SET password = ?, reset_password_token = NULL WHERE email = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, hashedPassword);
+            stmt.setString(2, email);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la mise à jour du mot de passe: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public List<Utilisateur> getAllUsers() {
+        List<Utilisateur> users = new ArrayList<>();
+        String sql = "SELECT * FROM utilisateur";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Utilisateur user = new Utilisateur();
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                user.setMotDePasse(rs.getString("mot_de_passe"));
+                // Ajoutez les autres champs...
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
 }
