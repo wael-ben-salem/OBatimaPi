@@ -72,6 +72,6 @@
 
 
         <!-- Bouton Ajouter -->
-        <Button layoutX="700.0" layoutY="538.0" mnemonicParsing="false" onAction="#handleAjouter" text="Ajouter" />
+        <Button layoutX="700.0" layoutY="538.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="122.0" styleClass="btn-gradient" stylesheets="@../../../style/css/boutton.css" onAction="#handleAjouter" text="Ajouter" textFill="WHITE" />
     </children>
 </AnchorPane>

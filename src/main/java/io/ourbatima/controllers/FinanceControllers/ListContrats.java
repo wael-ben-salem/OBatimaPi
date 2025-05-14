@@ -13,6 +13,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -149,17 +151,36 @@ public class ListContrats extends ActionView {
 
     private Callback<TableColumn<ContratDTO, Void>, TableCell<ContratDTO, Void>> createButtonCellFactory() {
         return param -> new TableCell<ContratDTO, Void>() {
-            private final HBox container = new HBox(5); // HBox to hold buttons
-            private final Button updateButton = new Button("Update");
-            private final Button deleteButton = new Button("Delete");
-            private final  Button consulterbutton = new Button("Consulter");
+            private final HBox container = new HBox(5);
+            private final Button updateButton = new Button();
+            private final Button deleteButton = new Button();
+            private final Button consulterButton = new Button();
 
             {
-                // Set button styles
+                // Update button with icon
+                ImageView updateIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/pencil.png")));
+                updateIcon.setFitWidth(16);
+                updateIcon.setFitHeight(16);
+                updateButton.setGraphic(updateIcon);
+                updateButton.setStyle("-fx-background-color: transparent; -fx-padding: 2;");
                 updateButton.getStyleClass().add("update-button");
+
+                // Delete button with icon
+                ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/bin.png")));
+                deleteIcon.setFitWidth(16);
+                deleteIcon.setFitHeight(16);
+                deleteButton.setGraphic(deleteIcon);
+                deleteButton.setStyle("-fx-background-color: transparent; -fx-padding: 2;");
                 deleteButton.getStyleClass().add("delete-button");
 
-                // Set button actions
+                // Consulter button with icon
+                ImageView consulterIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/eopen.png")));
+                consulterIcon.setFitWidth(16);
+                consulterIcon.setFitHeight(16);
+                consulterButton.setGraphic(consulterIcon);
+                consulterButton.setStyle("-fx-background-color: transparent; -fx-padding: 2;");
+
+                // Set button actions (keep your existing functionality)
                 updateButton.setOnAction(event -> {
                     ContratDTO rowData = getTableView().getItems().get(getIndex());
                     handleUpdateAction(rowData);
@@ -169,8 +190,9 @@ public class ListContrats extends ActionView {
                     ContratDTO rowData = getTableView().getItems().get(getIndex());
                     handleDeleteAction(rowData);
                 });
-                consulterbutton.setOnAction(event -> {
-                    ContratDTO rowData= getTableView().getItems().get(getIndex());
+
+                consulterButton.setOnAction(event -> {
+                    ContratDTO rowData = getTableView().getItems().get(getIndex());
                     try {
                         hndleaConsulter(rowData);
                     } catch (IOException e) {
@@ -178,19 +200,20 @@ public class ListContrats extends ActionView {
                     }
                 });
 
-                container.getChildren().addAll(updateButton, deleteButton,consulterbutton);
+                container.getChildren().addAll(updateButton, deleteButton, consulterButton);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) {
-                    setGraphic(null); // Hide buttons for empty rows
+                    setGraphic(null);
                 } else {
-                    setGraphic(container); // Show buttons for non-empty rows
+                    setGraphic(container);
                 }
             }
         };
+
     }
 
     private void hndleaConsulter(ContratDTO rowData) throws IOException {
