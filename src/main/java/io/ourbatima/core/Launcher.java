@@ -39,7 +39,7 @@ public abstract class Launcher extends Application {
 
         context.setStage(stage);
         Scene scene = new Scene(root);
-        stage.setTitle("DashboardFx App!");
+        stage.setTitle("OurBatima");
         stage.setScene(scene);
         stage.setMaximized(true);
 

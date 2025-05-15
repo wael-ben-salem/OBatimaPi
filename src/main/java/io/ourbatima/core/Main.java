@@ -94,7 +94,10 @@ public class Main extends Launcher {
 
         // Start the PlannificationStatusUpdater in the background
         PlannificationStatusUpdater.startScheduler();
+        icons.add(new Image(context.getResource("style/img/logo2.png").toExternalForm(), 128, 128, true, true));
+
     }
+
 
     private Loader createCraneLoader(String text) {
         return new ConstructionLoader(text);

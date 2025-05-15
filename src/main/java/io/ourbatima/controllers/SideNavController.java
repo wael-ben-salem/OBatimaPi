@@ -395,7 +395,7 @@ public class SideNavController extends ActionView {
         btnSettings.setGraphic(new IconContainer(Icons.SETTINGS_FILLED));
 
         Button btnLogout = createBtn("Logout", event -> {
-            // Logique de déconnexion
+        context.routes().setView("login");
         });
         btnLogout.setGraphic(new IconContainer(Icons.LOGOUT));
 
