@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="public/img/logoOur.png" alt="OUR BATIMA Logo" width="200"/>
+  <img src="src/main/resources/OurBatima/style/img/logo2.png" alt="OUR BATIMA Logo" width="200"/>
 </p>
 
 # OUR BATIMA - Application JavaFX (Client de Gestion de Projets de Construction)
