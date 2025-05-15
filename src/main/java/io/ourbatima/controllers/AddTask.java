@@ -80,34 +80,48 @@ public class AddTask extends ActionView {
         alert.setTitle("Erreur de Saisie 🏗️");
         alert.setHeaderText("Champs Obligatoires Manquants 🚧");
         alert.setContentText("Veuillez remplir tous les champs requis :\n"
-                + "✅ Artisan ou Constructeur\n"
                 + "✅ Description de la tâche\n"
                 + "✅ Date de début\n"
                 + "🏗️ Génie Civil - Construisons mieux ensemble !");
 
-        // Customizing the popup style
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-background-color: #ffe4b5;");
+        alert.showAndWait();
+    }
 
+    // Overloaded method for custom messages
+    private void showErrorPopup(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
     @FXML
     public void saveTask() {
         Utilisateur selectedArtisan = utilisateursArtisans.getValue();
-        Utilisateur selectedConstructeur = utilisateursConstructeurs.getValue();
         String description = descriptionField.getText();
         LocalDate dateDebut = dateDebutPicker.getValue();
         LocalDate dateFin = dateFinPicker.getValue();
 
-        // Validation Check
-        if (description == null || description.trim().isEmpty() || dateDebut == null ||
-                (selectedArtisan == null && selectedConstructeur == null)) {
-            showErrorPopup();
+        // Get current user
+        Utilisateur currentUser = SessionManager.getUtilisateur();
+        if (currentUser == null) {
+            showErrorPopup("Vous devez être connecté pour créer une tâche.");
             return;
         }
 
-        // **FILTER PROFANITY BEFORE SAVING**
+        // Validate required fields
+        if (description == null || description.trim().isEmpty() || dateDebut == null) {
+            showErrorPopup("Erreur lors de l'ajout de la tâche.");
+            return;
+        }
+
+
+
+        int constructeurId = currentUser.getId();
+
+        // Filter profanity
         String censoredDescription = ProfanityFilterService.filterProfanity(description);
 
         String query = "INSERT INTO tache (artisan_id, constructeur_id, description, date_debut, date_fin) " +
@@ -117,17 +131,17 @@ public class AddTask extends ActionView {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setObject(1, selectedArtisan != null ? selectedArtisan.getId() : null);
-            stmt.setObject(2, selectedConstructeur != null ? selectedConstructeur.getId() : null);
-            stmt.setString(3, censoredDescription);  // SAVING CENSORED TEXT
+            stmt.setInt(2, constructeurId); // Current user's ID as constructeur_id
+            stmt.setString(3, censoredDescription);
             stmt.setDate(4, java.sql.Date.valueOf(dateDebut));
             stmt.setObject(5, dateFin != null ? java.sql.Date.valueOf(dateFin) : null);
 
             stmt.executeUpdate();
-            System.out.println("Tâche ajoutée avec succès !");
+            showSuccessPopup("Tâche ajoutée avec succès ! ✅🏗️🚀");
         } catch (SQLException e) {
             e.printStackTrace();
+            showErrorPopup("Erreur lors de l'ajout de la tâche.");
         }
-        showSuccessPopup("Tache ajoutée avec succès ! ✅🏗️🚀");
     }
 
     private void showSuccessPopup(String s) {

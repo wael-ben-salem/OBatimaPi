@@ -44,6 +44,9 @@ public class SideNavController extends ActionView {
     @FXML private ToggleGroup group;
     @FXML private Button arrowButton;
     @FXML
+    private VBox menuContainer;
+
+    @FXML
     private Label RoleUser;
     public VBox faa;
     public ToggleButton contra;
@@ -57,7 +60,6 @@ public class SideNavController extends ActionView {
     @FXML private ToggleButton goGestionnaireStockButton;
     @FXML private ToggleButton goArtisanButton;
     @FXML private ToggleButton goClientButton;
-    
 
     // Références aux éléments du menu
     @FXML private TitledPane goUser;
@@ -67,7 +69,7 @@ public class SideNavController extends ActionView {
     @FXML private TitledPane goEquipe;
     @FXML private TitledPane gotofinance;
 
-     public void setBackgroundColorBasedOnRole(String role) {
+    public void setBackgroundColorBasedOnRole(String role) {
         switch (role) {
             case "Client":
                 root.setStyle("-fx-background-color: #ffffff;"); // Blanc
@@ -81,7 +83,7 @@ public class SideNavController extends ActionView {
                 break;
         }
     }
-    
+
     // Méthodes utilitaires pour gérer la visibilité
     private void hideMenu(Node menu) {
         menu.setManaged(false);
@@ -155,7 +157,7 @@ public class SideNavController extends ActionView {
         }
     }
 
-
+    // [Toutes les autres méthodes originales restent inchangées ci-dessous...]
     @FXML
     private void goDash() throws NavigationException {
         context.routes().nav("dash");
@@ -253,17 +255,17 @@ public class SideNavController extends ActionView {
 
     @FXML
     private void goErrorPage() {
-        context.routes().nav("view"); // obvious error to force navigate
+        context.routes().nav("view");
     }
 
     @FXML
     private void goPricing() {
-        context.routes().nav("pricing"); // obvious error to force navigate
+        context.routes().nav("pricing");
     }
 
     @FXML
     private void goFrequently() {
-        context.routes().nav("frequently"); // obvious error to force navigate
+        context.routes().nav("frequently");
     }
 
     @FXML
@@ -310,6 +312,7 @@ public class SideNavController extends ActionView {
     private void goSpinner() {
         go("spinner", new SpinnerPresCreator(context));
     }
+
     @FXML
     private void goColorPicker() {
         go("color_picker", new ColorPickerPresCreator(context));
@@ -368,49 +371,35 @@ public class SideNavController extends ActionView {
     private final VBox boxUserDialog = new VBox();
 
     private Button createBtn(String text, EventHandler<ActionEvent> event) {
-
         Button btnProfile = new Button(text);
         btnProfile.setMaxWidth(Double.MAX_VALUE);
         btnProfile.getStyleClass().addAll("btn-option", "btn-flat", "no-border");
-
         btnProfile.setAlignment(Pos.CENTER_LEFT);
         btnProfile.setPadding(new Insets(10));
         btnProfile.setOnAction(event);
-
         btnProfile.addEventFilter(MouseEvent.MOUSE_CLICKED, event1 -> context.flow().close());
         return btnProfile;
     }
 
     private void configLayout() {
-
         Button btnProfile = createBtn("Profile", event -> {
-//            upadteContent(context, "profile");
-
             context.routes().nav("profile");
             removeFocus();
         });
         btnProfile.setGraphic(new IconContainer(Icons.ACCOUNT_CIRCLE));
+
         Button btnSettings = createBtn("Settings", event -> {
             context.routes().nav("settings");
             removeFocus();
         });
         btnSettings.setGraphic(new IconContainer(Icons.SETTINGS_FILLED));
+
         Button btnLogout = createBtn("Logout", event -> {
-//                upadteContent(context, "profile");
+            // Logique de déconnexion
         });
         btnLogout.setGraphic(new IconContainer(Icons.LOGOUT));
 
         boxUserDialog.getChildren().setAll(btnProfile, btnSettings, new Separator(), btnLogout);
-
-//        boxUser.setOnMouseClicked(event -> context.flow()
-////                    .getPopup()
-////                    .size(300, 150)
-////                    .moveX(200)
-//                .content(
-//                        new DialogContainer(boxUserDialog)
-//                                .size(200, 100)
-//                )
-//                .show(Pos.BOTTOM_LEFT, boxUser, 140));
     }
 
     @FXML
@@ -422,6 +411,7 @@ public class SideNavController extends ActionView {
     private void goArtisan() {
         context.routes().nav("artisan_list");
     }
+
     @FXML
     private void goEquipe() {
         context.routes().nav("equipelist");
@@ -441,16 +431,11 @@ public class SideNavController extends ActionView {
     private void goGestionnaireStock() {
         context.routes().nav("gestionnaire_stock_list");
     }
+
     @FXML
     private void openUserPreferences() {
         context.flow()
-//                    .getPopup()
-//                    .size(300, 150)
-//                    .moveX(200)
-                .content(
-                        new DialogContainer(boxUserDialog)
-                                .size(200, 100)
-                )
+                .content(new DialogContainer(boxUserDialog).size(200, 100))
                 .show(Pos.BOTTOM_RIGHT, arrowButton, 10, -120);
     }
 
@@ -463,58 +448,51 @@ public class SideNavController extends ActionView {
         context.routes().putAndGo(new SimpleView(name, tutorialCreator));
     }
 
-    private void createProblemView(){
+    private void createProblemView() {
         Circle rectangle = new Circle();
         rectangle.setFill(new ImagePattern(
                 new Image(context.getResource("style/img/404.png").toExternalForm())
         ));
         rectangle.setRadius(200);
-        context.routes().putAndGo(new SimpleView("error_404", new StackPane(rectangle)
-        ));
+        context.routes().putAndGo(new SimpleView("error_404", new StackPane(rectangle)));
     }
 
     private DrawerBehavior behavior;
 
     @Override
     public void onInit(Context context) {
-        if (SessionManager.getUtilisateur().getRole()!=Utilisateur.Role.Admin){
-            faa.getChildren().remove(contra);}
-        Utilisateur currentUser = SessionManager.getUtilisateur();
+        currentUser = SessionManager.getUtilisateur();
         if (currentUser == null) {
             System.err.println("Aucun utilisateur connecté !");
-            return; // Arrêter l'exécution si l'utilisateur n'est pas connecté
+            return;
         }
+
         String userRole = String.valueOf(currentUser.getRole());
         setBackgroundColorBasedOnRole(userRole);
+        setupMenuBasedOnRole(userRole);
 
-        // Vérifiez que les champs texte sont initialisés
         if (userNameText != null && userEmailText != null) {
             userNameText.setText(currentUser.getNom() + " " + currentUser.getPrenom());
             userEmailText.setText(currentUser.getEmail());
             RoleUser.setText(currentUser.getRole().toString());
-
         } else {
             System.err.println("Erreur: userNameText ou userEmailText non initialisé");
             RoleUser.setText("Inconnu");
-
         }
 
-        // Appliquer la couleur de fond en fonction du rôle
-        setBackgroundColorBasedOnRole(userRole);
-
-        // Initialiser le comportement du drawer
         Platform.runLater(() -> {
             behavior = new DrawerBehavior(root, group);
         });
 
-        // Configurer le layout
         configLayout();
-
         super.onInit(context);
     }
+
     public void setUser(Utilisateur utilisateur) {
+        // Implémentation existante
     }
 
+    // Méthodes pour la gestion des stocks
     public void goAddStock(ActionEvent actionEvent) {
         context.routes().nav("addstock");
     }
@@ -540,21 +518,27 @@ public class SideNavController extends ActionView {
     }
 
     public void launchbot(ActionEvent actionEvent) {
+        // Implémentation existante
     }
 
+    // Méthodes pour la gestion des plans et tâches
     public void gotoplan(ActionEvent actionEvent) {
         context.routes().nav("ListPlan");
     }
+
     public void gotoplanf(ActionEvent actionEvent) {
         context.routes().nav("ListTaches");
     }
+
     public void gotoSavedPlans(ActionEvent actionEvent) {
         context.routes().nav("SavedPlans");
     }
 
+    // Méthodes pour la gestion des projets
     public void gotoAjoutProjet(ActionEvent actionEvent) {
         context.routes().nav("ajoutProjet");
     }
+
     public void gotoWeather(ActionEvent actionEvent) {
         context.routes().nav("Weather");
     }
@@ -567,30 +551,33 @@ public class SideNavController extends ActionView {
         context.routes().nav("Chatbot");
     }
 
-    public void gotoAfficherProjet(ActionEvent actionEvent) {
+
+
+    public void gotoAjouterEtapeProjet(ActionEvent actionEvent) {
+        context.routes().nav("ajoutEtapeProjet");
+    }
+
+
+
+    public void gotoAfficherProjet(MouseEvent actionEvent) {
         View afficherProjetView = ViewUtils.loadView(context, "afficherProjet");
         context.routes().putAndGo(afficherProjetView);
     }
 
-    public void gotoAjouterEtapeProjet(ActionEvent actionEvent) {
-        context.routes().nav("ajoutEtapeProjet");
-
-    }
-
-    public void gotoAfficherEtapeProjet(ActionEvent actionEvent) {
+    public void gotoAfficherEtapeProjet(MouseEvent actionEvent) {
         View afficherEtapeProjetView = ViewUtils.loadView(context, "afficherEtapeProjet");
         context.routes().putAndGo(afficherEtapeProjetView);
     }
 
-    public void gotoAfficherTerrain(ActionEvent actionEvent) {
+    public void gotoAfficherTerrain(MouseEvent actionEvent) {
         View afficherTerrainView = ViewUtils.loadView(context, "afficherTerrain");
         context.routes().putAndGo(afficherTerrainView);
     }
 
+
+    // Méthodes pour la gestion des contrats
     public void gotoAfficherContrats(ActionEvent event) {
-
         context.routes().nav("ListContrats");
-
     }
 
     public void gotoAfficherAbonnemant(ActionEvent event) {
@@ -599,5 +586,14 @@ public class SideNavController extends ActionView {
 
     public void gotoContratclient(ActionEvent event) {
         context.routes().nav("ContatsClient");
+    }
+
+    public void gotoAfficherReclamation(MouseEvent event) {
+        context.routes().nav("ListReclamation");
+    }
+    public void gotoAfficherReponse(MouseEvent event) {
+
+        context.routes().nav("ListReponse");
+
     }
 }

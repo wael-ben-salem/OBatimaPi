@@ -72,6 +72,11 @@ module io.ourbatima {
     exports io.ourbatima.controllers.FinanceControllers; // Export your controller package
     opens io.ourbatima.controllers.FinanceControllers to javafx.fxml;
     opens io.ourbatima.core.model.financeModel to javafx.base, javafx.fxml;
+    opens io.ourbatima.controllers.Reponse to javafx.fxml;
+    exports io.ourbatima.controllers.Reponse;
+    opens io.ourbatima.controllers.Reclamation to javafx.fxml;
+    exports io.ourbatima.controllers.Reclamation;
+
 
 
 }

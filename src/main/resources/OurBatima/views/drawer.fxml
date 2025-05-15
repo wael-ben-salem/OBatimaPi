@@ -65,130 +65,159 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-         <VBox fx:id="menuContainer">
+            <VBox fx:id="menuContainer">
 
-            <TitledPane fx:id="goUser" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Utilisateur" textAlignment="JUSTIFY">
-               <graphic>
-                  <Group>
-                     <children>
-                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
-                     </children>
-                  </Group>
-               </graphic>
-               <content>
-                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                     <children>
-                        <ToggleButton fx:id="goArtisanButton" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goArtisan" styleClass="drawer-item" text="Artisans" />
-                        <ToggleButton fx:id="goClientButton" alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goClient" styleClass="drawer-item" text="Clients" />
-                        <ToggleButton fx:id="goConstructeurButton" alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goConstructeur" styleClass="drawer-item" text="Constructeurs" />
-                        <ToggleButton fx:id="goGestionnaireStockButton" alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goGestionnaireStock" styleClass="drawer-item" text="Gestionnaire De Stock" />
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-
-            <TitledPane fx:id="goProjet" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Projet" textAlignment="JUSTIFY">
-               <graphic>
-                  <Group>
-                     <children>
-                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
-                     </children>
-                  </Group>
-               </graphic>
-               <content>
-                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                     <children>
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherProjet" styleClass="drawer-item" text="Projet"  />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherEtapeProjet" styleClass="drawer-item" text="Étape projet" />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherTerrain" styleClass="drawer-item" text="Terrain"  />
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-
-            <TitledPane fx:id="goTachetPlan" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Plannifiacation et Tache" textAlignment="JUSTIFY">
-               <graphic>
-                  <Group>
-                     <children>
-                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
-                     </children>
-                  </Group>
-               </graphic>
-               <content>
-                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                     <children>
-                        <Button text="📅 Planification" onAction="#gotoplan"
-                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
-                        <Button text="📝 Tâche" onAction="#gotoplanf"
-                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
-                        <Button text="📂 Saved Plans" onAction="#gotoSavedPlans"
-                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
-                        <Button text="⛅ Météo" onAction="#gotoWeather"
-                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
-                        <Button text="📊 Dashboard" onAction="#gotoDashboard"
-                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
-                        <Button text="💬 Voir Chat" onAction="#gotochat"
-                                style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-
-            <TitledPane fx:id="goStock" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Stocks" textAlignment="JUSTIFY">
-               <graphic>
-                  <Group>
-                     <children>
-                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
-                     </children>
-                  </Group>
-               </graphic>
-               <content>
-                  <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                     <children>
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAddArticle" styleClass="drawer-item" text="Ajouter Article" />
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goviewArticle" styleClass="drawer-item" text="Article" />
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#launchbot" styleClass="drawer-item" text="Bot" />
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goviewfournisseur" styleClass="drawer-item" text="Fournisseur" />
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAddfournisseur" styleClass="drawer-item" text="Ajouter Fournisseur" />
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goviewstock" styleClass="drawer-item" text="Stock" />
-                        <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAddStock" styleClass="drawer-item" text="Ajouter Stock" />
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-
-            <TitledPane fx:id="gotofinance" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Contrat et abonnement" textAlignment="JUSTIFY">
-               <graphic>
-                  <Group>
-                     <children>
-                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
-                     </children>
-                  </Group>
-               </graphic>
-               <content>
-                  <VBox id="drawerContentt" fx:id="faa" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
-                     <children>
-                        <ToggleButton fx:id="contra" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats"  />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants"  />
-                        <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoContratclient" styleClass="drawer-item" text="Contrats client"  />
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-
-            <TitledPane fx:id="goEquipe" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Equipe" textAlignment="JUSTIFY" onMouseClicked="#goEquipe">
-               <graphic>
-                  <Group>
-                     <children>
-                        <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
-                     </children>
-                  </Group>
-               </graphic>
-            </TitledPane>
-         </VBox>
+               <TitledPane fx:id="goUser"  textOverrun="CLIP" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Utilisateur" textAlignment="JUSTIFY">
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+                  <content>
+                     <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                        <children>
+                           <ToggleButton fx:id="goArtisanButton" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goArtisan" styleClass="drawer-item" text="Artisans" />
+                           <ToggleButton fx:id="goClientButton" alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goClient" styleClass="drawer-item" text="Clients" />
+                           <ToggleButton fx:id="goConstructeurButton" alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goConstructeur" styleClass="drawer-item" text="Constructeurs" />
+                           <ToggleButton fx:id="goGestionnaireStockButton" alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goGestionnaireStock" styleClass="drawer-item" text="Gestionnaire De Stock" />
+                        </children>
+                     </VBox>
+                  </content>
+               </TitledPane>
+               <TitledPane fx:id="goProjet" onMouseClicked="#gotoAfficherProjet" nodeOrientation="RIGHT_TO_LEFT"  alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" styleClass="drawer-menu" text="Projet" textAlignment="JUSTIFY" >
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+               </TitledPane>
+               <TitledPane fx:id="goTerrain" onMouseClicked="#gotoAfficherTerrain" nodeOrientation="RIGHT_TO_LEFT"  alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0"  styleClass="drawer-menu" text="Terrain" textAlignment="JUSTIFY" >
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+               </TitledPane>
+               <TitledPane fx:id="goEtapeProjet" onMouseClicked="#gotoAfficherEtapeProjet" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Etape Projet" textAlignment="JUSTIFY" >
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+               </TitledPane>
 
 
-         <Separator prefWidth="200.0">
+               <TitledPane fx:id="goTachetPlan" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Plannifiacation et Tache" textAlignment="JUSTIFY">
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+                  <content>
+                     <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                        <children>
+                           <Button text="📅 Planification" onAction="#gotoplan"
+                                   style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                           <Button text="📝 Tâche" onAction="#gotoplanf"
+                                   style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                           <Button text="📂 Saved Plans" onAction="#gotoSavedPlans"
+                                   style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                           <Button text="⛅ Météo" onAction="#gotoWeather"
+                                   style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                           <Button text="📊 Dashboard" onAction="#gotoDashboard"
+                                   style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                           <Button text="💬 Voir Chat" onAction="#gotochat"
+                                   style="-fx-background-color: transparent; -fx-text-fill: #4B2E2E; -fx-underline: true;"/>
+                        </children>
+                     </VBox>
+                  </content>
+               </TitledPane>
+               <TitledPane fx:id="goReclamation" onMouseClicked="#gotoAfficherReclamation" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Reclamation" textAlignment="JUSTIFY">
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+
+               </TitledPane>
+               <TitledPane fx:id="goResponse" onMouseClicked="#gotoAfficherReponse" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Reclamation" textAlignment="JUSTIFY">
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+
+               </TitledPane>
+
+               <TitledPane fx:id="goStock" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Stocks" textAlignment="JUSTIFY">
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+                  <content>
+                     <VBox id="drawer-content" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                        <children>
+                           <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAddArticle" styleClass="drawer-item" text="Ajouter Article" />
+                           <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goviewArticle" styleClass="drawer-item" text="Article" />
+                           <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#launchbot" styleClass="drawer-item" text="Bot" />
+                           <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goviewfournisseur" styleClass="drawer-item" text="Fournisseur" />
+                           <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAddfournisseur" styleClass="drawer-item" text="Ajouter Fournisseur" />
+                           <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goviewstock" styleClass="drawer-item" text="Stock" />
+                           <ToggleButton alignment="CENTER_LEFT" layoutX="20.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goAddStock" styleClass="drawer-item" text="Ajouter Stock" />
+                        </children>
+                     </VBox>
+                  </content>
+               </TitledPane>
+
+               <TitledPane fx:id="gotofinance" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Contrat et abonnement" textAlignment="JUSTIFY">
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+                  <content>
+                     <VBox id="drawerContentt" fx:id="faa" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="292.0" spacing="5.0">
+                        <children>
+                           <ToggleButton fx:id="contra" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherContrats" styleClass="drawer-item" text="Contrats"  />
+                           <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoAfficherAbonnemant" styleClass="drawer-item" text="Abonnemants"  />
+                           <ToggleButton alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#gotoContratclient" styleClass="drawer-item" text="Contrats client"  />
+                        </children>
+                     </VBox>
+                  </content>
+               </TitledPane>
+
+               <TitledPane fx:id="goEquipe" alignment="CENTER_RIGHT" contentDisplay="RIGHT" expanded="false" layoutX="10.0" layoutY="242.0" nodeOrientation="RIGHT_TO_LEFT" styleClass="drawer-menu" text="Equipe" textAlignment="JUSTIFY" onMouseClicked="#goEquipe">
+                  <graphic>
+                     <Group>
+                        <children>
+                           <SVGPath content="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-200v120h560v-120H568q-17 18-39.5 29T480-280q-26 0-48.5-11T392-320H200Zm280-40q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-280-40h160q0-50 35-85t85-35q50 0 85 35t35 85h160v-360H200v360Zm0 200h560-560Z" layoutX="720.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.025" scaleY="0.025" />
+                        </children>
+                     </Group>
+                  </graphic>
+               </TitledPane>
+            </VBox>
+
+
+            <Separator prefWidth="200.0">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>

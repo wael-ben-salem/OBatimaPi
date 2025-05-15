@@ -63,7 +63,7 @@
                 <HBox alignment="CENTER" prefHeight="110.0" prefWidth="898.0" spacing="10.0">
                     <children>
                         <Button fx:id="updateButton" onAction="#handleUpdate" prefHeight="42.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Update" textFill="WHITE" />
-                        <Button fx:id="deleteButton" onAction="#handleDelete" prefHeight="35.0" prefWidth="100.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Delete" textFill="#fffbfb" />
+                        <Button fx:id="deleteButton" onAction="#handleDelete" prefHeight="42.0" prefWidth="106.0" styleClass="btn-gradient" stylesheets="@../../style/css/boutton.css" text="Delete" textFill="#fffbfb" />
                     </children>
                     <padding>
                         <Insets top="30.0" />

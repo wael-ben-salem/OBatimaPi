@@ -307,6 +307,19 @@
     folder: pages,
     fxml: Article.fxml
   }
+  - {
+    name: ListReclamation,
+    title: ListReclamation,
+    folder: pages/Reclamation,
+    fxml: ListReclamation.fxml
+  }
+  - {
+    name: ListReponse,
+    title: ListReponse,
+    folder: pages/Reclamation,
+    fxml: ListReponse.fxml
+  }
+
   -
 #  - {
 #    name: sales_left,

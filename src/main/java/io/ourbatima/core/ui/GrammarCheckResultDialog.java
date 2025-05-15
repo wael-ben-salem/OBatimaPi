@@ -1,4 +1,4 @@
-package io.OurBatima.core.ui;
+package io.ourbatima.core.ui;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
