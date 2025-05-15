@@ -46,6 +46,7 @@ module io.ourbatima {
     requires org.apache.pdfbox;
     requires spark.core;
     requires okhttp3;
+    requires mysql.connector.java;
 
 
     opens io.ourbatima to javafx.fxml;

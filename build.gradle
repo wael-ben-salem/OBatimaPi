@@ -33,8 +33,7 @@ ext {
 application {
     mainModule = 'io.ourbatima'
     mainClass = 'io.ourbatima.Starter'
-    applicationDefaultJvmArgs = ["-Djava.library.path=${projectDir}/src/main/resources/libs"]
-
+    applicationDefaultJvmArgs = ["-Djava.library.path=" + projectDir.toString() + "/src/main/resources/libs"]
 }
 
 javafx {
