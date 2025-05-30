@@ -3,6 +3,13 @@
   <img src="src/main/resources/OurBatima/style/img/logo2.png" alt="OUR BATIMA Logo" width="200"/>
 </p>
 
+
+
+## 🎥 Vidéo de Présentation
+
+👉 [Cliquez ici pour voir la vidéo de présentation du projet OUR BATIMA ](https://vimeo.com/manage/videos/1089055324/0db36b06d5)
+
+
 # OUR BATIMA - Application JavaFX (Client de Gestion de Projets de Construction)
 
 ## 🎯 Présentation
